@@ -10,12 +10,12 @@ import { LogOut, User } from "lucide-react"
 // import { ThemeColorToggle } from "./color-toggle"
 import { SidebarTrigger } from "../ui/sidebar"
 import { ReactNode } from "react"
+import HeaderLinks from "./header-links"
 
 type Props = {
     title?: string
     rigthChildren?: ReactNode
     leftChildren?: ReactNode
-    
 }
 const Header = ({ rigthChildren, leftChildren }: Props) => {
     const navigate = useNavigate()
@@ -32,6 +32,7 @@ const Header = ({ rigthChildren, leftChildren }: Props) => {
             <div className="flex gap-6 items-center min-w-14 max-w-full overflow-x-auto custom-scrollbar">
                 <SidebarTrigger className="text-gray-500 dark:text-white" />
 
+                <HeaderLinks />
                 {leftChildren ? leftChildren : null}
             </div>
             <hgroup className="flex items-center gap-4">

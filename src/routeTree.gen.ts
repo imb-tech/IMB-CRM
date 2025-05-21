@@ -30,6 +30,7 @@ import { Route as MainSettingsMainRolesImport } from './routes/_main/settings/_m
 import { Route as MainSettingsMainPaymentTypeImport } from './routes/_main/settings/_main/payment-type'
 import { Route as MainSettingsMainHolidaysImport } from './routes/_main/settings/_main/holidays'
 import { Route as MainSettingsMainCoursesImport } from './routes/_main/settings/_main/courses'
+import { Route as MainSettingsMainBranchesImport } from './routes/_main/settings/_main/branches'
 
 // Create Virtual Routes
 
@@ -150,6 +151,12 @@ const MainSettingsMainCoursesRoute = MainSettingsMainCoursesImport.update({
   getParentRoute: () => MainSettingsMainRoute,
 } as any)
 
+const MainSettingsMainBranchesRoute = MainSettingsMainBranchesImport.update({
+  id: '/branches',
+  path: '/branches',
+  getParentRoute: () => MainSettingsMainRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -245,6 +252,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainSettingsMainImport
       parentRoute: typeof MainSettingsRoute
     }
+    '/_main/settings/_main/branches': {
+      id: '/_main/settings/_main/branches'
+      path: '/branches'
+      fullPath: '/settings/branches'
+      preLoaderRoute: typeof MainSettingsMainBranchesImport
+      parentRoute: typeof MainSettingsMainImport
+    }
     '/_main/settings/_main/courses': {
       id: '/_main/settings/_main/courses'
       path: '/courses'
@@ -303,6 +317,7 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface MainSettingsMainRouteChildren {
+  MainSettingsMainBranchesRoute: typeof MainSettingsMainBranchesRoute
   MainSettingsMainCoursesRoute: typeof MainSettingsMainCoursesRoute
   MainSettingsMainHolidaysRoute: typeof MainSettingsMainHolidaysRoute
   MainSettingsMainPaymentTypeRoute: typeof MainSettingsMainPaymentTypeRoute
@@ -312,6 +327,7 @@ interface MainSettingsMainRouteChildren {
 }
 
 const MainSettingsMainRouteChildren: MainSettingsMainRouteChildren = {
+  MainSettingsMainBranchesRoute: MainSettingsMainBranchesRoute,
   MainSettingsMainCoursesRoute: MainSettingsMainCoursesRoute,
   MainSettingsMainHolidaysRoute: MainSettingsMainHolidaysRoute,
   MainSettingsMainPaymentTypeRoute: MainSettingsMainPaymentTypeRoute,
@@ -373,6 +389,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthAuthLazyRoute
   '/': typeof MainIndexRoute
   '/settings': typeof MainSettingsMainRouteWithChildren
+  '/settings/branches': typeof MainSettingsMainBranchesRoute
   '/settings/courses': typeof MainSettingsMainCoursesRoute
   '/settings/holidays': typeof MainSettingsMainHolidaysRoute
   '/settings/payment-type': typeof MainSettingsMainPaymentTypeRoute
@@ -393,6 +410,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthAuthLazyRoute
   '/': typeof MainIndexRoute
   '/settings': typeof MainSettingsMainIndexRoute
+  '/settings/branches': typeof MainSettingsMainBranchesRoute
   '/settings/courses': typeof MainSettingsMainCoursesRoute
   '/settings/holidays': typeof MainSettingsMainHolidaysRoute
   '/settings/payment-type': typeof MainSettingsMainPaymentTypeRoute
@@ -415,6 +433,7 @@ export interface FileRoutesById {
   '/_main/': typeof MainIndexRoute
   '/_main/settings': typeof MainSettingsRouteWithChildren
   '/_main/settings/_main': typeof MainSettingsMainRouteWithChildren
+  '/_main/settings/_main/branches': typeof MainSettingsMainBranchesRoute
   '/_main/settings/_main/courses': typeof MainSettingsMainCoursesRoute
   '/_main/settings/_main/holidays': typeof MainSettingsMainHolidaysRoute
   '/_main/settings/_main/payment-type': typeof MainSettingsMainPaymentTypeRoute
@@ -437,6 +456,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/'
     | '/settings'
+    | '/settings/branches'
     | '/settings/courses'
     | '/settings/holidays'
     | '/settings/payment-type'
@@ -456,6 +476,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/'
     | '/settings'
+    | '/settings/branches'
     | '/settings/courses'
     | '/settings/holidays'
     | '/settings/payment-type'
@@ -476,6 +497,7 @@ export interface FileRouteTypes {
     | '/_main/'
     | '/_main/settings'
     | '/_main/settings/_main'
+    | '/_main/settings/_main/branches'
     | '/_main/settings/_main/courses'
     | '/_main/settings/_main/holidays'
     | '/_main/settings/_main/payment-type'
@@ -578,6 +600,7 @@ export const routeTree = rootRoute
       "filePath": "_main/settings/_main.tsx",
       "parent": "/_main/settings",
       "children": [
+        "/_main/settings/_main/branches",
         "/_main/settings/_main/courses",
         "/_main/settings/_main/holidays",
         "/_main/settings/_main/payment-type",
@@ -585,6 +608,10 @@ export const routeTree = rootRoute
         "/_main/settings/_main/rooms",
         "/_main/settings/_main/"
       ]
+    },
+    "/_main/settings/_main/branches": {
+      "filePath": "_main/settings/_main/branches.tsx",
+      "parent": "/_main/settings/_main"
     },
     "/_main/settings/_main/courses": {
       "filePath": "_main/settings/_main/courses.tsx",
