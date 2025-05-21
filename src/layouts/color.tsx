@@ -15,7 +15,7 @@ export default function ThemeDataProvider({ children }: ThemeProviderProps) {
                 "Blue"
             )
         } catch (error) {
-            "Blue" as ThemeColors
+            "Green" as ThemeColors
         }
     }
 

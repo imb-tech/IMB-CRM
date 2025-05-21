@@ -16,12 +16,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as MainImport } from './routes/_main'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as MainIndexImport } from './routes/_main/index'
-import { Route as MainWarehouseImport } from './routes/_main/warehouse'
 import { Route as MainSettingsImport } from './routes/_main/settings'
-import { Route as MainLogisticsImport } from './routes/_main/logistics'
-import { Route as MainCustomersImport } from './routes/_main/customers'
-import { Route as MainOrdersOrderCreateImport } from './routes/_main/_orders/order-create'
-import { Route as MainOrdersOrderIdImport } from './routes/_main/_orders/order/$id'
 
 // Create Virtual Routes
 
@@ -51,39 +46,9 @@ const AuthAuthLazyRoute = AuthAuthLazyImport.update({
   getParentRoute: () => AuthRoute,
 } as any).lazy(() => import('./routes/_auth/auth.lazy').then((d) => d.Route))
 
-const MainWarehouseRoute = MainWarehouseImport.update({
-  id: '/warehouse',
-  path: '/warehouse',
-  getParentRoute: () => MainRoute,
-} as any)
-
 const MainSettingsRoute = MainSettingsImport.update({
   id: '/settings',
   path: '/settings',
-  getParentRoute: () => MainRoute,
-} as any)
-
-const MainLogisticsRoute = MainLogisticsImport.update({
-  id: '/logistics',
-  path: '/logistics',
-  getParentRoute: () => MainRoute,
-} as any)
-
-const MainCustomersRoute = MainCustomersImport.update({
-  id: '/customers',
-  path: '/customers',
-  getParentRoute: () => MainRoute,
-} as any)
-
-const MainOrdersOrderCreateRoute = MainOrdersOrderCreateImport.update({
-  id: '/_orders/order-create',
-  path: '/order-create',
-  getParentRoute: () => MainRoute,
-} as any)
-
-const MainOrdersOrderIdRoute = MainOrdersOrderIdImport.update({
-  id: '/_orders/order/$id',
-  path: '/order/$id',
   getParentRoute: () => MainRoute,
 } as any)
 
@@ -105,32 +70,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainImport
       parentRoute: typeof rootRoute
     }
-    '/_main/customers': {
-      id: '/_main/customers'
-      path: '/customers'
-      fullPath: '/customers'
-      preLoaderRoute: typeof MainCustomersImport
-      parentRoute: typeof MainImport
-    }
-    '/_main/logistics': {
-      id: '/_main/logistics'
-      path: '/logistics'
-      fullPath: '/logistics'
-      preLoaderRoute: typeof MainLogisticsImport
-      parentRoute: typeof MainImport
-    }
     '/_main/settings': {
       id: '/_main/settings'
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof MainSettingsImport
-      parentRoute: typeof MainImport
-    }
-    '/_main/warehouse': {
-      id: '/_main/warehouse'
-      path: '/warehouse'
-      fullPath: '/warehouse'
-      preLoaderRoute: typeof MainWarehouseImport
       parentRoute: typeof MainImport
     }
     '/_auth/auth': {
@@ -145,20 +89,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof MainIndexImport
-      parentRoute: typeof MainImport
-    }
-    '/_main/_orders/order-create': {
-      id: '/_main/_orders/order-create'
-      path: '/order-create'
-      fullPath: '/order-create'
-      preLoaderRoute: typeof MainOrdersOrderCreateImport
-      parentRoute: typeof MainImport
-    }
-    '/_main/_orders/order/$id': {
-      id: '/_main/_orders/order/$id'
-      path: '/order/$id'
-      fullPath: '/order/$id'
-      preLoaderRoute: typeof MainOrdersOrderIdImport
       parentRoute: typeof MainImport
     }
   }
@@ -177,100 +107,52 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface MainRouteChildren {
-  MainCustomersRoute: typeof MainCustomersRoute
-  MainLogisticsRoute: typeof MainLogisticsRoute
   MainSettingsRoute: typeof MainSettingsRoute
-  MainWarehouseRoute: typeof MainWarehouseRoute
   MainIndexRoute: typeof MainIndexRoute
-  MainOrdersOrderCreateRoute: typeof MainOrdersOrderCreateRoute
-  MainOrdersOrderIdRoute: typeof MainOrdersOrderIdRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
-  MainCustomersRoute: MainCustomersRoute,
-  MainLogisticsRoute: MainLogisticsRoute,
   MainSettingsRoute: MainSettingsRoute,
-  MainWarehouseRoute: MainWarehouseRoute,
   MainIndexRoute: MainIndexRoute,
-  MainOrdersOrderCreateRoute: MainOrdersOrderCreateRoute,
-  MainOrdersOrderIdRoute: MainOrdersOrderIdRoute,
 }
 
 const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
 
 export interface FileRoutesByFullPath {
   '': typeof MainRouteWithChildren
-  '/customers': typeof MainCustomersRoute
-  '/logistics': typeof MainLogisticsRoute
   '/settings': typeof MainSettingsRoute
-  '/warehouse': typeof MainWarehouseRoute
   '/auth': typeof AuthAuthLazyRoute
   '/': typeof MainIndexRoute
-  '/order-create': typeof MainOrdersOrderCreateRoute
-  '/order/$id': typeof MainOrdersOrderIdRoute
 }
 
 export interface FileRoutesByTo {
   '': typeof AuthRouteWithChildren
-  '/customers': typeof MainCustomersRoute
-  '/logistics': typeof MainLogisticsRoute
   '/settings': typeof MainSettingsRoute
-  '/warehouse': typeof MainWarehouseRoute
   '/auth': typeof AuthAuthLazyRoute
   '/': typeof MainIndexRoute
-  '/order-create': typeof MainOrdersOrderCreateRoute
-  '/order/$id': typeof MainOrdersOrderIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_auth': typeof AuthRouteWithChildren
   '/_main': typeof MainRouteWithChildren
-  '/_main/customers': typeof MainCustomersRoute
-  '/_main/logistics': typeof MainLogisticsRoute
   '/_main/settings': typeof MainSettingsRoute
-  '/_main/warehouse': typeof MainWarehouseRoute
   '/_auth/auth': typeof AuthAuthLazyRoute
   '/_main/': typeof MainIndexRoute
-  '/_main/_orders/order-create': typeof MainOrdersOrderCreateRoute
-  '/_main/_orders/order/$id': typeof MainOrdersOrderIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | ''
-    | '/customers'
-    | '/logistics'
-    | '/settings'
-    | '/warehouse'
-    | '/auth'
-    | '/'
-    | '/order-create'
-    | '/order/$id'
+  fullPaths: '' | '/settings' | '/auth' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | ''
-    | '/customers'
-    | '/logistics'
-    | '/settings'
-    | '/warehouse'
-    | '/auth'
-    | '/'
-    | '/order-create'
-    | '/order/$id'
+  to: '' | '/settings' | '/auth' | '/'
   id:
     | '__root__'
     | '/_auth'
     | '/_main'
-    | '/_main/customers'
-    | '/_main/logistics'
     | '/_main/settings'
-    | '/_main/warehouse'
     | '/_auth/auth'
     | '/_main/'
-    | '/_main/_orders/order-create'
-    | '/_main/_orders/order/$id'
   fileRoutesById: FileRoutesById
 }
 
@@ -309,29 +191,12 @@ export const routeTree = rootRoute
     "/_main": {
       "filePath": "_main.tsx",
       "children": [
-        "/_main/customers",
-        "/_main/logistics",
         "/_main/settings",
-        "/_main/warehouse",
-        "/_main/",
-        "/_main/_orders/order-create",
-        "/_main/_orders/order/$id"
+        "/_main/"
       ]
-    },
-    "/_main/customers": {
-      "filePath": "_main/customers.tsx",
-      "parent": "/_main"
-    },
-    "/_main/logistics": {
-      "filePath": "_main/logistics.tsx",
-      "parent": "/_main"
     },
     "/_main/settings": {
       "filePath": "_main/settings.tsx",
-      "parent": "/_main"
-    },
-    "/_main/warehouse": {
-      "filePath": "_main/warehouse.tsx",
       "parent": "/_main"
     },
     "/_auth/auth": {
@@ -340,14 +205,6 @@ export const routeTree = rootRoute
     },
     "/_main/": {
       "filePath": "_main/index.tsx",
-      "parent": "/_main"
-    },
-    "/_main/_orders/order-create": {
-      "filePath": "_main/_orders/order-create.tsx",
-      "parent": "/_main"
-    },
-    "/_main/_orders/order/$id": {
-      "filePath": "_main/_orders/order/$id.tsx",
       "parent": "/_main"
     }
   }
