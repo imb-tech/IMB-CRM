@@ -7,7 +7,6 @@ import {
     useSidebar,
 } from "@/components/ui/sidebar"
 import { NavMain } from "./nav-main"
-import { items } from "@/hooks/usePaths"
 import { cn } from "@/lib/utils"
 import { useNavigate } from "@tanstack/react-router"
 
@@ -33,7 +32,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                         Y<span>amin Group</span>
                     </SidebarMenuButton>
                 </SidebarMenu>
-                <NavMain items={items} />
+                <NavMain />
             </SidebarContent>
         </Sidebar>
     )

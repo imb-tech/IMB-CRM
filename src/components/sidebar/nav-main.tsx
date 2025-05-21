@@ -5,10 +5,10 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { MenuItem } from "@/hooks/usePaths"
+import { items } from "@/constants/menu"
 import { useLocation, useNavigate } from "@tanstack/react-router"
 
-export function NavMain({ items }: { items: MenuItem[] }) {
+export function NavMain() {
     const navigate = useNavigate()
     const { pathname } = useLocation()
 
