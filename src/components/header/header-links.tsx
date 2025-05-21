@@ -1,5 +1,5 @@
 import { menuItems } from "@/constants/menu"
-import { Link, useLocation, useNavigate } from "@tanstack/react-router"
+import { useLocation, useNavigate } from "@tanstack/react-router"
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
 
 export default function HeaderLinks() {
@@ -27,7 +27,12 @@ export default function HeaderLinks() {
                             <TabsTrigger
                                 key={link.title}
                                 value={link.to}
-                                className={`${pathname.includes(link.to + "/") && "!bg-primary !text-primary-foreground"} font-medium flex items-center gap-2 ${isSomeActive(link.to) && "!bg-primary/50"}`}
+                                className={`${
+                                    pathname.includes(link.to + "/") &&
+                                    "!bg-primary !text-primary-foreground"
+                                } font-medium flex items-center gap-2 ${
+                                    isSomeActive(link.to) && "!bg-primary/50"
+                                }`}
                             >
                                 {link.title}
                             </TabsTrigger>

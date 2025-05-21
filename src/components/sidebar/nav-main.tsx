@@ -10,7 +10,7 @@ import { Link } from "@tanstack/react-router"
 
 export function NavMain() {
     return (
-        <SidebarGroup>
+        <SidebarGroup className="pt-16">
             <SidebarGroupContent className="flex flex-col gap-2 ">
                 <SidebarMenu>
                     {menuItems.map(
@@ -26,7 +26,7 @@ export function NavMain() {
                                     className="rounded-lg"
                                 >
                                     <SidebarMenuItem>
-                                        <SidebarMenuButton tooltip={title}>
+                                        <SidebarMenuButton  tooltip={title}>
                                             {item.icon}
                                             <span>{title}</span>
                                         </SidebarMenuButton>
