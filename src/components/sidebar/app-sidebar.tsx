@@ -14,7 +14,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const navigate = useNavigate()
     const { open } = useSidebar()
     return (
-        <Sidebar collapsible="icon" {...props} className="bg-card">
+        <Sidebar collapsible="icon" {...props} >
             <SidebarContent>
                 <SidebarMenu
                     className={cn("p-2", !open ? "" : "border-b")}

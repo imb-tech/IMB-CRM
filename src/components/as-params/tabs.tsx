@@ -6,7 +6,7 @@ import { ClassNameValue } from "tailwind-merge"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
-
+ 
 interface ParamTabsProps {
     options: Array<{
         value: string | number
@@ -54,6 +54,7 @@ const ParamTabs: React.FC<ParamTabsProps> = ({
                 : navigate({ search: { [paramName]: tab } as any })
         }
     }
+    
     if (!is_visible) return null
     return (
         <Tabs

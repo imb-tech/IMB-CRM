@@ -17,16 +17,23 @@ import { Route as MainImport } from './routes/_main'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as MainIndexImport } from './routes/_main/index'
 import { Route as MainStudentsImport } from './routes/_main/students'
-import { Route as MainSettingsImport } from './routes/_main/settings'
 import { Route as MainReportsImport } from './routes/_main/reports'
 import { Route as MainLidsImport } from './routes/_main/lids'
 import { Route as MainGroupsImport } from './routes/_main/groups'
 import { Route as MainFinanceImport } from './routes/_main/finance'
 import { Route as MainEmployeesImport } from './routes/_main/employees'
 import { Route as MainAttendanceImport } from './routes/_main/attendance'
+import { Route as MainSettingsMainImport } from './routes/_main/settings/_main'
+import { Route as MainSettingsMainIndexImport } from './routes/_main/settings/_main/index'
+import { Route as MainSettingsMainRoomsImport } from './routes/_main/settings/_main/rooms'
+import { Route as MainSettingsMainRolesImport } from './routes/_main/settings/_main/roles'
+import { Route as MainSettingsMainPaymentTypeImport } from './routes/_main/settings/_main/payment-type'
+import { Route as MainSettingsMainHolidaysImport } from './routes/_main/settings/_main/holidays'
+import { Route as MainSettingsMainCoursesImport } from './routes/_main/settings/_main/courses'
 
 // Create Virtual Routes
 
+const MainSettingsImport = createFileRoute('/_main/settings')()
 const AuthAuthLazyImport = createFileRoute('/_auth/auth')()
 
 // Create/Update Routes
@@ -39,6 +46,12 @@ const MainRoute = MainImport.update({
 const AuthRoute = AuthImport.update({
   id: '/_auth',
   getParentRoute: () => rootRoute,
+} as any)
+
+const MainSettingsRoute = MainSettingsImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => MainRoute,
 } as any)
 
 const MainIndexRoute = MainIndexImport.update({
@@ -56,12 +69,6 @@ const AuthAuthLazyRoute = AuthAuthLazyImport.update({
 const MainStudentsRoute = MainStudentsImport.update({
   id: '/students',
   path: '/students',
-  getParentRoute: () => MainRoute,
-} as any)
-
-const MainSettingsRoute = MainSettingsImport.update({
-  id: '/settings',
-  path: '/settings',
   getParentRoute: () => MainRoute,
 } as any)
 
@@ -99,6 +106,48 @@ const MainAttendanceRoute = MainAttendanceImport.update({
   id: '/attendance',
   path: '/attendance',
   getParentRoute: () => MainRoute,
+} as any)
+
+const MainSettingsMainRoute = MainSettingsMainImport.update({
+  id: '/_main',
+  getParentRoute: () => MainSettingsRoute,
+} as any)
+
+const MainSettingsMainIndexRoute = MainSettingsMainIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MainSettingsMainRoute,
+} as any)
+
+const MainSettingsMainRoomsRoute = MainSettingsMainRoomsImport.update({
+  id: '/rooms',
+  path: '/rooms',
+  getParentRoute: () => MainSettingsMainRoute,
+} as any)
+
+const MainSettingsMainRolesRoute = MainSettingsMainRolesImport.update({
+  id: '/roles',
+  path: '/roles',
+  getParentRoute: () => MainSettingsMainRoute,
+} as any)
+
+const MainSettingsMainPaymentTypeRoute =
+  MainSettingsMainPaymentTypeImport.update({
+    id: '/payment-type',
+    path: '/payment-type',
+    getParentRoute: () => MainSettingsMainRoute,
+  } as any)
+
+const MainSettingsMainHolidaysRoute = MainSettingsMainHolidaysImport.update({
+  id: '/holidays',
+  path: '/holidays',
+  getParentRoute: () => MainSettingsMainRoute,
+} as any)
+
+const MainSettingsMainCoursesRoute = MainSettingsMainCoursesImport.update({
+  id: '/courses',
+  path: '/courses',
+  getParentRoute: () => MainSettingsMainRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -161,13 +210,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainReportsImport
       parentRoute: typeof MainImport
     }
-    '/_main/settings': {
-      id: '/_main/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof MainSettingsImport
-      parentRoute: typeof MainImport
-    }
     '/_main/students': {
       id: '/_main/students'
       path: '/students'
@@ -189,6 +231,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainIndexImport
       parentRoute: typeof MainImport
     }
+    '/_main/settings': {
+      id: '/_main/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof MainSettingsImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/settings/_main': {
+      id: '/_main/settings/_main'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof MainSettingsMainImport
+      parentRoute: typeof MainSettingsRoute
+    }
+    '/_main/settings/_main/courses': {
+      id: '/_main/settings/_main/courses'
+      path: '/courses'
+      fullPath: '/settings/courses'
+      preLoaderRoute: typeof MainSettingsMainCoursesImport
+      parentRoute: typeof MainSettingsMainImport
+    }
+    '/_main/settings/_main/holidays': {
+      id: '/_main/settings/_main/holidays'
+      path: '/holidays'
+      fullPath: '/settings/holidays'
+      preLoaderRoute: typeof MainSettingsMainHolidaysImport
+      parentRoute: typeof MainSettingsMainImport
+    }
+    '/_main/settings/_main/payment-type': {
+      id: '/_main/settings/_main/payment-type'
+      path: '/payment-type'
+      fullPath: '/settings/payment-type'
+      preLoaderRoute: typeof MainSettingsMainPaymentTypeImport
+      parentRoute: typeof MainSettingsMainImport
+    }
+    '/_main/settings/_main/roles': {
+      id: '/_main/settings/_main/roles'
+      path: '/roles'
+      fullPath: '/settings/roles'
+      preLoaderRoute: typeof MainSettingsMainRolesImport
+      parentRoute: typeof MainSettingsMainImport
+    }
+    '/_main/settings/_main/rooms': {
+      id: '/_main/settings/_main/rooms'
+      path: '/rooms'
+      fullPath: '/settings/rooms'
+      preLoaderRoute: typeof MainSettingsMainRoomsImport
+      parentRoute: typeof MainSettingsMainImport
+    }
+    '/_main/settings/_main/': {
+      id: '/_main/settings/_main/'
+      path: '/'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof MainSettingsMainIndexImport
+      parentRoute: typeof MainSettingsMainImport
+    }
   }
 }
 
@@ -204,6 +302,39 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface MainSettingsMainRouteChildren {
+  MainSettingsMainCoursesRoute: typeof MainSettingsMainCoursesRoute
+  MainSettingsMainHolidaysRoute: typeof MainSettingsMainHolidaysRoute
+  MainSettingsMainPaymentTypeRoute: typeof MainSettingsMainPaymentTypeRoute
+  MainSettingsMainRolesRoute: typeof MainSettingsMainRolesRoute
+  MainSettingsMainRoomsRoute: typeof MainSettingsMainRoomsRoute
+  MainSettingsMainIndexRoute: typeof MainSettingsMainIndexRoute
+}
+
+const MainSettingsMainRouteChildren: MainSettingsMainRouteChildren = {
+  MainSettingsMainCoursesRoute: MainSettingsMainCoursesRoute,
+  MainSettingsMainHolidaysRoute: MainSettingsMainHolidaysRoute,
+  MainSettingsMainPaymentTypeRoute: MainSettingsMainPaymentTypeRoute,
+  MainSettingsMainRolesRoute: MainSettingsMainRolesRoute,
+  MainSettingsMainRoomsRoute: MainSettingsMainRoomsRoute,
+  MainSettingsMainIndexRoute: MainSettingsMainIndexRoute,
+}
+
+const MainSettingsMainRouteWithChildren =
+  MainSettingsMainRoute._addFileChildren(MainSettingsMainRouteChildren)
+
+interface MainSettingsRouteChildren {
+  MainSettingsMainRoute: typeof MainSettingsMainRouteWithChildren
+}
+
+const MainSettingsRouteChildren: MainSettingsRouteChildren = {
+  MainSettingsMainRoute: MainSettingsMainRouteWithChildren,
+}
+
+const MainSettingsRouteWithChildren = MainSettingsRoute._addFileChildren(
+  MainSettingsRouteChildren,
+)
+
 interface MainRouteChildren {
   MainAttendanceRoute: typeof MainAttendanceRoute
   MainEmployeesRoute: typeof MainEmployeesRoute
@@ -211,9 +342,9 @@ interface MainRouteChildren {
   MainGroupsRoute: typeof MainGroupsRoute
   MainLidsRoute: typeof MainLidsRoute
   MainReportsRoute: typeof MainReportsRoute
-  MainSettingsRoute: typeof MainSettingsRoute
   MainStudentsRoute: typeof MainStudentsRoute
   MainIndexRoute: typeof MainIndexRoute
+  MainSettingsRoute: typeof MainSettingsRouteWithChildren
 }
 
 const MainRouteChildren: MainRouteChildren = {
@@ -223,9 +354,9 @@ const MainRouteChildren: MainRouteChildren = {
   MainGroupsRoute: MainGroupsRoute,
   MainLidsRoute: MainLidsRoute,
   MainReportsRoute: MainReportsRoute,
-  MainSettingsRoute: MainSettingsRoute,
   MainStudentsRoute: MainStudentsRoute,
   MainIndexRoute: MainIndexRoute,
+  MainSettingsRoute: MainSettingsRouteWithChildren,
 }
 
 const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
@@ -238,10 +369,16 @@ export interface FileRoutesByFullPath {
   '/groups': typeof MainGroupsRoute
   '/lids': typeof MainLidsRoute
   '/reports': typeof MainReportsRoute
-  '/settings': typeof MainSettingsRoute
   '/students': typeof MainStudentsRoute
   '/auth': typeof AuthAuthLazyRoute
   '/': typeof MainIndexRoute
+  '/settings': typeof MainSettingsMainRouteWithChildren
+  '/settings/courses': typeof MainSettingsMainCoursesRoute
+  '/settings/holidays': typeof MainSettingsMainHolidaysRoute
+  '/settings/payment-type': typeof MainSettingsMainPaymentTypeRoute
+  '/settings/roles': typeof MainSettingsMainRolesRoute
+  '/settings/rooms': typeof MainSettingsMainRoomsRoute
+  '/settings/': typeof MainSettingsMainIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -252,10 +389,15 @@ export interface FileRoutesByTo {
   '/groups': typeof MainGroupsRoute
   '/lids': typeof MainLidsRoute
   '/reports': typeof MainReportsRoute
-  '/settings': typeof MainSettingsRoute
   '/students': typeof MainStudentsRoute
   '/auth': typeof AuthAuthLazyRoute
   '/': typeof MainIndexRoute
+  '/settings': typeof MainSettingsMainIndexRoute
+  '/settings/courses': typeof MainSettingsMainCoursesRoute
+  '/settings/holidays': typeof MainSettingsMainHolidaysRoute
+  '/settings/payment-type': typeof MainSettingsMainPaymentTypeRoute
+  '/settings/roles': typeof MainSettingsMainRolesRoute
+  '/settings/rooms': typeof MainSettingsMainRoomsRoute
 }
 
 export interface FileRoutesById {
@@ -268,10 +410,17 @@ export interface FileRoutesById {
   '/_main/groups': typeof MainGroupsRoute
   '/_main/lids': typeof MainLidsRoute
   '/_main/reports': typeof MainReportsRoute
-  '/_main/settings': typeof MainSettingsRoute
   '/_main/students': typeof MainStudentsRoute
   '/_auth/auth': typeof AuthAuthLazyRoute
   '/_main/': typeof MainIndexRoute
+  '/_main/settings': typeof MainSettingsRouteWithChildren
+  '/_main/settings/_main': typeof MainSettingsMainRouteWithChildren
+  '/_main/settings/_main/courses': typeof MainSettingsMainCoursesRoute
+  '/_main/settings/_main/holidays': typeof MainSettingsMainHolidaysRoute
+  '/_main/settings/_main/payment-type': typeof MainSettingsMainPaymentTypeRoute
+  '/_main/settings/_main/roles': typeof MainSettingsMainRolesRoute
+  '/_main/settings/_main/rooms': typeof MainSettingsMainRoomsRoute
+  '/_main/settings/_main/': typeof MainSettingsMainIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -284,10 +433,16 @@ export interface FileRouteTypes {
     | '/groups'
     | '/lids'
     | '/reports'
-    | '/settings'
     | '/students'
     | '/auth'
     | '/'
+    | '/settings'
+    | '/settings/courses'
+    | '/settings/holidays'
+    | '/settings/payment-type'
+    | '/settings/roles'
+    | '/settings/rooms'
+    | '/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | ''
@@ -297,10 +452,15 @@ export interface FileRouteTypes {
     | '/groups'
     | '/lids'
     | '/reports'
-    | '/settings'
     | '/students'
     | '/auth'
     | '/'
+    | '/settings'
+    | '/settings/courses'
+    | '/settings/holidays'
+    | '/settings/payment-type'
+    | '/settings/roles'
+    | '/settings/rooms'
   id:
     | '__root__'
     | '/_auth'
@@ -311,10 +471,17 @@ export interface FileRouteTypes {
     | '/_main/groups'
     | '/_main/lids'
     | '/_main/reports'
-    | '/_main/settings'
     | '/_main/students'
     | '/_auth/auth'
     | '/_main/'
+    | '/_main/settings'
+    | '/_main/settings/_main'
+    | '/_main/settings/_main/courses'
+    | '/_main/settings/_main/holidays'
+    | '/_main/settings/_main/payment-type'
+    | '/_main/settings/_main/roles'
+    | '/_main/settings/_main/rooms'
+    | '/_main/settings/_main/'
   fileRoutesById: FileRoutesById
 }
 
@@ -359,9 +526,9 @@ export const routeTree = rootRoute
         "/_main/groups",
         "/_main/lids",
         "/_main/reports",
-        "/_main/settings",
         "/_main/students",
-        "/_main/"
+        "/_main/",
+        "/_main/settings"
       ]
     },
     "/_main/attendance": {
@@ -388,10 +555,6 @@ export const routeTree = rootRoute
       "filePath": "_main/reports.tsx",
       "parent": "/_main"
     },
-    "/_main/settings": {
-      "filePath": "_main/settings.tsx",
-      "parent": "/_main"
-    },
     "/_main/students": {
       "filePath": "_main/students.tsx",
       "parent": "/_main"
@@ -403,6 +566,49 @@ export const routeTree = rootRoute
     "/_main/": {
       "filePath": "_main/index.tsx",
       "parent": "/_main"
+    },
+    "/_main/settings": {
+      "filePath": "_main/settings",
+      "parent": "/_main",
+      "children": [
+        "/_main/settings/_main"
+      ]
+    },
+    "/_main/settings/_main": {
+      "filePath": "_main/settings/_main.tsx",
+      "parent": "/_main/settings",
+      "children": [
+        "/_main/settings/_main/courses",
+        "/_main/settings/_main/holidays",
+        "/_main/settings/_main/payment-type",
+        "/_main/settings/_main/roles",
+        "/_main/settings/_main/rooms",
+        "/_main/settings/_main/"
+      ]
+    },
+    "/_main/settings/_main/courses": {
+      "filePath": "_main/settings/_main/courses.tsx",
+      "parent": "/_main/settings/_main"
+    },
+    "/_main/settings/_main/holidays": {
+      "filePath": "_main/settings/_main/holidays.tsx",
+      "parent": "/_main/settings/_main"
+    },
+    "/_main/settings/_main/payment-type": {
+      "filePath": "_main/settings/_main/payment-type.tsx",
+      "parent": "/_main/settings/_main"
+    },
+    "/_main/settings/_main/roles": {
+      "filePath": "_main/settings/_main/roles.tsx",
+      "parent": "/_main/settings/_main"
+    },
+    "/_main/settings/_main/rooms": {
+      "filePath": "_main/settings/_main/rooms.tsx",
+      "parent": "/_main/settings/_main"
+    },
+    "/_main/settings/_main/": {
+      "filePath": "_main/settings/_main/index.tsx",
+      "parent": "/_main/settings/_main"
     }
   }
 }
