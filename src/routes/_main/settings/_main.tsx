@@ -38,7 +38,7 @@ const options = [
 
 export const Route = createFileRoute("/_main/settings/_main")({
     component: () => (
-        <PageLayout leftChildren={<ParamRouteTabs options={options} />}>
+        <PageLayout>
             <Outlet />
         </PageLayout>
     ),
