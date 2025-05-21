@@ -15,8 +15,9 @@ type Props = {
     title?: string
     rigthChildren?: ReactNode
     leftChildren?: ReactNode
+    
 }
-const Header = ({ rigthChildren }: Props) => {
+const Header = ({ rigthChildren, leftChildren }: Props) => {
     const navigate = useNavigate()
 
     const handleLogOut = () => {
@@ -30,6 +31,8 @@ const Header = ({ rigthChildren }: Props) => {
         <header className="px-4 md:px-6 py-3 gap-4 border-l dark:border-b  flex items-center justify-between bg-card max-w-full box-border">
             <div className="flex gap-2 items-center min-w-14 max-w-full overflow-x-auto custom-scrollbar">
                 <SidebarTrigger className="text-gray-500 dark:text-white" />
+
+                {leftChildren ? leftChildren : null}
             </div>
             <hgroup className="flex items-center gap-4">
                 {rigthChildren ? rigthChildren : null}

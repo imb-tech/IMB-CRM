@@ -6,9 +6,10 @@ import { ReactNode } from "@tanstack/react-router"
 type Props = {
     children: ReactNode
     rigthChildren?: ReactNode
+    leftChildren?: ReactNode
 }
 
-const PageLayout = ({ children, rigthChildren }: Props) => {
+const PageLayout = ({ children, rigthChildren, leftChildren }: Props) => {
     const { open } = useSidebar()
     return (
         <div className="w-full">
@@ -20,12 +21,14 @@ const PageLayout = ({ children, rigthChildren }: Props) => {
                         : "lg:w-[calc(100%-47px)] duration-200 w-full",
                 )}
             >
-                <Header rigthChildren={rigthChildren} />
+                <Header
+                    rigthChildren={rigthChildren}
+                    leftChildren={leftChildren}
+                />
             </div>
             <main className="flex xl:gap-2 px-3 md:px-4 pt-20  relative ">
                 {children}
             </main>
-           
         </div>
     )
 }
