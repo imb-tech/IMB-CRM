@@ -37,9 +37,9 @@ export default function TableActions({
                 <DropdownMenuTrigger asChild className={className}>
                     <Button
                         variant="ghost"
-                        className="!text-primary"
+                        className="!text-primary size-6 "
                         size={"icon"}
-                        icon={<EllipsisVertical width={18} />}
+                        icon={<EllipsisVertical width={16} />}
                     />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent sideOffset={1}>
@@ -48,7 +48,7 @@ export default function TableActions({
                             onClick={onView}
                             className="!text-green-500"
                         >
-                            <Eye width={16} />
+                            <Eye width={16} className="mr-1.5"  />
                             Ko'rish
                         </DropdownMenuItem>
                     )}
@@ -57,7 +57,7 @@ export default function TableActions({
                             onClick={onEdit}
                             className="!text-primary"
                         >
-                            <Edit width={16} />
+                            <Edit width={16} className="mr-1.5" />
                             Tahrirlash
                         </DropdownMenuItem>
                     )}
@@ -66,7 +66,7 @@ export default function TableActions({
                             onClick={onDelete}
                             className="!text-destructive"
                         >
-                            <Trash2 width={16} /> O'chirish
+                            <Trash2 width={16} className="mr-1.5" /> O'chirish
                         </DropdownMenuItem>
                     )}
                     {onUndo && (
@@ -74,7 +74,7 @@ export default function TableActions({
                             onClick={onUndo}
                             className="!text-destructive"
                         >
-                            <Undo width={16} /> Qaytarish
+                            <Undo width={16}  className="mr-1.5"/> Qaytarish
                         </DropdownMenuItem>
                     )}
                 </DropdownMenuContent>

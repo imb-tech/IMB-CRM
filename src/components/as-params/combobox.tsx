@@ -16,19 +16,20 @@ import { cn } from "@/lib/utils"
 import { useNavigate, useSearch } from "@tanstack/react-router"
 import { CheckIcon, ChevronsUpDown, X } from "lucide-react"
 import { useEffect, useState } from "react"
- 
+
 type ParamComboboxProps<T extends Record<string, any>> = {
     options: T[]
     paramName: string
     label?: string
     disabled?: boolean
-    labelKey: keyof T
-    valueKey: keyof T
+    labelKey?: keyof T
+    valueKey?: keyof T
     isError?: boolean
     returnVal?: keyof T
     className?: string
     asloClear?: string[]
     defaultOpt?: T
+    isSearch?: boolean
 }
 
 export function ParamCombobox<T extends Record<string, any>>({
@@ -37,12 +38,13 @@ export function ParamCombobox<T extends Record<string, any>>({
     label,
     disabled = false,
     isError = false,
-    returnVal = "label" as keyof T,
+    returnVal = "value" as keyof T,
     className,
     asloClear = [],
     defaultOpt,
-    labelKey,
-    valueKey,
+    labelKey = "label",
+    valueKey = "value",
+    isSearch = true,
 }: ParamComboboxProps<T>) {
     const navigate = useNavigate()
     const search: any = useSearch({ from: "/_main" }) as Record<
@@ -112,18 +114,22 @@ export function ParamCombobox<T extends Record<string, any>>({
                     <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
+            <PopoverContent className="p-0">
                 <Command>
                     <div className="relative">
-                        <CommandInput placeholder={label} />
-                        {currentValue && (
-                            <span className="absolute cursor-pointer text-destructive top-1.5 right-1 p-1">
-                                <X
-                                    className="text-destructive"
-                                    width={16}
-                                    onClick={handleCancel}
-                                />
-                            </span>
+                        {isSearch && (
+                            <>
+                                <CommandInput placeholder={label} />
+                                {currentValue && (
+                                    <span className="absolute cursor-pointer text-destructive top-1.5 right-1 p-1">
+                                        <X
+                                            className="text-destructive"
+                                            width={16}
+                                            onClick={handleCancel}
+                                        />
+                                    </span>
+                                )}
+                            </>
                         )}
                     </div>
                     <CommandList>

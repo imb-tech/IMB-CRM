@@ -16,13 +16,13 @@ const PageLayout = ({ children, rigthChildren }: Props) => {
                 className={cn(
                     "fixed top-0 right-0  z-10 transition-[width,height,padding] ",
                     open
-                        ? "lg:w-[calc(100%-238px)] duration-300 w-full"
+                        ? "lg:w-[calc(100%-192px)] duration-300 w-full"
                         : "lg:w-[calc(100%-47px)] duration-200 w-full",
                 )}
             >
                 <Header rigthChildren={rigthChildren} />
             </div>
-            <main className="flex xl:gap-2 px-4 md:px-6 pt-24  relative ">
+            <main className="flex xl:gap-2 px-3 md:px-4 pt-20  relative ">
                 {children}
             </main>
            

@@ -17,7 +17,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <Sidebar collapsible="icon" {...props} className="bg-card">
             <SidebarContent>
                 <SidebarMenu
-                    className={cn("py-3 px-2", !open ? "" : "border-b")}
+                    className={cn("p-2", !open ? "" : "border-b")}
                 >
                     <SidebarMenuButton
                         size={"lg"}
