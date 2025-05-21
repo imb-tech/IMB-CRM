@@ -1,9 +1,13 @@
 import {
+    CalendarRange,
+    ChartNoAxesCombined,
+    ClipboardList,
+    Cog,
+    GraduationCap,
     House,
-    LayoutGrid,
-    Settings,
-    Truck,
-    UserRound,
+    Layers,
+    NotebookText,
+    Users2,
 } from "lucide-react"
 import { ReactNode } from "react"
 
@@ -15,28 +19,48 @@ export interface MenuItem {
 
 export const items: MenuItem[] = [
     {
-        label: "Buyurtmalar",
-        icon: <LayoutGrid width={20} />,
+        label: "Bosh sahifa",
+        icon: <House width={20} />,
         path: "/",
     },
     {
-        label: "Mijozlar",
-        icon: <UserRound width={20} />,
-        path: "/customers",
+        label: "Lidlar",
+        icon: <ClipboardList width={20} />,
+        path: "/lids",
     },
     {
-        label: "Logistlar",
-        icon: <Truck width={20} />,
-        path: "/logistics",
+        label: "Guruhlar",
+        icon: <Layers width={20} />,
+        path: "/groups",
     },
     {
-        label: "Ombor",
-        icon: <House width={20} />,
-        path: "/warehouse",
+        label: "Hodimlar",
+        icon: <Users2 width={20} />,
+        path: "/employees",
+    },
+    {
+        label: "O'quvchilar",
+        icon: <GraduationCap width={20} />,
+        path: "/students",
+    },
+    {
+        label: "Davomat",
+        icon: <CalendarRange width={20} />,
+        path: "/attendance",
+    },
+    {
+        label: "Moliya",
+        icon: <ChartNoAxesCombined width={20} />,
+        path: "/finance",
+    },
+    {
+        label: "Hisobotlar",
+        icon: <NotebookText width={20} />,
+        path: "/reports",
     },
     {
         label: "Sozlamalar",
-        icon: <Settings width={20} />,
+        icon: <Cog width={20} />,
         path: "/settings",
     },
 ]

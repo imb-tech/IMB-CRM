@@ -1,0 +1,3 @@
+type Reports = {
+    name: string
+}

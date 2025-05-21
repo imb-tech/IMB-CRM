@@ -1,0 +1,3 @@
+type Groups = {
+    name: string
+}

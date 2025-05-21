@@ -1,0 +1,3 @@
+type Finance = {
+    name: string
+}

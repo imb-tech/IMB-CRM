@@ -1,0 +1,3 @@
+type Employees = {
+    name: string
+}

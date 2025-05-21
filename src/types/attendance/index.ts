@@ -1,0 +1,3 @@
+type Attendance= {
+    name: string
+}

@@ -1,11 +1,11 @@
 import PageLayout from "@/layouts/page-layout"
-import DashboardMain from "@/pages/dashboard"
+import StudentsMain from "@/pages/students"
 import { createFileRoute } from "@tanstack/react-router"
 
-export const Route = createFileRoute("/_main/")({
+export const Route = createFileRoute("/_main/students")({
     component: () => (
         <PageLayout>
-            <DashboardMain />
+            <StudentsMain />
         </PageLayout>
     ),
 })

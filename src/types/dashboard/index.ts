@@ -1,0 +1,3 @@
+type Dashboard = {
+    name: string
+}

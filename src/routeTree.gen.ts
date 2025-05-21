@@ -16,7 +16,14 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as MainImport } from './routes/_main'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as MainIndexImport } from './routes/_main/index'
+import { Route as MainStudentsImport } from './routes/_main/students'
 import { Route as MainSettingsImport } from './routes/_main/settings'
+import { Route as MainReportsImport } from './routes/_main/reports'
+import { Route as MainLidsImport } from './routes/_main/lids'
+import { Route as MainGroupsImport } from './routes/_main/groups'
+import { Route as MainFinanceImport } from './routes/_main/finance'
+import { Route as MainEmployeesImport } from './routes/_main/employees'
+import { Route as MainAttendanceImport } from './routes/_main/attendance'
 
 // Create Virtual Routes
 
@@ -46,9 +53,51 @@ const AuthAuthLazyRoute = AuthAuthLazyImport.update({
   getParentRoute: () => AuthRoute,
 } as any).lazy(() => import('./routes/_auth/auth.lazy').then((d) => d.Route))
 
+const MainStudentsRoute = MainStudentsImport.update({
+  id: '/students',
+  path: '/students',
+  getParentRoute: () => MainRoute,
+} as any)
+
 const MainSettingsRoute = MainSettingsImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainReportsRoute = MainReportsImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainLidsRoute = MainLidsImport.update({
+  id: '/lids',
+  path: '/lids',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainGroupsRoute = MainGroupsImport.update({
+  id: '/groups',
+  path: '/groups',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainFinanceRoute = MainFinanceImport.update({
+  id: '/finance',
+  path: '/finance',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainEmployeesRoute = MainEmployeesImport.update({
+  id: '/employees',
+  path: '/employees',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainAttendanceRoute = MainAttendanceImport.update({
+  id: '/attendance',
+  path: '/attendance',
   getParentRoute: () => MainRoute,
 } as any)
 
@@ -70,11 +119,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainImport
       parentRoute: typeof rootRoute
     }
+    '/_main/attendance': {
+      id: '/_main/attendance'
+      path: '/attendance'
+      fullPath: '/attendance'
+      preLoaderRoute: typeof MainAttendanceImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/employees': {
+      id: '/_main/employees'
+      path: '/employees'
+      fullPath: '/employees'
+      preLoaderRoute: typeof MainEmployeesImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/finance': {
+      id: '/_main/finance'
+      path: '/finance'
+      fullPath: '/finance'
+      preLoaderRoute: typeof MainFinanceImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/groups': {
+      id: '/_main/groups'
+      path: '/groups'
+      fullPath: '/groups'
+      preLoaderRoute: typeof MainGroupsImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/lids': {
+      id: '/_main/lids'
+      path: '/lids'
+      fullPath: '/lids'
+      preLoaderRoute: typeof MainLidsImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/reports': {
+      id: '/_main/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof MainReportsImport
+      parentRoute: typeof MainImport
+    }
     '/_main/settings': {
       id: '/_main/settings'
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof MainSettingsImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/students': {
+      id: '/_main/students'
+      path: '/students'
+      fullPath: '/students'
+      preLoaderRoute: typeof MainStudentsImport
       parentRoute: typeof MainImport
     }
     '/_auth/auth': {
@@ -107,12 +205,26 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface MainRouteChildren {
+  MainAttendanceRoute: typeof MainAttendanceRoute
+  MainEmployeesRoute: typeof MainEmployeesRoute
+  MainFinanceRoute: typeof MainFinanceRoute
+  MainGroupsRoute: typeof MainGroupsRoute
+  MainLidsRoute: typeof MainLidsRoute
+  MainReportsRoute: typeof MainReportsRoute
   MainSettingsRoute: typeof MainSettingsRoute
+  MainStudentsRoute: typeof MainStudentsRoute
   MainIndexRoute: typeof MainIndexRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
+  MainAttendanceRoute: MainAttendanceRoute,
+  MainEmployeesRoute: MainEmployeesRoute,
+  MainFinanceRoute: MainFinanceRoute,
+  MainGroupsRoute: MainGroupsRoute,
+  MainLidsRoute: MainLidsRoute,
+  MainReportsRoute: MainReportsRoute,
   MainSettingsRoute: MainSettingsRoute,
+  MainStudentsRoute: MainStudentsRoute,
   MainIndexRoute: MainIndexRoute,
 }
 
@@ -120,14 +232,28 @@ const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
 
 export interface FileRoutesByFullPath {
   '': typeof MainRouteWithChildren
+  '/attendance': typeof MainAttendanceRoute
+  '/employees': typeof MainEmployeesRoute
+  '/finance': typeof MainFinanceRoute
+  '/groups': typeof MainGroupsRoute
+  '/lids': typeof MainLidsRoute
+  '/reports': typeof MainReportsRoute
   '/settings': typeof MainSettingsRoute
+  '/students': typeof MainStudentsRoute
   '/auth': typeof AuthAuthLazyRoute
   '/': typeof MainIndexRoute
 }
 
 export interface FileRoutesByTo {
   '': typeof AuthRouteWithChildren
+  '/attendance': typeof MainAttendanceRoute
+  '/employees': typeof MainEmployeesRoute
+  '/finance': typeof MainFinanceRoute
+  '/groups': typeof MainGroupsRoute
+  '/lids': typeof MainLidsRoute
+  '/reports': typeof MainReportsRoute
   '/settings': typeof MainSettingsRoute
+  '/students': typeof MainStudentsRoute
   '/auth': typeof AuthAuthLazyRoute
   '/': typeof MainIndexRoute
 }
@@ -136,21 +262,57 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_auth': typeof AuthRouteWithChildren
   '/_main': typeof MainRouteWithChildren
+  '/_main/attendance': typeof MainAttendanceRoute
+  '/_main/employees': typeof MainEmployeesRoute
+  '/_main/finance': typeof MainFinanceRoute
+  '/_main/groups': typeof MainGroupsRoute
+  '/_main/lids': typeof MainLidsRoute
+  '/_main/reports': typeof MainReportsRoute
   '/_main/settings': typeof MainSettingsRoute
+  '/_main/students': typeof MainStudentsRoute
   '/_auth/auth': typeof AuthAuthLazyRoute
   '/_main/': typeof MainIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/settings' | '/auth' | '/'
+  fullPaths:
+    | ''
+    | '/attendance'
+    | '/employees'
+    | '/finance'
+    | '/groups'
+    | '/lids'
+    | '/reports'
+    | '/settings'
+    | '/students'
+    | '/auth'
+    | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '' | '/settings' | '/auth' | '/'
+  to:
+    | ''
+    | '/attendance'
+    | '/employees'
+    | '/finance'
+    | '/groups'
+    | '/lids'
+    | '/reports'
+    | '/settings'
+    | '/students'
+    | '/auth'
+    | '/'
   id:
     | '__root__'
     | '/_auth'
     | '/_main'
+    | '/_main/attendance'
+    | '/_main/employees'
+    | '/_main/finance'
+    | '/_main/groups'
+    | '/_main/lids'
+    | '/_main/reports'
     | '/_main/settings'
+    | '/_main/students'
     | '/_auth/auth'
     | '/_main/'
   fileRoutesById: FileRoutesById
@@ -191,12 +353,47 @@ export const routeTree = rootRoute
     "/_main": {
       "filePath": "_main.tsx",
       "children": [
+        "/_main/attendance",
+        "/_main/employees",
+        "/_main/finance",
+        "/_main/groups",
+        "/_main/lids",
+        "/_main/reports",
         "/_main/settings",
+        "/_main/students",
         "/_main/"
       ]
     },
+    "/_main/attendance": {
+      "filePath": "_main/attendance.tsx",
+      "parent": "/_main"
+    },
+    "/_main/employees": {
+      "filePath": "_main/employees.tsx",
+      "parent": "/_main"
+    },
+    "/_main/finance": {
+      "filePath": "_main/finance.tsx",
+      "parent": "/_main"
+    },
+    "/_main/groups": {
+      "filePath": "_main/groups.tsx",
+      "parent": "/_main"
+    },
+    "/_main/lids": {
+      "filePath": "_main/lids.tsx",
+      "parent": "/_main"
+    },
+    "/_main/reports": {
+      "filePath": "_main/reports.tsx",
+      "parent": "/_main"
+    },
     "/_main/settings": {
       "filePath": "_main/settings.tsx",
+      "parent": "/_main"
+    },
+    "/_main/students": {
+      "filePath": "_main/students.tsx",
       "parent": "/_main"
     },
     "/_auth/auth": {

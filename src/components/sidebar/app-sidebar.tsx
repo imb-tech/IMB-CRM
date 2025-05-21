@@ -25,11 +25,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                         className={cn(
                             " flex text-primary   font-extrabold gap-0 ",
                             !open
-                                ? "justify-center text-center text-[45px]"
+                                ? "justify-center text-center text-[30px]"
                                 : "justify-start text-3xl",
                         )}
                     >
-                        Y<span>amin Group</span>
+                        IM<span>B CRM</span>
                     </SidebarMenuButton>
                 </SidebarMenu>
                 <NavMain />

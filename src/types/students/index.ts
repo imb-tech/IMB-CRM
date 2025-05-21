@@ -1,0 +1,3 @@
+type Students = {
+    name: string
+}
