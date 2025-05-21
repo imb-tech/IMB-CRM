@@ -160,7 +160,7 @@ const StudentsMain = () => {
 
 export default StudentsMain
 
-const data = [
+const data:Student[] = [
     {
         id: 1,
         img: "img1.jpg",

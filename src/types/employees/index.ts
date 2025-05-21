@@ -1,4 +1,4 @@
-type Employees = {
+type Employee = {
     id: number
     img_name: string
     full_name: string

@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import { useMemo } from "react"
 
 export const useStudentsCols = () =>
-    useMemo<ColumnDef<Students>[]>(
+    useMemo<ColumnDef<Student>[]>(
         () => [
             {
                 header: "№",

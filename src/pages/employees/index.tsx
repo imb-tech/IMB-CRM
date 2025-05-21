@@ -53,7 +53,7 @@ const EmployeesMain = () => {
 
 export default EmployeesMain
 
-const data = [
+const data:Employee[] = [
     {
         id: 1,
         img_name: "img1.jpg",

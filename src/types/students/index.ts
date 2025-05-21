@@ -1,4 +1,4 @@
-type Students = {
+type Student = {
     id: number
     img: string
     name: string

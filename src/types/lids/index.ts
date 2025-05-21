@@ -1,3 +1,3 @@
-type Lids = {
+type Lid = {
     name: string
 }
