@@ -5,7 +5,7 @@ import { Plus } from "lucide-react"
 import { useCoursesCols } from "./columns"
 import { Badge } from "@/components/ui/badge"
 
-const CoursessMain = () => {
+const CoursesMain = () => {
     const columns = useCoursesCols()
     return (
         <div className="w-full">
@@ -35,7 +35,7 @@ const CoursessMain = () => {
     )
 }
 
-export default CoursessMain
+export default CoursesMain
 
 const data: Course[] = [
     {

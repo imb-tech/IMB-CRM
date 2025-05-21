@@ -1,6 +1,9 @@
-import BranchesMain from '@/pages/settings/branches'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from "@tanstack/react-router"
 
-export const Route = createFileRoute('/_main/settings/_main/')({
-  component: () => <BranchesMain />,
+export const Route = createFileRoute("/_main/settings/_main/")({
+    loader: () => {
+        throw redirect({
+            to: "/settings/branches",
+        })
+    },
 })
