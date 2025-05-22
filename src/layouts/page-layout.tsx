@@ -20,7 +20,7 @@ const PageLayout = ({ children, rigthChildren, leftChildren }: Props) => {
                     leftChildren={leftChildren}
                 />
             </div>
-            <main className="flex xl:gap-2 px-3 md:px-4 pt-20  relative ">
+            <main className="flex xl:gap-2 px-3 md:px-4 pt-20 pb-4  relative ">
                 {children}
             </main>
         </div>
