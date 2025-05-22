@@ -64,7 +64,7 @@ const Header = ({ rigthChildren, leftChildren }: Props) => {
                             asChild
                         >
                             <Link to="/">
-                                <User width={16} /> Abdisamatov Ozodbek
+                                <User width={16} /> IMB CEO
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem
