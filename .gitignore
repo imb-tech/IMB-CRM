@@ -1,3 +1,21 @@
-node_modules
+# Local
+.DS_Store
+*.local
+*.log*
 
-# .env.development
+# Dist
+node_modules
+dist/
+.vinxi
+.output
+.vercel
+.netlify
+.wrangler
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea
+.vscode
+
+.env.development
