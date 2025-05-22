@@ -25,7 +25,7 @@ function MainLayout() {
     }, [pathname])
 
     return (
-        <SidebarProvider   defaultOpen={false}>
+        <SidebarProvider defaultOpen={false}>
             <AppSidebar />
             <SidebarInset>
                 <Outlet />
