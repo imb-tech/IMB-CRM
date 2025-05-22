@@ -8,9 +8,12 @@
         "dev": "vite --port=3002",
         "build": "vite build",
         "serve": "vite preview",
-        "start": "vite"
+        "start": "vite",
+        "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css}\"",
+        "lefthook": "lefthook run"
     },
     "devDependencies": {
+        "@evilmartians/lefthook": "^1.11.13",
         "@tanstack/router-plugin": "^1.58.12",
         "@types/google-libphonenumber": "^7.4.30",
         "@types/node": "^22.7.4",

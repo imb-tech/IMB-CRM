@@ -37,7 +37,7 @@ const HolidaysMain = () => {
 
 export default HolidaysMain
 
-const data: Holidays[] = [
+const data: Holiday[] = [
     { id: 1, date: "2025-01-01", reason: "New Year" },
     { id: 2, date: "2025-01-14", reason: "Defenders Day" },
     { id: 3, date: "2025-03-08", reason: "Women's Day" },
