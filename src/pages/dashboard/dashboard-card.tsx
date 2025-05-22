@@ -84,7 +84,7 @@ export default function DashboardCard() {
                 <h3 className="text-lg font-semibold mb-4">
                     Umumiy Ko'rsatkichlar
                 </h3>
-                <div className="grid grid-cols-3 md:grid-cols-9 gap-4">
+                <div className="grid xl:grid-cols-9 lg:grid-cols-4  sm:grid-cols-3  grid-cols-2 gap-4">
                     {statsData.map(
                         (
                             { icon: Icon, label, value, bgColor, iconColor },
