@@ -25,7 +25,7 @@ const data: TCalendar = {
             startTime: "08:30",
             teacher_name: "Hamidov Shohjahon",
             endTime: "09:00",
-            course_name: "Test sessiya",
+            course_name: "Backend",
             color: "bg-blue-200 border-blue-300",
         },
         {
@@ -34,7 +34,7 @@ const data: TCalendar = {
             startTime: "09:15",
             teacher_name: "Doniyor Eshmamatov",
             endTime: "10:00",
-            course_name: "Haftalik yig'ilish",
+            course_name: "Frontend",
             color: "bg-amber-200 border-amber-300",
         },
         {
@@ -43,7 +43,7 @@ const data: TCalendar = {
             startTime: "10:30",
             teacher_name: "Abdurahimov Ahmadboy",
             endTime: "11:15",
-            course_name: "Intervyu",
+            course_name: "Backend",
             color: "bg-emerald-200 border-emerald-300",
         },
         {
@@ -62,17 +62,19 @@ const data: TCalendar = {
 
 const DashboardMain = () => {
     return (
-        <Card className="w-full ">
-            <CardContent className="space-y-4">
-                <DashboardCard />
-                <FullCalendar
-                    rooms={data.room_list}
-                    work={data.work_time}
-                    work_start_date={data.work_start_date}
-                    work_end_date={data.work_end_date}
-                />
-            </CardContent>
-        </Card>
+        <div className="space-y-4 w-full">
+            <Card className="w-full ">
+                <CardContent>
+                    <DashboardCard />
+                </CardContent>
+            </Card>
+            <FullCalendar
+                rooms={data.room_list}
+                work={data.work_time}
+                work_start_date={data.work_start_date}
+                work_end_date={data.work_end_date}
+            />
+        </div>
     )
 }
 
