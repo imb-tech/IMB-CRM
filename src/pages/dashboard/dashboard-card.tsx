@@ -3,112 +3,107 @@ import {
     Users,
     BookOpen,
     UserCheck,
-    UserPlus,
-    AlertCircle,
-    Calendar,
+    GraduationCap,
+    Clock,
+    CreditCard,
     DollarSign,
     Layers,
-    GraduationCap,
+    BookOpenCheck,
 } from "lucide-react"
 
-const data = [
+const statsData = [
     {
-        items: [
-            {
-                label: "Lidlar",
-                value: 400,
-                icon: UserPlus,
-                textColor: "text-blue-600",
-            },
-            {
-                label: "Sinov darsida o'qiyotganlar",
-                value: 600,
-                icon: BookOpen,
-                textColor: "text-green-600",
-            },
-            {
-                label: "Sinovga kelib ketganlar",
-                value: 600,
-                icon: Users,
-                textColor: "text-purple-600",
-            },
-            {
-                label: "Faol talabalar",
-                value: 200,
-                icon: UserCheck,
-                textColor: "text-amber-600",
-            },
-        ],
+        icon: Users,
+        label: "Lidlar",
+        value: 400,
+        bgColor: "bg-purple-50 dark:bg-purple-900/10",
+        iconColor: "text-purple-600 dark:text-purple-400",
     },
     {
-        items: [
-            {
-                label: "Qarzdorlar soni",
-                value: 30,
-                icon: AlertCircle,
-                textColor: "text-red-600",
-            },
-            {
-                label: "To'lov yaqin qolganlar",
-                value: 20,
-                icon: Calendar,
-                textColor: "text-orange-600",
-            },
-            {
-                label: "Summasi",
-                value: 600,
-                icon: DollarSign,
-                textColor: "text-emerald-600",
-            },
-        ],
+        icon: BookOpen,
+        label: "Sinov",
+        value: 600,
+        bgColor: "bg-green-50 dark:bg-green-900/10",
+        iconColor: "text-green-600 dark:text-green-400",
     },
     {
-        items: [
-            {
-                label: "Guruhlar",
-                value: 10,
-                icon: Layers,
-                textColor: "text-cyan-600",
-            },
-            {
-                label: "O'qituvchilar",
-                value: 50,
-                icon: GraduationCap,
-                textColor: "text-violet-600",
-            },
-        ],
+        icon: UserCheck,
+        label: "Kelganlar",
+        value: 600,
+        bgColor: "bg-blue-50 dark:bg-blue-900/10",
+        iconColor: "text-blue-600 dark:text-blue-400",
+    },
+    {
+        icon: GraduationCap,
+        label: "Talabalar",
+        value: 200,
+        bgColor: "bg-amber-50 dark:bg-amber-900/10",
+        iconColor: "text-amber-600 dark:text-amber-400",
+    },
+    {
+        icon: Clock,
+        label: "Qarzdorlar",
+        value: 30,
+        bgColor: "bg-red-50 dark:bg-red-900/10",
+        iconColor: "text-red-600 dark:text-red-400",
+    },
+    {
+        icon: CreditCard,
+        label: "To'lov",
+        value: 20,
+        bgColor: "bg-orange-50 dark:bg-orange-900/10",
+        iconColor: "text-orange-600 dark:text-orange-400",
+    },
+    {
+        icon: DollarSign,
+        label: "Summasi",
+        value: 600,
+        bgColor: "bg-emerald-50 dark:bg-emerald-900/10",
+        iconColor: "text-emerald-600 dark:text-emerald-400",
+    },
+    {
+        icon: Layers,
+        label: "Guruhlar",
+        value: 10,
+        bgColor: "bg-teal-50 dark:bg-teal-900/10",
+        iconColor: "text-teal-600 dark:text-teal-400",
+    },
+    {
+        icon: BookOpenCheck,
+        label: "O'qituvchilar",
+        value: 50,
+        bgColor: "bg-indigo-50 dark:bg-indigo-900/10",
+        iconColor: "text-indigo-600 dark:text-indigo-400",
     },
 ]
 
-export function DashboardCard() {
+export default function DashboardCard() {
     return (
-        <div className="space-y-2 w-full">
-            <Card className="grid  gap-3 lg:grid-cols-3 grid-cols-1 rounded-xl">
-                {data.map((parent, index) => (
-                    <CardContent
-                        key={index}
-                        className="space-y-3 border rounded-xl"
-                    >
-                        {parent.items.map((item, i) => (
+        <Card className="w-full ">
+            <CardContent>
+                <h3 className="text-lg font-semibold mb-4">
+                    Umumiy Ko'rsatkichlar
+                </h3>
+                <div className="grid grid-cols-3 md:grid-cols-9 gap-4">
+                    {statsData.map(
+                        (
+                            { icon: Icon, label, value, bgColor, iconColor },
+                            index,
+                        ) => (
                             <div
-                                key={i}
-                                className={
-                                    "flex items-center justify-between gap-3 border-b pb-2 "
-                                }
+                                key={index}
+                                className={`flex flex-col items-center justify-center p-3 rounded-lg ${bgColor}`}
                             >
-                                <div className="flex items-center gap-2">
-                                    <item.icon
-                                        size={18}
-                                        className={item.textColor}
-                                    />{" "}
-                                    <span>{item.label}:</span>
-                                </div>
-                                <span>{item.value}</span>
+                                <Icon className={`h-6 w-6 mb-1 ${iconColor}`} />
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    {label}
+                                </p>
+                                <p className="text-lg font-semibold">{value}</p>
                             </div>
-                        ))}
-                    </CardContent>
-                ))}
-            </Card>
-        </div>
+                        ),
+                    )}
+                </div>
+            </CardContent>
+        </Card>
     )
 }

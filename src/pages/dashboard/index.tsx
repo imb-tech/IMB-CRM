@@ -1,6 +1,6 @@
 import FullCalendar from "@/components/ui/full-calendar"
-import { DashboardCard } from "./dashboard-card"
 import { Card, CardContent } from "@/components/ui/card"
+import DashboardCard from "./dashboard-card"
 
 const data: TCalendar = {
     room_list: [
@@ -8,6 +8,10 @@ const data: TCalendar = {
         { id: "2", name: "2-xona" },
         { id: "3", name: "3-xona" },
         { id: "4", name: "4-xona" },
+        { id: "4", name: "5-xona" },
+        { id: "4", name: "6-xona" },
+        { id: "4", name: "7-xona" },
+        { id: "4", name: "8-xona" },
     ],
     work_time: [
         {
@@ -63,11 +67,7 @@ const data: TCalendar = {
 const DashboardMain = () => {
     return (
         <div className="space-y-4 w-full">
-            <Card className="w-full ">
-                <CardContent>
-                    <DashboardCard />
-                </CardContent>
-            </Card>
+            <DashboardCard />
             <FullCalendar
                 rooms={data.room_list}
                 work={data.work_time}
