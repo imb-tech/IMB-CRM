@@ -7,7 +7,7 @@ import {
 } from "../ui/dropdown-menu"
 import { Link, useNavigate } from "@tanstack/react-router"
 import { LogOut, User } from "lucide-react"
-// import { ThemeColorToggle } from "./color-toggle"
+import { ThemeColorToggle } from "./color-toggle"
 import { SidebarTrigger } from "../ui/sidebar"
 import { ReactNode } from "react"
 import HeaderLinks from "./header-links"
@@ -28,7 +28,7 @@ const Header = ({ rigthChildren, leftChildren }: Props) => {
     }
 
     return (
-        <header className="py-3 pr-3 pl-2 gap-4 border-l dark:border-b  flex items-center justify-between bg-card max-w-full box-border">
+        <header className="py-3 pr-3 pl-2 gap-4 dark:border-b  flex items-center justify-between bg-card max-w-full box-border">
             <div className="flex gap-6 items-center  max-w-full overflow-x-auto custom-scrollbar">
                 <div className="flex gap-3 items-center min-w-[180px]">
                     <SidebarTrigger className="text-gray-500 dark:text-white" />
@@ -39,7 +39,7 @@ const Header = ({ rigthChildren, leftChildren }: Props) => {
             </div>
             <hgroup className="flex items-center gap-4">
                 {rigthChildren ? rigthChildren : null}
-                {/* <ThemeColorToggle /> */}
+                <ThemeColorToggle />
                 <DropdownMenu>
                     <div className="relative h-10">
                         <DropdownMenuTrigger className="!outline-none">

@@ -4,15 +4,24 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { menuItems } from "@/constants/menu"
 import { Link } from "@tanstack/react-router"
 
 export function NavMain() {
     return (
-        <SidebarGroup className="pt-16">
+        <SidebarGroup className="lg:pt-[70px]">
             <SidebarGroupContent className="flex flex-col gap-2 ">
                 <SidebarMenu>
+                    <SidebarMenuItem className="mb-3 lg:hidden">
+                        <div className="flex gap-3 items-center min-w-[180px]">
+                            <SidebarTrigger className="text-gray-500 dark:text-white" />
+                            <span className="text-2xl text-primary font-bold">
+                                IMB TECH
+                            </span>
+                        </div>
+                    </SidebarMenuItem>
                     {menuItems.map(
                         ({ enabled, title, ...item }) =>
                             enabled && (
@@ -26,7 +35,7 @@ export function NavMain() {
                                     className="rounded-lg"
                                 >
                                     <SidebarMenuItem>
-                                        <SidebarMenuButton  tooltip={title}>
+                                        <SidebarMenuButton tooltip={title}>
                                             {item.icon}
                                             <span>{title}</span>
                                         </SidebarMenuButton>

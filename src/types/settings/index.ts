@@ -54,3 +54,8 @@ type Role = {
     name: string,
     permissions: string[]
 }
+
+type PaymentType = {
+    id: number,
+    name: string,
+}

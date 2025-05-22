@@ -23,7 +23,7 @@ const GroupsMain = () => {
                             Qo'shish
                         </Button>
                     </div>
-                    <div className="grid lg:grid-cols-5 md:grid-cols-2 gap-4 ">
+                    <div className="grid lg:grid-cols-5 md:grid-cols-2 gap-2 ">
                         <ParamInput fullWidth />
                         <ParamCombobox
                             isSearch={false}
