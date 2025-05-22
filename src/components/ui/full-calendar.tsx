@@ -31,7 +31,7 @@ export default function FullCalendar({
     work_start_date,
     work_end_date,
 }: Props) {
-    const [timeInterval, setTimeInterval] = useState("15")
+    const [timeInterval, setTimeInterval] = useState("30")
     const [timeSlots, setTimeSlots] = useState<string[]>([])
     const [skipCells, setSkipCells] = useState<Record<string, boolean>>({})
 
