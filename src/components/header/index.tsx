@@ -54,7 +54,7 @@ const Header = ({ rigthChildren, leftChildren }: Props) => {
                                     alt="user img"
                                     className="object-cover"
                                 />
-                                <AvatarFallback>AO</AvatarFallback>
+                                <AvatarFallback>IMB</AvatarFallback>
                             </Avatar>
                         </DropdownMenuTrigger>
                     </div>
