@@ -168,6 +168,9 @@ importers:
         specifier: ^5.0.3
         version: 5.0.3(@types/react@18.3.12)(react@18.3.1)(use-sync-external-store@1.2.2(react@18.3.1))
     devDependencies:
+      '@evilmartians/lefthook':
+        specifier: ^1.11.13
+        version: 1.11.13
       '@tanstack/router-plugin':
         specifier: ^1.58.12
         version: 1.77.7(vite@5.4.10(@types/node@22.8.4))
@@ -594,6 +597,12 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@evilmartians/lefthook@1.11.13':
+    resolution: {integrity: sha512-CcR9u7lb3uCKD+295S2GfhROI6q9npTsJ/E07XupZZFO8sdYHm3Uo3x8t+lzKmI/7rCFA2t0MWRggjNrxpjXFg==}
+    cpu: [x64, arm64, ia32]
+    os: [darwin, linux, win32]
+    hasBin: true
 
   '@floating-ui/core@1.6.8':
     resolution: {integrity: sha512-7XJ9cPU+yI2QeLS+FCSlqNFZJq8arvswefkZrYI1yQBbftw6FyrZOxYSh+9S7z7TpeWlRt9zJ5IhM1WIL334jA==}
@@ -2953,6 +2962,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.23.1':
     optional: true
+
+  '@evilmartians/lefthook@1.11.13': {}
 
   '@floating-ui/core@1.6.8':
     dependencies:
