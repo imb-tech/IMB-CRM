@@ -24,7 +24,7 @@ type Props = {
     work_start_date: string
     work_end_date: string
 }
-
+ 
 export default function FullCalendar({
     rooms,
     work,
