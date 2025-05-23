@@ -141,3 +141,11 @@
     @apply min-h-svh w-full bg-background text-foreground;
   }
 }
+
+.no-scrollbar-x::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar-x {
+  -ms-overflow-style: none;  /* IE va Edge */
+  scrollbar-width: none;  /* Firefox */
+}
