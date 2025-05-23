@@ -8,6 +8,7 @@ import {
     House,
     Layers,
     NotebookText,
+    Settings,
     Users2,
 } from "lucide-react"
 import { ReactNode } from "react"
@@ -77,7 +78,7 @@ export const menuItems = [
     }),
     linkOptions({
         title: "Sozlamalar",
-        icon: <Cog width={20} />,
+        icon: <Settings width={20} />,
         to: "/settings",
         enabled: true,
         items: [

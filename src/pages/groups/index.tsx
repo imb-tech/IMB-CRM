@@ -91,10 +91,10 @@ const GroupsMain = () => {
                         />
                     </div>
                     <DataTable
-                        actionMenuMode
+                        // actionMenuMode
                         onDelete={() => {}}
                         onEdit={() => {}}
-                        onView={() => {}}
+                        // onView={() => {}}
                         columns={columns}
                         data={groups}
                         selecteds_row
