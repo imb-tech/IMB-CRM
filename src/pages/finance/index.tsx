@@ -1,9 +1,10 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { TrendingUp, TrendingDown, DollarSign, CreditCard } from "lucide-react"
 import FinanceCard from "./finance-card"
-import { FinanceChart } from "./finance-chart"
+import { FinanceChart } from "./finance-chart/finance-chart"
 import FinancePieChart from "./finance-chart/index"
 import { BarChartLabel } from "./finance-chart/bar-chart-label"
+import FinanceStatus from "./finance-status"
 
 export const cardData = [
     {
@@ -64,13 +65,15 @@ const FinanceMain = () => {
                     </div>
                 </CardContent>
             </Card>
+            <FinanceStatus />
+
             <div className="grid gap-4 lg:grid-cols-3">
                 <Card className="lg:col-span-2 ">
                     <CardContent>
                         <h3 className="text-lg font-semibold mb-4">
                             Daromad va Xarajatlar
                         </h3>
-                        <FinanceChart />
+                        <FinanceChart data={undefined} />
                     </CardContent>
                 </Card>
 
@@ -84,8 +87,6 @@ const FinanceMain = () => {
                     </CardContent>
                 </Card>
             </div>
-
-
         </div>
     )
 }
