@@ -129,15 +129,24 @@
 }
 
 @layer base {
-    * {
-        @apply border-border;
-        scrollbar-width: thin;
-        scrollbar-color: hsl(var(--border)) transparent;
-    }
-    html {
-        @apply overflow-x-hidden;
-    }
-    body {
-        @apply min-h-svh w-full bg-background text-foreground;
-    }
+
+  * {
+    @apply border-border;
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+  html {
+    @apply overflow-x-hidden;
+  }
+  body {
+    @apply min-h-svh w-full bg-background text-foreground;
+  }
+}
+
+.no-scrollbar-x::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar-x {
+  -ms-overflow-style: none;  /* IE va Edge */
+  scrollbar-width: none;  /* Firefox */
 }
