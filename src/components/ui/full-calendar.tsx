@@ -17,6 +17,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card"
 import { Clock, Home } from "lucide-react"
 import generateTimeSlots from "@/lib/generate-time-slots"
+import ParamDatePicker from "../as-params/date-picker"
 
 type Props = {
     work: WorkTime[]
@@ -24,7 +25,7 @@ type Props = {
     work_start_date: string
     work_end_date: string
 }
- 
+
 export default function FullCalendar({
     rooms,
     work,
@@ -107,7 +108,10 @@ export default function FullCalendar({
         <Card>
             <CardContent className="space-y-4 rounded-md">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between  gap-4">
-                    <h1 className="font-medium text-xl">Dars jadvali (calendar qolib ketgan)</h1>
+                    <div className=" flex items-center gap-4">
+                        <h1 className="font-medium text-xl">Dars jadvali</h1>
+                        <ParamDatePicker />
+                    </div>
                     <div className="flex items-center gap-2">
                         <Clock className="h-4 w-4 text-muted-foreground" />
                         <span className="text-sm text-muted-foreground">
@@ -133,7 +137,7 @@ export default function FullCalendar({
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead className="rounded-tl-md">
+                                <TableHead className="rounded-tl-md sticky left-0 z-20 bg-secondary">
                                     <div className="whitespace-nowrap flex items-center gap-2  ">
                                         <Home className="h-4 w-4 text-muted-foreground" />
                                         <span>Xonalar / Soatlar</span>
@@ -156,7 +160,7 @@ export default function FullCalendar({
                                     key={room.id}
                                     className="border-b-none"
                                 >
-                                    <TableCell className="font-medium border-b ">
+                                    <TableCell className="font-medium border-b sticky left-0 z-20 bg-secondary">
                                         {room.name}
                                     </TableCell>
                                     {timeSlots.map((timeSlot) => {

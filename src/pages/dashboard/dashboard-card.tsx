@@ -86,7 +86,7 @@ export default function DashboardCard() {
                 <h3 className="text-lg font-semibold mb-4">
                     Umumiy Ko'rsatkichlar
                 </h3>
-                <div className="grid xl:grid-cols-9 lg:grid-cols-4  sm:grid-cols-3  grid-cols-2">
+                <div className="grid xl:grid-cols-9 gap-y-3 lg:grid-cols-4  sm:grid-cols-3  grid-cols-2">
                     {statsData.map(
                         (
                             { icon: Icon, label, value, bgColor, iconColor },
@@ -95,7 +95,7 @@ export default function DashboardCard() {
                             <div
                                 className={cn(
                                     "px-2 ",
-                                    index === 3 || index == 6 ? "border-r" : "",
+                                    index === 3 || index == 6 ? "xl:border-r" : "",
                                 )}
                             >
                                 <div
