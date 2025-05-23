@@ -107,7 +107,7 @@ export default function FullCalendar({
         <Card>
             <CardContent className="space-y-4 rounded-md">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between  gap-4">
-                    <h1 className="font-medium text-xl">Dars jadvali</h1>
+                    <h1 className="font-medium text-xl">Dars jadvali (calendar qolib ketgan)</h1>
                     <div className="flex items-center gap-2">
                         <Clock className="h-4 w-4 text-muted-foreground" />
                         <span className="text-sm text-muted-foreground">
@@ -177,7 +177,7 @@ export default function FullCalendar({
                                                     key={cellKey}
                                                     className="text-center p-1 border-l border-b"
                                                 >
-                                                    <span className="text-muted-foreground text-xs">
+                                                    <span className="text-muted-foreground/50 text-xs">
                                                         Bo'sh
                                                     </span>
                                                 </TableCell>

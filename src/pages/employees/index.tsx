@@ -37,10 +37,10 @@ const EmployeesMain = () => {
                         </div>
                     </div>
                     <DataTable
-                        actionMenuMode
+                        // actionMenuMode
                         onDelete={() => {}}
                         onEdit={() => {}}
-                        onView={() => {}}
+                        // onView={() => {}}
                         columns={columns}
                         data={data}
                         selecteds_row

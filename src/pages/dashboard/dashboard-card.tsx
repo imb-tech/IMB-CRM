@@ -1,4 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
 import {
     Users,
     BookOpen,
@@ -21,24 +22,25 @@ const statsData = [
     },
     {
         icon: BookOpen,
-        label: "Sinov",
+        label: "Sinovda",
         value: 600,
-        bgColor: "bg-green-50 dark:bg-green-900/10",
-        iconColor: "text-green-600 dark:text-green-400",
+        bgColor: "bg-amber-50 dark:bg-amber-900/10",
+        iconColor: "text-amber-600 dark:text-amber-400",
     },
     {
         icon: UserCheck,
-        label: "Kelganlar",
+        label: "Tark etganlar",
         value: 600,
-        bgColor: "bg-blue-50 dark:bg-blue-900/10",
-        iconColor: "text-blue-600 dark:text-blue-400",
+        bgColor: "bg-rose-50 dark:bg-rose-900/10",
+        iconColor: "text-rose-600 dark:text-rose-400",
     },
     {
         icon: GraduationCap,
         label: "Talabalar",
         value: 200,
-        bgColor: "bg-amber-50 dark:bg-amber-900/10",
-        iconColor: "text-amber-600 dark:text-amber-400",
+
+        bgColor: "bg-green-50 dark:bg-green-900/10",
+        iconColor: "text-green-600 dark:text-green-400",
     },
     {
         icon: Clock,
@@ -48,18 +50,18 @@ const statsData = [
         iconColor: "text-red-600 dark:text-red-400",
     },
     {
-        icon: CreditCard,
-        label: "To'lov",
-        value: 20,
-        bgColor: "bg-orange-50 dark:bg-orange-900/10",
-        iconColor: "text-orange-600 dark:text-orange-400",
-    },
-    {
         icon: DollarSign,
         label: "Summasi",
         value: 600,
-        bgColor: "bg-emerald-50 dark:bg-emerald-900/10",
-        iconColor: "text-emerald-600 dark:text-emerald-400",
+        bgColor: "bg-rose-50 dark:bg-rose-900/10",
+        iconColor: "text-rose-600 dark:text-rose-400",
+    },
+    {
+        icon: CreditCard,
+        label: "To'lovi yaqinlar",
+        value: 20,
+        bgColor: "bg-orange-50 dark:bg-orange-900/10",
+        iconColor: "text-orange-600 dark:text-orange-400",
     },
     {
         icon: Layers,
@@ -84,21 +86,32 @@ export default function DashboardCard() {
                 <h3 className="text-lg font-semibold mb-4">
                     Umumiy Ko'rsatkichlar
                 </h3>
-                <div className="grid xl:grid-cols-9 lg:grid-cols-4  sm:grid-cols-3  grid-cols-2 gap-4">
+                <div className="grid xl:grid-cols-9 lg:grid-cols-4  sm:grid-cols-3  grid-cols-2">
                     {statsData.map(
                         (
                             { icon: Icon, label, value, bgColor, iconColor },
                             index,
                         ) => (
                             <div
-                                key={index}
-                                className={`flex flex-col items-center justify-center p-3 rounded-lg ${bgColor}`}
+                                className={cn(
+                                    "px-2 ",
+                                    index === 3 || index == 6 ? "border-r" : "",
+                                )}
                             >
-                                <Icon className={`h-6 w-6 mb-1 ${iconColor}`} />
-                                <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    {label}
-                                </p>
-                                <p className="text-lg font-semibold">{value}</p>
+                                <div
+                                    key={index}
+                                    className={`flex flex-col items-center justify-center p-3 rounded-lg ${bgColor}`}
+                                >
+                                    <Icon
+                                        className={`h-6 w-6 mb-1 ${iconColor}`}
+                                    />
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                        {label}
+                                    </p>
+                                    <p className="text-lg font-semibold">
+                                        {value}
+                                    </p>
+                                </div>
                             </div>
                         ),
                     )}
