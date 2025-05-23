@@ -16,7 +16,7 @@ export default function HeaderLinks() {
     }
 
     return (
-        <div>
+        <div> 
             {!!items.length && (
                 <Tabs
                     value={pathname}

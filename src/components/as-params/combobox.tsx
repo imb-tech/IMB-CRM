@@ -25,7 +25,6 @@ type ParamComboboxProps<T extends Record<string, any>> = {
     labelKey?: keyof T
     valueKey?: keyof T
     isError?: boolean
-    returnVal?: keyof T
     className?: string
     asloClear?: string[]
     defaultOpt?: T
@@ -38,7 +37,6 @@ export function ParamCombobox<T extends Record<string, any>>({
     label,
     disabled = false,
     isError = false,
-    returnVal = "value" as keyof T,
     className,
     asloClear = [],
     defaultOpt,
@@ -59,7 +57,7 @@ export function ParamCombobox<T extends Record<string, any>>({
             navigate({
                 search: {
                     ...search,
-                    [paramName]: String(defaultOpt[returnVal]),
+                    [paramName]: String(defaultOpt[valueKey]),
                 },
             })
         }
@@ -67,8 +65,7 @@ export function ParamCombobox<T extends Record<string, any>>({
     }, [defaultOpt])
 
     const handleSelect = (option: T) => {
-        const returnValue =
-            returnVal === labelKey ? option[labelKey] : option[valueKey]
+        const returnValue = option[valueKey]
 
         navigate({
             search: {
@@ -92,7 +89,7 @@ export function ParamCombobox<T extends Record<string, any>>({
     }
 
     const selectedOption = options.find(
-        (d) => String(d[returnVal]) === currentValue,
+        (d) => String(d[valueKey]) === currentValue,
     )
 
     return (
@@ -136,7 +133,7 @@ export function ParamCombobox<T extends Record<string, any>>({
                         <CommandEmpty>Mavjud emas</CommandEmpty>
                         <CommandGroup>
                             {options.map((d, i) => {
-                                const optionValue = d[returnVal]
+                                const optionValue = d[valueKey]
                                 return (
                                     <CommandItem
                                         key={i}

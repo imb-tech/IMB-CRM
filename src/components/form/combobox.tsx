@@ -13,7 +13,6 @@ type ComboboxProps<T extends Record<string, any>> = {
     required?: boolean
     control: Control<any>
     hideError?: boolean
-    returnVal?: string
     onAdd?: () => void
     labelKey?: keyof T
     valueKey?: keyof T
@@ -31,7 +30,6 @@ export function FormCombobox<T extends Record<string, any>>({
     required,
     control,
     hideError = true,
-    returnVal = "id",
     valueKey,
     labelKey,
     onAdd,
@@ -67,7 +65,6 @@ export function FormCombobox<T extends Record<string, any>>({
                         label={placeholder || label || "Tanlang"}
                         disabled={control._formState.disabled || disabled}
                         isError={!!error}
-                        returnVal={returnVal}
                         onAdd={onAdd}
                         valueKey={valueKey}
                         labelKey={labelKey}

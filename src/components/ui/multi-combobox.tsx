@@ -28,7 +28,6 @@ type ComboboxProps<T extends Record<string, any>> = {
     disabled?: boolean
     isLoading?: boolean
     isError?: boolean
-    returnVal?: string
     className?: ClassNameValue
     labelKey?: keyof T
     skeletonCount?: number
@@ -43,7 +42,6 @@ export function MultiCombobox<T extends Record<string, any>>({
     disabled,
     onAdd,
     isError,
-    returnVal = "value",
     labelKey = "label",
     valueKey = "value",
     className,
@@ -54,8 +52,7 @@ export function MultiCombobox<T extends Record<string, any>>({
     const [open, setOpen] = useState(false)
 
     const handleSelect = (option: T) => {
-        const newValue =
-            returnVal === labelKey ? option[labelKey] : option[valueKey]
+        const newValue = option[valueKey]
         const updatedValues = values?.find((v) => v === newValue)
             ? values?.filter((v) => v !== newValue)
             : (values || []).concat(newValue)
@@ -87,7 +84,7 @@ export function MultiCombobox<T extends Record<string, any>>({
                         {values?.length && values?.length < 3
                             ? options
                                   ?.filter((d) =>
-                                      values?.includes(d[returnVal]),
+                                      values?.includes(d[valueKey]),
                                   )
                                   .map((d) => d[labelKey])
                                   .join(", ")
@@ -131,7 +128,7 @@ export function MultiCombobox<T extends Record<string, any>>({
                                     <CheckIcon
                                         className={cn(
                                             "ml-auto h-4 w-4",
-                                            values?.includes(d[returnVal])
+                                            values?.includes(d[valueKey])
                                                 ? "opacity-100"
                                                 : "opacity-0",
                                         )}

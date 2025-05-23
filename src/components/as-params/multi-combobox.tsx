@@ -25,7 +25,6 @@ type ParamComboboxProps<T extends Record<string, any>> = {
     labelKey: keyof T
     valueKey: keyof T
     isError?: boolean
-    returnVal?: keyof T
     className?: string
 }
 
@@ -35,7 +34,6 @@ export function ParamMultiCombobox<T extends Record<string, any>>({
     label,
     disabled,
     isError,
-    returnVal = "label",
     className,
     labelKey,
     valueKey,
@@ -49,7 +47,7 @@ export function ParamMultiCombobox<T extends Record<string, any>>({
     const [open, setOpen] = useState(false)
 
     const handleSelect = (option: T) => {
-        const val = returnVal === labelKey ? option[labelKey] : option[valueKey]
+        const val = option[valueKey]
 
         const updatedValues = currentValues.includes(val)
             ? currentValues.filter((v: string | number) => v !== val)
@@ -75,7 +73,7 @@ export function ParamMultiCombobox<T extends Record<string, any>>({
             ? currentValues
                   ?.map((val: string) => {
                       const found = options.find(
-                          (d) => String(d[returnVal]) === val,
+                          (d) => String(d[valueKey]) === val,
                       )
                       return found?.[labelKey] || val
                   })
@@ -128,7 +126,7 @@ export function ParamMultiCombobox<T extends Record<string, any>>({
                                         className={cn(
                                             "ml-auto h-4 w-4",
                                             currentValues.includes(
-                                                String(d[returnVal]),
+                                                String(d[valueKey]),
                                             )
                                                 ? "opacity-100"
                                                 : "opacity-0",

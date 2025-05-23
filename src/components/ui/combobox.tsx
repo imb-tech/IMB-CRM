@@ -44,7 +44,6 @@ export function Combobox<T extends Record<string, any>>({
     disabled,
     onAdd,
     isError,
-    returnVal = "value",
     labelKey = "label",
     valueKey = "value",
     className,
@@ -55,8 +54,7 @@ export function Combobox<T extends Record<string, any>>({
     const [open, setOpen] = useState(false)
 
     const handleSelect = (option: T) => {
-        const returnValue =
-            returnVal === labelKey ? option[labelKey] : option[valueKey]
+        const returnValue = option[valueKey]
         setValue(returnValue)
         setOpen(false)
     }
@@ -131,7 +129,7 @@ export function Combobox<T extends Record<string, any>>({
                                     <CheckIcon
                                         className={cn(
                                             "ml-auto h-4 w-4",
-                                            value == d[returnVal]
+                                            value == d[valueKey]
                                                 ? "opacity-100"
                                                 : "opacity-0",
                                         )}
