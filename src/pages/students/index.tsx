@@ -8,8 +8,35 @@ import { Switch } from "@/components/ui/switch"
 import { useStudentsCols } from "./columns"
 import { ParamCombobox } from "@/components/as-params/combobox"
 import ParamInput from "@/components/as-params/input"
+import { useModal } from "@/hooks/useModal"
+import { useState } from "react"
+import Modal from "@/components/custom/modal"
+import StudentCreate from "./create"
+import DeleteModal from "@/components/custom/delete-modal"
+import { STUDENT } from "@/constants/api-endpoints"
 
 const StudentsMain = () => {
+    const { openModal: openModalStudent } = useModal(`${STUDENT}-add`)
+    const { openModal: openModalDelete } = useModal(`${STUDENT}-delete`)
+    const [current, setCurrent] = useState<Student | null>(null)
+
+    const handleItemAdd = () => {
+        setCurrent(null)
+        openModalStudent()
+    }
+    const handleItemEdit = (item: Student) => {
+        if (item.id) {
+            setCurrent(item)
+            openModalStudent()
+        }
+    }
+    const handleItemDelete = (item: Student) => {
+        if (item.id) {
+            setCurrent(item)
+            openModalDelete()
+        }
+    }
+
     const columns = useStudentsCols()
 
     return (
@@ -38,7 +65,7 @@ const StudentsMain = () => {
                                 <Plus className="h-4 w-4" />
                                 SMS YUBORISH
                             </Button>
-                            <Button>
+                            <Button onClick={handleItemAdd}>
                                 <Plus className="h-4 w-4" />
                                 Qo'shish
                             </Button>
@@ -144,23 +171,34 @@ const StudentsMain = () => {
                         />
                     </div>
                     <DataTable
-                        // actionMenuMode
-                        onDelete={() => {}}
-                        onEdit={() => {}}
-                        // onView={() => {}}
+                        onEdit={(row) => handleItemEdit(row.original)}
+                        onDelete={(row) => handleItemDelete(row.original)}
+                        onView={() => {}}
                         columns={columns}
                         data={data}
                         selecteds_row
                     />
                 </CardContent>
             </Card>
+
+            <Modal
+                modalKey={`${STUDENT}-add`}
+                title={`O'quvchi ${current?.id ? "tahrirlash" : "qo'shish"}`}
+            >
+                <StudentCreate item={current} />
+            </Modal>
+            <DeleteModal
+                modalKey={`${STUDENT}-delete`}
+                id={current?.id}
+                path={STUDENT}
+            />
         </div>
     )
 }
 
 export default StudentsMain
 
-const data:Student[] = [
+const data: Student[] = [
     {
         id: 1,
         img: "img1.jpg",

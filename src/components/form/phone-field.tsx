@@ -82,7 +82,7 @@ export default function PhoneField<IForm extends FieldValues>({
 
     return (
         <fieldset
-            className={cn("flex flex-col gap-1 w-full", wrapperClassName)}
+            className={cn("flex flex-col  w-full", wrapperClassName)}
         >
             {label && (
                 <FieldLabel

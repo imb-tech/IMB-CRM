@@ -1,16 +1,17 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 import {
     Controller,
     FieldValues,
     Path,
     useController,
     UseFormReturn,
-} from "react-hook-form";
-import { ClassNameValue } from "tailwind-merge";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Label } from "../ui/label";
-import SeeInView from "../ui/see-in-view";
-import FieldError from "./form-error";
+} from "react-hook-form"
+import { ClassNameValue } from "tailwind-merge"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+import { Label } from "../ui/label"
+import SeeInView from "../ui/see-in-view"
+import FieldError from "./form-error"
+import { ImagePlus } from "lucide-react"
 
 export default function FormImagePicker<IForm extends FieldValues>({
     name,
@@ -34,7 +35,7 @@ export default function FormImagePicker<IForm extends FieldValues>({
                 message: `${label}ni tanlang`,
             },
         },
-    });
+    })
 
     return (
         <div className="w-full flex flex-col items-center">
@@ -44,7 +45,9 @@ export default function FormImagePicker<IForm extends FieldValues>({
                 render={() => (
                     <div className="relative">
                         {avatar ? (
-                            <Avatar className={`scale-150 mb-4 ${className}`}>
+                            <Avatar
+                                className={`scale-150 mb-4 h-16 w-16 ${className}`}
+                            >
                                 {field.value && (
                                     <SeeInView
                                         url={
@@ -52,7 +55,7 @@ export default function FormImagePicker<IForm extends FieldValues>({
                                                 ? field.value
                                                 : field.value &&
                                                   URL.createObjectURL(
-                                                      field.value
+                                                      field.value,
                                                   )
                                         }
                                     >
@@ -62,7 +65,7 @@ export default function FormImagePicker<IForm extends FieldValues>({
                                                     ? field.value
                                                     : field.value &&
                                                       URL.createObjectURL(
-                                                          field.value
+                                                          field.value,
                                                       )
                                             }
                                             alt="Selected Image"
@@ -70,7 +73,9 @@ export default function FormImagePicker<IForm extends FieldValues>({
                                         />
                                     </SeeInView>
                                 )}
-                                <AvatarFallback>Img</AvatarFallback>
+                                <AvatarFallback>
+                                    <ImagePlus className="text-gray-500" />
+                                </AvatarFallback>
                             </Avatar>
                         ) : (
                             <>
@@ -81,7 +86,7 @@ export default function FormImagePicker<IForm extends FieldValues>({
                                                 ? field.value
                                                 : field.value &&
                                                   URL.createObjectURL(
-                                                      field.value
+                                                      field.value,
                                                   )
                                         }
                                     >
@@ -91,7 +96,7 @@ export default function FormImagePicker<IForm extends FieldValues>({
                                                     ? field.value
                                                     : field.value &&
                                                       URL.createObjectURL(
-                                                          field.value
+                                                          field.value,
                                                       )
                                             }
                                             alt="Selected Image"
@@ -111,9 +116,9 @@ export default function FormImagePicker<IForm extends FieldValues>({
                             accept="image/*"
                             disabled={disabled}
                             onChange={(e) => {
-                                const file = e.target.files?.[0];
+                                const file = e.target.files?.[0]
                                 if (file) {
-                                    field.onChange(file);
+                                    field.onChange(file)
                                 }
                             }}
                             hidden
@@ -126,7 +131,7 @@ export default function FormImagePicker<IForm extends FieldValues>({
                     htmlFor={name}
                     className={cn(
                         !!error && "text-destructive",
-                        "cursor-pointer pt-2"
+                        "cursor-pointer pt-2",
                     )}
                 >
                     {label}
@@ -134,16 +139,16 @@ export default function FormImagePicker<IForm extends FieldValues>({
             )}
             {!hideError && !!error && <FieldError>{error.message}</FieldError>}
         </div>
-    );
+    )
 }
 
 interface ImagePickerProps<IForm extends FieldValues> {
-    name: Path<IForm>;
-    label?: string;
-    disabled?: boolean;
-    required?: boolean;
-    methods: UseFormReturn<IForm>;
-    hideError?: boolean;
-    className?: ClassNameValue;
-    avatar?: boolean;
+    name: Path<IForm>
+    label?: string
+    disabled?: boolean
+    required?: boolean
+    methods: UseFormReturn<IForm>
+    hideError?: boolean
+    className?: ClassNameValue
+    avatar?: boolean
 }

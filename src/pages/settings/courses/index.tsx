@@ -4,8 +4,35 @@ import { DataTable } from "@/components/ui/datatable"
 import { Plus } from "lucide-react"
 import { useCoursesCols } from "./columns"
 import { Badge } from "@/components/ui/badge"
+import Modal from "@/components/custom/modal"
+import DeleteModal from "@/components/custom/delete-modal"
+import CoursesCreate from "./create"
+import { useModal } from "@/hooks/useModal"
+import { useState } from "react"
+import { COURSE } from "@/constants/api-endpoints"
 
 const CoursesMain = () => {
+    const { openModal: openModalCourse } = useModal(`${COURSE}-add`)
+    const { openModal: openModalDelete } = useModal(`${COURSE}-delete`)
+    const [current, setCurrent] = useState<Course | null>(null)
+
+    const handleItemAdd = () => {
+        setCurrent(null)
+        openModalCourse()
+    }
+    const handleItemEdit = (item: Course) => {
+        if (item.id) {
+            setCurrent(item)
+            openModalCourse()
+        }
+    }
+    const handleItemDelete = (item: Course) => {
+        if (item.id) {
+            setCurrent(item)
+            openModalDelete()
+        }
+    }
+
     const columns = useCoursesCols()
     return (
         <div className="w-full">
@@ -18,19 +45,30 @@ const CoursesMain = () => {
                                 {data.length}
                             </Badge>
                         </div>
-                        <Button>
+                        <Button onClick={handleItemAdd}>
                             <Plus className="h-4 w-4" />
                             Qo'shish
                         </Button>
                     </div>
                     <DataTable
-                        onDelete={() => {}}
-                        onEdit={() => {}}
+                        onDelete={(row) => handleItemDelete(row.original)}
+                        onEdit={(row) => handleItemEdit(row.original)}
                         columns={columns}
                         data={data}
                     />
                 </CardContent>
             </Card>
+            <Modal
+                modalKey={`${COURSE}-add`}
+                title={`Kurs ${current?.id ? "tahrirlash" : "qo'shish"}`}
+            >
+                <CoursesCreate item={current} />
+            </Modal>
+            <DeleteModal
+                modalKey={`${COURSE}-delete`}
+                id={current?.id}
+                path={COURSE}
+            />
         </div>
     )
 }

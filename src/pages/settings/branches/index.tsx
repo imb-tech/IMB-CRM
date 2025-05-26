@@ -4,8 +4,34 @@ import { DataTable } from "@/components/ui/datatable"
 import { Plus } from "lucide-react"
 import { useBranchesCols } from "./columns"
 import { Badge } from "@/components/ui/badge"
+import Modal from "@/components/custom/modal"
+import BranchesCreate from "./create"
+import DeleteModal from "@/components/custom/delete-modal"
+import { useModal } from "@/hooks/useModal"
+import { useState } from "react"
+import { BRANCH } from "@/constants/api-endpoints"
 
 const BranchesMain = () => {
+    const { openModal: openModalBranch } = useModal(`${BRANCH}-add`)
+    const { openModal: openModalDelete } = useModal(`${BRANCH}-delete`)
+    const [current, setCurrent] = useState<Branch | null>(null)
+
+    const handleItemAdd = () => {
+        setCurrent(null)
+        openModalBranch()
+    }
+    const handleItemEdit = (item: Branch) => {
+        if (item.id) {
+            setCurrent(item)
+            openModalBranch()
+        }
+    }
+    const handleItemDelete = (item: Branch) => {
+        if (item.id) {
+            setCurrent(item)
+            openModalDelete()
+        }
+    }
     const columns = useBranchesCols()
     return (
         <div className="w-full">
@@ -18,19 +44,30 @@ const BranchesMain = () => {
                                 {data.length}
                             </Badge>
                         </div>
-                        <Button>
+                        <Button onClick={handleItemAdd}>
                             <Plus className="h-4 w-4" />
                             Qo'shish
                         </Button>
                     </div>
                     <DataTable
-                        onDelete={() => {}}
-                        onEdit={() => {}}
+                        onEdit={(row) => handleItemEdit(row.original)}
+                        onDelete={(row) => handleItemDelete(row.original)}
                         columns={columns}
                         data={data}
                     />
                 </CardContent>
             </Card>
+            <Modal
+                modalKey={`${BRANCH}-add`}
+                title={`Filial ${current?.id ? "tahrirlash" : "qo'shish"}`}
+            >
+                <BranchesCreate item={current} />
+            </Modal>
+            <DeleteModal
+                modalKey={`${BRANCH}-delete`}
+                id={current?.id}
+                path={BRANCH}
+            />
         </div>
     )
 }

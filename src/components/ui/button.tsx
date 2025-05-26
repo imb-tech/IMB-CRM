@@ -24,7 +24,7 @@ import Spinner from "./spinner"
             size: {
                 default: "sm:h-9 px-4 py-2",
                 sm: "h-8 rounded-md px-3 gap-1",
-                lg: "h-10 rounded-md px-8",
+                lg: "h-10 rounded-md px-4",
                 icon: "h-10 w-10",
             },
         },

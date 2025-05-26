@@ -6,9 +6,36 @@ import { Badge } from "@/components/ui/badge"
 import { useEmployeeCols } from "./columns"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
+import Modal from "@/components/custom/modal"
+import EmployeeCreate from "./create"
+import { useModal } from "@/hooks/useModal"
+import { useState } from "react"
+import DeleteModal from "@/components/custom/delete-modal"
+import { EMPLOYEE } from "@/constants/api-endpoints"
 
 const EmployeesMain = () => {
+    const { openModal: openModalEmployee } = useModal(`${EMPLOYEE}-add`)
+    const { openModal: openModalDelete } = useModal(`${EMPLOYEE}-delete`)
+    const [current, setCurrent] = useState<Employee | null>(null)
+
+    const handleItemAdd = () => {
+        setCurrent(null)
+        openModalEmployee()
+    }
+    const handleItemEdit = (item: Employee) => {
+        if (item.id) {
+            setCurrent(item)
+            openModalEmployee()
+        }
+    }
+    const handleItemDelete = (item: Employee) => {
+        if (item.id) {
+            setCurrent(item)
+            openModalDelete()
+        }
+    }
     const columns = useEmployeeCols()
+
 
     return (
         <div className="w-full">
@@ -30,30 +57,41 @@ const EmployeesMain = () => {
                                 <Plus className="h-4 w-4" />
                                 SMS YUBORISH
                             </Button>
-                            <Button>
+                            <Button onClick={handleItemAdd}>
                                 <Plus className="h-4 w-4" />
                                 Qo'shish
                             </Button>
                         </div>
                     </div>
                     <DataTable
-                        // actionMenuMode
-                        onDelete={() => {}}
-                        onEdit={() => {}}
-                        // onView={() => {}}
+                        onEdit={(row) => handleItemEdit(row.original)}
+                        onDelete={(row) => handleItemDelete(row.original)}
+                        onView={() => {}}
                         columns={columns}
                         data={data}
                         selecteds_row
                     />
                 </CardContent>
             </Card>
+            <Modal
+                size="max-w-4xl"
+                modalKey={`${EMPLOYEE}-add`}
+                title={`Hodim ${current?.id ? "tahrirlash" : "qo'shish"}`}
+            >
+                <EmployeeCreate item={current} />
+            </Modal>
+            <DeleteModal
+                modalKey={`${EMPLOYEE}-delete`}
+                id={current?.id}
+                path={EMPLOYEE}
+            />
         </div>
     )
 }
 
 export default EmployeesMain
 
-const data:Employee[] = [
+const data: Employee[] = [
     {
         id: 1,
         img_name: "img1.jpg",

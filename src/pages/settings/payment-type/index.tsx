@@ -4,8 +4,35 @@ import { DataTable } from "@/components/ui/datatable"
 import { Plus } from "lucide-react"
 import { usePaymentTypeCols } from "./columns"
 import { Badge } from "@/components/ui/badge"
+import Modal from "@/components/custom/modal"
+import PaymentTypeCreate from "./create"
+import DeleteModal from "@/components/custom/delete-modal"
+import { useModal } from "@/hooks/useModal"
+import { useState } from "react"
+import { PAYMENT_TYPE } from "@/constants/api-endpoints"
 
 const PaymentTypeMain = () => {
+    const { openModal: openModalPaymentType } = useModal(`${PAYMENT_TYPE}-add`)
+    const { openModal: openModalDelete } = useModal(`${PAYMENT_TYPE}-delete`)
+    const [current, setCurrent] = useState<PaymentType | null>(null)
+
+    const handleItemAdd = () => {
+        setCurrent(null)
+        openModalPaymentType()
+    }
+    const handleItemEdit = (item: PaymentType) => {
+        if (item.id) {
+            setCurrent(item)
+            openModalPaymentType()
+        }
+    }
+    const handleItemDelete = (item: PaymentType) => {
+        if (item.id) {
+            setCurrent(item)
+            openModalDelete()
+        }
+    }
+
     const columns = usePaymentTypeCols()
     return (
         <div className="w-full">
@@ -18,19 +45,30 @@ const PaymentTypeMain = () => {
                                 {data.length}
                             </Badge>
                         </div>
-                        <Button>
+                        <Button onClick={handleItemAdd}>
                             <Plus className="h-4 w-4" />
                             Qo'shish
                         </Button>
                     </div>
                     <DataTable
-                        onDelete={() => {}}
-                        onEdit={() => {}}
+                        onDelete={(row) => handleItemDelete(row.original)}
+                        onEdit={(row) => handleItemEdit(row.original)}
                         columns={columns}
                         data={data}
                     />
                 </CardContent>
             </Card>
+            <Modal
+                modalKey={`${PAYMENT_TYPE}-add`}
+                title={`To'lov turi ${current?.id ? "tahrirlash" : "qo'shish"}`}
+            >
+                <PaymentTypeCreate item={current} />
+            </Modal>
+            <DeleteModal
+                modalKey={`${PAYMENT_TYPE}-delete`}
+                id={current?.id}
+                path={PAYMENT_TYPE}
+            />
         </div>
     )
 }

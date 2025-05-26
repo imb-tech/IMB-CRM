@@ -4,8 +4,35 @@ import { DataTable } from "@/components/ui/datatable"
 import { Plus } from "lucide-react"
 import { useHolidaysCols } from "./columns"
 import { Badge } from "@/components/ui/badge"
+import Modal from "@/components/custom/modal"
+import HolidayCreate from "./create"
+import DeleteModal from "@/components/custom/delete-modal"
+import { useModal } from "@/hooks/useModal"
+import { useState } from "react"
+import { HOLIDAY } from "@/constants/api-endpoints"
 
 const HolidaysMain = () => {
+    const { openModal: openModalHoliday } = useModal(`${HOLIDAY}-add`)
+    const { openModal: openModalDelete } = useModal(`${HOLIDAY}-delete`)
+    const [current, setCurrent] = useState<Holiday | null>(null)
+
+    const handleItemAdd = () => {
+        setCurrent(null)
+        openModalHoliday()
+    }
+    const handleItemEdit = (item: Holiday) => {
+        if (item.id) {
+            setCurrent(item)
+            openModalHoliday()
+        }
+    }
+    const handleItemDelete = (item: Holiday) => {
+        if (item.id) {
+            setCurrent(item)
+            openModalDelete()
+        }
+    }
+
     const columns = useHolidaysCols()
     return (
         <div className="w-full">
@@ -18,19 +45,32 @@ const HolidaysMain = () => {
                                 {data.length}
                             </Badge>
                         </div>
-                        <Button>
+                        <Button onClick={handleItemAdd}>
                             <Plus className="h-4 w-4" />
                             Qo'shish
                         </Button>
                     </div>
                     <DataTable
-                        onDelete={() => {}}
-                        onEdit={() => {}}
+                        onDelete={(row) => handleItemDelete(row.original)}
+                        onEdit={(row) => handleItemEdit(row.original)}
                         columns={columns}
                         data={data}
                     />
                 </CardContent>
             </Card>
+            <Modal
+                modalKey={`${HOLIDAY}-add`}
+                title={`Dam olish kun ${
+                    current?.id ? "tahrirlash" : "qo'shish"
+                }`}
+            >
+                <HolidayCreate item={current} />
+            </Modal>
+            <DeleteModal
+                modalKey={`${HOLIDAY}-delete`}
+                id={current?.id}
+                path={HOLIDAY}
+            />
         </div>
     )
 }

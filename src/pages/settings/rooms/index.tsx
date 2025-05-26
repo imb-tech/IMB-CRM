@@ -4,8 +4,35 @@ import { DataTable } from "@/components/ui/datatable"
 import { Plus } from "lucide-react"
 import { useRoomsCols } from "./columns"
 import { Badge } from "@/components/ui/badge"
+import DeleteModal from "@/components/custom/delete-modal"
+import RoomCreate from "./create"
+import Modal from "@/components/custom/modal"
+import { useModal } from "@/hooks/useModal"
+import { useState } from "react"
+import { ROOM } from "@/constants/api-endpoints"
 
 const RoomsMain = () => {
+    const { openModal: openModalRoom } = useModal(`${ROOM}-add`)
+    const { openModal: openModalDelete } = useModal(`${ROOM}-delete`)
+    const [current, setCurrent] = useState<Room | null>(null)
+
+    const handleItemAdd = () => {
+        setCurrent(null)
+        openModalRoom()
+    }
+    const handleItemEdit = (item: Room) => {
+        if (item.id) {
+            setCurrent(item)
+            openModalRoom()
+        }
+    }
+    const handleItemDelete = (item: Room) => {
+        if (item.id) {
+            setCurrent(item)
+            openModalDelete()
+        }
+    }
+
     const columns = useRoomsCols()
     return (
         <div className="w-full">
@@ -18,19 +45,26 @@ const RoomsMain = () => {
                                 {data.length}
                             </Badge>
                         </div>
-                        <Button>
+                        <Button onClick={handleItemAdd}>
                             <Plus className="h-4 w-4" />
                             Qo'shish
                         </Button>
                     </div>
                     <DataTable
-                        onDelete={() => {}}
-                        onEdit={() => {}}
+                        onDelete={(row) => handleItemDelete(row.original)}
+                        onEdit={(row) => handleItemEdit(row.original)}
                         columns={columns}
                         data={data}
                     />
                 </CardContent>
             </Card>
+            <Modal
+                modalKey={`${ROOM}-add`}
+                title={`Xona ${current?.id ? "tahrirlash" : "qo'shish"}`}
+            >
+                <RoomCreate item={current} />
+            </Modal>
+            <DeleteModal modalKey={`${ROOM}-delete`} id={current?.id} path={ROOM}/>
         </div>
     )
 }

@@ -4,8 +4,35 @@ import { DataTable } from "@/components/ui/datatable"
 import { Plus } from "lucide-react"
 import { useRolesCols } from "./columns"
 import { Badge } from "@/components/ui/badge"
+import Modal from "@/components/custom/modal"
+import RoleCreate from "./create"
+import DeleteModal from "@/components/custom/delete-modal"
+import { useModal } from "@/hooks/useModal"
+import { useState } from "react"
+import { ROLE } from "@/constants/api-endpoints"
 
 const RolesMain = () => {
+    const { openModal: openModalRole } = useModal(`${ROLE}-add`)
+    const { openModal: openModalDelete } = useModal(`${ROLE}-delete`)
+    const [current, setCurrent] = useState<Role | null>(null)
+
+    const handleItemAdd = () => {
+        setCurrent(null)
+        openModalRole()
+    }
+    const handleItemEdit = (item: Role) => {
+        if (item.id) {
+            setCurrent(item)
+            openModalRole()
+        }
+    }
+    const handleItemDelete = (item: Role) => {
+        if (item.id) {
+            setCurrent(item)
+            openModalDelete()
+        }
+    }
+
     const columns = useRolesCols()
     return (
         <div className="w-full">
@@ -18,19 +45,26 @@ const RolesMain = () => {
                                 {data.length}
                             </Badge>
                         </div>
-                        <Button>
+                        <Button onClick={handleItemAdd}>
                             <Plus className="h-4 w-4" />
                             Qo'shish
                         </Button>
                     </div>
                     <DataTable
-                        onDelete={() => {}}
-                        onEdit={() => {}}
+                        onDelete={(row) => handleItemDelete(row.original)}
+                        onEdit={(row) => handleItemEdit(row.original)}
                         columns={columns}
                         data={data}
                     />
                 </CardContent>
             </Card>
+            <Modal
+                modalKey={`${ROLE}-add`}
+                title={`Role ${current?.id ? "tahrirlash" : "qo'shish"}`}
+            >
+                <RoleCreate item={current} />
+            </Modal>
+            <DeleteModal modalKey={`${ROLE}-delete`} id={current?.id} path={ROLE} />
         </div>
     )
 }
@@ -101,7 +135,7 @@ const data: Role[] = [
     {
         id: 17,
         name: "Trainer",
-        permissions: ["read", "upload_materials", "assign_courses"],
+        permissions: ["read", "upload_materials", "assign_Roles"],
     },
     {
         id: 18,

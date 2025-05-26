@@ -56,7 +56,7 @@ export function FormInput<IForm extends FieldValues>({
     })
 
     return (
-        <fieldset className={cn("flex flex-col w-full", wrapperClassName)}>
+        <fieldset className={cn("flex flex-col w-full justify-between ", wrapperClassName)}>
             {label && (
                 <FieldLabel
                     htmlFor={name}
