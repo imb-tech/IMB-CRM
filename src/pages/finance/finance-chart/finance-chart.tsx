@@ -33,7 +33,7 @@ type Props = {
 
 export function FinanceChart({ data = defaultData }: Props) {
     return (
-        <div className="h-80">
+        <div className="h-96">
             <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
                     data={data}

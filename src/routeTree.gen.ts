@@ -20,10 +20,12 @@ import { Route as MainStudentsImport } from './routes/_main/students'
 import { Route as MainReportsImport } from './routes/_main/reports'
 import { Route as MainLidsImport } from './routes/_main/lids'
 import { Route as MainGroupsImport } from './routes/_main/groups'
-import { Route as MainFinanceImport } from './routes/_main/finance'
 import { Route as MainEmployeesImport } from './routes/_main/employees'
 import { Route as MainAttendanceImport } from './routes/_main/attendance'
+import { Route as MainFinanceIndexImport } from './routes/_main/finance/index'
 import { Route as MainSettingsMainImport } from './routes/_main/settings/_main'
+import { Route as MainFinanceIncomeImport } from './routes/_main/finance/income'
+import { Route as MainFinanceCostImport } from './routes/_main/finance/cost'
 import { Route as MainSettingsMainIndexImport } from './routes/_main/settings/_main/index'
 import { Route as MainSettingsMainRoomsImport } from './routes/_main/settings/_main/rooms'
 import { Route as MainSettingsMainRolesImport } from './routes/_main/settings/_main/roles'
@@ -91,12 +93,6 @@ const MainGroupsRoute = MainGroupsImport.update({
   getParentRoute: () => MainRoute,
 } as any)
 
-const MainFinanceRoute = MainFinanceImport.update({
-  id: '/finance',
-  path: '/finance',
-  getParentRoute: () => MainRoute,
-} as any)
-
 const MainEmployeesRoute = MainEmployeesImport.update({
   id: '/employees',
   path: '/employees',
@@ -109,9 +105,27 @@ const MainAttendanceRoute = MainAttendanceImport.update({
   getParentRoute: () => MainRoute,
 } as any)
 
+const MainFinanceIndexRoute = MainFinanceIndexImport.update({
+  id: '/finance/',
+  path: '/finance/',
+  getParentRoute: () => MainRoute,
+} as any)
+
 const MainSettingsMainRoute = MainSettingsMainImport.update({
   id: '/_main',
   getParentRoute: () => MainSettingsRoute,
+} as any)
+
+const MainFinanceIncomeRoute = MainFinanceIncomeImport.update({
+  id: '/finance/income',
+  path: '/finance/income',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainFinanceCostRoute = MainFinanceCostImport.update({
+  id: '/finance/cost',
+  path: '/finance/cost',
+  getParentRoute: () => MainRoute,
 } as any)
 
 const MainSettingsMainIndexRoute = MainSettingsMainIndexImport.update({
@@ -189,13 +203,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainEmployeesImport
       parentRoute: typeof MainImport
     }
-    '/_main/finance': {
-      id: '/_main/finance'
-      path: '/finance'
-      fullPath: '/finance'
-      preLoaderRoute: typeof MainFinanceImport
-      parentRoute: typeof MainImport
-    }
     '/_main/groups': {
       id: '/_main/groups'
       path: '/groups'
@@ -238,6 +245,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainIndexImport
       parentRoute: typeof MainImport
     }
+    '/_main/finance/cost': {
+      id: '/_main/finance/cost'
+      path: '/finance/cost'
+      fullPath: '/finance/cost'
+      preLoaderRoute: typeof MainFinanceCostImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/finance/income': {
+      id: '/_main/finance/income'
+      path: '/finance/income'
+      fullPath: '/finance/income'
+      preLoaderRoute: typeof MainFinanceIncomeImport
+      parentRoute: typeof MainImport
+    }
     '/_main/settings': {
       id: '/_main/settings'
       path: '/settings'
@@ -251,6 +272,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/settings'
       preLoaderRoute: typeof MainSettingsMainImport
       parentRoute: typeof MainSettingsRoute
+    }
+    '/_main/finance/': {
+      id: '/_main/finance/'
+      path: '/finance'
+      fullPath: '/finance'
+      preLoaderRoute: typeof MainFinanceIndexImport
+      parentRoute: typeof MainImport
     }
     '/_main/settings/_main/branches': {
       id: '/_main/settings/_main/branches'
@@ -354,25 +382,29 @@ const MainSettingsRouteWithChildren = MainSettingsRoute._addFileChildren(
 interface MainRouteChildren {
   MainAttendanceRoute: typeof MainAttendanceRoute
   MainEmployeesRoute: typeof MainEmployeesRoute
-  MainFinanceRoute: typeof MainFinanceRoute
   MainGroupsRoute: typeof MainGroupsRoute
   MainLidsRoute: typeof MainLidsRoute
   MainReportsRoute: typeof MainReportsRoute
   MainStudentsRoute: typeof MainStudentsRoute
   MainIndexRoute: typeof MainIndexRoute
+  MainFinanceCostRoute: typeof MainFinanceCostRoute
+  MainFinanceIncomeRoute: typeof MainFinanceIncomeRoute
   MainSettingsRoute: typeof MainSettingsRouteWithChildren
+  MainFinanceIndexRoute: typeof MainFinanceIndexRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
   MainAttendanceRoute: MainAttendanceRoute,
   MainEmployeesRoute: MainEmployeesRoute,
-  MainFinanceRoute: MainFinanceRoute,
   MainGroupsRoute: MainGroupsRoute,
   MainLidsRoute: MainLidsRoute,
   MainReportsRoute: MainReportsRoute,
   MainStudentsRoute: MainStudentsRoute,
   MainIndexRoute: MainIndexRoute,
+  MainFinanceCostRoute: MainFinanceCostRoute,
+  MainFinanceIncomeRoute: MainFinanceIncomeRoute,
   MainSettingsRoute: MainSettingsRouteWithChildren,
+  MainFinanceIndexRoute: MainFinanceIndexRoute,
 }
 
 const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
@@ -381,14 +413,16 @@ export interface FileRoutesByFullPath {
   '': typeof MainRouteWithChildren
   '/attendance': typeof MainAttendanceRoute
   '/employees': typeof MainEmployeesRoute
-  '/finance': typeof MainFinanceRoute
   '/groups': typeof MainGroupsRoute
   '/lids': typeof MainLidsRoute
   '/reports': typeof MainReportsRoute
   '/students': typeof MainStudentsRoute
   '/auth': typeof AuthAuthLazyRoute
   '/': typeof MainIndexRoute
+  '/finance/cost': typeof MainFinanceCostRoute
+  '/finance/income': typeof MainFinanceIncomeRoute
   '/settings': typeof MainSettingsMainRouteWithChildren
+  '/finance': typeof MainFinanceIndexRoute
   '/settings/branches': typeof MainSettingsMainBranchesRoute
   '/settings/courses': typeof MainSettingsMainCoursesRoute
   '/settings/holidays': typeof MainSettingsMainHolidaysRoute
@@ -402,14 +436,16 @@ export interface FileRoutesByTo {
   '': typeof AuthRouteWithChildren
   '/attendance': typeof MainAttendanceRoute
   '/employees': typeof MainEmployeesRoute
-  '/finance': typeof MainFinanceRoute
   '/groups': typeof MainGroupsRoute
   '/lids': typeof MainLidsRoute
   '/reports': typeof MainReportsRoute
   '/students': typeof MainStudentsRoute
   '/auth': typeof AuthAuthLazyRoute
   '/': typeof MainIndexRoute
+  '/finance/cost': typeof MainFinanceCostRoute
+  '/finance/income': typeof MainFinanceIncomeRoute
   '/settings': typeof MainSettingsMainIndexRoute
+  '/finance': typeof MainFinanceIndexRoute
   '/settings/branches': typeof MainSettingsMainBranchesRoute
   '/settings/courses': typeof MainSettingsMainCoursesRoute
   '/settings/holidays': typeof MainSettingsMainHolidaysRoute
@@ -424,15 +460,17 @@ export interface FileRoutesById {
   '/_main': typeof MainRouteWithChildren
   '/_main/attendance': typeof MainAttendanceRoute
   '/_main/employees': typeof MainEmployeesRoute
-  '/_main/finance': typeof MainFinanceRoute
   '/_main/groups': typeof MainGroupsRoute
   '/_main/lids': typeof MainLidsRoute
   '/_main/reports': typeof MainReportsRoute
   '/_main/students': typeof MainStudentsRoute
   '/_auth/auth': typeof AuthAuthLazyRoute
   '/_main/': typeof MainIndexRoute
+  '/_main/finance/cost': typeof MainFinanceCostRoute
+  '/_main/finance/income': typeof MainFinanceIncomeRoute
   '/_main/settings': typeof MainSettingsRouteWithChildren
   '/_main/settings/_main': typeof MainSettingsMainRouteWithChildren
+  '/_main/finance/': typeof MainFinanceIndexRoute
   '/_main/settings/_main/branches': typeof MainSettingsMainBranchesRoute
   '/_main/settings/_main/courses': typeof MainSettingsMainCoursesRoute
   '/_main/settings/_main/holidays': typeof MainSettingsMainHolidaysRoute
@@ -448,14 +486,16 @@ export interface FileRouteTypes {
     | ''
     | '/attendance'
     | '/employees'
-    | '/finance'
     | '/groups'
     | '/lids'
     | '/reports'
     | '/students'
     | '/auth'
     | '/'
+    | '/finance/cost'
+    | '/finance/income'
     | '/settings'
+    | '/finance'
     | '/settings/branches'
     | '/settings/courses'
     | '/settings/holidays'
@@ -468,14 +508,16 @@ export interface FileRouteTypes {
     | ''
     | '/attendance'
     | '/employees'
-    | '/finance'
     | '/groups'
     | '/lids'
     | '/reports'
     | '/students'
     | '/auth'
     | '/'
+    | '/finance/cost'
+    | '/finance/income'
     | '/settings'
+    | '/finance'
     | '/settings/branches'
     | '/settings/courses'
     | '/settings/holidays'
@@ -488,15 +530,17 @@ export interface FileRouteTypes {
     | '/_main'
     | '/_main/attendance'
     | '/_main/employees'
-    | '/_main/finance'
     | '/_main/groups'
     | '/_main/lids'
     | '/_main/reports'
     | '/_main/students'
     | '/_auth/auth'
     | '/_main/'
+    | '/_main/finance/cost'
+    | '/_main/finance/income'
     | '/_main/settings'
     | '/_main/settings/_main'
+    | '/_main/finance/'
     | '/_main/settings/_main/branches'
     | '/_main/settings/_main/courses'
     | '/_main/settings/_main/holidays'
@@ -544,13 +588,15 @@ export const routeTree = rootRoute
       "children": [
         "/_main/attendance",
         "/_main/employees",
-        "/_main/finance",
         "/_main/groups",
         "/_main/lids",
         "/_main/reports",
         "/_main/students",
         "/_main/",
-        "/_main/settings"
+        "/_main/finance/cost",
+        "/_main/finance/income",
+        "/_main/settings",
+        "/_main/finance/"
       ]
     },
     "/_main/attendance": {
@@ -559,10 +605,6 @@ export const routeTree = rootRoute
     },
     "/_main/employees": {
       "filePath": "_main/employees.tsx",
-      "parent": "/_main"
-    },
-    "/_main/finance": {
-      "filePath": "_main/finance.tsx",
       "parent": "/_main"
     },
     "/_main/groups": {
@@ -589,6 +631,14 @@ export const routeTree = rootRoute
       "filePath": "_main/index.tsx",
       "parent": "/_main"
     },
+    "/_main/finance/cost": {
+      "filePath": "_main/finance/cost.tsx",
+      "parent": "/_main"
+    },
+    "/_main/finance/income": {
+      "filePath": "_main/finance/income.tsx",
+      "parent": "/_main"
+    },
     "/_main/settings": {
       "filePath": "_main/settings",
       "parent": "/_main",
@@ -608,6 +658,10 @@ export const routeTree = rootRoute
         "/_main/settings/_main/rooms",
         "/_main/settings/_main/"
       ]
+    },
+    "/_main/finance/": {
+      "filePath": "_main/finance/index.tsx",
+      "parent": "/_main"
     },
     "/_main/settings/_main/branches": {
       "filePath": "_main/settings/_main/branches.tsx",

@@ -16,6 +16,7 @@ export const cardData = [
         iconLarge: <TrendingUp className="h-24 w-24 text-green-300" />,
         badgeBg: "bg-green-200 dark:bg-green-900/40",
         textColor: "text-green-600 dark:text-green-400",
+        url: "/finance/income",
     },
     {
         title: "Jami Xarajatlar",
@@ -26,6 +27,7 @@ export const cardData = [
         iconLarge: <TrendingDown className="h-24 w-24 text-orange-300" />,
         badgeBg: "bg-orange-200 dark:bg-orange-900/40",
         textColor: "text-orange-600 dark:text-orange-400",
+        url: "/finance/cost",
     },
     {
         title: "Sof Foyda",
@@ -36,6 +38,7 @@ export const cardData = [
         iconLarge: <DollarSign className="h-24 w-24 text-purple-300" />,
         badgeBg: "bg-purple-200 dark:bg-purple-900/40",
         textColor: "text-purple-600 dark:text-purple-400",
+        url: "/finance/income",
     },
     {
         title: "Hisob Balansi",
@@ -46,6 +49,7 @@ export const cardData = [
         iconLarge: <CreditCard className="h-24 w-24 text-blue-300" />,
         badgeBg: "bg-blue-200 dark:bg-blue-900/40",
         textColor: "text-blue-700 dark:text-blue-400",
+        url: "/finance/income",
     },
 ]
 
