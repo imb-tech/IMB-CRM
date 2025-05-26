@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Home } from "lucide-react"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
 import ParamDateRange from "@/components/as-params/date-picker-range"
+import { useMemo } from "react"
 
 type Props = {
     data: TCalendarAttendance
@@ -28,13 +29,25 @@ const statusText: { [key: string]: { text: string; color: string } } = {
         text: "Kelmagan",
         color: "🔴",
     },
-     excused: {
-    text: "Sababli",
-    color: "🔵",
-  }
+    excused: {
+        text: "Sababli",
+        color: "🔵",
+    },
 }
 
 export default function FullCalendarEmployees({ data }: Props) {
+    
+    const attendanceMap = useMemo(() => {
+        const map: Record<number, Record<string, string>> = {}
+        data.result.forEach((emp) => {
+            map[emp.id] = {}
+            emp.attendances.forEach((att) => {
+                map[emp.id][att.date] = att.status
+            })
+        })
+        return map
+    }, [data])
+
     return (
         <Card>
             <CardContent className="space-y-4 rounded-md">
@@ -87,25 +100,31 @@ export default function FullCalendarEmployees({ data }: Props) {
                                         </div>
                                     </TableCell>
 
-                                    {employe.attendances.map((atend) => (
-                                        <TableCell
-                                            key={`${atend}`}
-                                            className="text-center p-1 border"
-                                        >
-                                            <div className="text-xs min-h-[50px] rounded p-1 flex flex-col items-center justify-center">
-                                                <span className="whitespace-nowrap">
-                                                    {
-                                                        statusText[atend.status]
-                                                            .color
-                                                    }{" "}
-                                                    {
-                                                        statusText[atend.status]
-                                                            .text
-                                                    }
-                                                </span>
-                                            </div>
-                                        </TableCell>
-                                    ))}
+                                    {data.dates.map((dateItem) => {
+                                        const status =
+                                            attendanceMap[employe.id]?.[
+                                                dateItem.date
+                                            ] || "absent"
+                                        return (
+                                            <TableCell
+                                                key={`${employe.id}-${dateItem.date}`}
+                                                className="text-center p-1 border"
+                                            >
+                                                <div className="text-xs min-h-[50px] rounded p-1 flex flex-col items-center justify-center">
+                                                    <span className="whitespace-nowrap">
+                                                        {
+                                                            statusText[status]
+                                                                ?.color
+                                                        }{" "}
+                                                        {
+                                                            statusText[status]
+                                                                ?.text
+                                                        }
+                                                    </span>
+                                                </div>
+                                            </TableCell>
+                                        )
+                                    })}
                                 </TableRow>
                             ))}
                         </TableBody>
