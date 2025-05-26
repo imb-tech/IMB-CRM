@@ -3,7 +3,6 @@ import {
     CalendarRange,
     ChartNoAxesCombined,
     ClipboardList,
-    Cog,
     GraduationCap,
     House,
     Layers,
@@ -56,11 +55,24 @@ export const menuItems = [
         items: [],
     }),
     linkOptions({
-        title: "Davomat",
+        title: "Davomatlar",
         icon: <CalendarRange width={20} />,
         to: "/attendance",
         enabled: true,
-        items: [],
+        items: [
+            linkOptions({
+                title: "Guruhlar davomati",
+                to: "/attendance/students",
+                enabled: true,
+                items: [],
+            }),
+            linkOptions({
+                title: "Xodimlar davomati",
+                to: "/attendance/employees",
+                enabled: true,
+                items: [],
+            }),
+        ],
     }),
     linkOptions({
         title: "Moliya",

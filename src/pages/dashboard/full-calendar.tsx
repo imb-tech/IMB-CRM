@@ -17,7 +17,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card"
 import { Clock, Home } from "lucide-react"
 import generateTimeSlots from "@/lib/generate-time-slots"
-import ParamDatePicker from "../as-params/date-picker"
+import ParamDatePicker from "../../components/as-params/date-picker"
 
 type Props = {
     work: WorkTime[]

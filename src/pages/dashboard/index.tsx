@@ -1,4 +1,4 @@
-import FullCalendar from "@/components/ui/full-calendar"
+import FullCalendar from "@/pages/dashboard/full-calendar"
 
 import DashboardCard from "./dashboard-card"
 
