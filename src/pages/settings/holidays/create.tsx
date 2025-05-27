@@ -1,3 +1,5 @@
+import { FormDatePicker } from "@/components/form/date-picker"
+import FormTextarea from "@/components/form/textarea"
 import { Button } from "@/components/ui/button"
 import { HOLIDAY } from "@/constants/api-endpoints"
 import { useModal } from "@/hooks/useModal"
@@ -12,7 +14,7 @@ type Props = {
 }
 
 const HolidayCreate = ({ item }: Props) => {
-     const queryClient = useQueryClient()
+    const queryClient = useQueryClient()
     const { closeModal } = useModal(`${HOLIDAY}-add`)
     const form = useForm<Holiday>({ defaultValues: item || undefined })
     const { mutate: mutateCreate, isPending: isPendingCreate } = usePost({
@@ -20,7 +22,7 @@ const HolidayCreate = ({ item }: Props) => {
             toast.success("Muvaffaqiyatli yaratildi")
             closeModal()
             form.reset()
-            queryClient.invalidateQueries({queryKey:[HOLIDAY]})
+            queryClient.invalidateQueries({ queryKey: [HOLIDAY] })
         },
     })
     const { mutate: mutateUpdate, isPending: isPendingUpdate } = usePatch({
@@ -28,7 +30,7 @@ const HolidayCreate = ({ item }: Props) => {
             toast.success("Muvaffaqiyatli yangilandi")
             closeModal()
             form.reset()
-            queryClient.invalidateQueries({queryKey:[HOLIDAY]})
+            queryClient.invalidateQueries({ queryKey: [HOLIDAY] })
         },
     })
     const disabled = isPendingCreate || isPendingUpdate
@@ -43,18 +45,27 @@ const HolidayCreate = ({ item }: Props) => {
     }
 
     return (
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            Ma'lumot qo'shiladi
-            <div className="md:col-span-2 flex  justify-end">
-                <Button
-                    className="md:w-max w-full"
-                    type="submit"
-                    disabled={disabled}
-                    loading={disabled}
-                >
-                    Saqlash
-                </Button>
-            </div>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+            <FormDatePicker
+                required
+                control={form.control}
+                label="Sana"
+                name="date"
+            />
+            <FormTextarea
+                required
+                methods={form}
+                label="Sabab"
+                name="reason"
+            />
+            <Button
+                className="md:w-max w-full float-end"
+                type="submit"
+                disabled={disabled}
+                loading={disabled}
+            >
+                Saqlash
+            </Button>
         </form>
     )
 }

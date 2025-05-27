@@ -93,9 +93,7 @@ export default function FullCalendarEmployees({ data }: Props) {
                                                 {employe.first_name}
                                             </span>
                                             <span className="whitespace-nowrap">
-                                                {formatPhoneNumber(
-                                                    employe.phone,
-                                                )}
+                                                {formatPhoneNumber(employe.phone)}
                                             </span>
                                         </div>
                                     </TableCell>

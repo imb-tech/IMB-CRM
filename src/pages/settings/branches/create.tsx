@@ -1,3 +1,4 @@
+import FormInput from "@/components/form/input"
 import { Button } from "@/components/ui/button"
 import { BRANCH } from "@/constants/api-endpoints"
 import { useModal } from "@/hooks/useModal"
@@ -20,7 +21,7 @@ const BranchesCreate = ({ item }: Props) => {
             toast.success("Muvaffaqiyatli yaratildi")
             closeModal()
             form.reset()
-            queryClient.invalidateQueries({queryKey:[BRANCH]})
+            queryClient.invalidateQueries({ queryKey: [BRANCH] })
         },
     })
     const { mutate: mutateUpdate, isPending: isPendingUpdate } = usePatch({
@@ -28,7 +29,7 @@ const BranchesCreate = ({ item }: Props) => {
             toast.success("Muvaffaqiyatli yangilandi")
             closeModal()
             form.reset()
-            queryClient.invalidateQueries({queryKey:[BRANCH]})
+            queryClient.invalidateQueries({ queryKey: [BRANCH] })
         },
     })
     const disabled = isPendingCreate || isPendingUpdate
@@ -43,18 +44,30 @@ const BranchesCreate = ({ item }: Props) => {
     }
 
     return (
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            Ma'lumot qo'shiladi
-            <div className="md:col-span-2 flex  justify-end">
-                <Button
-                    className="md:w-max w-full"
-                    type="submit"
-                    disabled={disabled}
-                    loading={disabled}
-                >
-                    Saqlash
-                </Button>
-            </div>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+            <FormInput required methods={form} label="Nomi" name="name" />
+            <FormInput
+                type="time"
+                required
+                methods={form}
+                label="Ish boshlanish vaqti"
+                name="work_start_date"
+            />
+            <FormInput
+                type="time"
+                required
+                methods={form}
+                label="Ish tugash vaqti"
+                name="work_end_date"
+            />
+            <Button
+                className="md:w-max w-full float-end"
+                type="submit"
+                disabled={disabled}
+                loading={disabled}
+            >
+                Saqlash
+            </Button>
         </form>
     )
 }

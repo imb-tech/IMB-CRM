@@ -1,3 +1,6 @@
+import FormInput from "@/components/form/input"
+import { FormNumberInput } from "@/components/form/number-input"
+import FormTextarea from "@/components/form/textarea"
 import { Button } from "@/components/ui/button"
 import { COURSE } from "@/constants/api-endpoints"
 import { useModal } from "@/hooks/useModal"
@@ -20,7 +23,7 @@ const CoursesCreate = ({ item }: Props) => {
             toast.success("Muvaffaqiyatli yaratildi")
             closeModal()
             form.reset()
-            queryClient.invalidateQueries({queryKey:[COURSE]})
+            queryClient.invalidateQueries({ queryKey: [COURSE] })
         },
     })
     const { mutate: mutateUpdate, isPending: isPendingUpdate } = usePatch({
@@ -28,7 +31,7 @@ const CoursesCreate = ({ item }: Props) => {
             toast.success("Muvaffaqiyatli yangilandi")
             closeModal()
             form.reset()
-            queryClient.invalidateQueries({queryKey:[COURSE]})
+            queryClient.invalidateQueries({ queryKey: [COURSE] })
         },
     })
     const disabled = isPendingCreate || isPendingUpdate
@@ -43,18 +46,35 @@ const CoursesCreate = ({ item }: Props) => {
     }
 
     return (
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            Ma'lumot qo'shiladi
-            <div className="md:col-span-2 flex  justify-end">
-                <Button
-                    className="md:w-max w-full"
-                    type="submit"
-                    disabled={disabled}
-                    loading={disabled}
-                >
-                    Saqlash
-                </Button>
-            </div>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+            <FormInput required methods={form} label="Nomi" name="name" />
+            <FormNumberInput
+                required
+                control={form.control}
+                label="Narxi"
+                name="price"
+            />
+            <FormInput
+                required
+                methods={form}
+                label="Davomiyligi"
+                name="month_duration"
+            />
+            <FormInput required methods={form} label="Filail" name="branch.name" />
+            <FormTextarea
+                required
+                methods={form}
+                label="Izoh"
+                name="description"
+            />
+            <Button
+                className="md:w-max w-full float-end"
+                type="submit"
+                disabled={disabled}
+                loading={disabled}
+            >
+                Saqlash
+            </Button>
         </form>
     )
 }

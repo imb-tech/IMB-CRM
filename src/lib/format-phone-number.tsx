@@ -1,6 +1,6 @@
 export const formatPhoneNumber = (phoneNumberString: string | null) => {
     if (phoneNumberString) {
-        return `${phoneNumberString.slice(0, 3)} ${phoneNumberString.slice(2, 4)} ${phoneNumberString.slice(5, 8)} ${phoneNumberString.slice(8, 10)} ${phoneNumberString.slice(10)}`
+        return `${phoneNumberString.slice(0, 4)} ${phoneNumberString.slice(4, 6)} ${phoneNumberString.slice(6, 9)} ${phoneNumberString.slice(9, 11)} ${phoneNumberString.slice(11)}`
     } else {
         return ""
     }

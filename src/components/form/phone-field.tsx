@@ -97,7 +97,7 @@ export default function PhoneField<IForm extends FieldValues>({
                 // hideDropdown
                 // forceDialCode
                 className={cn(
-                    "w-full h-10 rounded-md has-[input:focus]:ring-2 has-[input:focus]:ring-ring has-[input:focus]:ring-offset-0 !outline-none",
+                    "w-full h-10 rounded-md has-[input:focus]:ring-1 has-[input:focus]:ring-ring has-[input:focus]:ring-offset-0 !outline-none",
                     className,
                 )}
                 inputClassName={cn(

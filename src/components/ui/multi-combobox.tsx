@@ -92,7 +92,7 @@ export function MultiCombobox<T extends Record<string, any>>({
                             ? values?.length + " ta tanlandi"
                             : label}
                     </div>
-                    <span
+                   {onAdd && <span
                         onClick={(e) => {
                             e.stopPropagation()
                             handleClickAdd()
@@ -100,7 +100,7 @@ export function MultiCombobox<T extends Record<string, any>>({
                         className="dark:bg-card bg-slate-200 hover:bg-slate-300 hover:scale-105 p-1 rounded-full"
                     >
                         <Plus className=" h-4 w-4 shrink-0  text-primary" />
-                    </span>
+                    </span>}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="p-0">

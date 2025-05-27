@@ -1,11 +1,11 @@
 import { DatePicker } from "@/components/ui/datepicker"
-import { Control, Controller } from "react-hook-form"
+import { Control, Controller, FieldValues, Path } from "react-hook-form"
 import { CalendarProps } from "../ui/calendar"
 import FieldError from "./form-error"
 import FieldLabel from "./form-label"
 import { getNestedValue } from "./input"
 
-export function FormDatePicker({
+export function FormDatePicker<TForm extends FieldValues>({
     name,
     label,
     disabled,
@@ -14,7 +14,7 @@ export function FormDatePicker({
     calendarProps,
     hideError = true,
     placeholder,
-}: thisProps) {
+}: thisProps<TForm>) {
     const error = getNestedValue(control._formState.errors, name)
     return (
         <div className="flex flex-col">
@@ -61,11 +61,11 @@ export function FormDatePicker({
     )
 }
 
-interface thisProps {
-    name: string
+interface thisProps<TForm extends FieldValues> {
+    name: Path<TForm>
     label?: string
     disabled?: boolean
-    control: Control<any>
+    control: Control<TForm>
     required?: boolean
     calendarProps?: CalendarProps | undefined
     hideError?: boolean

@@ -1,10 +1,13 @@
-import { Controller, Control } from "react-hook-form"
+import { Controller, Control, FieldValues, Path } from "react-hook-form"
 import FieldLabel from "./form-label"
 import FieldError from "./form-error"
 import Select from "../ui/select"
 import { getNestedValue } from "./input"
 
-export function FormSelect<T extends Record<string, any>>({
+export function FormSelect<
+    TForm extends FieldValues,
+    T extends Record<string, any>,
+>({
     name,
     label,
     options,
@@ -15,7 +18,7 @@ export function FormSelect<T extends Record<string, any>>({
     valueKey,
     labelKey,
     hideError = true,
-}: thisProps<T>) {
+}: thisProps<TForm, T>) {
     const error = getNestedValue(control._formState.errors, name)
     return (
         <div className="w-full">
@@ -41,8 +44,7 @@ export function FormSelect<T extends Record<string, any>>({
                             label={label || "Tanlang"}
                             value={field.value}
                             className={
-                                !!error &&
-                                "border-destructive focus:right-0 "
+                                !!error && "border-destructive focus:right-0 "
                             }
                             setValue={(val) =>
                                 val === "other"
@@ -65,14 +67,14 @@ export function FormSelect<T extends Record<string, any>>({
     )
 }
 
-type thisProps<T extends Record<string, any>> = {
-    name: string
+type thisProps<TForm extends FieldValues, T extends Record<string, any>> = {
+    name: Path<TForm>
     label?: string
     options: T[]
     disabled?: boolean
     required?: boolean
     setValue?: (val: string) => void
-    control: Control<any>
+    control: Control<TForm>
     hideError?: boolean
     labelKey?: keyof T
     valueKey?: keyof T

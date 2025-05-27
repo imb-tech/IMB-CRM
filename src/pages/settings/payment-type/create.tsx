@@ -1,3 +1,4 @@
+import { FormSelect } from "@/components/form/select"
 import { Button } from "@/components/ui/button"
 import { PAYMENT_TYPE } from "@/constants/api-endpoints"
 import { useModal } from "@/hooks/useModal"
@@ -10,6 +11,13 @@ import { toast } from "sonner"
 type Props = {
     item: PaymentType | null
 }
+
+const paymentType = [
+    { label: "Naqt", value: "cash" },
+    { label: "Karta", value: "card" },
+    { label: "Click", value: "click" },
+    { label: "Bo'lib to'lash", value: "credit" },
+]
 
 const PaymentTypeCreate = ({ item }: Props) => {
     const queryClient = useQueryClient()
@@ -43,18 +51,22 @@ const PaymentTypeCreate = ({ item }: Props) => {
     }
 
     return (
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            Ma'lumot qo'shiladi
-            <div className="md:col-span-2 flex  justify-end">
-                <Button
-                    className="md:w-max w-full"
-                    type="submit"
-                    disabled={disabled}
-                    loading={disabled}
-                >
-                    Saqlash
-                </Button>
-            </div>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+            <FormSelect
+                required
+                options={paymentType}
+                control={form.control}
+                label="Nomi"
+                name="name"
+            />
+            <Button
+                className="md:w-max w-full float-end"
+                type="submit"
+                disabled={disabled}
+                loading={disabled}
+            >
+                Saqlash
+            </Button>
         </form>
     )
 }
