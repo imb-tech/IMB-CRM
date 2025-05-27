@@ -11,6 +11,7 @@ import { ThemeColorToggle } from "./color-toggle"
 import { SidebarTrigger } from "../ui/sidebar"
 import { ReactNode } from "react"
 import HeaderLinks from "./header-links"
+import { ParamCombobox } from "../as-params/combobox"
 
 type Props = {
     title?: string
@@ -29,16 +30,31 @@ const Header = ({ rigthChildren, leftChildren }: Props) => {
 
     return (
         <header className="py-3 pr-3 pl-2 gap-4 dark:border-b  flex items-center justify-between bg-card max-w-full box-border">
-            <div className="flex gap-6 items-center  max-w-full overflow-x-auto custom-scrollbar">
-                <div className="flex gap-3 items-center min-w-[180px]">
+            <div className="flex gap-6 items-center  max-w-full  custom-scrollbar">
+                <div className="flex gap-3 items-center sm:min-w-[180px]">
                     <SidebarTrigger className="text-gray-500 dark:text-white" />
-                    <span className="text-2xl text-primary font-bold">IMB TECH</span>
+                    <span className="text-2xl text-primary font-bold sm:block hidden">
+                        IMB TECH
+                    </span>
                 </div>
-                <HeaderLinks />
+                <div className="w-full ">
+                    <HeaderLinks />
+                </div>
                 {leftChildren ? leftChildren : null}
             </div>
             <hgroup className="flex items-center gap-4">
                 {rigthChildren ? rigthChildren : null}
+                <ParamCombobox
+                    className="w-full"
+                    options={[
+                        { label: "Toshkent Index ", value: "imb" },
+                        { label: "Toshkent City", value: "imb" },
+                        { label: "Toshkent Yakkasaroy", value: "imb" },
+                    ]}
+                    isSearch={false}
+                    paramName="branch"
+                    label="Barcha filiallar"
+                />
                 <ThemeColorToggle />
                 <DropdownMenu>
                     <div className="relative h-10">

@@ -13,7 +13,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { CheckIcon, ChevronsUpDown, Plus, X } from "lucide-react"
+import { CheckIcon, ChevronDown, Plus, X } from "lucide-react"
 import { ClassNameValue } from "tailwind-merge"
 import { useState } from "react"
 import { Skeleton } from "./skeleton"
@@ -63,6 +63,12 @@ export function Combobox<T extends Record<string, any>>({
         onAdd ? onAdd?.() : undefined
     }
 
+    const sortedOptions = options?.sort((a, b) => {
+        const isASelected = a[valueKey] == value
+        const isBSelected = b[valueKey] == value
+        return isASelected === isBSelected ? 0 : isASelected ? -1 : 1
+    })
+
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -78,7 +84,7 @@ export function Combobox<T extends Record<string, any>>({
                     disabled={disabled}
                 >
                     <div className="flex items-center gap-2 ">
-                        <ChevronsUpDown className=" h-4 w-4  text-primary opacity-50 " />
+                        <ChevronDown className=" h-4 w-4  text-primary opacity-50 " />
                         {value
                             ? options
                                   ?.find((d) => d[valueKey] == value)

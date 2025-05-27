@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import { useNavigate, useSearch } from "@tanstack/react-router"
-import { CheckIcon, ChevronsUpDown, X } from "lucide-react"
+import { CheckIcon, ChevronDown, X } from "lucide-react"
 import { useEffect, useState } from "react"
 
 type ParamComboboxProps<T extends Record<string, any>> = {
@@ -92,6 +92,12 @@ export function ParamCombobox<T extends Record<string, any>>({
         (d) => String(d[valueKey]) === currentValue,
     )
 
+    const sortedOptions = options?.sort((a, b) => {
+        const isASelected = a[valueKey] == currentValue
+        const isBSelected = b[valueKey] == currentValue
+        return isASelected === isBSelected ? 0 : isASelected ? -1 : 1
+    })
+
     return (
         <Popover modal open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -108,7 +114,7 @@ export function ParamCombobox<T extends Record<string, any>>({
                     disabled={disabled}
                 >
                     {selectedOption?.[labelKey] ?? label}
-                    <ChevronsUpDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+                    <ChevronDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="p-0">
@@ -132,7 +138,7 @@ export function ParamCombobox<T extends Record<string, any>>({
                     <CommandList>
                         <CommandEmpty>Mavjud emas</CommandEmpty>
                         <CommandGroup>
-                            {options.map((d, i) => {
+                            {sortedOptions.map((d, i) => {
                                 const optionValue = d[valueKey]
                                 return (
                                     <CommandItem

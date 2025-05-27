@@ -19,6 +19,7 @@ export function DatePicker({
     calendarProps,
     defaultValue,
     isError,
+    size="lg",
 }: {
     date: Date | any
     setDate: any
@@ -28,12 +29,13 @@ export function DatePicker({
     calendarProps?: CalendarProps | undefined
     defaultValue?: Date
     isError?: boolean
+    size?: "default" | "lg" | "sm" | "icon"
 }) {
     return (
         <Popover>
             <PopoverTrigger asChild>
                 <Button
-                    size={"default"}
+                    size={size}
                     variant={"outline"}
                     className={cn(
                         "w-[280px] justify-start text-left font-normal",

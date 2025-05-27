@@ -122,7 +122,6 @@ const GroupsMain = () => {
                     <DataTable
                         onEdit={(row) => handleItemEdit(row.original)}
                         onDelete={(row) => handleItemDelete(row.original)}
-                        onView={() => {}}
                         columns={columns}
                         data={groups}
                         selecteds_row

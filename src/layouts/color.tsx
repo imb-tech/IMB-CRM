@@ -12,10 +12,10 @@ export default function ThemeDataProvider({ children }: ThemeProviderProps) {
         try {
             return (
                 (localStorage.getItem("themeColor") as ThemeColors) ||
-                "Blue"
+                "Green"
             )
         } catch (error) {
-            "Blue" as ThemeColors
+            "Green" as ThemeColors
         }
     }
 

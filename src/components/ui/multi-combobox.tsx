@@ -13,7 +13,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { CheckIcon, ChevronsUpDown, Plus } from "lucide-react"
+import { CheckIcon, ChevronDown, Plus } from "lucide-react"
 import { useState } from "react"
 import { ClassNameValue } from "tailwind-merge"
 import { Skeleton } from "./skeleton"
@@ -63,6 +63,7 @@ export function MultiCombobox<T extends Record<string, any>>({
     const handleClickAdd = () => {
         onAdd ? onAdd?.() : undefined
     }
+    
 
     return (
         <Popover modal open={open} onOpenChange={setOpen}>
@@ -80,7 +81,7 @@ export function MultiCombobox<T extends Record<string, any>>({
                     disabled={disabled}
                 >
                     <div className="flex items-center gap-2">
-                        <ChevronsUpDown className=" h-4 w-4  text-primary opacity-50 " />
+                        <ChevronDown className=" h-4 w-4  text-primary opacity-50 " />
                         {values?.length && values?.length < 3
                             ? options
                                   ?.filter((d) =>

@@ -69,17 +69,19 @@ const FinanceMain = () => {
                     </div>
                 </CardContent>
             </Card>
-            <FinanceStatus />
+            <Card className="lg:col-span-2 ">
+                <CardContent>
+                    <h3 className="text-lg font-semibold mb-4">
+                        Daromad va Xarajatlar
+                    </h3>
+                    <FinanceChart data={undefined} />
+                </CardContent>
+            </Card>
 
             <div className="grid gap-4 lg:grid-cols-3">
-                <Card className="lg:col-span-2 ">
-                    <CardContent>
-                        <h3 className="text-lg font-semibold mb-4">
-                            Daromad va Xarajatlar
-                        </h3>
-                        <FinanceChart data={undefined} />
-                    </CardContent>
-                </Card>
+                <div className="lg:col-span-3">
+                    <FinanceStatus />
+                </div>
 
                 <FinancePieChart />
                 <Card className="lg:col-span-3">

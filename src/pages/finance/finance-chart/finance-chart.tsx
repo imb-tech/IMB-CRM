@@ -49,12 +49,12 @@ export function FinanceChart({ data = defaultData }: Props) {
                         >
                             <stop
                                 offset="5%"
-                                stopColor="#16a34a"
-                                stopOpacity={0.4}
+                                stopColor="#86efac"
+                                stopOpacity={0.3}
                             />
                             <stop
                                 offset="95%"
-                                stopColor="#16a34a"
+                                stopColor="#86efac"
                                 stopOpacity={0.1}
                             />
                         </linearGradient>
@@ -67,12 +67,12 @@ export function FinanceChart({ data = defaultData }: Props) {
                         >
                             <stop
                                 offset="5%"
-                                stopColor="#f97316"
-                                stopOpacity={0.4}
+                                stopColor="#fdba74"
+                                stopOpacity={0.3}
                             />
                             <stop
                                 offset="95%"
-                                stopColor="#f97316"
+                                stopColor="#fdba74"
                                 stopOpacity={0.1}
                             />
                         </linearGradient>
@@ -100,8 +100,8 @@ export function FinanceChart({ data = defaultData }: Props) {
                     <Area
                         type="monotone"
                         dataKey="revenue"
-                        stroke="#16a34a"
-                        strokeWidth={3}
+                        stroke="#86efac"
+                        strokeWidth={2}
                         fillOpacity={1}
                         fill="url(#revenue)"
                         name="Daromad"
@@ -109,8 +109,8 @@ export function FinanceChart({ data = defaultData }: Props) {
                     <Area
                         type="monotone"
                         dataKey="expenses"
-                        stroke="#f97316"
-                        strokeWidth={3}
+                        stroke="#fdba74"
+                        strokeWidth={2}
                         fillOpacity={1}
                         fill="url(#expenses)"
                         name="Xarajat"

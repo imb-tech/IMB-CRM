@@ -66,7 +66,6 @@ const EmployeesMain = () => {
                     <DataTable
                         onEdit={(row) => handleItemEdit(row.original)}
                         onDelete={(row) => handleItemDelete(row.original)}
-                        onView={() => {}}
                         columns={columns}
                         data={data}
                         selecteds_row
