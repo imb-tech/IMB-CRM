@@ -1,6 +1,7 @@
 import {
     Area,
     AreaChart,
+    CartesianGrid,
     ResponsiveContainer,
     Tooltip,
     XAxis,
@@ -39,6 +40,7 @@ export function FinanceChart({ data = defaultData }: Props) {
                     data={data}
                     margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
                 >
+                    <CartesianGrid vertical={false} opacity={0.3} />
                     <defs>
                         <linearGradient
                             id="revenue"
@@ -79,13 +81,13 @@ export function FinanceChart({ data = defaultData }: Props) {
                     </defs>
                     <XAxis
                         dataKey="month"
-                        axisLine={false}
-                        tickLine={false}
+                        axisLine={true}
+                        tickLine={true}
                         tick={{ fontSize: 12, fill: "#6b7280" }}
                     />
                     <YAxis
-                        axisLine={false}
-                        tickLine={false}
+                        axisLine={true}
+                        tickLine={true}
                         tick={{ fontSize: 12, fill: "#6b7280" }}
                     />
                     <Tooltip
