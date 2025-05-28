@@ -1,10 +1,5 @@
 import * as React from "react"
-import { ChevronDown, ChevronRight } from "lucide-react"
-import {
-    Collapsible,
-    CollapsibleContent,
-    CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+import { ChevronDown } from "lucide-react"
 import {
     Table,
     TableBody,
@@ -112,15 +107,15 @@ export default function StudentsAttendanceMain() {
                                             }
                                         }}
                                     >
-                                        <TableCell className="font-medium">
+                                        <TableCell className="font-medium border-r border-r-secondary">
                                             {course.id}
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell className="border-r border-r-secondary">
                                             {course.groupName}
                                         </TableCell>
-                                        <TableCell>{course.teacher}</TableCell>
-                                        <TableCell>{course.duration}</TableCell>
-                                        <TableCell>
+                                        <TableCell className="border-r border-r-secondary">{course.teacher}</TableCell>
+                                        <TableCell className="border-r border-r-secondary">{course.duration}</TableCell>
+                                        <TableCell className="border-r border-r-secondary">
                                             <Badge
                                                 variant="destructive"
                                                 className="bg-red-200 text-red-600 "

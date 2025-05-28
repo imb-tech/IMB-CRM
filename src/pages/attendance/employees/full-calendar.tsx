@@ -11,32 +11,24 @@ import { Home } from "lucide-react"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
 import ParamDateRange from "@/components/as-params/date-picker-range"
 import { useMemo } from "react"
+import { cn } from "@/lib/utils"
 
 type Props = {
     data: TCalendarAttendance
 }
 
-const statusText: { [key: string]: { text: string; color: string } } = {
+const statusText: { [key: string]: { text: string; bgColor: string } } = {
     present: {
         text: "Kelgan",
-        color: "🟢",
-    },
-    late: {
-        text: "Kechikkan",
-        color: "🟡",
+        bgColor: "bg-green-200 dark:bg-green-400",
     },
     absent: {
         text: "Kelmagan",
-        color: "🔴",
-    },
-    excused: {
-        text: "Sababli",
-        color: "🔵",
+        bgColor: "bg-red-200 dark:bg-red-400",
     },
 }
 
 export default function FullCalendarEmployees({ data }: Props) {
-    
     const attendanceMap = useMemo(() => {
         const map: Record<number, Record<string, string>> = {}
         data.result.forEach((emp) => {
@@ -93,7 +85,9 @@ export default function FullCalendarEmployees({ data }: Props) {
                                                 {employe.first_name}
                                             </span>
                                             <span className="whitespace-nowrap">
-                                                {formatPhoneNumber(employe.phone)}
+                                                {formatPhoneNumber(
+                                                    employe.phone,
+                                                )}
                                             </span>
                                         </div>
                                     </TableCell>
@@ -108,12 +102,18 @@ export default function FullCalendarEmployees({ data }: Props) {
                                                 key={`${employe.id}-${dateItem.date}`}
                                                 className="text-center p-1 border"
                                             >
-                                                <div className="text-xs min-h-[50px] rounded p-1 flex flex-col items-center justify-center">
-                                                    <span className="whitespace-nowrap">
-                                                        {
-                                                            statusText[status]
-                                                                ?.color
-                                                        }{" "}
+                                                <div
+                                                    className={cn(
+                                                        "text-xs min-h-[50px] rounded p-1 flex flex-col items-center justify-center",
+                                                        statusText[status]
+                                                            ?.bgColor,
+                                                    )}
+                                                >
+                                                    <span
+                                                        className={
+                                                            "whitespace-nowrap"
+                                                        }
+                                                    >
                                                         {
                                                             statusText[status]
                                                                 ?.text
