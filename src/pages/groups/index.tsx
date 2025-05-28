@@ -56,7 +56,23 @@ const GroupsMain = () => {
                         <ParamInput fullWidth />
                         <ParamCombobox
                             isSearch={false}
-                            label="Holat"
+                            label="Kurslar"
+                            className="w-full"
+                            options={[
+                                {
+                                    label: "Barchasi",
+                                    value: "all",
+                                },
+                                {
+                                    label: "Faol",
+                                    value: "active",
+                                },
+                            ]}
+                            paramName="status"
+                        />
+                        <ParamCombobox
+                            isSearch={false}
+                            label="Kunlar"
                             className="w-full"
                             options={[
                                 {
@@ -88,23 +104,7 @@ const GroupsMain = () => {
                         />
                         <ParamCombobox
                             isSearch={false}
-                            label="Kurslar"
-                            className="w-full"
-                            options={[
-                                {
-                                    label: "Barchasi",
-                                    value: "all",
-                                },
-                                {
-                                    label: "Faol",
-                                    value: "active",
-                                },
-                            ]}
-                            paramName="status"
-                        />
-                        <ParamCombobox
-                            isSearch={false}
-                            label="Kunlar"
+                            label="Holat"
                             className="w-full"
                             options={[
                                 {

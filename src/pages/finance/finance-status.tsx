@@ -8,7 +8,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card"
 import { ChartConfig, ChartContainer } from "@/components/ui/chart"
 const chartData = [
-    { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+    { browser: "safari", visitors: 7000000, fill: "var(--color-safari)" },
 ]
 type Props = {}
 
@@ -37,15 +37,15 @@ function FinanceStatus({}: Props) {
                         data={chartData}
                         startAngle={0}
                         endAngle={250}
-                        innerRadius={80}
-                        outerRadius={120}
+                        innerRadius={100}
+                        outerRadius={150}
                     >
                         <PolarGrid
                             gridType="circle"
                             radialLines={false}
                             stroke="none"
                             className="first:fill-muted last:fill-background"
-                            polarRadius={[86, 74]}
+                            polarRadius={[110, 90]}
                         />
                         <RadialBar
                             dataKey="visitors"
@@ -74,7 +74,7 @@ function FinanceStatus({}: Props) {
                                                 <tspan
                                                     x={viewBox.cx}
                                                     y={viewBox.cy}
-                                                    className="fill-foreground text-4xl font-bold"
+                                                    className="fill-foreground text-2xl font-bold"
                                                 >
                                                     {chartData[0].visitors.toLocaleString()}
                                                 </tspan>
@@ -102,7 +102,7 @@ function FinanceStatus({}: Props) {
                                 </span>
                             </div>
                             <span className="text-lg font-bold text-green-600">
-                                3 500 000
+                                4 800 000
                             </span>
                         </div>
                         <div className="bg-green-100/70 dark:bg-green-900/30 rounded-xl p-4 border border-green-400">

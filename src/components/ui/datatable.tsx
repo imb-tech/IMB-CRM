@@ -207,7 +207,7 @@ export function DataTable<TData>({
 
             <div
                 className={cn(
-                    "relative overflow-x-auto overflow-y-auto rounded-md",
+                    "relative  rounded-md",
                     tableWrapperClassName,
                 )}
             >
@@ -260,7 +260,7 @@ export function DataTable<TData>({
                             {table
                                 .getHeaderGroups()
                                 .map((headerGroup, index) => (
-                                    <TableRow key={index} className="border-none">
+                                    <TableRow key={index} className="border-none ">
                                         {numeration && (
                                             <TableHead
                                                 key={index}
