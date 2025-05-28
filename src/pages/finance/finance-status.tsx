@@ -18,7 +18,7 @@ const chartConfig = {
     },
     safari: {
         label: "Safari",
-        color: "hsl(var(--chart-1))",
+        color: "hsl(var(--chart-2))",
     },
 } satisfies ChartConfig
 
@@ -93,7 +93,7 @@ function FinanceStatus({}: Props) {
                         </PolarRadiusAxis>
                     </RadialBarChart>
                 </ChartContainer>
-                <div className="grid md:grid-cols-2 gap-8">
+                <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
@@ -105,7 +105,7 @@ function FinanceStatus({}: Props) {
                                 3 500 000
                             </span>
                         </div>
-                        <div className="bg-gradient-to-r from-emerald-25 to-teal-25 rounded-xl p-4 border border-green-400">
+                        <div className="bg-green-100/70 dark:bg-green-900/30 rounded-xl p-4 border border-green-400">
                             <div className="text-sm text-green-700">
                                 Jami to'lovlarning 64.7%
                             </div>
@@ -126,7 +126,7 @@ function FinanceStatus({}: Props) {
                                 7 000 000
                             </span>
                         </div>
-                        <div className="bg-gradient-to-r from-orange-25 to-amber-25 rounded-xl p-4 border border-orange-400">
+                        <div className="bg-orange-100/70 dark:bg-orange-900/30 rounded-xl p-4 border border-orange-400">
                             <div className="text-sm text-orange-700">
                                 Jami to'lovlarning 35.3%
                             </div>
