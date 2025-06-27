@@ -9,8 +9,16 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/sidebar/app-sidebar"
 import { getAccessToken } from "@/lib/get-token"
 
+type ProductSearch = {
+    page?: number
+    date?: string
+}
+
 export const Route = createFileRoute("/_main")({
     component: MainLayout,
+    validateSearch: (search: Record<string, unknown>): ProductSearch => {
+        return search
+    },
 })
 
 function MainLayout() {

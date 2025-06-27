@@ -36,7 +36,7 @@ export function NavMain() {
                                 >
                                     <SidebarMenuItem>
                                         <SidebarMenuButton tooltip={title}>
-                                            {item.icon}
+                                            {item?.icon ?? null}
                                             <span>{title}</span>
                                         </SidebarMenuButton>
                                     </SidebarMenuItem>

@@ -10,13 +10,13 @@ import { LogOut, User } from "lucide-react"
 import { ThemeColorToggle } from "./color-toggle"
 import { SidebarTrigger } from "../ui/sidebar"
 import { ReactNode } from "react"
-import HeaderLinks from "./header-links"
 import { ParamCombobox } from "../as-params/combobox"
 
 type Props = {
     title?: string
     rigthChildren?: ReactNode
     leftChildren?: ReactNode
+    links?: SubMenuItem[]
 }
 const Header = ({ rigthChildren, leftChildren }: Props) => {
     const navigate = useNavigate()
@@ -37,9 +37,9 @@ const Header = ({ rigthChildren, leftChildren }: Props) => {
                         IMB TECH
                     </span>
                 </div>
-                <div className="w-full ">
-                    <HeaderLinks />
-                </div>
+                {/* <div className="w-full hidden md:block">
+                    <HeaderLinks defaultLinks={links} />
+                </div> */}
                 {leftChildren ? leftChildren : null}
             </div>
             <hgroup className="flex items-center gap-4">

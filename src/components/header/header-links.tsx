@@ -1,50 +1,46 @@
 import { menuItems } from "@/constants/menu"
-import { useLocation, useNavigate } from "@tanstack/react-router"
+import { useLocation, useNavigate, useRouter } from "@tanstack/react-router"
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
 
-export default function HeaderLinks() {
+export default function HeaderLinks({
+    defaultLinks,
+}: {
+    defaultLinks?: SubMenuItem[]
+}) {
     const { pathname } = useLocation()
-    const items = findChildPaths(menuItems, pathname)
+    const items =
+        defaultLinks ? defaultLinks : findChildPaths(menuItems, pathname)
     const navigate = useNavigate()
-
-    const isSomeActive = (path: string) => {
-        if (pathname?.split("/")?.length > 2) {
-            return path?.slice(1) === pathname?.split("/")[1]
-        } else {
-            return false
-        }
-    }
+    const { isActive } = useIsActive()
 
     return (
-        <div> 
-            {!!items.length && (
+        <div>
+            {/* {!!items.length && (
                 <Tabs
                     value={pathname}
                     onValueChange={(path) => navigate({ to: path })}
                 >
                     <TabsList>
-                        {items?.map((link) => (
+                        {items.map((link) => (
                             <TabsTrigger
                                 key={link.title}
                                 value={link.to}
                                 className={`${
-                                    pathname.includes(link.to + "/") &&
+                                    isActive(link, pathname) &&
                                     "!bg-primary !text-primary-foreground"
-                                } font-medium flex items-center gap-2 ${
-                                    isSomeActive(link.to) && "!bg-primary/50"
-                                }`}
+                                } font-medium flex items-center gap-2`}
                             >
                                 {link.title}
                             </TabsTrigger>
                         ))}
                     </TabsList>
                 </Tabs>
-            )}
+            )} */}
         </div>
     )
 }
 
-const findChildPaths = (filteredItems: typeof menuItems, pathname: string) => {
+export const findChildPaths = (filteredItems: typeof menuItems, pathname: string) => {
     const currentSection = pathname?.split("/")?.[1]
 
     return (
@@ -55,4 +51,18 @@ const findChildPaths = (filteredItems: typeof menuItems, pathname: string) => {
                 ) || item.to?.slice(1) === currentSection,
         )?.items || []
     )
+}
+
+export function useIsActive() {
+    const router = useRouter()
+
+    const isActive = (link: any, currentPathname: string) => {
+        const built = router.buildLocation(link).pathname
+
+        return (
+            currentPathname === built || currentPathname.startsWith(built + "/")
+        )
+    }
+
+    return { isActive }
 }

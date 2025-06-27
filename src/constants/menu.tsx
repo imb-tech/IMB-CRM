@@ -10,7 +10,7 @@ import {
     Settings,
     Users2,
 } from "lucide-react"
-import { ReactNode } from "react"
+import { ReactNode, useMemo } from "react"
 
 export interface MenuItem {
     label: string
@@ -133,3 +133,53 @@ export const menuItems = [
         ],
     }),
 ]
+
+export const groupDetailNav = (groupId: string) => {
+    return useMemo(
+        () => [
+            linkOptions({
+                title: "Davomat",
+                to: `/groups/$id/attendance`,
+                params: {
+                    id: groupId,
+                },
+            }),
+            linkOptions({
+                title: "O'quvchilar",
+                to: `/groups/$id/students`,
+                params: {
+                    id: groupId,
+                },
+            }),
+            linkOptions({
+                title: "Baho",
+                to: `/groups/$id/score`,
+                params: {
+                    id: groupId,
+                },
+            }),
+            linkOptions({
+                title: "Eslatma",
+                to: `/groups/$id/notes`,
+                params: {
+                    id: groupId,
+                },
+            }),
+            linkOptions({
+                title: "Imtixon",
+                to: `/groups/$id/exams`,
+                params: {
+                    id: groupId,
+                },
+            }),
+            linkOptions({
+                title: "Chegirma",
+                to: `/groups/$id/sale`,
+                params: {
+                    id: groupId,
+                },
+            }),
+        ],
+        [],
+    )
+}

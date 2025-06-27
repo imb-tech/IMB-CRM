@@ -1,26 +1,53 @@
 import Header from "@/components/header"
+import HeaderLinks, { findChildPaths } from "@/components/header/header-links"
+import MobileHeaderLinks from "@/components/header/mobile-header-links"
+import { menuItems } from "@/constants/menu"
 import { cn } from "@/lib/utils"
-import { ReactNode } from "@tanstack/react-router"
+import { ReactNode, useLocation } from "@tanstack/react-router"
+import { useMemo } from "react"
 
 type Props = {
     children: ReactNode
     rigthChildren?: ReactNode
     leftChildren?: ReactNode
+    items?: SubMenuItem[]
 }
 
-const PageLayout = ({ children, rigthChildren, leftChildren }: Props) => {
+const PageLayout = ({
+    children,
+    rigthChildren,
+    leftChildren,
+    items,
+}: Props) => {
+    const { pathname } = useLocation()
+    const defaultLinks = items ? items : findChildPaths(menuItems, pathname)
+    const len = useMemo(() => defaultLinks.length, [defaultLinks])
+
     return (
         <div className="w-full">
             <div
                 className={cn(
-                    "fixed top-0 right-0  z-10 transition-[width,height,padding] w-full" )}
+                    "fixed top-0 right-0 z-10 transition-[width,height,padding] w-full",
+                )}
             >
                 <Header
                     rigthChildren={rigthChildren}
                     leftChildren={leftChildren}
                 />
             </div>
-            <main className="flex xl:gap-2 px-3 md:px-4 pt-20 pb-4  relative ">
+
+            <div className={cn("pt-20 px-4", len ? "pb-2" : "")}>
+                {len ?
+                    <MobileHeaderLinks defaultLinks={items} />
+                :   null}
+            </div>
+
+            <main
+                className={cn(
+                    "flex flex-col xl:gap-2 px-3 md:px-4 pb-4  relative",
+                    // len ? "pt-32 md:pt-20" : "pt-12 md:pt-16",
+                )}
+            >
                 {children}
             </main>
         </div>

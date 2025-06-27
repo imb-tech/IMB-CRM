@@ -10,3 +10,11 @@ type Group = {
   endDate: string;   
   status: 'active' | 'completed' | 'pending';
 };
+
+type GroupExam = {
+  id: number
+  name: string
+  take_date: string
+  min_score: number
+  max_score: number
+}

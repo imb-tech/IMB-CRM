@@ -12,11 +12,14 @@ import GroupCreate from "./create"
 import { useModal } from "@/hooks/useModal"
 import { useState } from "react"
 import { GROUP } from "@/constants/api-endpoints"
+import { useNavigate } from "@tanstack/react-router"
 
 const GroupsMain = () => {
     const { openModal: openModalGroup } = useModal(`${GROUP}-add`)
     const { openModal: openModalDelete } = useModal(`${GROUP}-delete`)
     const [current, setCurrent] = useState<Group | null>(null)
+
+    const navigate = useNavigate()
 
     const handleItemAdd = () => {
         setCurrent(null)
@@ -124,6 +127,12 @@ const GroupsMain = () => {
                         onDelete={(row) => handleItemDelete(row.original)}
                         columns={columns}
                         data={groups}
+                        onRowClick={({ id }) =>
+                            navigate({
+                                to: "/groups/$id",
+                                params: { id: id.toString() },
+                            })
+                        }
                         selecteds_row
                     />
                 </CardContent>
