@@ -33,7 +33,7 @@ export function FormNumberInput<IForm extends FieldValues>({
     formatOptions,
     thousandSeparator = " ",
     decimalSeparator,
-    hideError = true, 
+    hideError = true,
     ...props
 }: IProps<IForm> & NumericFormatProps) {
     const {
@@ -47,7 +47,6 @@ export function FormNumberInput<IForm extends FieldValues>({
             ...registerOptions,
         },
     })
-
 
     return (
         <fieldset className={cn("flex flex-col w-full", wrapperClassName)}>

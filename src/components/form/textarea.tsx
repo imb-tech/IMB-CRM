@@ -64,9 +64,9 @@ export function FormTextarea<IForm extends FieldValues>({
                 placeholder={props.placeholder || label}
                 id={name}
                 className={
-                    !!error && label
-                        ? "border-destructive focus:border-border !ring-destructive"
-                        : ""
+                    !!error && label ?
+                        "border-destructive focus:border-border !ring-destructive"
+                    :   ""
                 }
             />
             {!hideError && errors[name] && (

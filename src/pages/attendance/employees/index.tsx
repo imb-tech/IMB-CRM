@@ -273,7 +273,7 @@ const data: TCalendarAttendance = {
                 { date: "2025-05-31", status: "present" },
             ],
         },
-            {
+        {
             id: 7,
             first_name: "Abdisamatov Ozodbek",
             phone: "+998931023042",

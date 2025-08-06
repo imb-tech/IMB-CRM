@@ -1,5 +1,5 @@
-import forge from 'node-forge';
-import JSEncrypt from 'jsencrypt';
+import forge from "node-forge"
+import JSEncrypt from "jsencrypt"
 
 // const publicKeyPem = import.meta.env.VITE_SSH_PUBLIC_KEY.replace(/\\n/g, '\n');
 const publicKeyPem = `
@@ -12,7 +12,7 @@ GjqeXXJgIB09KT0jD3M1flBjgY+7EswkJx09Qbb7cPZrtOUJa61hGXdk/KLjVQD+
 ntCo+RSiJrbLwJqtw+lOh0N6X/H2uu607/fvFjH9AcIeK6lsg2o6whykFvjnaHxe
 vwIDAQAB
 -----END PUBLIC KEY-----
-`;
+`
 
 // export function encryptMessage(message: string): string {
 //     console.log(publicKeyPem);
@@ -25,9 +25,9 @@ vwIDAQAB
 // }
 
 export function encryptMessage(message: string) {
-    const encrypt = new JSEncrypt();
-    encrypt.setPublicKey(publicKeyPem);
-    const encrypted = encrypt.encrypt(message);
-    if (!encrypted) throw new Error("Encryption failed");
-    return encrypted;
+    const encrypt = new JSEncrypt()
+    encrypt.setPublicKey(publicKeyPem)
+    const encrypted = encrypt.encrypt(message)
+    if (!encrypted) throw new Error("Encryption failed")
+    return encrypted
 }

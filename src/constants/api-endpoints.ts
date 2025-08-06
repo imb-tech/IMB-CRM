@@ -6,12 +6,12 @@ export const PROFILE = AUTH + "profile"
 
 export const BRANCH = COMMON + "branches"
 export const ROOM = COMMON + "rooms"
-export const COURSE = COMMON + 'courses'
-export const PAYMENT_TYPE = COMMON + 'payment-types'
-export const HOLIDAY = COMMON + 'weekends'
-export const ROLE = COMMON + 'roles'
-export const TASKLY_PROJECT_CRM = 'taskly/list-projects'
-export const HR_API = 'users'
+export const COURSE = COMMON + "courses"
+export const PAYMENT_TYPE = COMMON + "payment-types"
+export const HOLIDAY = COMMON + "weekends"
+export const ROLE = COMMON + "roles"
+export const TASKLY_PROJECT_CRM = "taskly/list-projects"
+export const HR_API = "users"
 
 export const REFRESH_TOKEN = "token/refresh"
 export const GROUP = `/payment`
@@ -31,5 +31,3 @@ export const REGION = `region`
 export const STATION = `station`
 export const TRANSPORT = `transport`
 export const USERS = `users`
-
-

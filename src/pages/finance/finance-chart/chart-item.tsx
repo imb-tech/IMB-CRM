@@ -17,7 +17,10 @@ export function ChartItem({
             onMouseEnter={() => onHover(index)}
             onClick={() => onClick(index)}
         >
-            <div className="h-3 w-3 rounded-sm" style={{ backgroundColor: item.color }} />
+            <div
+                className="h-3 w-3 rounded-sm"
+                style={{ backgroundColor: item.color }}
+            />
             <span
                 className={cn(
                     "text-muted-foreground",

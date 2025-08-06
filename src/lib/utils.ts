@@ -24,13 +24,13 @@ export function formatTime(time?: string) {
 }
 
 export function getActiveBranch(): number | null {
-    const branch = localStorage.getItem('branch')
+    const branch = localStorage.getItem("branch")
     return branch ? Number(branch) : null
 }
 
 export function setActiveBranch(branchId: number | string) {
     try {
-        localStorage.setItem('branch', branchId.toString())
+        localStorage.setItem("branch", branchId.toString())
         return true
     } catch {
         return false
@@ -62,10 +62,10 @@ export const imagePaths = [
     "/task/fon22.jpg",
     "/task/fon23.png",
     "/task/fon24.png",
-];
+]
 
 export function getRandomImage() {
-    return imagePaths[Math.floor(Math.random() * imagePaths.length)];
+    return imagePaths[Math.floor(Math.random() * imagePaths.length)]
 }
 
 export const months = [
@@ -81,4 +81,4 @@ export const months = [
     { key: "10", name: "Oktabr" },
     { key: "11", name: "Noyabr" },
     { key: "12", name: "Dekabr" },
-];
+]

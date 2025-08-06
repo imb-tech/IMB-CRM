@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format } from "date-fns"
 
 export function generateIndexedData<T extends LeadFields | LeadStatus>(
     array: T[],
@@ -27,22 +27,26 @@ export function moveBetweenArrays<T>(
 }
 
 export function groupMessagesByDate(messages: LeadNote[]) {
-    const grouped: { [key: string]: LeadNote[] } = {};
+    const grouped: { [key: string]: LeadNote[] } = {}
 
     messages.forEach((message) => {
         // created_at dan faqat sanani ajratamiz (YYYY-MM-DD)
-        const date = message.created_at?.split("T")[0];
+        const date = message.created_at?.split("T")[0]
 
         if (!grouped[date]) {
-            grouped[date] = [];
+            grouped[date] = []
         }
-        grouped[date].push(message);
-    });
+        grouped[date].push(message)
+    })
 
-    return grouped;
+    return grouped
 }
 
-export function moveItem<T>(array: T[], fromIndex: number, toIndex: number): T[] {
+export function moveItem<T>(
+    array: T[],
+    fromIndex: number,
+    toIndex: number,
+): T[] {
     const newArray = [...array]
     const [movedItem] = newArray.splice(fromIndex, 1)
     newArray.splice(toIndex, 0, movedItem)
@@ -50,7 +54,6 @@ export function moveItem<T>(array: T[], fromIndex: number, toIndex: number): T[]
 }
 
 export function formatDateChat(dateString: string): string {
-
     const date = new Date(dateString)
     const today = new Date()
     const yesterday = new Date(today)

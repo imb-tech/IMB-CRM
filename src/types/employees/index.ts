@@ -8,5 +8,5 @@ type Employee = {
     lesson_fee: number
     birth_date: string
     hired_date: string
-    password?:string
+    password?: string
 }

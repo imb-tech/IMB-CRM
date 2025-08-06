@@ -6,7 +6,7 @@ interface IProps {
     required: boolean
     htmlFor?: string
     isError: boolean
-    className?:string
+    className?: string
 }
 
 export default function FieldLabel({
@@ -14,11 +14,19 @@ export default function FieldLabel({
     children,
     htmlFor,
     isError,
-    className
+    className,
 }: IProps) {
     return (
-        <label className={cn("select-none leading-[1.4] pb-1.5 text-sm cursor-pointer", isError && "text-destructive", className)} htmlFor={htmlFor}>
-            {children} {required && <span className="text-destructive pl-1">*</span>}
+        <label
+            className={cn(
+                "select-none leading-[1.4] pb-1.5 text-sm cursor-pointer",
+                isError && "text-destructive",
+                className,
+            )}
+            htmlFor={htmlFor}
+        >
+            {children}{" "}
+            {required && <span className="text-destructive pl-1">*</span>}
         </label>
     )
 }

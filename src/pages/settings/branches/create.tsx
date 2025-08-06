@@ -15,7 +15,7 @@ type Props = {
 const BranchesCreate = ({ item }: Props) => {
     const queryClient = useQueryClient()
     const { closeModal } = useModal(`${BRANCH}-add`)
-    
+
     const form = useForm<Branch>({ defaultValues: item || undefined })
 
     const { mutate: mutateCreate, isPending: isPendingCreate } = usePost({

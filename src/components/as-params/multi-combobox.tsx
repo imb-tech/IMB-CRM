@@ -49,16 +49,16 @@ export function ParamMultiCombobox<T extends Record<string, any>>({
     const handleSelect = (option: T) => {
         const val = option[valueKey]
 
-        const updatedValues = currentValues.includes(val)
-            ? currentValues.filter((v: string | number) => v !== val)
-            : [...currentValues, val]
+        const updatedValues =
+            currentValues.includes(val) ?
+                currentValues.filter((v: string | number) => v !== val)
+            :   [...currentValues, val]
 
         navigate({
             search: {
                 ...search,
-                [paramName]: updatedValues.length
-                    ? updatedValues.join(",")
-                    : undefined,
+                [paramName]:
+                    updatedValues.length ? updatedValues.join(",") : undefined,
             },
         })
     }
@@ -69,18 +69,17 @@ export function ParamMultiCombobox<T extends Record<string, any>>({
     }
 
     const selectedLabels =
-        currentValues.length > 0
-            ? currentValues
-                  ?.map((val: string) => {
-                      const found = options.find(
-                          (d) => String(d[valueKey]) === val,
-                      )
-                      return found?.[labelKey] || val
-                  })
-                  .join(", ")
-            : undefined
+        currentValues.length > 0 ?
+            currentValues
+                ?.map((val: string) => {
+                    const found = options.find(
+                        (d) => String(d[valueKey]) === val,
+                    )
+                    return found?.[labelKey] || val
+                })
+                .join(", ")
+        :   undefined
 
-            
     return (
         <Popover modal open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -126,11 +125,13 @@ export function ParamMultiCombobox<T extends Record<string, any>>({
                                     <CheckIcon
                                         className={cn(
                                             "ml-auto h-4 w-4",
-                                            currentValues.includes(
-                                                String(d[valueKey]),
-                                            )
-                                                ? "opacity-100"
-                                                : "opacity-0",
+                                            (
+                                                currentValues.includes(
+                                                    String(d[valueKey]),
+                                                )
+                                            ) ?
+                                                "opacity-100"
+                                            :   "opacity-0",
                                         )}
                                     />
                                 </CommandItem>

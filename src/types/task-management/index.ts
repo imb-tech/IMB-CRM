@@ -14,13 +14,13 @@ type QuoteCard = {
     priority: 1 | 2 | 3
     deadline: string
     subtasks: SubTask[]
-    files: { file: any; type: string, id?: number }[] | []
+    files: { file: any; type: string; id?: number }[] | []
     voiceNote: string[]
     users: number[]
     users_data: {
         id: number
-        face: string,
-        last_name: string,
+        face: string
+        last_name: string
         first_name: string
         middle_name: string
     }[]
@@ -33,7 +33,6 @@ type QuoteCard = {
         face: string
     }
 }
-
 
 type Column = {
     id: string
@@ -57,8 +56,8 @@ type FormValues = {
     created_at: string
     users: {
         id: number
-        face: string,
-        last_name: string,
+        face: string
+        last_name: string
         first_name: string
         middle_name: string
     }[]

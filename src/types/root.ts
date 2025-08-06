@@ -1,6 +1,6 @@
 type SearchParams2 = {
-    page?: number;
-    filter?: string;
+    page?: number
+    filter?: string
     year?: string
     id?: string
     position?: string | number
@@ -14,7 +14,7 @@ type SearchParams2 = {
     month?: string
     last_company_id?: number
     search?: string
-    tabs?: 'card' | 'table'
+    tabs?: "card" | "table"
     day?: string
     page_size?: string
     task?: string
@@ -26,4 +26,4 @@ type SearchParams2 = {
     end_date?: string
     pipeline?: number
     region?: string
-};
+}

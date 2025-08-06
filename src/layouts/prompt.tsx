@@ -2,7 +2,14 @@ import { createContext, useState, ReactNode } from "react"
 import { Input } from "@/components/ui/input"
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
 import { toast } from "sonner"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 
 interface PromptContextProps {
@@ -19,7 +26,7 @@ export const PromptProvider: React.FC<{ children: ReactNode }> = ({
     const [isOpen, setIsOpen] = useState(false)
     const [resolvePromise, setResolvePromise] = useState<
         (value: string | null) => void
-    >(() => { })
+    >(() => {})
     const [dialogTitle, setDialogTitle] = useState<string | undefined>("")
     const [inputValue, setInputValue] = useState("")
 
@@ -43,7 +50,7 @@ export const PromptProvider: React.FC<{ children: ReactNode }> = ({
 
     const handleCancel = () => {
         setIsOpen(false)
-        resolvePromise('')
+        resolvePromise("")
         setInputValue("")
     }
 
@@ -70,15 +77,8 @@ export const PromptProvider: React.FC<{ children: ReactNode }> = ({
                         placeholder={dialogTitle || "Sabab?"}
                     />
                     <DialogFooter className="!flex !flex-row items-center gap-4">
-                        <Button
-                            onClick={handleConfirm}
-                        >
-                            Tasdiqlash
-                        </Button>
-                        <Button
-                            onClick={handleCancel}
-                            variant='secondary'
-                        >
+                        <Button onClick={handleConfirm}>Tasdiqlash</Button>
+                        <Button onClick={handleCancel} variant="secondary">
                             Bekor qilish
                         </Button>
                     </DialogFooter>

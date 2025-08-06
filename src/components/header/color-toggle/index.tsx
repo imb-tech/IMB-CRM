@@ -1,13 +1,13 @@
-import { cn } from "@/lib/utils";
-import { useThemeContext } from "@/layouts/color";
-import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
-import { Button } from "../../ui/button";
-import {  Moon, Palette,  Sun } from "lucide-react";
-import { Label } from "@radix-ui/react-label";
-import { useTheme } from "@/layouts/theme";
-import { useEffect } from "react";
-import { getIcon } from "./getIcon";
-import { themes } from "@/lib/theme-colors";
+import { cn } from "@/lib/utils"
+import { useThemeContext } from "@/layouts/color"
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover"
+import { Button } from "../../ui/button"
+import { Moon, Palette, Sun } from "lucide-react"
+import { Label } from "@radix-ui/react-label"
+import { useTheme } from "@/layouts/theme"
+import { useEffect } from "react"
+import { getIcon } from "./getIcon"
+import { themes } from "@/lib/theme-colors"
 
 const availableThemeColors = [
     { name: "Zinc", uz: "Siyoh", light: "bg-zinc-900", dark: "bg-zinc-700" },
@@ -63,36 +63,36 @@ const availableThemeColors = [
     //     uz: "React",
     //     icon: "/react.svg",
     // }
-];
+]
 
 export function ThemeColorToggle() {
-    const { themeColor, setThemeColor } = useThemeContext();
-    const { theme, setTheme } = useTheme();
+    const { themeColor, setThemeColor } = useThemeContext()
+    const { theme, setTheme } = useTheme()
 
     useEffect(() => {
         const currentPrimary =
-            themes[themeColor][theme as "light" | "dark"].primary;
+            themes[themeColor][theme as "light" | "dark"].primary
         const currentTextColor =
-            themes[themeColor][theme as "light" | "dark"].foreground;
-        const svgString = getIcon(currentPrimary, currentTextColor);
-        const blob = new Blob([svgString], { type: "image/svg+xml" });
-        const url = URL.createObjectURL(blob);
+            themes[themeColor][theme as "light" | "dark"].foreground
+        const svgString = getIcon(currentPrimary, currentTextColor)
+        const blob = new Blob([svgString], { type: "image/svg+xml" })
+        const url = URL.createObjectURL(blob)
 
-        let favicon = document.getElementById("favicon") as HTMLLinkElement;
+        let favicon = document.getElementById("favicon") as HTMLLinkElement
         if (favicon) {
-            document.head.removeChild(favicon);
+            document.head.removeChild(favicon)
         }
 
-        favicon = document.createElement("link");
-        favicon.id = "favicon";
-        favicon.rel = "icon";
-        favicon.type = "image/svg+xml";
-        favicon.href = url;
+        favicon = document.createElement("link")
+        favicon.id = "favicon"
+        favicon.rel = "icon"
+        favicon.type = "image/svg+xml"
+        favicon.href = url
 
-        document.head.appendChild(favicon);
+        document.head.appendChild(favicon)
 
-        return () => URL.revokeObjectURL(url);
-    }, [themeColor, theme]);
+        return () => URL.revokeObjectURL(url)
+    }, [themeColor, theme])
 
     return (
         <Popover>
@@ -108,9 +108,9 @@ export function ThemeColorToggle() {
                             variant="outline"
                             size="sm"
                             className={
-                                theme === "light"
-                                    ? "!border-2 !border-foreground"
-                                    : "m-[1px]"
+                                theme === "light" ?
+                                    "!border-2 !border-foreground"
+                                :   "m-[1px]"
                             }
                             onClick={() => setTheme("light")}
                         >
@@ -121,9 +121,9 @@ export function ThemeColorToggle() {
                             variant="outline"
                             size="sm"
                             className={
-                                theme === "dark"
-                                    ? "!border-2 !border-foreground"
-                                    : "m-[1px]"
+                                theme === "dark" ?
+                                    "!border-2 !border-foreground"
+                                :   "m-[1px]"
                             }
                             onClick={() => setTheme("dark")}
                         >
@@ -138,29 +138,26 @@ export function ThemeColorToggle() {
                             ({ name, light, dark, uz, icon }) => (
                                 <Button
                                     icon={
-                                        icon ? (
+                                        icon ?
                                             <img
                                                 src={icon}
                                                 className="w-5 h-5 object-contain"
                                             />
-                                        ) : (
-                                            <span
+                                        :   <span
                                                 className={cn(
                                                     "rounded-full h-5 w-5",
-                                                    theme === "light"
-                                                        ? light
-                                                        : dark
+                                                    theme === "light" ? light
+                                                    :   dark,
                                                 )}
                                             />
-                                        )
                                     }
                                     size="sm"
                                     variant="outline"
                                     key={name}
                                     className={
-                                        themeColor === name
-                                            ? "!border-2 !border-foreground py-0 w-auto justify-start gap-2"
-                                            : "m-[1px] justify-start gap-2"
+                                        themeColor === name ?
+                                            "!border-2 !border-foreground py-0 w-auto justify-start gap-2"
+                                        :   "m-[1px] justify-start gap-2"
                                     }
                                     onClick={() =>
                                         setThemeColor(name as ThemeColors)
@@ -168,11 +165,11 @@ export function ThemeColorToggle() {
                                 >
                                     {uz}
                                 </Button>
-                            )
+                            ),
                         )}
                     </div>
                 </div>
             </PopoverContent>
         </Popover>
-    );
+    )
 }

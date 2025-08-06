@@ -31,17 +31,14 @@ export function FormDatePicker<TForm extends FieldValues>({
                 name={name}
                 control={control}
                 rules={
-                    required
-                        ? { required: `${label || name}ni kiriting` }
-                        : {}
+                    required ? { required: `${label || name}ni kiriting` } : {}
                 }
                 render={({ field }) => (
                     <DatePicker
                         calendarProps={{
                             ...calendarProps,
-                            defaultMonth: field.value
-                                ? new Date(field.value)
-                                : undefined,
+                            defaultMonth:
+                                field.value ? new Date(field.value) : undefined,
                         }}
                         date={field.value ? new Date(field.value) : undefined}
                         setDate={field.onChange}

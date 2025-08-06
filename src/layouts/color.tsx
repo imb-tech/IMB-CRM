@@ -11,8 +11,7 @@ export default function ThemeDataProvider({ children }: ThemeProviderProps) {
     const getSavedThemeColor = () => {
         try {
             return (
-                (localStorage.getItem("themeColor") as ThemeColors) ||
-                "Green"
+                (localStorage.getItem("themeColor") as ThemeColors) || "Green"
             )
         } catch (error) {
             "Green" as ThemeColors

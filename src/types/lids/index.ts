@@ -1,6 +1,6 @@
 type LeadContact = {
     id?: number
-    full_name: string,
+    full_name: string
     phone: string
     is_main: boolean
 }
@@ -18,11 +18,11 @@ type PhoneNumber = {
 
 type Lead = {
     id: number
-    name: string,
-    contacts_list: LeadContact[],
-    contacts?: LeadContact[],
-    author: number,
-    worker: number,
+    name: string
+    contacts_list: LeadContact[]
+    contacts?: LeadContact[]
+    author: number
+    worker: number
     source: number
     status: number
     source_icon: string
@@ -52,7 +52,7 @@ type Pipeline = {
     id: string
     name: string
     stages: Stage[]
-    order: number,
+    order: number
     is_active: boolean
     background: string
 }
@@ -75,10 +75,10 @@ type LeadStatus = {
 
 type LeadFields = {
     id: number
-    name: string,
-    contacts_list: LeadContact[],
-    author: number,
-    worker: number,
+    name: string
+    contacts_list: LeadContact[]
+    author: number
+    worker: number
     source: number
     source_icon: string
     source_name: string
@@ -165,7 +165,7 @@ type LeadStatEmploye = {
 }
 
 type LeadMainStat = {
-    total: number,
+    total: number
     loosed_count: number
     success_count: number
     success_percentage: number

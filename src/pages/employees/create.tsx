@@ -25,7 +25,7 @@ const EmployeeCreate = ({ item }: Props) => {
             toast.success("Muvaffaqiyatli yaratildi")
             closeModal()
             form.reset()
-            queryClient.invalidateQueries({queryKey:[EMPLOYEE]})
+            queryClient.invalidateQueries({ queryKey: [EMPLOYEE] })
         },
     })
     const { mutate: mutateUpdate, isPending: isPendingUpdate } = usePatch({
@@ -33,7 +33,7 @@ const EmployeeCreate = ({ item }: Props) => {
             toast.success("Muvaffaqiyatli yangilandi")
             closeModal()
             form.reset()
-            queryClient.invalidateQueries({queryKey:[EMPLOYEE]})
+            queryClient.invalidateQueries({ queryKey: [EMPLOYEE] })
         },
     })
     const disabled = isPendingCreate || isPendingUpdate

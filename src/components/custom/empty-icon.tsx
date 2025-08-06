@@ -1,4 +1,10 @@
-export default function EmptyIcon({ size = 20, className }: { size?: number, className?: string }) {
+export default function EmptyIcon({
+    size = 20,
+    className,
+}: {
+    size?: number
+    className?: string
+}) {
     return (
         <svg
             height={size}

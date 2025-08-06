@@ -28,7 +28,7 @@ export default function LeadResponses() {
                             {field.form_field.type === "phone" ?
                                 formatPhoneNumber(field.answer)
                             : Array.isArray(field.answer) ?
-                                field.answer.join(', ')
+                                field.answer.join(", ")
                             :   field.answer}
                         </p>
                     </div>

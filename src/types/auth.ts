@@ -1,5 +1,5 @@
 type LoginResp = {
-    id: number,
+    id: number
     token: {
         refresh_token: string
         access_token: string
@@ -7,13 +7,13 @@ type LoginResp = {
 }
 
 type Profile = {
-    id: number,
-    username: string,
-    full_name: string,
-    phone: string,
+    id: number
+    username: string
+    full_name: string
+    phone: string
     pipeline: number
     branches: {
-        id: number,
+        id: number
         name: string
     }[]
 }

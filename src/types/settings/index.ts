@@ -11,23 +11,20 @@ type SettingsParams = {
     roles: string
 }
 
-
 type Room = {
-    id: number,
-    name: string,
+    id: number
+    name: string
     branch_name: string
     created_at: string
     branch: number
 }
 
-
-
 type Course = {
     id: number
-    name: string,
-    price: number,
-    duration: number,
-    color: string,
+    name: string
+    price: number
+    duration: number
+    color: string
     branch: number
     branch_name: string
 }
@@ -42,20 +39,20 @@ type Holiday = {
 }
 
 type Branch = {
-    id: number,
-    name: string,
+    id: number
+    name: string
     start_time: string
     end_time: string
     created_at: string
 }
 
 type Role = {
-    id: number,
-    name: string,
+    id: number
+    name: string
     permissions: string[]
 }
 
 type PaymentType = {
-    id: number,
-    name: string,
+    id: number
+    name: string
 }

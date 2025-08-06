@@ -1,4 +1,10 @@
-type LeadFieldType = "input" | "textarea" | "select" | "radio" | "checkbox" | "phone"
+type LeadFieldType =
+    | "input"
+    | "textarea"
+    | "select"
+    | "radio"
+    | "checkbox"
+    | "phone"
 
 type LeadFieldExData = {
     options?: string[]
@@ -13,13 +19,13 @@ type FormConfig = {
     successMessage2: string
     pipeline?: number
     source?: number
-    name: string,
-    desc: string,
+    name: string
+    desc: string
     extra_data: {
-        submit_text: string,
-        borderRadius: string,
+        submit_text: string
+        borderRadius: string
         primary_color: string
-    },
+    }
 }
 
 type LeadFormField = {
@@ -31,7 +37,6 @@ type LeadFormField = {
     value?: number | string | string[]
     extra_data: LeadFieldExData
 }
-
 
 type LeadForm = {
     id: number
@@ -47,7 +52,6 @@ type LeadForm = {
     }
 }
 
-
 type LeadSubmission = {
     id: number
     form_field: {
@@ -59,7 +63,7 @@ type LeadSubmission = {
         order: number
         placeholder: string
         is_active: boolean
-    },
+    }
     answer: string
     file: string | null
 }

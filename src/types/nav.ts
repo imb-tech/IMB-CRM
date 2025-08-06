@@ -1,5 +1,5 @@
 type SubMenuItem = {
-    title: string;
-    to: string;
+    title: string
+    to: string
     params: { id: string }
 }

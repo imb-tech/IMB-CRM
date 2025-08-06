@@ -95,7 +95,9 @@ export default function DashboardCard() {
                             <div
                                 className={cn(
                                     "px-2 ",
-                                    index === 3 || index == 6 ? "xl:border-r" : "",
+                                    index === 3 || index == 6 ?
+                                        "xl:border-r"
+                                    :   "",
                                 )}
                             >
                                 <div

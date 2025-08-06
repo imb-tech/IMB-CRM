@@ -20,7 +20,9 @@ export const useIncomeCols = () =>
                 accessorKey: "price",
                 enableSorting: true,
                 cell: ({ row }) => (
-                    <span className="text-green-600 font-medium">{formatMoney(row.original.price)}</span>
+                    <span className="text-green-600 font-medium">
+                        {formatMoney(row.original.price)}
+                    </span>
                 ),
             },
             {
