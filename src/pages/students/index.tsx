@@ -14,11 +14,13 @@ import Modal from "@/components/custom/modal"
 import StudentCreate from "./create"
 import DeleteModal from "@/components/custom/delete-modal"
 import { STUDENT } from "@/constants/api-endpoints"
+import { useNavigate } from "@tanstack/react-router"
 
 const StudentsMain = () => {
     const { openModal: openModalStudent } = useModal(`${STUDENT}-add`)
     const { openModal: openModalDelete } = useModal(`${STUDENT}-delete`)
     const [current, setCurrent] = useState<Student | null>(null)
+    const navigate = useNavigate()
 
     const handleItemAdd = () => {
         setCurrent(null)
@@ -175,6 +177,12 @@ const StudentsMain = () => {
                         onDelete={(row) => handleItemDelete(row.original)}
                         columns={columns}
                         data={data}
+                        onRowClick={({ id }) =>
+                            navigate({
+                                to: "/students/$id/groups",
+                                params: { id: id.toString() },
+                            })
+                        }
                         selecteds_row
                     />
                 </CardContent>

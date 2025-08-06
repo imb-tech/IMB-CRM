@@ -15,7 +15,7 @@ export const useRolesCols = () =>
             {
                 header: "Ruxsatlar",
                 accessorKey: "permissions",
-                cell: ({ row }) => <span className="capitalize">{row.original.permissions.join(", ")}</span>,
+                cell: ({ row }) => <span className="capitalize">{row.original.permissions?.join?.(", ")}</span>,
             },
         ],
         [],

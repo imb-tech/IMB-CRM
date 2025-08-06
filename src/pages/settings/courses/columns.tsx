@@ -6,18 +6,12 @@ export const useCoursesCols = () =>
     useMemo<ColumnDef<Course>[]>(
         () => [
             {
-                header: "№",
-                cell: ({ row }) => row.index + 1,
-            },
-            {
                 header: "Nomi",
                 accessorKey: "name",
                 enableSorting: true,
-            },
-            {
-                header: "Izoh",
-                accessorKey: "description",
-                enableSorting: true,
+                cell({ row }) {
+                    return <p className="min-w-[220px]">{row.original.name}</p>
+                },
             },
             {
                 header: "Kurs narxi",
@@ -26,14 +20,14 @@ export const useCoursesCols = () =>
                 cell: ({ row }) => formatMoney(row.original.price),
             },
             {
-                header: "Filial",
-                accessorKey: "branch",
-                cell: ({ row }) => row.original.branch.name,
+                header: "Kurs davomiyligi (oy)",
+                accessorKey: "duration",
+                enableSorting: true,
             },
             {
-                header: "Kurs davomiyligi (oy)",
-                accessorKey: "month_duration",
-                enableSorting: true,
+                header: "Filial",
+                accessorKey: "branch",
+                cell: ({ row }) => row.original.branch_name,
             },
         ],
         [],

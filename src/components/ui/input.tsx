@@ -18,7 +18,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
         return (
             <div
-                className={`${fullWidth ? "w-full" : "w-full sm:w-max"} ${props.hidden ? "h-0" : "h-10"} relative`}
+                className={`${fullWidth ? "w-full" : "w-full sm:w-max"} ${props.hidden ? "h-0" : "h-10"} relative flex items-center`}
             >
                 {type === "search" && (
                     <Search width={16} className={searchIconClassnames} />

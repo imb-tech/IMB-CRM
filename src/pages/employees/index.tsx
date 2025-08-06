@@ -36,7 +36,6 @@ const EmployeesMain = () => {
     }
     const columns = useEmployeeCols()
 
-
     return (
         <div className="w-full">
             <Card className="mb-5 rounded-lg ">

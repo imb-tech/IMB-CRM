@@ -16,10 +16,10 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as MainImport } from './routes/_main'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as MainIndexImport } from './routes/_main/index'
-import { Route as MainStudentsImport } from './routes/_main/students'
 import { Route as MainReportsImport } from './routes/_main/reports'
 import { Route as MainLidsImport } from './routes/_main/lids'
 import { Route as MainEmployeesImport } from './routes/_main/employees'
+import { Route as MainStudentsIndexImport } from './routes/_main/students/index'
 import { Route as MainGroupsIndexImport } from './routes/_main/groups/index'
 import { Route as MainFinanceIndexImport } from './routes/_main/finance/index'
 import { Route as MainSettingsMainImport } from './routes/_main/settings/_main'
@@ -28,6 +28,7 @@ import { Route as MainFinanceCostImport } from './routes/_main/finance/cost'
 import { Route as MainAttendanceMainImport } from './routes/_main/attendance/_main'
 import { Route as MainSettingsMainIndexImport } from './routes/_main/settings/_main/index'
 import { Route as MainAttendanceMainIndexImport } from './routes/_main/attendance/_main/index'
+import { Route as MainStudentsIdMainImport } from './routes/_main/students/$id/_main'
 import { Route as MainSettingsMainRoomsImport } from './routes/_main/settings/_main/rooms'
 import { Route as MainSettingsMainRolesImport } from './routes/_main/settings/_main/roles'
 import { Route as MainSettingsMainPaymentTypeImport } from './routes/_main/settings/_main/payment-type'
@@ -37,7 +38,14 @@ import { Route as MainSettingsMainBranchesImport } from './routes/_main/settings
 import { Route as MainGroupsIdMainImport } from './routes/_main/groups/$id/_main'
 import { Route as MainAttendanceMainStudentsImport } from './routes/_main/attendance/_main/students'
 import { Route as MainAttendanceMainEmployeesImport } from './routes/_main/attendance/_main/employees'
+import { Route as MainStudentsIdMainIndexImport } from './routes/_main/students/$id/_main/index'
 import { Route as MainGroupsIdMainIndexImport } from './routes/_main/groups/$id/_main/index'
+import { Route as MainStudentsIdMainProfileImport } from './routes/_main/students/$id/_main/profile'
+import { Route as MainStudentsIdMainPaymentsImport } from './routes/_main/students/$id/_main/payments'
+import { Route as MainStudentsIdMainParentsImport } from './routes/_main/students/$id/_main/parents'
+import { Route as MainStudentsIdMainNotesImport } from './routes/_main/students/$id/_main/notes'
+import { Route as MainStudentsIdMainHistoryImport } from './routes/_main/students/$id/_main/history'
+import { Route as MainStudentsIdMainGroupsImport } from './routes/_main/students/$id/_main/groups'
 import { Route as MainGroupsIdMainStudentsImport } from './routes/_main/groups/$id/_main/students'
 import { Route as MainGroupsIdMainScoreImport } from './routes/_main/groups/$id/_main/score'
 import { Route as MainGroupsIdMainSaleImport } from './routes/_main/groups/$id/_main/sale'
@@ -49,7 +57,8 @@ import { Route as MainGroupsIdMainAttendanceImport } from './routes/_main/groups
 
 const MainSettingsImport = createFileRoute('/_main/settings')()
 const MainAttendanceImport = createFileRoute('/_main/attendance')()
-const AuthAuthLazyImport = createFileRoute('/_auth/auth')()
+const AuthLoginLazyImport = createFileRoute('/_auth/login')()
+const MainStudentsIdImport = createFileRoute('/_main/students/$id')()
 const MainGroupsIdImport = createFileRoute('/_main/groups/$id')()
 
 // Create/Update Routes
@@ -82,17 +91,11 @@ const MainIndexRoute = MainIndexImport.update({
   getParentRoute: () => MainRoute,
 } as any)
 
-const AuthAuthLazyRoute = AuthAuthLazyImport.update({
-  id: '/auth',
-  path: '/auth',
+const AuthLoginLazyRoute = AuthLoginLazyImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => AuthRoute,
-} as any).lazy(() => import('./routes/_auth/auth.lazy').then((d) => d.Route))
-
-const MainStudentsRoute = MainStudentsImport.update({
-  id: '/students',
-  path: '/students',
-  getParentRoute: () => MainRoute,
-} as any)
+} as any).lazy(() => import('./routes/_auth/login.lazy').then((d) => d.Route))
 
 const MainReportsRoute = MainReportsImport.update({
   id: '/reports',
@@ -112,9 +115,21 @@ const MainEmployeesRoute = MainEmployeesImport.update({
   getParentRoute: () => MainRoute,
 } as any)
 
+const MainStudentsIdRoute = MainStudentsIdImport.update({
+  id: '/students/$id',
+  path: '/students/$id',
+  getParentRoute: () => MainRoute,
+} as any)
+
 const MainGroupsIdRoute = MainGroupsIdImport.update({
   id: '/groups/$id',
   path: '/groups/$id',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainStudentsIndexRoute = MainStudentsIndexImport.update({
+  id: '/students/',
+  path: '/students/',
   getParentRoute: () => MainRoute,
 } as any)
 
@@ -162,6 +177,11 @@ const MainAttendanceMainIndexRoute = MainAttendanceMainIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => MainAttendanceMainRoute,
+} as any)
+
+const MainStudentsIdMainRoute = MainStudentsIdMainImport.update({
+  id: '/_main',
+  getParentRoute: () => MainStudentsIdRoute,
 } as any)
 
 const MainSettingsMainRoomsRoute = MainSettingsMainRoomsImport.update({
@@ -221,10 +241,54 @@ const MainAttendanceMainEmployeesRoute =
     getParentRoute: () => MainAttendanceMainRoute,
   } as any)
 
+const MainStudentsIdMainIndexRoute = MainStudentsIdMainIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MainStudentsIdMainRoute,
+} as any)
+
 const MainGroupsIdMainIndexRoute = MainGroupsIdMainIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => MainGroupsIdMainRoute,
+} as any)
+
+const MainStudentsIdMainProfileRoute = MainStudentsIdMainProfileImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => MainStudentsIdMainRoute,
+} as any)
+
+const MainStudentsIdMainPaymentsRoute = MainStudentsIdMainPaymentsImport.update(
+  {
+    id: '/payments',
+    path: '/payments',
+    getParentRoute: () => MainStudentsIdMainRoute,
+  } as any,
+)
+
+const MainStudentsIdMainParentsRoute = MainStudentsIdMainParentsImport.update({
+  id: '/parents',
+  path: '/parents',
+  getParentRoute: () => MainStudentsIdMainRoute,
+} as any)
+
+const MainStudentsIdMainNotesRoute = MainStudentsIdMainNotesImport.update({
+  id: '/notes',
+  path: '/notes',
+  getParentRoute: () => MainStudentsIdMainRoute,
+} as any)
+
+const MainStudentsIdMainHistoryRoute = MainStudentsIdMainHistoryImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => MainStudentsIdMainRoute,
+} as any)
+
+const MainStudentsIdMainGroupsRoute = MainStudentsIdMainGroupsImport.update({
+  id: '/groups',
+  path: '/groups',
+  getParentRoute: () => MainStudentsIdMainRoute,
 } as any)
 
 const MainGroupsIdMainStudentsRoute = MainGroupsIdMainStudentsImport.update({
@@ -304,18 +368,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainReportsImport
       parentRoute: typeof MainImport
     }
-    '/_main/students': {
-      id: '/_main/students'
-      path: '/students'
-      fullPath: '/students'
-      preLoaderRoute: typeof MainStudentsImport
-      parentRoute: typeof MainImport
-    }
-    '/_auth/auth': {
-      id: '/_auth/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthAuthLazyImport
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginLazyImport
       parentRoute: typeof AuthImport
     }
     '/_main/': {
@@ -379,6 +436,13 @@ declare module '@tanstack/react-router' {
       path: '/groups'
       fullPath: '/groups'
       preLoaderRoute: typeof MainGroupsIndexImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/students/': {
+      id: '/_main/students/'
+      path: '/students'
+      fullPath: '/students'
+      preLoaderRoute: typeof MainStudentsIndexImport
       parentRoute: typeof MainImport
     }
     '/_main/attendance/_main/employees': {
@@ -451,6 +515,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainSettingsMainRoomsImport
       parentRoute: typeof MainSettingsMainImport
     }
+    '/_main/students/$id': {
+      id: '/_main/students/$id'
+      path: '/students/$id'
+      fullPath: '/students/$id'
+      preLoaderRoute: typeof MainStudentsIdImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/students/$id/_main': {
+      id: '/_main/students/$id/_main'
+      path: '/students/$id'
+      fullPath: '/students/$id'
+      preLoaderRoute: typeof MainStudentsIdMainImport
+      parentRoute: typeof MainStudentsIdRoute
+    }
     '/_main/attendance/_main/': {
       id: '/_main/attendance/_main/'
       path: '/'
@@ -507,6 +585,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainGroupsIdMainStudentsImport
       parentRoute: typeof MainGroupsIdMainImport
     }
+    '/_main/students/$id/_main/groups': {
+      id: '/_main/students/$id/_main/groups'
+      path: '/groups'
+      fullPath: '/students/$id/groups'
+      preLoaderRoute: typeof MainStudentsIdMainGroupsImport
+      parentRoute: typeof MainStudentsIdMainImport
+    }
+    '/_main/students/$id/_main/history': {
+      id: '/_main/students/$id/_main/history'
+      path: '/history'
+      fullPath: '/students/$id/history'
+      preLoaderRoute: typeof MainStudentsIdMainHistoryImport
+      parentRoute: typeof MainStudentsIdMainImport
+    }
+    '/_main/students/$id/_main/notes': {
+      id: '/_main/students/$id/_main/notes'
+      path: '/notes'
+      fullPath: '/students/$id/notes'
+      preLoaderRoute: typeof MainStudentsIdMainNotesImport
+      parentRoute: typeof MainStudentsIdMainImport
+    }
+    '/_main/students/$id/_main/parents': {
+      id: '/_main/students/$id/_main/parents'
+      path: '/parents'
+      fullPath: '/students/$id/parents'
+      preLoaderRoute: typeof MainStudentsIdMainParentsImport
+      parentRoute: typeof MainStudentsIdMainImport
+    }
+    '/_main/students/$id/_main/payments': {
+      id: '/_main/students/$id/_main/payments'
+      path: '/payments'
+      fullPath: '/students/$id/payments'
+      preLoaderRoute: typeof MainStudentsIdMainPaymentsImport
+      parentRoute: typeof MainStudentsIdMainImport
+    }
+    '/_main/students/$id/_main/profile': {
+      id: '/_main/students/$id/_main/profile'
+      path: '/profile'
+      fullPath: '/students/$id/profile'
+      preLoaderRoute: typeof MainStudentsIdMainProfileImport
+      parentRoute: typeof MainStudentsIdMainImport
+    }
     '/_main/groups/$id/_main/': {
       id: '/_main/groups/$id/_main/'
       path: '/'
@@ -514,17 +634,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainGroupsIdMainIndexImport
       parentRoute: typeof MainGroupsIdMainImport
     }
+    '/_main/students/$id/_main/': {
+      id: '/_main/students/$id/_main/'
+      path: '/'
+      fullPath: '/students/$id/'
+      preLoaderRoute: typeof MainStudentsIdMainIndexImport
+      parentRoute: typeof MainStudentsIdMainImport
+    }
   }
 }
 
 // Create and export the route tree
 
 interface AuthRouteChildren {
-  AuthAuthLazyRoute: typeof AuthAuthLazyRoute
+  AuthLoginLazyRoute: typeof AuthLoginLazyRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
-  AuthAuthLazyRoute: AuthAuthLazyRoute,
+  AuthLoginLazyRoute: AuthLoginLazyRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -626,11 +753,45 @@ const MainGroupsIdRouteWithChildren = MainGroupsIdRoute._addFileChildren(
   MainGroupsIdRouteChildren,
 )
 
+interface MainStudentsIdMainRouteChildren {
+  MainStudentsIdMainGroupsRoute: typeof MainStudentsIdMainGroupsRoute
+  MainStudentsIdMainHistoryRoute: typeof MainStudentsIdMainHistoryRoute
+  MainStudentsIdMainNotesRoute: typeof MainStudentsIdMainNotesRoute
+  MainStudentsIdMainParentsRoute: typeof MainStudentsIdMainParentsRoute
+  MainStudentsIdMainPaymentsRoute: typeof MainStudentsIdMainPaymentsRoute
+  MainStudentsIdMainProfileRoute: typeof MainStudentsIdMainProfileRoute
+  MainStudentsIdMainIndexRoute: typeof MainStudentsIdMainIndexRoute
+}
+
+const MainStudentsIdMainRouteChildren: MainStudentsIdMainRouteChildren = {
+  MainStudentsIdMainGroupsRoute: MainStudentsIdMainGroupsRoute,
+  MainStudentsIdMainHistoryRoute: MainStudentsIdMainHistoryRoute,
+  MainStudentsIdMainNotesRoute: MainStudentsIdMainNotesRoute,
+  MainStudentsIdMainParentsRoute: MainStudentsIdMainParentsRoute,
+  MainStudentsIdMainPaymentsRoute: MainStudentsIdMainPaymentsRoute,
+  MainStudentsIdMainProfileRoute: MainStudentsIdMainProfileRoute,
+  MainStudentsIdMainIndexRoute: MainStudentsIdMainIndexRoute,
+}
+
+const MainStudentsIdMainRouteWithChildren =
+  MainStudentsIdMainRoute._addFileChildren(MainStudentsIdMainRouteChildren)
+
+interface MainStudentsIdRouteChildren {
+  MainStudentsIdMainRoute: typeof MainStudentsIdMainRouteWithChildren
+}
+
+const MainStudentsIdRouteChildren: MainStudentsIdRouteChildren = {
+  MainStudentsIdMainRoute: MainStudentsIdMainRouteWithChildren,
+}
+
+const MainStudentsIdRouteWithChildren = MainStudentsIdRoute._addFileChildren(
+  MainStudentsIdRouteChildren,
+)
+
 interface MainRouteChildren {
   MainEmployeesRoute: typeof MainEmployeesRoute
   MainLidsRoute: typeof MainLidsRoute
   MainReportsRoute: typeof MainReportsRoute
-  MainStudentsRoute: typeof MainStudentsRoute
   MainIndexRoute: typeof MainIndexRoute
   MainAttendanceRoute: typeof MainAttendanceRouteWithChildren
   MainFinanceCostRoute: typeof MainFinanceCostRoute
@@ -638,14 +799,15 @@ interface MainRouteChildren {
   MainSettingsRoute: typeof MainSettingsRouteWithChildren
   MainFinanceIndexRoute: typeof MainFinanceIndexRoute
   MainGroupsIndexRoute: typeof MainGroupsIndexRoute
+  MainStudentsIndexRoute: typeof MainStudentsIndexRoute
   MainGroupsIdRoute: typeof MainGroupsIdRouteWithChildren
+  MainStudentsIdRoute: typeof MainStudentsIdRouteWithChildren
 }
 
 const MainRouteChildren: MainRouteChildren = {
   MainEmployeesRoute: MainEmployeesRoute,
   MainLidsRoute: MainLidsRoute,
   MainReportsRoute: MainReportsRoute,
-  MainStudentsRoute: MainStudentsRoute,
   MainIndexRoute: MainIndexRoute,
   MainAttendanceRoute: MainAttendanceRouteWithChildren,
   MainFinanceCostRoute: MainFinanceCostRoute,
@@ -653,7 +815,9 @@ const MainRouteChildren: MainRouteChildren = {
   MainSettingsRoute: MainSettingsRouteWithChildren,
   MainFinanceIndexRoute: MainFinanceIndexRoute,
   MainGroupsIndexRoute: MainGroupsIndexRoute,
+  MainStudentsIndexRoute: MainStudentsIndexRoute,
   MainGroupsIdRoute: MainGroupsIdRouteWithChildren,
+  MainStudentsIdRoute: MainStudentsIdRouteWithChildren,
 }
 
 const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
@@ -663,8 +827,7 @@ export interface FileRoutesByFullPath {
   '/employees': typeof MainEmployeesRoute
   '/lids': typeof MainLidsRoute
   '/reports': typeof MainReportsRoute
-  '/students': typeof MainStudentsRoute
-  '/auth': typeof AuthAuthLazyRoute
+  '/login': typeof AuthLoginLazyRoute
   '/': typeof MainIndexRoute
   '/attendance': typeof MainAttendanceMainRouteWithChildren
   '/finance/cost': typeof MainFinanceCostRoute
@@ -672,6 +835,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof MainSettingsMainRouteWithChildren
   '/finance': typeof MainFinanceIndexRoute
   '/groups': typeof MainGroupsIndexRoute
+  '/students': typeof MainStudentsIndexRoute
   '/attendance/employees': typeof MainAttendanceMainEmployeesRoute
   '/attendance/students': typeof MainAttendanceMainStudentsRoute
   '/groups/$id': typeof MainGroupsIdMainRouteWithChildren
@@ -681,6 +845,7 @@ export interface FileRoutesByFullPath {
   '/settings/payment-type': typeof MainSettingsMainPaymentTypeRoute
   '/settings/roles': typeof MainSettingsMainRolesRoute
   '/settings/rooms': typeof MainSettingsMainRoomsRoute
+  '/students/$id': typeof MainStudentsIdMainRouteWithChildren
   '/attendance/': typeof MainAttendanceMainIndexRoute
   '/settings/': typeof MainSettingsMainIndexRoute
   '/groups/$id/attendance': typeof MainGroupsIdMainAttendanceRoute
@@ -689,7 +854,14 @@ export interface FileRoutesByFullPath {
   '/groups/$id/sale': typeof MainGroupsIdMainSaleRoute
   '/groups/$id/score': typeof MainGroupsIdMainScoreRoute
   '/groups/$id/students': typeof MainGroupsIdMainStudentsRoute
+  '/students/$id/groups': typeof MainStudentsIdMainGroupsRoute
+  '/students/$id/history': typeof MainStudentsIdMainHistoryRoute
+  '/students/$id/notes': typeof MainStudentsIdMainNotesRoute
+  '/students/$id/parents': typeof MainStudentsIdMainParentsRoute
+  '/students/$id/payments': typeof MainStudentsIdMainPaymentsRoute
+  '/students/$id/profile': typeof MainStudentsIdMainProfileRoute
   '/groups/$id/': typeof MainGroupsIdMainIndexRoute
+  '/students/$id/': typeof MainStudentsIdMainIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -697,8 +869,7 @@ export interface FileRoutesByTo {
   '/employees': typeof MainEmployeesRoute
   '/lids': typeof MainLidsRoute
   '/reports': typeof MainReportsRoute
-  '/students': typeof MainStudentsRoute
-  '/auth': typeof AuthAuthLazyRoute
+  '/login': typeof AuthLoginLazyRoute
   '/': typeof MainIndexRoute
   '/attendance': typeof MainAttendanceMainIndexRoute
   '/finance/cost': typeof MainFinanceCostRoute
@@ -706,6 +877,7 @@ export interface FileRoutesByTo {
   '/settings': typeof MainSettingsMainIndexRoute
   '/finance': typeof MainFinanceIndexRoute
   '/groups': typeof MainGroupsIndexRoute
+  '/students': typeof MainStudentsIndexRoute
   '/attendance/employees': typeof MainAttendanceMainEmployeesRoute
   '/attendance/students': typeof MainAttendanceMainStudentsRoute
   '/groups/$id': typeof MainGroupsIdMainIndexRoute
@@ -715,12 +887,19 @@ export interface FileRoutesByTo {
   '/settings/payment-type': typeof MainSettingsMainPaymentTypeRoute
   '/settings/roles': typeof MainSettingsMainRolesRoute
   '/settings/rooms': typeof MainSettingsMainRoomsRoute
+  '/students/$id': typeof MainStudentsIdMainIndexRoute
   '/groups/$id/attendance': typeof MainGroupsIdMainAttendanceRoute
   '/groups/$id/exams': typeof MainGroupsIdMainExamsRoute
   '/groups/$id/notes': typeof MainGroupsIdMainNotesRoute
   '/groups/$id/sale': typeof MainGroupsIdMainSaleRoute
   '/groups/$id/score': typeof MainGroupsIdMainScoreRoute
   '/groups/$id/students': typeof MainGroupsIdMainStudentsRoute
+  '/students/$id/groups': typeof MainStudentsIdMainGroupsRoute
+  '/students/$id/history': typeof MainStudentsIdMainHistoryRoute
+  '/students/$id/notes': typeof MainStudentsIdMainNotesRoute
+  '/students/$id/parents': typeof MainStudentsIdMainParentsRoute
+  '/students/$id/payments': typeof MainStudentsIdMainPaymentsRoute
+  '/students/$id/profile': typeof MainStudentsIdMainProfileRoute
 }
 
 export interface FileRoutesById {
@@ -730,8 +909,7 @@ export interface FileRoutesById {
   '/_main/employees': typeof MainEmployeesRoute
   '/_main/lids': typeof MainLidsRoute
   '/_main/reports': typeof MainReportsRoute
-  '/_main/students': typeof MainStudentsRoute
-  '/_auth/auth': typeof AuthAuthLazyRoute
+  '/_auth/login': typeof AuthLoginLazyRoute
   '/_main/': typeof MainIndexRoute
   '/_main/attendance': typeof MainAttendanceRouteWithChildren
   '/_main/attendance/_main': typeof MainAttendanceMainRouteWithChildren
@@ -741,6 +919,7 @@ export interface FileRoutesById {
   '/_main/settings/_main': typeof MainSettingsMainRouteWithChildren
   '/_main/finance/': typeof MainFinanceIndexRoute
   '/_main/groups/': typeof MainGroupsIndexRoute
+  '/_main/students/': typeof MainStudentsIndexRoute
   '/_main/attendance/_main/employees': typeof MainAttendanceMainEmployeesRoute
   '/_main/attendance/_main/students': typeof MainAttendanceMainStudentsRoute
   '/_main/groups/$id': typeof MainGroupsIdRouteWithChildren
@@ -751,6 +930,8 @@ export interface FileRoutesById {
   '/_main/settings/_main/payment-type': typeof MainSettingsMainPaymentTypeRoute
   '/_main/settings/_main/roles': typeof MainSettingsMainRolesRoute
   '/_main/settings/_main/rooms': typeof MainSettingsMainRoomsRoute
+  '/_main/students/$id': typeof MainStudentsIdRouteWithChildren
+  '/_main/students/$id/_main': typeof MainStudentsIdMainRouteWithChildren
   '/_main/attendance/_main/': typeof MainAttendanceMainIndexRoute
   '/_main/settings/_main/': typeof MainSettingsMainIndexRoute
   '/_main/groups/$id/_main/attendance': typeof MainGroupsIdMainAttendanceRoute
@@ -759,7 +940,14 @@ export interface FileRoutesById {
   '/_main/groups/$id/_main/sale': typeof MainGroupsIdMainSaleRoute
   '/_main/groups/$id/_main/score': typeof MainGroupsIdMainScoreRoute
   '/_main/groups/$id/_main/students': typeof MainGroupsIdMainStudentsRoute
+  '/_main/students/$id/_main/groups': typeof MainStudentsIdMainGroupsRoute
+  '/_main/students/$id/_main/history': typeof MainStudentsIdMainHistoryRoute
+  '/_main/students/$id/_main/notes': typeof MainStudentsIdMainNotesRoute
+  '/_main/students/$id/_main/parents': typeof MainStudentsIdMainParentsRoute
+  '/_main/students/$id/_main/payments': typeof MainStudentsIdMainPaymentsRoute
+  '/_main/students/$id/_main/profile': typeof MainStudentsIdMainProfileRoute
   '/_main/groups/$id/_main/': typeof MainGroupsIdMainIndexRoute
+  '/_main/students/$id/_main/': typeof MainStudentsIdMainIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -769,8 +957,7 @@ export interface FileRouteTypes {
     | '/employees'
     | '/lids'
     | '/reports'
-    | '/students'
-    | '/auth'
+    | '/login'
     | '/'
     | '/attendance'
     | '/finance/cost'
@@ -778,6 +965,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/finance'
     | '/groups'
+    | '/students'
     | '/attendance/employees'
     | '/attendance/students'
     | '/groups/$id'
@@ -787,6 +975,7 @@ export interface FileRouteTypes {
     | '/settings/payment-type'
     | '/settings/roles'
     | '/settings/rooms'
+    | '/students/$id'
     | '/attendance/'
     | '/settings/'
     | '/groups/$id/attendance'
@@ -795,15 +984,21 @@ export interface FileRouteTypes {
     | '/groups/$id/sale'
     | '/groups/$id/score'
     | '/groups/$id/students'
+    | '/students/$id/groups'
+    | '/students/$id/history'
+    | '/students/$id/notes'
+    | '/students/$id/parents'
+    | '/students/$id/payments'
+    | '/students/$id/profile'
     | '/groups/$id/'
+    | '/students/$id/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | ''
     | '/employees'
     | '/lids'
     | '/reports'
-    | '/students'
-    | '/auth'
+    | '/login'
     | '/'
     | '/attendance'
     | '/finance/cost'
@@ -811,6 +1006,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/finance'
     | '/groups'
+    | '/students'
     | '/attendance/employees'
     | '/attendance/students'
     | '/groups/$id'
@@ -820,12 +1016,19 @@ export interface FileRouteTypes {
     | '/settings/payment-type'
     | '/settings/roles'
     | '/settings/rooms'
+    | '/students/$id'
     | '/groups/$id/attendance'
     | '/groups/$id/exams'
     | '/groups/$id/notes'
     | '/groups/$id/sale'
     | '/groups/$id/score'
     | '/groups/$id/students'
+    | '/students/$id/groups'
+    | '/students/$id/history'
+    | '/students/$id/notes'
+    | '/students/$id/parents'
+    | '/students/$id/payments'
+    | '/students/$id/profile'
   id:
     | '__root__'
     | '/_auth'
@@ -833,8 +1036,7 @@ export interface FileRouteTypes {
     | '/_main/employees'
     | '/_main/lids'
     | '/_main/reports'
-    | '/_main/students'
-    | '/_auth/auth'
+    | '/_auth/login'
     | '/_main/'
     | '/_main/attendance'
     | '/_main/attendance/_main'
@@ -844,6 +1046,7 @@ export interface FileRouteTypes {
     | '/_main/settings/_main'
     | '/_main/finance/'
     | '/_main/groups/'
+    | '/_main/students/'
     | '/_main/attendance/_main/employees'
     | '/_main/attendance/_main/students'
     | '/_main/groups/$id'
@@ -854,6 +1057,8 @@ export interface FileRouteTypes {
     | '/_main/settings/_main/payment-type'
     | '/_main/settings/_main/roles'
     | '/_main/settings/_main/rooms'
+    | '/_main/students/$id'
+    | '/_main/students/$id/_main'
     | '/_main/attendance/_main/'
     | '/_main/settings/_main/'
     | '/_main/groups/$id/_main/attendance'
@@ -862,7 +1067,14 @@ export interface FileRouteTypes {
     | '/_main/groups/$id/_main/sale'
     | '/_main/groups/$id/_main/score'
     | '/_main/groups/$id/_main/students'
+    | '/_main/students/$id/_main/groups'
+    | '/_main/students/$id/_main/history'
+    | '/_main/students/$id/_main/notes'
+    | '/_main/students/$id/_main/parents'
+    | '/_main/students/$id/_main/payments'
+    | '/_main/students/$id/_main/profile'
     | '/_main/groups/$id/_main/'
+    | '/_main/students/$id/_main/'
   fileRoutesById: FileRoutesById
 }
 
@@ -895,7 +1107,7 @@ export const routeTree = rootRoute
     "/_auth": {
       "filePath": "_auth.tsx",
       "children": [
-        "/_auth/auth"
+        "/_auth/login"
       ]
     },
     "/_main": {
@@ -904,7 +1116,6 @@ export const routeTree = rootRoute
         "/_main/employees",
         "/_main/lids",
         "/_main/reports",
-        "/_main/students",
         "/_main/",
         "/_main/attendance",
         "/_main/finance/cost",
@@ -912,7 +1123,9 @@ export const routeTree = rootRoute
         "/_main/settings",
         "/_main/finance/",
         "/_main/groups/",
-        "/_main/groups/$id"
+        "/_main/students/",
+        "/_main/groups/$id",
+        "/_main/students/$id"
       ]
     },
     "/_main/employees": {
@@ -927,12 +1140,8 @@ export const routeTree = rootRoute
       "filePath": "_main/reports.tsx",
       "parent": "/_main"
     },
-    "/_main/students": {
-      "filePath": "_main/students.tsx",
-      "parent": "/_main"
-    },
-    "/_auth/auth": {
-      "filePath": "_auth/auth.lazy.tsx",
+    "/_auth/login": {
+      "filePath": "_auth/login.lazy.tsx",
       "parent": "/_auth"
     },
     "/_main/": {
@@ -991,6 +1200,10 @@ export const routeTree = rootRoute
       "filePath": "_main/groups/index.tsx",
       "parent": "/_main"
     },
+    "/_main/students/": {
+      "filePath": "_main/students/index.tsx",
+      "parent": "/_main"
+    },
     "/_main/attendance/_main/employees": {
       "filePath": "_main/attendance/_main/employees.tsx",
       "parent": "/_main/attendance/_main"
@@ -1043,6 +1256,26 @@ export const routeTree = rootRoute
       "filePath": "_main/settings/_main/rooms.tsx",
       "parent": "/_main/settings/_main"
     },
+    "/_main/students/$id": {
+      "filePath": "_main/students/$id",
+      "parent": "/_main",
+      "children": [
+        "/_main/students/$id/_main"
+      ]
+    },
+    "/_main/students/$id/_main": {
+      "filePath": "_main/students/$id/_main.tsx",
+      "parent": "/_main/students/$id",
+      "children": [
+        "/_main/students/$id/_main/groups",
+        "/_main/students/$id/_main/history",
+        "/_main/students/$id/_main/notes",
+        "/_main/students/$id/_main/parents",
+        "/_main/students/$id/_main/payments",
+        "/_main/students/$id/_main/profile",
+        "/_main/students/$id/_main/"
+      ]
+    },
     "/_main/attendance/_main/": {
       "filePath": "_main/attendance/_main/index.tsx",
       "parent": "/_main/attendance/_main"
@@ -1075,9 +1308,37 @@ export const routeTree = rootRoute
       "filePath": "_main/groups/$id/_main/students.tsx",
       "parent": "/_main/groups/$id/_main"
     },
+    "/_main/students/$id/_main/groups": {
+      "filePath": "_main/students/$id/_main/groups.tsx",
+      "parent": "/_main/students/$id/_main"
+    },
+    "/_main/students/$id/_main/history": {
+      "filePath": "_main/students/$id/_main/history.tsx",
+      "parent": "/_main/students/$id/_main"
+    },
+    "/_main/students/$id/_main/notes": {
+      "filePath": "_main/students/$id/_main/notes.tsx",
+      "parent": "/_main/students/$id/_main"
+    },
+    "/_main/students/$id/_main/parents": {
+      "filePath": "_main/students/$id/_main/parents.tsx",
+      "parent": "/_main/students/$id/_main"
+    },
+    "/_main/students/$id/_main/payments": {
+      "filePath": "_main/students/$id/_main/payments.tsx",
+      "parent": "/_main/students/$id/_main"
+    },
+    "/_main/students/$id/_main/profile": {
+      "filePath": "_main/students/$id/_main/profile.tsx",
+      "parent": "/_main/students/$id/_main"
+    },
     "/_main/groups/$id/_main/": {
       "filePath": "_main/groups/$id/_main/index.tsx",
       "parent": "/_main/groups/$id/_main"
+    },
+    "/_main/students/$id/_main/": {
+      "filePath": "_main/students/$id/_main/index.tsx",
+      "parent": "/_main/students/$id/_main"
     }
   }
 }

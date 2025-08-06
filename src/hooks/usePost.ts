@@ -1,4 +1,3 @@
-import { onError } from "@/lib/onError";
 import axiosInstance from "@/services/axios-instance";
 import {
   MutateOptions,
@@ -6,6 +5,7 @@ import {
   UseMutationOptions,
 } from "@tanstack/react-query";
 import { AxiosRequestConfig } from "axios";
+import { onError } from "@/lib/onError";
 
 export const postRequest = <T>(
   url: string,

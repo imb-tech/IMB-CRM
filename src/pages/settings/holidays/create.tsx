@@ -17,26 +17,25 @@ const HolidayCreate = ({ item }: Props) => {
     const queryClient = useQueryClient()
     const { closeModal } = useModal(`${HOLIDAY}-add`)
     const form = useForm<Holiday>({ defaultValues: item || undefined })
+
+    function onSuccess() {
+        toast.success("Muvaffaqiyatli yangilandi")
+        closeModal()
+        form.reset()
+        queryClient.invalidateQueries({ queryKey: [HOLIDAY] })
+    }
+
     const { mutate: mutateCreate, isPending: isPendingCreate } = usePost({
-        onSuccess: () => {
-            toast.success("Muvaffaqiyatli yaratildi")
-            closeModal()
-            form.reset()
-            queryClient.invalidateQueries({ queryKey: [HOLIDAY] })
-        },
+        onSuccess,
     })
     const { mutate: mutateUpdate, isPending: isPendingUpdate } = usePatch({
-        onSuccess: () => {
-            toast.success("Muvaffaqiyatli yangilandi")
-            closeModal()
-            form.reset()
-            queryClient.invalidateQueries({ queryKey: [HOLIDAY] })
-        },
+        onSuccess,
     })
+
     const disabled = isPendingCreate || isPendingUpdate
 
     const onSubmit = (values: Holiday) => {
-        console.log(values)
+        delete values?.is_active
         if (item?.id) {
             mutateUpdate(`${HOLIDAY}/${item.id}`, values)
         } else {
@@ -52,12 +51,7 @@ const HolidayCreate = ({ item }: Props) => {
                 label="Sana"
                 name="date"
             />
-            <FormTextarea
-                required
-                methods={form}
-                label="Sabab"
-                name="reason"
-            />
+            <FormTextarea required methods={form} label="Sabab" name="reason" />
             <Button
                 className="md:w-max w-full float-end"
                 type="submit"

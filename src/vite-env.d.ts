@@ -4,6 +4,7 @@ interface ImportMetaEnv {
     readonly VITE_MOBILE_URL: string
     readonly VITE_FAST_URL: string
     readonly VITE_SOCKET_URL: string
+    readonly VITE_SSH_PUBLIC_KEY: string
 }
 
 interface ImportMeta {

@@ -15,38 +15,38 @@ type SettingsParams = {
 type Room = {
     id: number,
     name: string,
-    branch: string,
-
+    branch_name: string
+    created_at: string
+    branch: number
 }
 
 
 
 type Course = {
-    id: number;
-    name: string;
-    price: number;
-    month_duration: number;
-    description: string;
-    color: string;
-    lesson_count: number;
-    is_delete: boolean;
-    branch: {
-        id: number,
-        name: string,
-    };
-};
+    id: number
+    name: string,
+    price: number,
+    duration: number,
+    color: string,
+    branch: number
+    branch_name: string
+}
 
 type Holiday = {
-    id: number,
-    date: string,
+    id: number
+    is_active?: boolean
+    created_at: string
+    updated_at: string
+    date: string
     reason: string
 }
 
 type Branch = {
     id: number,
     name: string,
-    work_start_date: string
-    work_end_date: string
+    start_time: string
+    end_time: string
+    created_at: string
 }
 
 type Role = {

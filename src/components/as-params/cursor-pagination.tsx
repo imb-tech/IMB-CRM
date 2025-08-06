@@ -16,7 +16,7 @@ const CursorPagination: React.FC<
     pageSizeParamName = "page_size",
     disabled = false,
     changePageSize = true,
-    PageSize = DEFAULT_PAGE_SIZE,
+    PageSize = 10,
     next = null,
     previous = null,
 }) => {

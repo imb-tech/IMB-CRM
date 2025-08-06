@@ -9,8 +9,10 @@ import { Link, useNavigate } from "@tanstack/react-router"
 import { LogOut, User } from "lucide-react"
 import { ThemeColorToggle } from "./color-toggle"
 import { SidebarTrigger } from "../ui/sidebar"
-import { ReactNode } from "react"
-import { ParamCombobox } from "../as-params/combobox"
+import { ReactNode, useState } from "react"
+import useMe from "@/hooks/useMe"
+import Select from "../ui/select"
+import { getActiveBranch, setActiveBranch } from "@/lib/utils"
 
 type Props = {
     title?: string
@@ -20,12 +22,19 @@ type Props = {
 }
 const Header = ({ rigthChildren, leftChildren }: Props) => {
     const navigate = useNavigate()
+    const { data } = useMe()
+    const activeBranch = getActiveBranch()
+    const [branch, setBranch] = useState(activeBranch)
 
     const handleLogOut = () => {
-        navigate({ to: "/auth" })
+        navigate({ to: "/login" })
         localStorage.removeItem("token")
-        localStorage.clear()
         localStorage.removeItem("refresh")
+    }
+
+    function changeBranch(v: string) {
+        setBranch(Number(v))
+        setActiveBranch(v)
     }
 
     return (
@@ -44,15 +53,13 @@ const Header = ({ rigthChildren, leftChildren }: Props) => {
             </div>
             <hgroup className="flex items-center gap-4">
                 {rigthChildren ? rigthChildren : null}
-                <ParamCombobox
+                <Select
+                    value={branch}
+                    setValue={(v) => changeBranch(v.toString())}
                     className="w-full"
-                    options={[
-                        { label: "Toshkent Index ", value: "imb" },
-                        { label: "Toshkent City", value: "imb" },
-                        { label: "Toshkent Yakkasaroy", value: "imb" },
-                    ]}
-                    isSearch={false}
-                    paramName="branch"
+                    labelKey="name"
+                    valueKey="id"
+                    options={data?.branches ?? []}
                     label="Barcha filiallar"
                 />
                 <ThemeColorToggle />

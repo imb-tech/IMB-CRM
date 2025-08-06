@@ -1,3 +1,4 @@
+import { getActiveBranch } from "@/lib/utils";
 import axiosInstance from "@/services/axios-instance";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { AxiosRequestConfig } from "axios";
@@ -19,10 +20,13 @@ export const useGet = <TData = any, TQueryFnData = unknown, TError = any>(
   args?: UseGetArgs<TData, TQueryFnData, TError>,
 ) => {
   const { deps, config, options, params } = args || {};
+  const branch = getActiveBranch()
+
+  const prms = { branch, is_active: true, ...params }
 
   return useQuery<TQueryFnData, TError, TData>({
     queryKey: (() => {
-      const paramValues = Object.values(params || {});
+      const paramValues = Object.values(prms || {});
       const hasParams = paramValues.length > 0;
 
       if (deps) {
@@ -31,7 +35,7 @@ export const useGet = <TData = any, TQueryFnData = unknown, TError = any>(
 
       return hasParams ? [url, ...paramValues] : [url];
     })(),
-    queryFn: () => getRequest(url, { ...config, params }),
+    queryFn: () => getRequest(url, { ...config, params: prms }),
     ...(options || { staleTime: DEFAULT_STALE_TIME }),
   });
 };

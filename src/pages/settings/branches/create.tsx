@@ -15,7 +15,9 @@ type Props = {
 const BranchesCreate = ({ item }: Props) => {
     const queryClient = useQueryClient()
     const { closeModal } = useModal(`${BRANCH}-add`)
+    
     const form = useForm<Branch>({ defaultValues: item || undefined })
+
     const { mutate: mutateCreate, isPending: isPendingCreate } = usePost({
         onSuccess: () => {
             toast.success("Muvaffaqiyatli yaratildi")
@@ -24,6 +26,7 @@ const BranchesCreate = ({ item }: Props) => {
             queryClient.invalidateQueries({ queryKey: [BRANCH] })
         },
     })
+
     const { mutate: mutateUpdate, isPending: isPendingUpdate } = usePatch({
         onSuccess: () => {
             toast.success("Muvaffaqiyatli yangilandi")
@@ -35,7 +38,6 @@ const BranchesCreate = ({ item }: Props) => {
     const disabled = isPendingCreate || isPendingUpdate
 
     const onSubmit = (values: Branch) => {
-        console.log(values)
         if (item?.id) {
             mutateUpdate(`${BRANCH}/${item?.id}`, values)
         } else {
@@ -51,14 +53,14 @@ const BranchesCreate = ({ item }: Props) => {
                 required
                 methods={form}
                 label="Ish boshlanish vaqti"
-                name="work_start_date"
+                name="start_time"
             />
             <FormInput
                 type="time"
                 required
                 methods={form}
                 label="Ish tugash vaqti"
-                name="work_end_date"
+                name="end_time"
             />
             <Button
                 className="md:w-max w-full float-end"

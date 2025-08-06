@@ -119,7 +119,7 @@ export const menuItems = [
                 items: [],
             }),
             linkOptions({
-                title: "Dam olish kunlari",
+                title: "Ta'til kunlari",
                 to: "/settings/holidays",
                 enabled: true,
                 items: [],
@@ -177,6 +177,49 @@ export const groupDetailNav = (groupId: string) => {
                 to: `/groups/$id/sale`,
                 params: {
                     id: groupId,
+                },
+            }),
+        ],
+        [],
+    )
+}
+
+export const studentDetailNav = (studentId: string) => {
+    return useMemo(
+        () => [
+            linkOptions({
+                title: "Guruhlar",
+                to: "/students/$id/groups",
+                params: {
+                    id: studentId,
+                },
+            }),
+            linkOptions({
+                title: "To'lovlar",
+                to: "/students/$id/payments",
+                params: {
+                    id: studentId,
+                },
+            }),
+            linkOptions({
+                title: "Eslatmalar",
+                to: "/students/$id/notes",
+                params: {
+                    id: studentId,
+                },
+            }),
+            linkOptions({
+                title: "Tarix",
+                to: "/students/$id/history",
+                params: {
+                    id: studentId,
+                },
+            }),
+            linkOptions({
+                title: "Ma'sullar",
+                to: "/students/$id/parents",
+                params: {
+                    id: studentId,
                 },
             }),
         ],

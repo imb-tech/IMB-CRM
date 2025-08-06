@@ -1,11 +1,17 @@
-export const LOGIN = "token"
+const COMMON = "common/"
+const AUTH = "auth/"
+
+export const LOGIN = AUTH + "login"
+export const PROFILE = AUTH + "profile"
+
+export const BRANCH = COMMON + "branches"
+export const ROOM = COMMON + "rooms"
+export const COURSE = COMMON + 'courses'
+export const PAYMENT_TYPE = COMMON + 'payment-types'
+export const HOLIDAY = COMMON + 'weekends'
+export const ROLE = COMMON + 'roles'
+
 export const REFRESH_TOKEN = "token/refresh"
-export const BRANCH = "container-type"
-export const ROOM = "containers"
-export const COURSE = `branch`
-export const PAYMENT_TYPE = `payment-type`
-export const HOLIDAY = `/full-cargo`
-export const ROLE = `/logs`
 export const GROUP = `/payment`
 export const STUDENT = `country`
 export const EMPLOYEE = `inventory`

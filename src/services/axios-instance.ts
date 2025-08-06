@@ -35,7 +35,7 @@ export function setupAxiosInterceptors(queryClient: QueryClient) {
         async function (error) {
             const originalRequest = error.config;
             const status = error.response?.status;
-            const isLoginPage = window.location.pathname === "/auth";
+            const isLoginPage = window.location.pathname === "/login";
 
             // Agar request yo'q bo'lsa yoki status yo'q bo'lsa, reject
             if (!originalRequest || !status) {
@@ -60,13 +60,13 @@ export function setupAxiosInterceptors(queryClient: QueryClient) {
                         }
                     }
                     if (!isLoginPage) {
-                        location.href = "/auth";
+                        location.href = "/login";
                     }
                 } catch (refreshError) {
                     localStorage.removeItem(USER_ACCESS_KEY);
                     localStorage.removeItem(USER_REFRESH_KEY);
                     if (!isLoginPage) {
-                        location.href = "/auth";
+                        location.href = "/login";
                     }
                     return Promise.reject(refreshError);
                 }
