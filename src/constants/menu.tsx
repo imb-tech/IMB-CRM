@@ -29,7 +29,7 @@ export const menuItems = [
     linkOptions({
         title: "Lidlar",
         icon: <ClipboardList width={20} />,
-        to: "/lids",
+        to: "/leads",
         enabled: true,
         items: [],
     }),

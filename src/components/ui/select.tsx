@@ -1,4 +1,4 @@
-import React from "react"
+import React, { ReactNode } from "react"
 import {
     Select as Select2,
     SelectContent,
@@ -8,6 +8,7 @@ import {
     SelectValue,
 } from "./select2"
 import { ClassNameValue } from "tailwind-merge"
+import { cn } from "@/lib/utils"
 export default function Select<T extends Record<string, any>>({
     value,
     setValue,
@@ -15,8 +16,11 @@ export default function Select<T extends Record<string, any>>({
     label,
     className,
     disabled,
-    labelKey="label",
-    valueKey="value",
+    renderOption,
+    labelKey = "label",
+    valueKey = "value",
+    placeholder,
+    classNameItem,
 }: thisProps<T>) {
     return (
         <Select2
@@ -24,8 +28,22 @@ export default function Select<T extends Record<string, any>>({
             value={value?.toString()}
             onValueChange={setValue}
         >
-            <SelectTrigger className={`w-full bg-background ${className}`}>
-                <SelectValue className={`${className}`} placeholder={label} />
+            <SelectTrigger
+                className={cn(
+                    `w-full bg-secondary ${className}`,
+                    renderOption && "pl-1",
+                )}
+            >
+                <SelectValue
+                    className={`${className}`}
+                    placeholder={
+                        <span
+                            className={`${renderOption && "pl-2"} !text-muted-foreground`}
+                        >
+                            {placeholder ?? label}
+                        </span>
+                    }
+                />
             </SelectTrigger>
             <SelectContent>
                 <SelectGroup>
@@ -33,8 +51,14 @@ export default function Select<T extends Record<string, any>>({
                         <SelectItem
                             key={i}
                             value={s[valueKey as keyof T]?.toString()}
+                            className={cn(
+                                renderOption && "p-0 bg-transparent",
+                                classNameItem,
+                            )}
                         >
-                            {s[labelKey as keyof T]}
+                            {!!renderOption ?
+                                renderOption(s)
+                            :   s[labelKey as keyof T]}
                         </SelectItem>
                     ))}
                 </SelectGroup>
@@ -49,7 +73,10 @@ interface thisProps<T extends Record<string, any>> {
     options: T[]
     label: string
     className?: ClassNameValue
+    classNameItem?: ClassNameValue
     disabled?: boolean
     labelKey?: keyof T
     valueKey?: keyof T
+    renderOption?: (item: T) => ReactNode
+    placeholder?: string
 }

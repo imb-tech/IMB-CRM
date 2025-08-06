@@ -11,6 +11,7 @@ type Profile = {
     username: string,
     full_name: string,
     phone: string,
+    pipeline: number
     branches: {
         id: number,
         name: string

@@ -3,15 +3,15 @@ import FieldLabel from "./form-label"
 import FieldError from "./form-error"
 import { MultiCombobox as ShadcnCombobox } from "@/components/ui/multi-combobox"
 import { getNestedValue } from "./input"
+import { ButtonProps } from "../ui/button"
 
-type ComboboxProps<T extends FieldValues> = {
-    name: Path<T>
+type ComboboxProps<TForm extends FieldValues, T extends FieldValues> = {
+    name: Path<TForm>
     label?: string
     placeholder?: string
     options: T[] | undefined
-    disabled?: boolean
     required?: boolean
-    control: Control<T>
+    control: Control<TForm>
     hideError?: boolean
     onAdd?: () => void
     labelKey?: keyof T
@@ -19,13 +19,18 @@ type ComboboxProps<T extends FieldValues> = {
     skeletonCount?: number
     isLoading?: boolean
     onSearchChange?: (val: string) => void
+    addButtonProps?: ButtonProps
+    allSelected?: boolean
+    isSearch?: boolean
 }
 
-export function FormMultiCombobox<T extends FieldValues>({
+export function FormMultiCombobox<
+    TForm extends FieldValues,
+    T extends FieldValues,
+>({
     name,
     label,
     options,
-    disabled,
     placeholder,
     required,
     control,
@@ -36,8 +41,12 @@ export function FormMultiCombobox<T extends FieldValues>({
     isLoading,
     skeletonCount,
     onSearchChange,
-}: ComboboxProps<T>) {
+    addButtonProps,
+    allSelected = false,
+    isSearch = true,
+}: ComboboxProps<TForm, T>) {
     const error = getNestedValue(control._formState.errors, name)
+
     return (
         <div>
             {label && (
@@ -53,9 +62,7 @@ export function FormMultiCombobox<T extends FieldValues>({
                 name={name}
                 control={control}
                 rules={
-                    required
-                        ? { required: `${label || name}ni kiriting` }
-                        : {}
+                    required ? { required: `${label || name}ni kiriting` } : {}
                 }
                 render={({ field }) => (
                     <div className="pt-0.5">
@@ -64,7 +71,6 @@ export function FormMultiCombobox<T extends FieldValues>({
                             values={field.value}
                             setValues={field.onChange}
                             label={placeholder || label || "Tanlang"}
-                            disabled={control._formState.disabled || disabled}
                             isError={!!error}
                             onAdd={onAdd}
                             valueKey={valueKey}
@@ -72,6 +78,12 @@ export function FormMultiCombobox<T extends FieldValues>({
                             isLoading={isLoading}
                             skeletonCount={skeletonCount}
                             onSearchChange={onSearchChange}
+                            allSelected={allSelected}
+                            isSearch={isSearch}
+                            addButtonProps={{
+                                disabled: control._formState.disabled,
+                                ...addButtonProps,
+                            }}
                         />
                     </div>
                 )}

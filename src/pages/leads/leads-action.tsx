@@ -14,7 +14,7 @@ import {
     Trash2,
 } from "lucide-react"
 
-export function LidsAction() {
+export function LeadsAction() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>

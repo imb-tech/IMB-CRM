@@ -16,17 +16,23 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as MainImport } from './routes/_main'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as MainIndexImport } from './routes/_main/index'
+import { Route as FormIdImport } from './routes/form/$id'
 import { Route as MainReportsImport } from './routes/_main/reports'
-import { Route as MainLidsImport } from './routes/_main/lids'
 import { Route as MainEmployeesImport } from './routes/_main/employees'
 import { Route as MainStudentsIndexImport } from './routes/_main/students/index'
+import { Route as MainLeadsIndexImport } from './routes/_main/leads/index'
 import { Route as MainGroupsIndexImport } from './routes/_main/groups/index'
 import { Route as MainFinanceIndexImport } from './routes/_main/finance/index'
 import { Route as MainSettingsMainImport } from './routes/_main/settings/_main'
+import { Route as MainLeadsSourcesImport } from './routes/_main/leads/sources'
+import { Route as MainLeadsArchiveImport } from './routes/_main/leads/archive'
 import { Route as MainFinanceIncomeImport } from './routes/_main/finance/income'
 import { Route as MainFinanceCostImport } from './routes/_main/finance/cost'
 import { Route as MainAttendanceMainImport } from './routes/_main/attendance/_main'
 import { Route as MainSettingsMainIndexImport } from './routes/_main/settings/_main/index'
+import { Route as MainLeadsStatsIndexImport } from './routes/_main/leads/stats/index'
+import { Route as MainLeadsFormsIndexImport } from './routes/_main/leads/forms/index'
+import { Route as MainLeadsIdIndexImport } from './routes/_main/leads/$id/index'
 import { Route as MainAttendanceMainIndexImport } from './routes/_main/attendance/_main/index'
 import { Route as MainStudentsIdMainImport } from './routes/_main/students/$id/_main'
 import { Route as MainSettingsMainRoomsImport } from './routes/_main/settings/_main/rooms'
@@ -35,6 +41,8 @@ import { Route as MainSettingsMainPaymentTypeImport } from './routes/_main/setti
 import { Route as MainSettingsMainHolidaysImport } from './routes/_main/settings/_main/holidays'
 import { Route as MainSettingsMainCoursesImport } from './routes/_main/settings/_main/courses'
 import { Route as MainSettingsMainBranchesImport } from './routes/_main/settings/_main/branches'
+import { Route as MainLeadsFormsCreateImport } from './routes/_main/leads/forms/create'
+import { Route as MainLeadsFormsIdImport } from './routes/_main/leads/forms/$id'
 import { Route as MainGroupsIdMainImport } from './routes/_main/groups/$id/_main'
 import { Route as MainAttendanceMainStudentsImport } from './routes/_main/attendance/_main/students'
 import { Route as MainAttendanceMainEmployeesImport } from './routes/_main/attendance/_main/employees'
@@ -46,6 +54,8 @@ import { Route as MainStudentsIdMainParentsImport } from './routes/_main/student
 import { Route as MainStudentsIdMainNotesImport } from './routes/_main/students/$id/_main/notes'
 import { Route as MainStudentsIdMainHistoryImport } from './routes/_main/students/$id/_main/history'
 import { Route as MainStudentsIdMainGroupsImport } from './routes/_main/students/$id/_main/groups'
+import { Route as MainLeadsFormsEditIdImport } from './routes/_main/leads/forms/edit/$id'
+import { Route as MainLeadsIdUserUserImport } from './routes/_main/leads/$id/user/$user'
 import { Route as MainGroupsIdMainStudentsImport } from './routes/_main/groups/$id/_main/students'
 import { Route as MainGroupsIdMainScoreImport } from './routes/_main/groups/$id/_main/score'
 import { Route as MainGroupsIdMainSaleImport } from './routes/_main/groups/$id/_main/sale'
@@ -97,15 +107,15 @@ const AuthLoginLazyRoute = AuthLoginLazyImport.update({
   getParentRoute: () => AuthRoute,
 } as any).lazy(() => import('./routes/_auth/login.lazy').then((d) => d.Route))
 
+const FormIdRoute = FormIdImport.update({
+  id: '/form/$id',
+  path: '/form/$id',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const MainReportsRoute = MainReportsImport.update({
   id: '/reports',
   path: '/reports',
-  getParentRoute: () => MainRoute,
-} as any)
-
-const MainLidsRoute = MainLidsImport.update({
-  id: '/lids',
-  path: '/lids',
   getParentRoute: () => MainRoute,
 } as any)
 
@@ -133,6 +143,12 @@ const MainStudentsIndexRoute = MainStudentsIndexImport.update({
   getParentRoute: () => MainRoute,
 } as any)
 
+const MainLeadsIndexRoute = MainLeadsIndexImport.update({
+  id: '/leads/',
+  path: '/leads/',
+  getParentRoute: () => MainRoute,
+} as any)
+
 const MainGroupsIndexRoute = MainGroupsIndexImport.update({
   id: '/groups/',
   path: '/groups/',
@@ -148,6 +164,18 @@ const MainFinanceIndexRoute = MainFinanceIndexImport.update({
 const MainSettingsMainRoute = MainSettingsMainImport.update({
   id: '/_main',
   getParentRoute: () => MainSettingsRoute,
+} as any)
+
+const MainLeadsSourcesRoute = MainLeadsSourcesImport.update({
+  id: '/leads/sources',
+  path: '/leads/sources',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainLeadsArchiveRoute = MainLeadsArchiveImport.update({
+  id: '/leads/archive',
+  path: '/leads/archive',
+  getParentRoute: () => MainRoute,
 } as any)
 
 const MainFinanceIncomeRoute = MainFinanceIncomeImport.update({
@@ -171,6 +199,24 @@ const MainSettingsMainIndexRoute = MainSettingsMainIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => MainSettingsMainRoute,
+} as any)
+
+const MainLeadsStatsIndexRoute = MainLeadsStatsIndexImport.update({
+  id: '/leads/stats/',
+  path: '/leads/stats/',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainLeadsFormsIndexRoute = MainLeadsFormsIndexImport.update({
+  id: '/leads/forms/',
+  path: '/leads/forms/',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainLeadsIdIndexRoute = MainLeadsIdIndexImport.update({
+  id: '/leads/$id/',
+  path: '/leads/$id/',
+  getParentRoute: () => MainRoute,
 } as any)
 
 const MainAttendanceMainIndexRoute = MainAttendanceMainIndexImport.update({
@@ -219,6 +265,18 @@ const MainSettingsMainBranchesRoute = MainSettingsMainBranchesImport.update({
   id: '/branches',
   path: '/branches',
   getParentRoute: () => MainSettingsMainRoute,
+} as any)
+
+const MainLeadsFormsCreateRoute = MainLeadsFormsCreateImport.update({
+  id: '/leads/forms/create',
+  path: '/leads/forms/create',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainLeadsFormsIdRoute = MainLeadsFormsIdImport.update({
+  id: '/leads/forms/$id',
+  path: '/leads/forms/$id',
+  getParentRoute: () => MainRoute,
 } as any)
 
 const MainGroupsIdMainRoute = MainGroupsIdMainImport.update({
@@ -291,6 +349,18 @@ const MainStudentsIdMainGroupsRoute = MainStudentsIdMainGroupsImport.update({
   getParentRoute: () => MainStudentsIdMainRoute,
 } as any)
 
+const MainLeadsFormsEditIdRoute = MainLeadsFormsEditIdImport.update({
+  id: '/leads/forms/edit/$id',
+  path: '/leads/forms/edit/$id',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainLeadsIdUserUserRoute = MainLeadsIdUserUserImport.update({
+  id: '/leads/$id/user/$user',
+  path: '/leads/$id/user/$user',
+  getParentRoute: () => MainRoute,
+} as any)
+
 const MainGroupsIdMainStudentsRoute = MainGroupsIdMainStudentsImport.update({
   id: '/students',
   path: '/students',
@@ -354,19 +424,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainEmployeesImport
       parentRoute: typeof MainImport
     }
-    '/_main/lids': {
-      id: '/_main/lids'
-      path: '/lids'
-      fullPath: '/lids'
-      preLoaderRoute: typeof MainLidsImport
-      parentRoute: typeof MainImport
-    }
     '/_main/reports': {
       id: '/_main/reports'
       path: '/reports'
       fullPath: '/reports'
       preLoaderRoute: typeof MainReportsImport
       parentRoute: typeof MainImport
+    }
+    '/form/$id': {
+      id: '/form/$id'
+      path: '/form/$id'
+      fullPath: '/form/$id'
+      preLoaderRoute: typeof FormIdImport
+      parentRoute: typeof rootRoute
     }
     '/_auth/login': {
       id: '/_auth/login'
@@ -410,6 +480,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainFinanceIncomeImport
       parentRoute: typeof MainImport
     }
+    '/_main/leads/archive': {
+      id: '/_main/leads/archive'
+      path: '/leads/archive'
+      fullPath: '/leads/archive'
+      preLoaderRoute: typeof MainLeadsArchiveImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/leads/sources': {
+      id: '/_main/leads/sources'
+      path: '/leads/sources'
+      fullPath: '/leads/sources'
+      preLoaderRoute: typeof MainLeadsSourcesImport
+      parentRoute: typeof MainImport
+    }
     '/_main/settings': {
       id: '/_main/settings'
       path: '/settings'
@@ -436,6 +520,13 @@ declare module '@tanstack/react-router' {
       path: '/groups'
       fullPath: '/groups'
       preLoaderRoute: typeof MainGroupsIndexImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/leads/': {
+      id: '/_main/leads/'
+      path: '/leads'
+      fullPath: '/leads'
+      preLoaderRoute: typeof MainLeadsIndexImport
       parentRoute: typeof MainImport
     }
     '/_main/students/': {
@@ -472,6 +563,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/groups/$id'
       preLoaderRoute: typeof MainGroupsIdMainImport
       parentRoute: typeof MainGroupsIdRoute
+    }
+    '/_main/leads/forms/$id': {
+      id: '/_main/leads/forms/$id'
+      path: '/leads/forms/$id'
+      fullPath: '/leads/forms/$id'
+      preLoaderRoute: typeof MainLeadsFormsIdImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/leads/forms/create': {
+      id: '/_main/leads/forms/create'
+      path: '/leads/forms/create'
+      fullPath: '/leads/forms/create'
+      preLoaderRoute: typeof MainLeadsFormsCreateImport
+      parentRoute: typeof MainImport
     }
     '/_main/settings/_main/branches': {
       id: '/_main/settings/_main/branches'
@@ -536,6 +641,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainAttendanceMainIndexImport
       parentRoute: typeof MainAttendanceMainImport
     }
+    '/_main/leads/$id/': {
+      id: '/_main/leads/$id/'
+      path: '/leads/$id'
+      fullPath: '/leads/$id'
+      preLoaderRoute: typeof MainLeadsIdIndexImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/leads/forms/': {
+      id: '/_main/leads/forms/'
+      path: '/leads/forms'
+      fullPath: '/leads/forms'
+      preLoaderRoute: typeof MainLeadsFormsIndexImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/leads/stats/': {
+      id: '/_main/leads/stats/'
+      path: '/leads/stats'
+      fullPath: '/leads/stats'
+      preLoaderRoute: typeof MainLeadsStatsIndexImport
+      parentRoute: typeof MainImport
+    }
     '/_main/settings/_main/': {
       id: '/_main/settings/_main/'
       path: '/'
@@ -584,6 +710,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/groups/$id/students'
       preLoaderRoute: typeof MainGroupsIdMainStudentsImport
       parentRoute: typeof MainGroupsIdMainImport
+    }
+    '/_main/leads/$id/user/$user': {
+      id: '/_main/leads/$id/user/$user'
+      path: '/leads/$id/user/$user'
+      fullPath: '/leads/$id/user/$user'
+      preLoaderRoute: typeof MainLeadsIdUserUserImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/leads/forms/edit/$id': {
+      id: '/_main/leads/forms/edit/$id'
+      path: '/leads/forms/edit/$id'
+      fullPath: '/leads/forms/edit/$id'
+      preLoaderRoute: typeof MainLeadsFormsEditIdImport
+      parentRoute: typeof MainImport
     }
     '/_main/students/$id/_main/groups': {
       id: '/_main/students/$id/_main/groups'
@@ -790,34 +930,52 @@ const MainStudentsIdRouteWithChildren = MainStudentsIdRoute._addFileChildren(
 
 interface MainRouteChildren {
   MainEmployeesRoute: typeof MainEmployeesRoute
-  MainLidsRoute: typeof MainLidsRoute
   MainReportsRoute: typeof MainReportsRoute
   MainIndexRoute: typeof MainIndexRoute
   MainAttendanceRoute: typeof MainAttendanceRouteWithChildren
   MainFinanceCostRoute: typeof MainFinanceCostRoute
   MainFinanceIncomeRoute: typeof MainFinanceIncomeRoute
+  MainLeadsArchiveRoute: typeof MainLeadsArchiveRoute
+  MainLeadsSourcesRoute: typeof MainLeadsSourcesRoute
   MainSettingsRoute: typeof MainSettingsRouteWithChildren
   MainFinanceIndexRoute: typeof MainFinanceIndexRoute
   MainGroupsIndexRoute: typeof MainGroupsIndexRoute
+  MainLeadsIndexRoute: typeof MainLeadsIndexRoute
   MainStudentsIndexRoute: typeof MainStudentsIndexRoute
   MainGroupsIdRoute: typeof MainGroupsIdRouteWithChildren
+  MainLeadsFormsIdRoute: typeof MainLeadsFormsIdRoute
+  MainLeadsFormsCreateRoute: typeof MainLeadsFormsCreateRoute
   MainStudentsIdRoute: typeof MainStudentsIdRouteWithChildren
+  MainLeadsIdIndexRoute: typeof MainLeadsIdIndexRoute
+  MainLeadsFormsIndexRoute: typeof MainLeadsFormsIndexRoute
+  MainLeadsStatsIndexRoute: typeof MainLeadsStatsIndexRoute
+  MainLeadsIdUserUserRoute: typeof MainLeadsIdUserUserRoute
+  MainLeadsFormsEditIdRoute: typeof MainLeadsFormsEditIdRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
   MainEmployeesRoute: MainEmployeesRoute,
-  MainLidsRoute: MainLidsRoute,
   MainReportsRoute: MainReportsRoute,
   MainIndexRoute: MainIndexRoute,
   MainAttendanceRoute: MainAttendanceRouteWithChildren,
   MainFinanceCostRoute: MainFinanceCostRoute,
   MainFinanceIncomeRoute: MainFinanceIncomeRoute,
+  MainLeadsArchiveRoute: MainLeadsArchiveRoute,
+  MainLeadsSourcesRoute: MainLeadsSourcesRoute,
   MainSettingsRoute: MainSettingsRouteWithChildren,
   MainFinanceIndexRoute: MainFinanceIndexRoute,
   MainGroupsIndexRoute: MainGroupsIndexRoute,
+  MainLeadsIndexRoute: MainLeadsIndexRoute,
   MainStudentsIndexRoute: MainStudentsIndexRoute,
   MainGroupsIdRoute: MainGroupsIdRouteWithChildren,
+  MainLeadsFormsIdRoute: MainLeadsFormsIdRoute,
+  MainLeadsFormsCreateRoute: MainLeadsFormsCreateRoute,
   MainStudentsIdRoute: MainStudentsIdRouteWithChildren,
+  MainLeadsIdIndexRoute: MainLeadsIdIndexRoute,
+  MainLeadsFormsIndexRoute: MainLeadsFormsIndexRoute,
+  MainLeadsStatsIndexRoute: MainLeadsStatsIndexRoute,
+  MainLeadsIdUserUserRoute: MainLeadsIdUserUserRoute,
+  MainLeadsFormsEditIdRoute: MainLeadsFormsEditIdRoute,
 }
 
 const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
@@ -825,20 +983,25 @@ const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
 export interface FileRoutesByFullPath {
   '': typeof MainRouteWithChildren
   '/employees': typeof MainEmployeesRoute
-  '/lids': typeof MainLidsRoute
   '/reports': typeof MainReportsRoute
+  '/form/$id': typeof FormIdRoute
   '/login': typeof AuthLoginLazyRoute
   '/': typeof MainIndexRoute
   '/attendance': typeof MainAttendanceMainRouteWithChildren
   '/finance/cost': typeof MainFinanceCostRoute
   '/finance/income': typeof MainFinanceIncomeRoute
+  '/leads/archive': typeof MainLeadsArchiveRoute
+  '/leads/sources': typeof MainLeadsSourcesRoute
   '/settings': typeof MainSettingsMainRouteWithChildren
   '/finance': typeof MainFinanceIndexRoute
   '/groups': typeof MainGroupsIndexRoute
+  '/leads': typeof MainLeadsIndexRoute
   '/students': typeof MainStudentsIndexRoute
   '/attendance/employees': typeof MainAttendanceMainEmployeesRoute
   '/attendance/students': typeof MainAttendanceMainStudentsRoute
   '/groups/$id': typeof MainGroupsIdMainRouteWithChildren
+  '/leads/forms/$id': typeof MainLeadsFormsIdRoute
+  '/leads/forms/create': typeof MainLeadsFormsCreateRoute
   '/settings/branches': typeof MainSettingsMainBranchesRoute
   '/settings/courses': typeof MainSettingsMainCoursesRoute
   '/settings/holidays': typeof MainSettingsMainHolidaysRoute
@@ -847,6 +1010,9 @@ export interface FileRoutesByFullPath {
   '/settings/rooms': typeof MainSettingsMainRoomsRoute
   '/students/$id': typeof MainStudentsIdMainRouteWithChildren
   '/attendance/': typeof MainAttendanceMainIndexRoute
+  '/leads/$id': typeof MainLeadsIdIndexRoute
+  '/leads/forms': typeof MainLeadsFormsIndexRoute
+  '/leads/stats': typeof MainLeadsStatsIndexRoute
   '/settings/': typeof MainSettingsMainIndexRoute
   '/groups/$id/attendance': typeof MainGroupsIdMainAttendanceRoute
   '/groups/$id/exams': typeof MainGroupsIdMainExamsRoute
@@ -854,6 +1020,8 @@ export interface FileRoutesByFullPath {
   '/groups/$id/sale': typeof MainGroupsIdMainSaleRoute
   '/groups/$id/score': typeof MainGroupsIdMainScoreRoute
   '/groups/$id/students': typeof MainGroupsIdMainStudentsRoute
+  '/leads/$id/user/$user': typeof MainLeadsIdUserUserRoute
+  '/leads/forms/edit/$id': typeof MainLeadsFormsEditIdRoute
   '/students/$id/groups': typeof MainStudentsIdMainGroupsRoute
   '/students/$id/history': typeof MainStudentsIdMainHistoryRoute
   '/students/$id/notes': typeof MainStudentsIdMainNotesRoute
@@ -867,20 +1035,25 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '': typeof AuthRouteWithChildren
   '/employees': typeof MainEmployeesRoute
-  '/lids': typeof MainLidsRoute
   '/reports': typeof MainReportsRoute
+  '/form/$id': typeof FormIdRoute
   '/login': typeof AuthLoginLazyRoute
   '/': typeof MainIndexRoute
   '/attendance': typeof MainAttendanceMainIndexRoute
   '/finance/cost': typeof MainFinanceCostRoute
   '/finance/income': typeof MainFinanceIncomeRoute
+  '/leads/archive': typeof MainLeadsArchiveRoute
+  '/leads/sources': typeof MainLeadsSourcesRoute
   '/settings': typeof MainSettingsMainIndexRoute
   '/finance': typeof MainFinanceIndexRoute
   '/groups': typeof MainGroupsIndexRoute
+  '/leads': typeof MainLeadsIndexRoute
   '/students': typeof MainStudentsIndexRoute
   '/attendance/employees': typeof MainAttendanceMainEmployeesRoute
   '/attendance/students': typeof MainAttendanceMainStudentsRoute
   '/groups/$id': typeof MainGroupsIdMainIndexRoute
+  '/leads/forms/$id': typeof MainLeadsFormsIdRoute
+  '/leads/forms/create': typeof MainLeadsFormsCreateRoute
   '/settings/branches': typeof MainSettingsMainBranchesRoute
   '/settings/courses': typeof MainSettingsMainCoursesRoute
   '/settings/holidays': typeof MainSettingsMainHolidaysRoute
@@ -888,12 +1061,17 @@ export interface FileRoutesByTo {
   '/settings/roles': typeof MainSettingsMainRolesRoute
   '/settings/rooms': typeof MainSettingsMainRoomsRoute
   '/students/$id': typeof MainStudentsIdMainIndexRoute
+  '/leads/$id': typeof MainLeadsIdIndexRoute
+  '/leads/forms': typeof MainLeadsFormsIndexRoute
+  '/leads/stats': typeof MainLeadsStatsIndexRoute
   '/groups/$id/attendance': typeof MainGroupsIdMainAttendanceRoute
   '/groups/$id/exams': typeof MainGroupsIdMainExamsRoute
   '/groups/$id/notes': typeof MainGroupsIdMainNotesRoute
   '/groups/$id/sale': typeof MainGroupsIdMainSaleRoute
   '/groups/$id/score': typeof MainGroupsIdMainScoreRoute
   '/groups/$id/students': typeof MainGroupsIdMainStudentsRoute
+  '/leads/$id/user/$user': typeof MainLeadsIdUserUserRoute
+  '/leads/forms/edit/$id': typeof MainLeadsFormsEditIdRoute
   '/students/$id/groups': typeof MainStudentsIdMainGroupsRoute
   '/students/$id/history': typeof MainStudentsIdMainHistoryRoute
   '/students/$id/notes': typeof MainStudentsIdMainNotesRoute
@@ -907,23 +1085,28 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/_main': typeof MainRouteWithChildren
   '/_main/employees': typeof MainEmployeesRoute
-  '/_main/lids': typeof MainLidsRoute
   '/_main/reports': typeof MainReportsRoute
+  '/form/$id': typeof FormIdRoute
   '/_auth/login': typeof AuthLoginLazyRoute
   '/_main/': typeof MainIndexRoute
   '/_main/attendance': typeof MainAttendanceRouteWithChildren
   '/_main/attendance/_main': typeof MainAttendanceMainRouteWithChildren
   '/_main/finance/cost': typeof MainFinanceCostRoute
   '/_main/finance/income': typeof MainFinanceIncomeRoute
+  '/_main/leads/archive': typeof MainLeadsArchiveRoute
+  '/_main/leads/sources': typeof MainLeadsSourcesRoute
   '/_main/settings': typeof MainSettingsRouteWithChildren
   '/_main/settings/_main': typeof MainSettingsMainRouteWithChildren
   '/_main/finance/': typeof MainFinanceIndexRoute
   '/_main/groups/': typeof MainGroupsIndexRoute
+  '/_main/leads/': typeof MainLeadsIndexRoute
   '/_main/students/': typeof MainStudentsIndexRoute
   '/_main/attendance/_main/employees': typeof MainAttendanceMainEmployeesRoute
   '/_main/attendance/_main/students': typeof MainAttendanceMainStudentsRoute
   '/_main/groups/$id': typeof MainGroupsIdRouteWithChildren
   '/_main/groups/$id/_main': typeof MainGroupsIdMainRouteWithChildren
+  '/_main/leads/forms/$id': typeof MainLeadsFormsIdRoute
+  '/_main/leads/forms/create': typeof MainLeadsFormsCreateRoute
   '/_main/settings/_main/branches': typeof MainSettingsMainBranchesRoute
   '/_main/settings/_main/courses': typeof MainSettingsMainCoursesRoute
   '/_main/settings/_main/holidays': typeof MainSettingsMainHolidaysRoute
@@ -933,6 +1116,9 @@ export interface FileRoutesById {
   '/_main/students/$id': typeof MainStudentsIdRouteWithChildren
   '/_main/students/$id/_main': typeof MainStudentsIdMainRouteWithChildren
   '/_main/attendance/_main/': typeof MainAttendanceMainIndexRoute
+  '/_main/leads/$id/': typeof MainLeadsIdIndexRoute
+  '/_main/leads/forms/': typeof MainLeadsFormsIndexRoute
+  '/_main/leads/stats/': typeof MainLeadsStatsIndexRoute
   '/_main/settings/_main/': typeof MainSettingsMainIndexRoute
   '/_main/groups/$id/_main/attendance': typeof MainGroupsIdMainAttendanceRoute
   '/_main/groups/$id/_main/exams': typeof MainGroupsIdMainExamsRoute
@@ -940,6 +1126,8 @@ export interface FileRoutesById {
   '/_main/groups/$id/_main/sale': typeof MainGroupsIdMainSaleRoute
   '/_main/groups/$id/_main/score': typeof MainGroupsIdMainScoreRoute
   '/_main/groups/$id/_main/students': typeof MainGroupsIdMainStudentsRoute
+  '/_main/leads/$id/user/$user': typeof MainLeadsIdUserUserRoute
+  '/_main/leads/forms/edit/$id': typeof MainLeadsFormsEditIdRoute
   '/_main/students/$id/_main/groups': typeof MainStudentsIdMainGroupsRoute
   '/_main/students/$id/_main/history': typeof MainStudentsIdMainHistoryRoute
   '/_main/students/$id/_main/notes': typeof MainStudentsIdMainNotesRoute
@@ -955,20 +1143,25 @@ export interface FileRouteTypes {
   fullPaths:
     | ''
     | '/employees'
-    | '/lids'
     | '/reports'
+    | '/form/$id'
     | '/login'
     | '/'
     | '/attendance'
     | '/finance/cost'
     | '/finance/income'
+    | '/leads/archive'
+    | '/leads/sources'
     | '/settings'
     | '/finance'
     | '/groups'
+    | '/leads'
     | '/students'
     | '/attendance/employees'
     | '/attendance/students'
     | '/groups/$id'
+    | '/leads/forms/$id'
+    | '/leads/forms/create'
     | '/settings/branches'
     | '/settings/courses'
     | '/settings/holidays'
@@ -977,6 +1170,9 @@ export interface FileRouteTypes {
     | '/settings/rooms'
     | '/students/$id'
     | '/attendance/'
+    | '/leads/$id'
+    | '/leads/forms'
+    | '/leads/stats'
     | '/settings/'
     | '/groups/$id/attendance'
     | '/groups/$id/exams'
@@ -984,6 +1180,8 @@ export interface FileRouteTypes {
     | '/groups/$id/sale'
     | '/groups/$id/score'
     | '/groups/$id/students'
+    | '/leads/$id/user/$user'
+    | '/leads/forms/edit/$id'
     | '/students/$id/groups'
     | '/students/$id/history'
     | '/students/$id/notes'
@@ -996,20 +1194,25 @@ export interface FileRouteTypes {
   to:
     | ''
     | '/employees'
-    | '/lids'
     | '/reports'
+    | '/form/$id'
     | '/login'
     | '/'
     | '/attendance'
     | '/finance/cost'
     | '/finance/income'
+    | '/leads/archive'
+    | '/leads/sources'
     | '/settings'
     | '/finance'
     | '/groups'
+    | '/leads'
     | '/students'
     | '/attendance/employees'
     | '/attendance/students'
     | '/groups/$id'
+    | '/leads/forms/$id'
+    | '/leads/forms/create'
     | '/settings/branches'
     | '/settings/courses'
     | '/settings/holidays'
@@ -1017,12 +1220,17 @@ export interface FileRouteTypes {
     | '/settings/roles'
     | '/settings/rooms'
     | '/students/$id'
+    | '/leads/$id'
+    | '/leads/forms'
+    | '/leads/stats'
     | '/groups/$id/attendance'
     | '/groups/$id/exams'
     | '/groups/$id/notes'
     | '/groups/$id/sale'
     | '/groups/$id/score'
     | '/groups/$id/students'
+    | '/leads/$id/user/$user'
+    | '/leads/forms/edit/$id'
     | '/students/$id/groups'
     | '/students/$id/history'
     | '/students/$id/notes'
@@ -1034,23 +1242,28 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/_main'
     | '/_main/employees'
-    | '/_main/lids'
     | '/_main/reports'
+    | '/form/$id'
     | '/_auth/login'
     | '/_main/'
     | '/_main/attendance'
     | '/_main/attendance/_main'
     | '/_main/finance/cost'
     | '/_main/finance/income'
+    | '/_main/leads/archive'
+    | '/_main/leads/sources'
     | '/_main/settings'
     | '/_main/settings/_main'
     | '/_main/finance/'
     | '/_main/groups/'
+    | '/_main/leads/'
     | '/_main/students/'
     | '/_main/attendance/_main/employees'
     | '/_main/attendance/_main/students'
     | '/_main/groups/$id'
     | '/_main/groups/$id/_main'
+    | '/_main/leads/forms/$id'
+    | '/_main/leads/forms/create'
     | '/_main/settings/_main/branches'
     | '/_main/settings/_main/courses'
     | '/_main/settings/_main/holidays'
@@ -1060,6 +1273,9 @@ export interface FileRouteTypes {
     | '/_main/students/$id'
     | '/_main/students/$id/_main'
     | '/_main/attendance/_main/'
+    | '/_main/leads/$id/'
+    | '/_main/leads/forms/'
+    | '/_main/leads/stats/'
     | '/_main/settings/_main/'
     | '/_main/groups/$id/_main/attendance'
     | '/_main/groups/$id/_main/exams'
@@ -1067,6 +1283,8 @@ export interface FileRouteTypes {
     | '/_main/groups/$id/_main/sale'
     | '/_main/groups/$id/_main/score'
     | '/_main/groups/$id/_main/students'
+    | '/_main/leads/$id/user/$user'
+    | '/_main/leads/forms/edit/$id'
     | '/_main/students/$id/_main/groups'
     | '/_main/students/$id/_main/history'
     | '/_main/students/$id/_main/notes'
@@ -1081,11 +1299,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   MainRoute: typeof MainRouteWithChildren
+  FormIdRoute: typeof FormIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   MainRoute: MainRouteWithChildren,
+  FormIdRoute: FormIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -1101,7 +1321,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/_auth",
-        "/_main"
+        "/_main",
+        "/form/$id"
       ]
     },
     "/_auth": {
@@ -1114,31 +1335,39 @@ export const routeTree = rootRoute
       "filePath": "_main.tsx",
       "children": [
         "/_main/employees",
-        "/_main/lids",
         "/_main/reports",
         "/_main/",
         "/_main/attendance",
         "/_main/finance/cost",
         "/_main/finance/income",
+        "/_main/leads/archive",
+        "/_main/leads/sources",
         "/_main/settings",
         "/_main/finance/",
         "/_main/groups/",
+        "/_main/leads/",
         "/_main/students/",
         "/_main/groups/$id",
-        "/_main/students/$id"
+        "/_main/leads/forms/$id",
+        "/_main/leads/forms/create",
+        "/_main/students/$id",
+        "/_main/leads/$id/",
+        "/_main/leads/forms/",
+        "/_main/leads/stats/",
+        "/_main/leads/$id/user/$user",
+        "/_main/leads/forms/edit/$id"
       ]
     },
     "/_main/employees": {
       "filePath": "_main/employees.tsx",
       "parent": "/_main"
     },
-    "/_main/lids": {
-      "filePath": "_main/lids.tsx",
-      "parent": "/_main"
-    },
     "/_main/reports": {
       "filePath": "_main/reports.tsx",
       "parent": "/_main"
+    },
+    "/form/$id": {
+      "filePath": "form/$id.tsx"
     },
     "/_auth/login": {
       "filePath": "_auth/login.lazy.tsx",
@@ -1172,6 +1401,14 @@ export const routeTree = rootRoute
       "filePath": "_main/finance/income.tsx",
       "parent": "/_main"
     },
+    "/_main/leads/archive": {
+      "filePath": "_main/leads/archive.tsx",
+      "parent": "/_main"
+    },
+    "/_main/leads/sources": {
+      "filePath": "_main/leads/sources.tsx",
+      "parent": "/_main"
+    },
     "/_main/settings": {
       "filePath": "_main/settings",
       "parent": "/_main",
@@ -1198,6 +1435,10 @@ export const routeTree = rootRoute
     },
     "/_main/groups/": {
       "filePath": "_main/groups/index.tsx",
+      "parent": "/_main"
+    },
+    "/_main/leads/": {
+      "filePath": "_main/leads/index.tsx",
       "parent": "/_main"
     },
     "/_main/students/": {
@@ -1231,6 +1472,14 @@ export const routeTree = rootRoute
         "/_main/groups/$id/_main/students",
         "/_main/groups/$id/_main/"
       ]
+    },
+    "/_main/leads/forms/$id": {
+      "filePath": "_main/leads/forms/$id.tsx",
+      "parent": "/_main"
+    },
+    "/_main/leads/forms/create": {
+      "filePath": "_main/leads/forms/create.tsx",
+      "parent": "/_main"
     },
     "/_main/settings/_main/branches": {
       "filePath": "_main/settings/_main/branches.tsx",
@@ -1280,6 +1529,18 @@ export const routeTree = rootRoute
       "filePath": "_main/attendance/_main/index.tsx",
       "parent": "/_main/attendance/_main"
     },
+    "/_main/leads/$id/": {
+      "filePath": "_main/leads/$id/index.tsx",
+      "parent": "/_main"
+    },
+    "/_main/leads/forms/": {
+      "filePath": "_main/leads/forms/index.tsx",
+      "parent": "/_main"
+    },
+    "/_main/leads/stats/": {
+      "filePath": "_main/leads/stats/index.tsx",
+      "parent": "/_main"
+    },
     "/_main/settings/_main/": {
       "filePath": "_main/settings/_main/index.tsx",
       "parent": "/_main/settings/_main"
@@ -1307,6 +1568,14 @@ export const routeTree = rootRoute
     "/_main/groups/$id/_main/students": {
       "filePath": "_main/groups/$id/_main/students.tsx",
       "parent": "/_main/groups/$id/_main"
+    },
+    "/_main/leads/$id/user/$user": {
+      "filePath": "_main/leads/$id/user/$user.tsx",
+      "parent": "/_main"
+    },
+    "/_main/leads/forms/edit/$id": {
+      "filePath": "_main/leads/forms/edit/$id.tsx",
+      "parent": "/_main"
     },
     "/_main/students/$id/_main/groups": {
       "filePath": "_main/students/$id/_main/groups.tsx",

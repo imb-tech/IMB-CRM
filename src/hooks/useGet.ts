@@ -26,7 +26,7 @@ export const useGet = <TData = any, TQueryFnData = unknown, TError = any>(
 
   return useQuery<TQueryFnData, TError, TData>({
     queryKey: (() => {
-      const paramValues = Object.values(prms || {});
+      const paramValues = Object.values(params || {});
       const hasParams = paramValues.length > 0;
 
       if (deps) {

@@ -1,11 +1,11 @@
 import PageLayout from "@/layouts/page-layout"
-import LidsMain from "@/pages/lids"
+import LeadsStatsPage from "@/pages/leads/stats/leads-stats"
 import { createFileRoute } from "@tanstack/react-router"
 
-export const Route = createFileRoute("/_main/lids")({
+export const Route = createFileRoute("/_main/leads/stats/")({
     component: () => (
         <PageLayout>
-            <LidsMain />
+            <LeadsStatsPage />
         </PageLayout>
     ),
 })
