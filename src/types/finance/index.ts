@@ -2,7 +2,6 @@ type Finance = {
     name: string
 }
 
-
 type Income = {
     id: number
     name: string

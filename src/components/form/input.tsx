@@ -35,7 +35,7 @@ export function FormInput<IForm extends FieldValues>({
     wrapperClassName,
     className,
     type = "text",
-    hideError = true,
+    hideError = false,
     uppercase = false,
     ...props
 }: IProps<IForm> & React.InputHTMLAttributes<HTMLInputElement>) {
@@ -55,13 +55,14 @@ export function FormInput<IForm extends FieldValues>({
     })
 
     return (
-        <fieldset className={cn("flex flex-col w-full justify-between ", wrapperClassName)}>
+        <fieldset
+            className={cn(
+                "flex flex-col w-full justify-between ",
+                wrapperClassName,
+            )}
+        >
             {label && (
-                <FieldLabel
-                    htmlFor={name}
-                    required={required}
-                    isError={error}
-                >
+                <FieldLabel htmlFor={name} required={required} isError={error}>
                     {label}
                 </FieldLabel>
             )}
@@ -73,15 +74,15 @@ export function FormInput<IForm extends FieldValues>({
                 id={name}
                 fullWidth
                 className={cn(
-                   error && label
-                        ? "border-destructive focus:border-border !ring-destructive"
-                        : "",
+                    error && label ?
+                        "border-destructive focus:border-border !ring-destructive"
+                    :   "",
                     uppercase && "uppercase placeholder:capitalize", // Add uppercase class for visual feedback
                     className,
                 )}
             />
-            {!hideError && error.message && (
-                <FieldError>{error.message?.message as string}</FieldError>
+            {!hideError && error?.message && (
+                <FieldError>{error?.message as string}</FieldError>
             )}
         </fieldset>
     )

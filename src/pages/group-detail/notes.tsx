@@ -122,7 +122,7 @@ export default function GroupNotes() {
                                         </span>
                                     </div>
                                 </div>
-                                
+
                                 <div className="flex items-start justify-between gap-4">
                                     {editingId === reminder.id ?
                                         <div className="flex-1 flex items-start gap-2">

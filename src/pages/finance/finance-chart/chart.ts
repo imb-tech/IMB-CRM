@@ -17,4 +17,3 @@ export interface ChartItemProps {
     onClick: (index: number) => void
     index: number
 }
-

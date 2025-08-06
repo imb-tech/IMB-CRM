@@ -5,9 +5,9 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { ClassNameValue } from "tailwind-merge";
+} from "@/components/ui/dialog"
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
+import { ClassNameValue } from "tailwind-merge"
 
 export default function SeeInView({
     url,
@@ -15,19 +15,18 @@ export default function SeeInView({
     children,
     fullWidth = false,
 }: {
-    url: string;
-    className?: ClassNameValue;
-    children?: React.ReactNode;
-    fullWidth?: boolean;
+    url: string
+    className?: ClassNameValue
+    children?: React.ReactNode
+    fullWidth?: boolean
 }) {
     return (
         <Dialog>
             <DialogTrigger className={fullWidth ? "w-full" : "max-w-full"}>
-                {children ? (
+                {children ?
                     children
-                ) : (
-                    <img src={url} alt="img" className={`${className}` || ""} />
-                )}
+                :   <img src={url} alt="img" className={`${className}` || ""} />
+                }
             </DialogTrigger>
             <DialogContent className="max-w-4xl min-h-64 max-h-[80vh] w-full !p-0 bg-transparent border-none">
                 <DialogHeader className="hidden">
@@ -45,5 +44,5 @@ export default function SeeInView({
                 />
             </DialogContent>
         </Dialog>
-    );
+    )
 }

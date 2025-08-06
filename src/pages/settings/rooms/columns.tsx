@@ -1,3 +1,4 @@
+import { formatDate } from "@/lib/utils"
 import { ColumnDef } from "@tanstack/react-table"
 import { useMemo } from "react"
 
@@ -5,17 +6,21 @@ export const useRoomsCols = () =>
     useMemo<ColumnDef<Room>[]>(
         () => [
             {
-                header: "№",
-                cell: ({ row }) => row.index + 1,
-            },
-            {
                 header: "Nomi",
                 accessorKey: "name",
-                enableSorting: true,
+                cell({ row }) {
+                    return <p className="min-w-[180px]">{row.original.name}</p>
+                },
+            },
+            {
+                header: "Yaratilgan vaqti",
+                cell({ row: { original } }) {
+                    return formatDate(original.created_at)
+                },
             },
             {
                 header: "Filail",
-                accessorKey: "branch",
+                accessorKey: "branch_name",
                 enableSorting: true,
             },
         ],

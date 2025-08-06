@@ -2,7 +2,6 @@ type Dashboard = {
     name: string
 }
 
-
 type WorkTime = {
     id: string
     roomId: string
@@ -18,10 +17,9 @@ type RoomList = {
     name: string
 }
 
-
 type TCalendar = {
-    room_list: RoomList[],
-    work_time: WorkTime[],
-    work_start_date:string
-    work_end_date:string
+    room_list: RoomList[]
+    work_time: WorkTime[]
+    work_start_date: string
+    work_end_date: string
 }

@@ -28,7 +28,7 @@ export default function ParamInput({
                 },
             })
         }
-    } 
+    }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const val = e.target.value

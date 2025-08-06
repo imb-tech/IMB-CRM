@@ -24,9 +24,8 @@ type TProps<Form extends FieldValues> = {
     hideError?: boolean
 }
 
-type FileType<Multiple extends boolean> = Multiple extends true
-    ? FileList
-    : File | null
+type FileType<Multiple extends boolean> =
+    Multiple extends true ? FileList : File | null
 
 export default function FileUpload<TForm extends FieldValues>({
     control,
@@ -73,17 +72,19 @@ export default function FileUpload<TForm extends FieldValues>({
                         valid = false
                     }
                     if (totalSize > maxS) {
-                        err = isCompressed
-                            ? `Kompressdan keyin rasmlar hajmi ${maxSize} MB dan oshib ketdi`
-                            : `Rasmlar hajmi ${maxSize} MB dan oshib ketdi`
+                        err =
+                            isCompressed ?
+                                `Kompressdan keyin rasmlar hajmi ${maxSize} MB dan oshib ketdi`
+                            :   `Rasmlar hajmi ${maxSize} MB dan oshib ketdi`
                         valid = false
                     }
                 }
 
                 if (!multiple && val && val.size > maxS) {
-                    err = isCompressed
-                        ? `Kompressdan keyin rasm hajmi ${maxSize} MB dan oshib ketdi`
-                        : `Rasm hajmi ${maxSize} MB dan oshib ketdi`
+                    err =
+                        isCompressed ?
+                            `Kompressdan keyin rasm hajmi ${maxSize} MB dan oshib ketdi`
+                        :   `Rasm hajmi ${maxSize} MB dan oshib ketdi`
                     valid = false
                 }
 
@@ -92,7 +93,11 @@ export default function FileUpload<TForm extends FieldValues>({
         },
     })
 
-    const fileArray: File[] = !multiple ? (value ? [value] : []) : value
+    const fileArray: File[] =
+        !multiple ?
+            value ? [value]
+            :   []
+        :   value
 
     async function handleOnChange(files: File[]) {
         if (files.length > 0) {
@@ -103,9 +108,9 @@ export default function FileUpload<TForm extends FieldValues>({
                 )
                 setIsCompressing(false)
                 onChange(
-                    multiple
-                        ? [...compressedFiles, ...fileArray]
-                        : compressedFiles[0],
+                    multiple ?
+                        [...compressedFiles, ...fileArray]
+                    :   compressedFiles[0],
                 )
             } else {
                 onChange(multiple ? [...files, ...fileArray] : files[0])
@@ -150,17 +155,17 @@ export default function FileUpload<TForm extends FieldValues>({
                         "!border-muted-foreground [&_path]:!fill-muted-foreground pointer-events-none cursor-not-allowed",
                 )}
                 handleChange={
-                    field.disabled
-                        ? undefined
-                        : (val: FileType<typeof multiple>) => {
-                              if (multiple) {
-                                  handleOnChange(
-                                      Array.from((val as FileList) || []),
-                                  )
-                              } else {
-                                  handleOnChange([val as File])
-                              }
-                          }
+                    field.disabled ? undefined : (
+                        (val: FileType<typeof multiple>) => {
+                            if (multiple) {
+                                handleOnChange(
+                                    Array.from((val as FileList) || []),
+                                )
+                            } else {
+                                handleOnChange([val as File])
+                            }
+                        }
+                    )
                 }
                 multiple={multiple}
                 name={field.name}

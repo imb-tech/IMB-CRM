@@ -1,32 +1,34 @@
-import { cn } from "@/lib/utils";
-import { useMemo } from "react";
+import { cn } from "@/lib/utils"
+import { ReactNode, useMemo } from "react"
 import {
     Controller,
     FieldValues,
     Path,
     useController,
     UseFormReturn,
-} from "react-hook-form";
-import { ClassNameValue } from "tailwind-merge";
-import { Label } from "../ui/label";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import FieldError from "./form-error";
+} from "react-hook-form"
+import { ClassNameValue } from "tailwind-merge"
+import { Label } from "../ui/label"
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
+import FieldError from "./form-error"
 
 interface SelectOption {
-    name: string | number;
-    id: string | number;
+    name: string | number
+    id: string | number
+    content?: ReactNode
 }
 
 interface IProps<IForm extends FieldValues> {
-    methods: UseFormReturn<IForm>;
-    name: Path<IForm>;
-    options: SelectOption[];
-    label?: string;
-    className?: ClassNameValue;
-    hideError?: boolean;
-    returnValue?: "name" | "id";
-    disabled?: boolean;
-    required?: boolean;
+    methods: UseFormReturn<IForm>
+    name: Path<IForm>
+    options: SelectOption[]
+    label?: string
+    className?: ClassNameValue
+    hideError?: boolean
+    returnValue?: "name" | "id"
+    disabled?: boolean
+    required?: boolean
+    itemClassName?: string
 }
 export default function FormRadioGroup<IForm extends FieldValues>({
     name,
@@ -38,6 +40,7 @@ export default function FormRadioGroup<IForm extends FieldValues>({
     className,
     label,
     returnValue = "id",
+    itemClassName,
 }: IProps<IForm>) {
     const {
         field,
@@ -51,12 +54,12 @@ export default function FormRadioGroup<IForm extends FieldValues>({
                 message: `${label}ni tanlang`,
             },
         },
-    });
+    })
 
     const lastReturnValue = useMemo(
         () => returnValue || (options?.[0]?.id ? "id" : "name"),
-        [returnValue, options]
-    );
+        [returnValue, options],
+    )
 
     return (
         <fieldset className="space-y-1">
@@ -65,7 +68,7 @@ export default function FormRadioGroup<IForm extends FieldValues>({
                     htmlFor={name}
                     className={cn(
                         !!error && "text-destructive",
-                        "cursor-pointer"
+                        "cursor-pointer",
                     )}
                 >
                     {label}
@@ -82,28 +85,30 @@ export default function FormRadioGroup<IForm extends FieldValues>({
                         className={`${className}`}
                     >
                         {options?.map((option) => (
-                            <div
-                                className="flex items-center space-x-2"
-                                key={option.id}
-                            >
-                                <RadioGroupItem
-                                    id={option?.[lastReturnValue]?.toString()}
-                                    value={option?.[
-                                        lastReturnValue
-                                    ]?.toString()}
-                                />
-                                <Label
-                                    htmlFor={option?.[
-                                        lastReturnValue
-                                    ]?.toString()}
-                                    className={cn(
-                                        !!error && "text-destructive",
-                                        "cursor-pointer",
-                                        "text-base font-semibold"
-                                    )}
-                                >
-                                    {option.name}
-                                </Label>
+                            <div className="space-y-3" key={option.id}>
+                                <div className="flex items-center space-x-2  ">
+                                    <RadioGroupItem
+                                        id={option?.[
+                                            lastReturnValue
+                                        ]?.toString()}
+                                        value={option?.[
+                                            lastReturnValue
+                                        ]?.toString()}
+                                    />
+                                    <Label
+                                        htmlFor={option?.[
+                                            lastReturnValue
+                                        ]?.toString()}
+                                        className={cn(
+                                            !!error && "text-destructive",
+                                            "cursor-pointer",
+                                            itemClassName,
+                                        )}
+                                    >
+                                        {option.name}
+                                    </Label>
+                                </div>
+                                {option?.content ? option?.content : null}
                             </div>
                         ))}
                     </RadioGroup>
@@ -111,5 +116,5 @@ export default function FormRadioGroup<IForm extends FieldValues>({
             />
             {!hideError && !!error && <FieldError>{error.message}</FieldError>}
         </fieldset>
-    );
+    )
 }

@@ -26,7 +26,7 @@ export const useEmployeeCols = () =>
                 header: "Oylik",
                 accessorKey: "salary",
                 enableSorting: true,
-                 cell: ({ row }) => {
+                cell: ({ row }) => {
                     return formatMoney(row.original.salary)
                 },
             },
@@ -39,7 +39,7 @@ export const useEmployeeCols = () =>
                 header: "Dars haqi",
                 accessorKey: "lesson_fee",
                 enableSorting: true,
-                 cell: ({ row }) => {
+                cell: ({ row }) => {
                     return formatMoney(row.original.lesson_fee)
                 },
             },

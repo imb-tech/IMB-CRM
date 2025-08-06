@@ -20,7 +20,7 @@ const GroupCreate = ({ item }: Props) => {
             toast.success("Muvaffaqiyatli yaratildi")
             closeModal()
             form.reset()
-            queryClient.invalidateQueries({queryKey:[GROUP]})
+            queryClient.invalidateQueries({ queryKey: [GROUP] })
         },
     })
     const { mutate: mutateUpdate, isPending: isPendingUpdate } = usePatch({
@@ -28,7 +28,7 @@ const GroupCreate = ({ item }: Props) => {
             toast.success("Muvaffaqiyatli yangilandi")
             closeModal()
             form.reset()
-            queryClient.invalidateQueries({queryKey:[GROUP]})
+            queryClient.invalidateQueries({ queryKey: [GROUP] })
         },
     })
     const disabled = isPendingCreate || isPendingUpdate

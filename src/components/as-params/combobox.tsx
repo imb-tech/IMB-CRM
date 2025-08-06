@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { Button, ButtonProps } from "@/components/ui/button"
 import {
     Command,
     CommandEmpty,
@@ -12,16 +12,17 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
+import { DEBOUNCETIME } from "@/constants/default"
 import { cn } from "@/lib/utils"
 import { useNavigate, useSearch } from "@tanstack/react-router"
 import { CheckIcon, ChevronDown, X } from "lucide-react"
 import { useEffect, useState } from "react"
+import { Skeleton } from "../ui/skeleton"
 
 type ParamComboboxProps<T extends Record<string, any>> = {
     options: T[]
     paramName: string
     label?: string
-    disabled?: boolean
     labelKey?: keyof T
     valueKey?: keyof T
     isError?: boolean
@@ -29,13 +30,16 @@ type ParamComboboxProps<T extends Record<string, any>> = {
     asloClear?: string[]
     defaultOpt?: T
     isSearch?: boolean
+    isLoading?: boolean
+    skeletonCount?: number
+    onSearchChange?: (val: string) => void
+    addButtonProps?: ButtonProps
 }
 
 export function ParamCombobox<T extends Record<string, any>>({
     options,
     paramName,
     label,
-    disabled = false,
     isError = false,
     className,
     asloClear = [],
@@ -43,6 +47,10 @@ export function ParamCombobox<T extends Record<string, any>>({
     labelKey = "label",
     valueKey = "value",
     isSearch = true,
+    onSearchChange,
+    skeletonCount = 5,
+    isLoading,
+    addButtonProps,
 }: ParamComboboxProps<T>) {
     const navigate = useNavigate()
     const search: any = useSearch({ from: "/_main" }) as Record<
@@ -66,15 +74,19 @@ export function ParamCombobox<T extends Record<string, any>>({
 
     const handleSelect = (option: T) => {
         const returnValue = option[valueKey]
+        const updatedSearch = { ...search } as Record<
+            string,
+            string | undefined
+        >
+        updatedSearch[paramName] = String(returnValue)
+
+        asloClear.forEach((key) => {
+            delete updatedSearch[key]
+        })
 
         navigate({
-            search: {
-                ...search,
-                [paramName]:
-                    String(returnValue) === currentValue
-                        ? undefined
-                        : String(returnValue),
-            },
+            to: location.pathname,
+            search: updatedSearch,
         })
         setOpen(false)
     }
@@ -88,48 +100,55 @@ export function ParamCombobox<T extends Record<string, any>>({
         setOpen(false)
     }
 
-    const selectedOption = options.find(
-        (d) => String(d[valueKey]) === currentValue,
-    )
+    const selectedOption = options?.find((d) => d[valueKey] == currentValue)
 
     const sortedOptions = options?.sort((a, b) => {
         const isASelected = a[valueKey] == currentValue
         const isBSelected = b[valueKey] == currentValue
-        return isASelected === isBSelected ? 0 : isASelected ? -1 : 1
+        return (
+            isASelected === isBSelected ? 0
+            : isASelected ? -1
+            : 1
+        )
     })
 
     return (
         <Popover modal open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button
-                    variant="outline"
+                    variant={"secondary"}
                     role="combobox"
                     aria-expanded={open}
                     className={cn(
-                        "w-max justify-between font-normal text-muted-foreground",
-                        currentValue && "font-medium text-foreground",
+                        "w-max  justify-between font-normal ",
+                        currentValue && "font-medium !text-white",
                         isError && "!text-destructive",
                         className,
                     )}
-                    disabled={disabled}
+                    {...addButtonProps}
                 >
                     {selectedOption?.[labelKey] ?? label}
                     <ChevronDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="p-0">
-                <Command>
+            <PopoverContent className="p-0 !min-w-full">
+                <Command shouldFilter={onSearchChange ? false : true}>
                     <div className="relative">
                         {isSearch && (
                             <>
-                                <CommandInput placeholder={label} />
+                                <CommandInput
+                                    placeholder={label}
+                                    onValueChange={(text) => {
+                                        if (onSearchChange) {
+                                            setTimeout(() => {
+                                                onSearchChange(text)
+                                            }, DEBOUNCETIME)
+                                        }
+                                    }}
+                                />
                                 {currentValue && (
-                                    <span className="absolute cursor-pointer text-destructive top-1.5 right-1 p-1">
-                                        <X
-                                            className="text-destructive"
-                                            width={16}
-                                            onClick={handleCancel}
-                                        />
+                                    <span className="absolute cursor-pointer text-red-600 top-1.5 right-1 p-1">
+                                        <X width={16} onClick={handleCancel} />
                                     </span>
                                 )}
                             </>
@@ -150,15 +169,32 @@ export function ParamCombobox<T extends Record<string, any>>({
                                         <CheckIcon
                                             className={cn(
                                                 "ml-auto h-4 w-4",
-                                                String(currentValue) ===
-                                                    String(optionValue)
-                                                    ? "opacity-100"
-                                                    : "opacity-0",
+                                                (
+                                                    String(currentValue) ===
+                                                        String(optionValue)
+                                                ) ?
+                                                    "opacity-100"
+                                                :   "opacity-0",
                                             )}
                                         />
                                     </CommandItem>
                                 )
                             })}
+
+                            {isLoading ?
+                                <div className="space-y-1">
+                                    {Array.from({ length: skeletonCount }).map(
+                                        (_, index) => (
+                                            <CommandItem
+                                                key={index}
+                                                className="p-0"
+                                            >
+                                                <Skeleton className="w-full h-7" />
+                                            </CommandItem>
+                                        ),
+                                    )}
+                                </div>
+                            :   null}
                         </CommandGroup>
                     </CommandList>
                 </Command>

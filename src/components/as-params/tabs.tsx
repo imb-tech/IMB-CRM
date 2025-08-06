@@ -6,7 +6,7 @@ import { ClassNameValue } from "tailwind-merge"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
- 
+
 interface ParamTabsProps {
     options: Array<{
         value: string | number
@@ -49,12 +49,12 @@ const ParamTabs: React.FC<ParamTabsProps> = ({
             onAdd?.()
         } else {
             if (disabled || tab === currentTab) return
-            dontCleanOthers
-                ? navigate({ search: { ...search, [paramName]: tab } as any })
-                : navigate({ search: { [paramName]: tab } as any })
+            dontCleanOthers ?
+                navigate({ search: { ...search, [paramName]: tab } as any })
+            :   navigate({ search: { [paramName]: tab } as any })
         }
     }
-    
+
     if (!is_visible) return null
     return (
         <Tabs
@@ -72,9 +72,9 @@ const ParamTabs: React.FC<ParamTabsProps> = ({
                                     value={option.value?.toString()}
                                     className={`cursor-pointer   relative px-4 ${option.className}`}
                                     aria-current={
-                                        option.value === currentTab
-                                            ? "page"
-                                            : undefined
+                                        option.value === currentTab ?
+                                            "page"
+                                        :   undefined
                                     }
                                     disabled={disabled}
                                 >

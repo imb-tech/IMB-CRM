@@ -5,13 +5,16 @@ export const usePaymentTypeCols = () =>
     useMemo<ColumnDef<PaymentType>[]>(
         () => [
             {
-                header: "№",
-                cell: ({ row }) => row.index + 1,
-            },
-            {
                 header: "Nomi",
                 accessorKey: "name",
                 enableSorting: true,
+                cell({ row }) {
+                    return (
+                        <p className="min-w-[180px] pl-3">
+                            {row.original.name}
+                        </p>
+                    )
+                },
             },
         ],
         [],

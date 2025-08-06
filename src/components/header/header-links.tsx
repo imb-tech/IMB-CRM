@@ -40,7 +40,10 @@ export default function HeaderLinks({
     )
 }
 
-export const findChildPaths = (filteredItems: typeof menuItems, pathname: string) => {
+export const findChildPaths = (
+    filteredItems: typeof menuItems,
+    pathname: string,
+) => {
     const currentSection = pathname?.split("/")?.[1]
 
     return (

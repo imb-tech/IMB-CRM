@@ -28,12 +28,12 @@ function MainLayout() {
 
     useEffect(() => {
         if (!token) {
-            navigate({ to: "/auth" })
+            navigate({ to: "/login" })
         }
     }, [pathname])
 
     return (
-        <SidebarProvider defaultOpen={false}>
+        <SidebarProvider defaultOpen={!false}>
             <AppSidebar />
             <SidebarInset>
                 <Outlet />

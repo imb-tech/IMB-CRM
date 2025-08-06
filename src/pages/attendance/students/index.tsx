@@ -113,8 +113,12 @@ export default function StudentsAttendanceMain() {
                                         <TableCell className="border-r border-r-secondary">
                                             {course.groupName}
                                         </TableCell>
-                                        <TableCell className="border-r border-r-secondary">{course.teacher}</TableCell>
-                                        <TableCell className="border-r border-r-secondary">{course.duration}</TableCell>
+                                        <TableCell className="border-r border-r-secondary">
+                                            {course.teacher}
+                                        </TableCell>
+                                        <TableCell className="border-r border-r-secondary">
+                                            {course.duration}
+                                        </TableCell>
                                         <TableCell className="border-r border-r-secondary">
                                             <Badge
                                                 variant="destructive"
@@ -128,9 +132,9 @@ export default function StudentsAttendanceMain() {
                                                 className={cn(
                                                     "h-4 w-4 transition-all",
 
-                                                    course.id === openRows?.id
-                                                        ? " rotate-180"
-                                                        : "rotate-0",
+                                                    course.id === openRows?.id ?
+                                                        " rotate-180"
+                                                    :   "rotate-0",
                                                 )}
                                             />
                                         </TableCell>

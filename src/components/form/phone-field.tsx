@@ -57,7 +57,12 @@ export default function PhoneField<IForm extends FieldValues>({
         control,
         rules: {
             validate: (val: string) => {
-                const v = val ? (val.startsWith("+") ? val : `+${val}`) : ""
+                const v =
+                    val ?
+                        val.startsWith("+") ?
+                            val
+                        :   `+${val}`
+                    :   ""
                 let err = ""
                 let isValid = true
                 if (required) {
@@ -74,16 +79,15 @@ export default function PhoneField<IForm extends FieldValues>({
         defaultValue: "",
     })
 
-    const val = (value as string)
-        ? value.startsWith("+")
-            ? value
-            : `+${value}`
-        : ""
+    const val =
+        (value as string) ?
+            value.startsWith("+") ?
+                value
+            :   `+${value}`
+        :   ""
 
     return (
-        <fieldset
-            className={cn("flex flex-col  w-full", wrapperClassName)}
-        >
+        <fieldset className={cn("flex flex-col  w-full", wrapperClassName)}>
             {label && (
                 <FieldLabel
                     htmlFor={name}

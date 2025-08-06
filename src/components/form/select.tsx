@@ -3,6 +3,8 @@ import FieldLabel from "./form-label"
 import FieldError from "./form-error"
 import Select from "../ui/select"
 import { getNestedValue } from "./input"
+import { ReactNode } from "react"
+import { cn } from "@/lib/utils"
 
 export function FormSelect<
     TForm extends FieldValues,
@@ -18,6 +20,9 @@ export function FormSelect<
     valueKey,
     labelKey,
     hideError = true,
+    renderOption,
+    placeholder,
+    className,
 }: thisProps<TForm, T>) {
     const error = getNestedValue(control._formState.errors, name)
     return (
@@ -42,18 +47,21 @@ export function FormSelect<
                         <Select
                             options={options}
                             label={label || "Tanlang"}
+                            placeholder={placeholder}
                             value={field.value}
-                            className={
-                                !!error && "border-destructive focus:right-0 "
-                            }
+                            className={cn(
+                                !!error && "border-destructive focus:right-0",
+                                className,
+                            )}
                             setValue={(val) =>
-                                val === "other"
-                                    ? setValue?.(val)
-                                    : field.onChange(val)
+                                val === "other" ?
+                                    setValue?.(val)
+                                :   field.onChange(val)
                             }
                             disabled={disabled}
                             labelKey={labelKey}
                             valueKey={valueKey}
+                            renderOption={renderOption}
                         />
                     </div>
                 )}
@@ -78,4 +86,7 @@ type thisProps<TForm extends FieldValues, T extends Record<string, any>> = {
     hideError?: boolean
     labelKey?: keyof T
     valueKey?: keyof T
+    renderOption?: (item: T) => ReactNode
+    placeholder?: string
+    className?: string
 }

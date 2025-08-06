@@ -48,7 +48,7 @@ export default function TableActions({
                             onClick={onView}
                             className="!text-green-500"
                         >
-                            <Eye width={16} className="mr-1.5"  />
+                            <Eye width={16} className="mr-1.5" />
                             Ko'rish
                         </DropdownMenuItem>
                     )}
@@ -74,7 +74,7 @@ export default function TableActions({
                             onClick={onUndo}
                             className="!text-destructive"
                         >
-                            <Undo width={16}  className="mr-1.5"/> Qaytarish
+                            <Undo width={16} className="mr-1.5" /> Qaytarish
                         </DropdownMenuItem>
                     )}
                 </DropdownMenuContent>

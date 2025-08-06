@@ -1,20 +1,25 @@
-import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { DataTable } from "@/components/ui/datatable"
-import { Plus } from "lucide-react"
 import { useRolesCols } from "./columns"
-import { Badge } from "@/components/ui/badge"
 import Modal from "@/components/custom/modal"
 import RoleCreate from "./create"
 import DeleteModal from "@/components/custom/delete-modal"
 import { useModal } from "@/hooks/useModal"
 import { useState } from "react"
 import { ROLE } from "@/constants/api-endpoints"
+import { useSearch } from "@tanstack/react-router"
+import { useGet } from "@/hooks/useGet"
+import SettingsHeader from "../settings-header"
 
 const RolesMain = () => {
     const { openModal: openModalRole } = useModal(`${ROLE}-add`)
     const { openModal: openModalDelete } = useModal(`${ROLE}-delete`)
     const [current, setCurrent] = useState<Role | null>(null)
+
+    const params = useSearch({ from: "/_main/settings/_main/roles" })
+    const { data, isFetching } = useGet<ListResp<Role>>(ROLE, {
+        params,
+    })
 
     const handleItemAdd = () => {
         setCurrent(null)
@@ -38,23 +43,16 @@ const RolesMain = () => {
         <div className="w-full">
             <Card className="mb-5 rounded-lg ">
                 <CardContent className="space-y-4">
-                    <div className="flex  justify-between items-center gap-3 ">
-                        <div className="flex items-center gap-3">
-                            <h1 className="text-xl">Rollar</h1>
-                            <Badge variant={"outline"} className="text-sm">
-                                {data.length}
-                            </Badge>
-                        </div>
-                        <Button onClick={handleItemAdd}>
-                            <Plus className="h-4 w-4" />
-                            Qo'shish
-                        </Button>
-                    </div>
+                    <SettingsHeader
+                        dataCount={data?.count}
+                        handleAdd={handleItemAdd}
+                    />
                     <DataTable
                         onDelete={(row) => handleItemDelete(row.original)}
                         onEdit={(row) => handleItemEdit(row.original)}
                         columns={columns}
-                        data={data}
+                        data={data?.results}
+                        loading={isFetching}
                     />
                 </CardContent>
             </Card>
@@ -64,7 +62,11 @@ const RolesMain = () => {
             >
                 <RoleCreate item={current} />
             </Modal>
-            <DeleteModal modalKey={`${ROLE}-delete`} id={current?.id} path={ROLE} />
+            <DeleteModal
+                modalKey={`${ROLE}-delete`}
+                id={current?.id}
+                path={ROLE}
+            />
         </div>
     )
 }

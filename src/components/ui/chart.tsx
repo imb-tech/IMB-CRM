@@ -139,9 +139,9 @@ const ChartTooltipContent = React.forwardRef<
             const key = `${labelKey || item.dataKey || item.name || "value"}`
             const itemConfig = getPayloadConfigFromPayload(config, item, key)
             const value =
-                !labelKey && typeof label === "string"
-                    ? config[label as keyof typeof config]?.label || label
-                    : itemConfig?.label
+                !labelKey && typeof label === "string" ?
+                    config[label as keyof typeof config]?.label || label
+                :   itemConfig?.label
 
             if (labelFormatter) {
                 return (
@@ -204,9 +204,11 @@ const ChartTooltipContent = React.forwardRef<
                                     indicator === "dot" && "items-center",
                                 )}
                             >
-                                {formatter &&
-                                item?.value !== undefined &&
-                                item.name ? (
+                                {(
+                                    formatter &&
+                                    item?.value !== undefined &&
+                                    item.name
+                                ) ?
                                     formatter(
                                         item.value,
                                         item.name,
@@ -214,12 +216,10 @@ const ChartTooltipContent = React.forwardRef<
                                         index,
                                         item.payload,
                                     )
-                                ) : (
-                                    <>
-                                        {itemConfig?.icon ? (
+                                :   <>
+                                        {itemConfig?.icon ?
                                             <itemConfig.icon />
-                                        ) : (
-                                            !hideIndicator && (
+                                        :   !hideIndicator && (
                                                 <div
                                                     className={cn(
                                                         "shrink-0 rounded-[2px] border-[--color-border] bg-[--color-bg]",
@@ -249,19 +249,19 @@ const ChartTooltipContent = React.forwardRef<
                                                     }
                                                 />
                                             )
-                                        )}
+                                        }
                                         <div
                                             className={cn(
                                                 "flex flex-1 gap-1 justify-between leading-none",
-                                                nestLabel
-                                                    ? "items-end"
-                                                    : "items-center",
+                                                nestLabel ? "items-end" : (
+                                                    "items-center"
+                                                ),
                                             )}
                                         >
                                             <div className="grid gap-1.5">
-                                                {nestLabel
-                                                    ? tooltipLabel
-                                                    : null}
+                                                {nestLabel ?
+                                                    tooltipLabel
+                                                :   null}
                                                 <span className="text-muted-foreground">
                                                     {itemConfig?.label ||
                                                         item.name}
@@ -276,7 +276,7 @@ const ChartTooltipContent = React.forwardRef<
                                             )}
                                         </div>
                                     </>
-                                )}
+                                }
                             </div>
                         )
                     })}
@@ -337,16 +337,15 @@ const ChartLegendContent = React.forwardRef<
                                 "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground",
                             )}
                         >
-                            {itemConfig?.icon && !hideIcon ? (
+                            {itemConfig?.icon && !hideIcon ?
                                 <itemConfig.icon />
-                            ) : (
-                                <div
+                            :   <div
                                     className="h-2 w-2 shrink-0 rounded-[2px]"
                                     style={{
                                         backgroundColor: item.color,
                                     }}
                                 />
-                            )}
+                            }
                             {itemConfig?.label}
                         </div>
                     )
@@ -368,11 +367,13 @@ function getPayloadConfigFromPayload(
     }
 
     const payloadPayload =
-        "payload" in payload &&
-        typeof payload.payload === "object" &&
-        payload.payload !== null
-            ? payload.payload
-            : undefined
+        (
+            "payload" in payload &&
+            typeof payload.payload === "object" &&
+            payload.payload !== null
+        ) ?
+            payload.payload
+        :   undefined
 
     let configLabelKey: string = key
 
@@ -391,9 +392,9 @@ function getPayloadConfigFromPayload(
         ] as string
     }
 
-    return configLabelKey in config
-        ? config[configLabelKey]
-        : config[key as keyof typeof config]
+    return configLabelKey in config ?
+            config[configLabelKey]
+        :   config[key as keyof typeof config]
 }
 
 export {
