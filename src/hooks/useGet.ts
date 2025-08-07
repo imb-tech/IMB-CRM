@@ -31,8 +31,8 @@ export const useGet = <TData = any, TQueryFnData = unknown, TError = any>(
 
             if (deps) {
                 return hasParams ?
-                    [url, ...deps, ...paramValues]
-                    : [url, ...deps]
+                        [url, ...deps, ...paramValues]
+                    :   [url, ...deps]
             }
 
             return hasParams ? [url, ...paramValues] : [url]

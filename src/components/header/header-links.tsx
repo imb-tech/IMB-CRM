@@ -12,7 +12,7 @@ export default function HeaderLinks({
     if (!navOnHeader) {
         return null
     }
-    
+
     const { pathname } = useLocation()
     const items =
         defaultLinks ? defaultLinks : findChildPaths(menuItems, pathname)

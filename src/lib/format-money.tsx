@@ -3,7 +3,7 @@ import { ClassNameValue } from "tailwind-merge"
 export function formatMoney(
     amount?: number | string,
     className?: ClassNameValue,
-    suffix = '',
+    suffix = "",
 ) {
     const [integerPart, decimalPart] =
         amount ? amount.toString().split(".") : ""
