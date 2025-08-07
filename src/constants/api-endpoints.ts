@@ -1,5 +1,6 @@
 const COMMON = "common/"
 const AUTH = "auth/"
+const OPTION = "option/"
 
 export const LOGIN = AUTH + "login"
 export const PROFILE = AUTH + "profile"
@@ -12,11 +13,13 @@ export const HOLIDAY = COMMON + "weekends"
 export const ROLE = COMMON + "roles"
 export const TASKLY_PROJECT_CRM = "taskly/list-projects"
 export const HR_API = "users"
+export const OPTION_ROLES = OPTION + 'roles'
+export const EMPLOYEE = 'employees'
+export const SALARIES = 'salary-types/attach'
 
 export const REFRESH_TOKEN = "token/refresh"
 export const GROUP = `/payment`
 export const STUDENT = `country`
-export const EMPLOYEE = `inventory`
 export const INVENTORY_CAR = `/car`
 export const LOADS = `loads`
 export const OFFERS = `offers`

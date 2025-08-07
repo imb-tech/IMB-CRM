@@ -82,3 +82,30 @@ export const months = [
     { key: "11", name: "Noyabr" },
     { key: "12", name: "Dekabr" },
 ]
+
+
+export function generateUsername(fullName: string): string {
+    const normalized = fullName.trim().toLowerCase()
+    const parts = normalized.split(' ');
+
+    return parts.join('_')
+}
+
+export type teacherSalary = 'course_amount' | 'by_payments' | 'by_debts'
+
+export const teacherSalaryTypes: { name: string, value: teacherSalary }[] = [
+    {
+        name: 'Kurs narxidan',
+        value: 'course_amount'
+    }
+    ,
+    {
+        name: "O'quvchilat to'lovidan",
+        value: 'by_payments'
+    }
+    ,
+    {
+        name: "O'quvchilar qarzdorligidan",
+        value: 'by_debts'
+    }
+]

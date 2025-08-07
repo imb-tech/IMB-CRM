@@ -45,7 +45,20 @@ export const menuItems = [
         icon: <Users2 width={20} />,
         to: "/employees",
         enabled: true,
-        items: [],
+        items: [
+            linkOptions({
+                title: "Hodimlar",
+                to: "/employees/hr",
+                enabled: true,
+                items: [],
+            }),
+            linkOptions({
+                title: "Maoshlar",
+                to: "/employees/salary",
+                enabled: true,
+                items: [],
+            }),
+        ],
     }),
     linkOptions({
         title: "O'quvchilar",

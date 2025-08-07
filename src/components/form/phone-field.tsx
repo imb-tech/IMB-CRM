@@ -29,7 +29,7 @@ const phoneUtil = PhoneNumberUtil.getInstance()
 export default function PhoneField<IForm extends FieldValues>({
     methods,
     name,
-    label = "Telefon raqam",
+    label,
     required = false,
     wrapperClassName,
     className,
@@ -93,6 +93,7 @@ export default function PhoneField<IForm extends FieldValues>({
                     htmlFor={name}
                     required={required}
                     isError={!!error}
+                    className="text-xs text-muted-foreground"
                 >
                     {label}
                 </FieldLabel>
@@ -100,6 +101,7 @@ export default function PhoneField<IForm extends FieldValues>({
             <PhoneInput
                 // hideDropdown
                 // forceDialCode
+                inputProps={{ autoComplete: "off" }}
                 className={cn(
                     "w-full h-10 rounded-md has-[input:focus]:ring-1 has-[input:focus]:ring-ring has-[input:focus]:ring-offset-0 !outline-none",
                     className,

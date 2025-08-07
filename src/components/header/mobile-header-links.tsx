@@ -3,11 +3,14 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useEffect, useRef } from "react"
 import { findChildPaths, useIsActive } from "./header-links"
 import { menuItems } from "@/constants/menu"
+import { cn } from "@/lib/utils"
 
 export default function MobileHeaderLinks({
     defaultLinks,
+    navOnHeader,
 }: {
     defaultLinks?: SubMenuItem[]
+    navOnHeader?: boolean
 }) {
     const { pathname } = useLocation()
     const items =
@@ -33,7 +36,12 @@ export default function MobileHeaderLinks({
 
     return (
         <div className="w-full">
-            <div className="overflow-x-auto overflow-y-hidden no-scrollbar-x">
+            <div
+                className={cn(
+                    "overflow-x-auto overflow-y-hidden no-scrollbar-x",
+                    navOnHeader ? "md:hidden" : "",
+                )}
+            >
                 <Tabs
                     value={pathname}
                     onValueChange={(path) => navigate({ to: path })}

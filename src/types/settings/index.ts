@@ -50,6 +50,7 @@ type Role = {
     id: number
     name: string
     permissions: string[]
+    employees_count: number
 }
 
 type PaymentType = {

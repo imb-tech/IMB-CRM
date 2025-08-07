@@ -13,6 +13,10 @@ export const useRolesCols = () =>
                 accessorKey: "name",
             },
             {
+                header: "Hodimlar soni",
+                accessorKey: "employees_count",
+            },
+            {
                 header: "Ruxsatlar",
                 accessorKey: "permissions",
                 cell: ({ row }) => (

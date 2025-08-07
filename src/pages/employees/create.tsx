@@ -1,13 +1,16 @@
-import { FormDatePicker } from "@/components/form/date-picker"
 import FormImagePicker from "@/components/form/image-picker"
 import FormInput from "@/components/form/input"
-import { FormNumberInput } from "@/components/form/number-input"
+import { FormMultiCombobox } from "@/components/form/multi-combobox"
 import PhoneField from "@/components/form/phone-field"
+import { FormSelect } from "@/components/form/select"
 import { Button } from "@/components/ui/button"
-import { EMPLOYEE } from "@/constants/api-endpoints"
+import { EMPLOYEE, OPTION_ROLES } from "@/constants/api-endpoints"
+import { useGet } from "@/hooks/useGet"
+import useMe from "@/hooks/useMe"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
 import { usePost } from "@/hooks/usePost"
+import { generateUsername } from "@/lib/utils"
 import { useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -18,44 +21,74 @@ type Props = {
 
 const EmployeeCreate = ({ item }: Props) => {
     const queryClient = useQueryClient()
-    const { closeModal } = useModal(`${EMPLOYEE}-add`)
-    const form = useForm<Employee>({ defaultValues: item || undefined })
-    const { mutate: mutateCreate, isPending: isPendingCreate } = usePost({
-        onSuccess: () => {
-            toast.success("Muvaffaqiyatli yaratildi")
-            closeModal()
-            form.reset()
-            queryClient.invalidateQueries({ queryKey: [EMPLOYEE] })
-        },
+    const { closeModal, isOpen } = useModal(`${EMPLOYEE}-add`)
+
+    const { data: roles } = useGet<RoleOption[]>(OPTION_ROLES, {
+        options: { enabled: isOpen },
     })
-    const { mutate: mutateUpdate, isPending: isPendingUpdate } = usePatch({
-        onSuccess: () => {
-            toast.success("Muvaffaqiyatli yangilandi")
-            closeModal()
-            form.reset()
-            queryClient.invalidateQueries({ queryKey: [EMPLOYEE] })
-        },
+    const { data, active_branch } = useMe()
+
+    const form = useForm<Employee>({
+        defaultValues:
+            item?.id ?
+                {
+                    ...item,
+                    branches_field: item.branches.map((f) => f.id),
+                }
+            :   {
+                    branches_field: active_branch ? [active_branch] : [],
+                },
     })
+
+    function onSuccess() {
+        toast.success("Muvaffaqiyatli yangilandi")
+        closeModal()
+        form.reset()
+        queryClient.invalidateQueries({ queryKey: [EMPLOYEE] })
+    }
+    const headers = {
+        "Content-Type": "multipart/form-data",
+    }
+
+    const { mutate: mutateCreate, isPending: isPendingCreate } = usePost(
+        {
+            onSuccess,
+        },
+        { headers },
+    )
+    const { mutate: mutateUpdate, isPending: isPendingUpdate } = usePatch(
+        {
+            onSuccess,
+        },
+        { headers },
+    )
     const disabled = isPendingCreate || isPendingUpdate
 
     const onSubmit = (values: Employee) => {
-        console.log(values)
+        const formFields = {
+            ...values,
+            branches: values.branches_field?.join(","),
+            photo:
+                !values.photo || typeof values.phone == "string" ?
+                    undefined
+                :   values.phone,
+        }
         if (item?.id) {
-            mutateUpdate(`${EMPLOYEE}/${item.id}`, values)
+            mutateUpdate(`${EMPLOYEE}/${item.id}`, formFields)
         } else {
-            mutateCreate(EMPLOYEE, values)
+            mutateCreate(EMPLOYEE, formFields)
         }
     }
 
     return (
         <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="grid md:grid-cols-2 gap-4"
+            className="flex flex-col gap-3"
         >
             <div className="md:col-span-2">
                 <FormImagePicker
                     methods={form}
-                    name="img_name"
+                    name="photo"
                     label="Rasm"
                     avatar
                 />
@@ -65,7 +98,15 @@ const EmployeeCreate = ({ item }: Props) => {
                 methods={form}
                 name="full_name"
                 placeholder="FIO"
+                autoComplete="off"
                 label="FIO"
+                onChange={(v) => {
+                    const value = v.target.value
+                    form.setValue("full_name", value)
+                    if (!item?.username) {
+                        form.setValue("username", generateUsername(value))
+                    }
+                }}
             />
             <PhoneField
                 required
@@ -73,38 +114,46 @@ const EmployeeCreate = ({ item }: Props) => {
                 name="phone"
                 label="Telefon raqam"
             />
-            <FormDatePicker
+
+            <FormMultiCombobox
                 required
                 control={form.control}
-                name="birth_date"
-                label="Tug'ilgan sana"
+                options={data?.branches ?? []}
+                labelKey="name"
+                valueKey="id"
+                label="Filial nomi"
+                name="branches_field"
             />
-            <FormDatePicker
-                required
+            <FormSelect
                 control={form.control}
-                name="hired_date"
-                label="Ishga olingan sana"
-            />
-            <FormNumberInput
+                name="role"
+                options={roles ?? []}
+                valueKey="id"
+                label="Lavozim"
+                labelKey="name"
                 required
-                control={form.control}
-                name="percent"
-                label="Foiz ulush"
             />
-            <FormNumberInput
-                required
-                control={form.control}
-                name="salary"
-                label="Oylik ish haqi"
-            />
-            <FormInput
-                type="password"
-                required
-                methods={form}
-                name="password"
-                placeholder="Parol"
-                label="Parol"
-            />
+
+            <div className="grid grid-cols-2 items-start gap-1">
+                <FormInput
+                    required
+                    methods={form}
+                    name="username"
+                    placeholder="Login"
+                    label="Login"
+                />
+
+                <FormInput
+                    type="password"
+                    required={!item?.id}
+                    methods={form}
+                    name="password"
+                    placeholder="Parol"
+                    label="Parol"
+                    minLength={4}
+                />
+            </div>
+
             <div className="md:col-span-2 flex  justify-end">
                 <Button
                     className="md:w-max w-full"

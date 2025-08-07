@@ -1,4 +1,4 @@
-import { formatMoney } from "@/lib/format-money"
+import SeeInView from "@/components/ui/see-in-view"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
 import { ColumnDef } from "@tanstack/react-table"
 import { useMemo } from "react"
@@ -7,13 +7,20 @@ export const useEmployeeCols = () =>
     useMemo<ColumnDef<Employee>[]>(
         () => [
             {
-                header: "№",
-                cell: ({ row }) => row.index + 1,
+                header: "Rasm",
+                accessorKey: "face",
+                cell: ({ row }) => (
+                    <SeeInView
+                        url={row.original.photo ?? "/images/user.png"}
+                        className={
+                            "object-cover h-9 min-w-9 max-w-9 rounded-md"
+                        }
+                    />
+                ),
             },
             {
                 header: "FIO",
                 accessorKey: "full_name",
-                enableSorting: true,
             },
             {
                 header: "Telefon",
@@ -23,34 +30,27 @@ export const useEmployeeCols = () =>
                 },
             },
             {
-                header: "Oylik",
-                accessorKey: "salary",
-                enableSorting: true,
+                header: "Role",
+                accessorKey: "role_name",
+            },
+            {
+                header: "Login",
+                accessorKey: "username",
+            },
+            {
+                header: "Filiallar",
                 cell: ({ row }) => {
-                    return formatMoney(row.original.salary)
+                    return (
+                        <div className="flex flex-wrap gap-2">
+                            {row?.original.branches?.map((br, i) => (
+                                <p className="text-primary">
+                                    {i > 0 ? "," : ""}
+                                    {br.name}
+                                </p>
+                            ))}
+                        </div>
+                    )
                 },
-            },
-            {
-                header: "Foiz ulush (%)",
-                accessorKey: "percent",
-                enableSorting: true,
-            },
-            {
-                header: "Dars haqi",
-                accessorKey: "lesson_fee",
-                enableSorting: true,
-                cell: ({ row }) => {
-                    return formatMoney(row.original.lesson_fee)
-                },
-            },
-            {
-                header: "Tug'ilgan sana",
-                accessorKey: "birth_date",
-                enableSorting: true,
-            },
-            {
-                header: "Ishgan olingan sana",
-                accessorKey: "hired_date",
             },
         ],
         [],

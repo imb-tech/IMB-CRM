@@ -4,9 +4,15 @@ import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
 
 export default function HeaderLinks({
     defaultLinks,
+    navOnHeader,
 }: {
     defaultLinks?: SubMenuItem[]
+    navOnHeader?: boolean
 }) {
+    if (!navOnHeader) {
+        return null
+    }
+    
     const { pathname } = useLocation()
     const items =
         defaultLinks ? defaultLinks : findChildPaths(menuItems, pathname)
@@ -15,7 +21,7 @@ export default function HeaderLinks({
 
     return (
         <div>
-            {/* {!!items.length && (
+            {!!items.length && (
                 <Tabs
                     value={pathname}
                     onValueChange={(path) => navigate({ to: path })}
@@ -35,7 +41,7 @@ export default function HeaderLinks({
                         ))}
                     </TabsList>
                 </Tabs>
-            )} */}
+            )}
         </div>
     )
 }

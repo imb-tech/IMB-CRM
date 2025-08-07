@@ -35,7 +35,10 @@ const RoleCreate = ({ item }: Props) => {
     const disabled = isPendingCreate || isPendingUpdate
 
     const onSubmit = (values: Role) => {
-        console.log(values)
+        const v = {
+            ...values,
+            name: values.name.toLowerCase(),
+        }
         if (item?.id) {
             mutateUpdate(`${ROLE}/${item.id}`, values)
         } else {
@@ -46,12 +49,6 @@ const RoleCreate = ({ item }: Props) => {
     return (
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
             <FormInput required methods={form} label="Nomi" name="name" />
-            <FormInput
-                required
-                methods={form}
-                label="Ruxsatlar"
-                name="permissions"
-            />
             <Button
                 className="md:w-max w-full float-end"
                 type="submit"

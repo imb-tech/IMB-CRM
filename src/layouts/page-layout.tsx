@@ -14,6 +14,7 @@ type Props = {
     items?: SubMenuItem[]
     className?: ClassNameValue
     style?: CSSProperties
+    navOnHeader?: boolean
 }
 
 const PageLayout = ({
@@ -23,6 +24,7 @@ const PageLayout = ({
     items,
     style,
     className,
+    navOnHeader = false,
 }: Props) => {
     const { pathname } = useLocation()
     const defaultLinks = items ? items : findChildPaths(menuItems, pathname)
@@ -38,12 +40,22 @@ const PageLayout = ({
                 <Header
                     rigthChildren={rigthChildren}
                     leftChildren={leftChildren}
+                    navOnHeader={navOnHeader}
                 />
             </div>
 
-            <div className={cn("pt-20 px-4", len ? "pb-2" : "")}>
+            <div
+                className={cn(
+                    "pt-20 px-4",
+                    len ? "pb-2" : "",
+                    navOnHeader ? "pb-0" : "",
+                )}
+            >
                 {len ?
-                    <MobileHeaderLinks defaultLinks={items} />
+                    <MobileHeaderLinks
+                        defaultLinks={items}
+                        navOnHeader={navOnHeader}
+                    />
                 :   null}
             </div>
 

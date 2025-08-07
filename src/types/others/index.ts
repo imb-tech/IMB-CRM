@@ -29,6 +29,7 @@ type SearchParams = {
     end?: string
     end_date?: string
     start_date?: string
+    role?: number | string
 
     year?: string
     id?: string

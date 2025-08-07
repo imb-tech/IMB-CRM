@@ -62,7 +62,12 @@ export function FormInput<IForm extends FieldValues>({
             )}
         >
             {label && (
-                <FieldLabel htmlFor={name} required={required} isError={error}>
+                <FieldLabel
+                    htmlFor={name}
+                    required={required}
+                    isError={error}
+                    className="text-xs text-muted-foreground"
+                >
                     {label}
                 </FieldLabel>
             )}

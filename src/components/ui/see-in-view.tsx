@@ -25,7 +25,12 @@ export default function SeeInView({
             <DialogTrigger className={fullWidth ? "w-full" : "max-w-full"}>
                 {children ?
                     children
-                :   <img src={url} alt="img" className={`${className}` || ""} />
+                :   <img
+                        src={url}
+                        loading="lazy"
+                        alt="img"
+                        className={`${className}` || ""}
+                    />
                 }
             </DialogTrigger>
             <DialogContent className="max-w-4xl min-h-64 max-h-[80vh] w-full !p-0 bg-transparent border-none">

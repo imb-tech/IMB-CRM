@@ -26,12 +26,13 @@ export function FormSelect<
 }: thisProps<TForm, T>) {
     const error = getNestedValue(control._formState.errors, name)
     return (
-        <div className="w-full">
+        <fieldset className="flex flex-col w-full">
             {label && (
                 <FieldLabel
                     htmlFor={name}
                     required={!!required}
                     isError={!!error}
+                    className="text-xs text-muted-foreground"
                 >
                     {label}
                 </FieldLabel>
@@ -43,27 +44,25 @@ export function FormSelect<
                     required ? { required: `${label || name}ni kiriting` } : {}
                 }
                 render={({ field }) => (
-                    <div className={label ? "pt-[2px]" : ""}>
-                        <Select
-                            options={options}
-                            label={label || "Tanlang"}
-                            placeholder={placeholder}
-                            value={field.value}
-                            className={cn(
-                                !!error && "border-destructive focus:right-0",
-                                className,
-                            )}
-                            setValue={(val) =>
-                                val === "other" ?
-                                    setValue?.(val)
-                                :   field.onChange(val)
-                            }
-                            disabled={disabled}
-                            labelKey={labelKey}
-                            valueKey={valueKey}
-                            renderOption={renderOption}
-                        />
-                    </div>
+                    <Select
+                        options={options}
+                        label={label || "Tanlang"}
+                        placeholder={placeholder}
+                        value={field.value}
+                        className={cn(
+                            !!error && "border-destructive focus:right-0",
+                            className,
+                        )}
+                        setValue={(val) =>
+                            val === "other" ?
+                                setValue?.(val)
+                            :   field.onChange(val)
+                        }
+                        disabled={disabled}
+                        labelKey={labelKey}
+                        valueKey={valueKey}
+                        renderOption={renderOption}
+                    />
                 )}
             />
             {!hideError && error && (
@@ -71,7 +70,7 @@ export function FormSelect<
                     {control._formState.errors[name]?.message as string}
                 </FieldError>
             )}
-        </div>
+        </fieldset>
     )
 }
 

@@ -1,12 +1,26 @@
 type Employee = {
-    id: number
-    img_name: string
+    id: number,
+    photo: null | string,
+    username: string,
+    full_name: string,
+    phone: string,
+    branches: Branch[]
+    role_name: string
+    image: string
+    password: string
+    role: number
+    branches_field: number[]
+}
+
+type EmployeeSalary = {
+    id: number,
     full_name: string
-    phone: string
-    salary: number
-    percent: number
-    lesson_fee: number
-    birth_date: string
-    hired_date: string
-    password?: string
+    photo: string
+    employee: number,
+    salary_type: string,
+    percentage_salary: number,
+    static_salary: string,
+    per_student_salary: string,
+    is_active: boolean
+    role_name: string
 }

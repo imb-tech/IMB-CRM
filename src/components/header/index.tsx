@@ -12,15 +12,16 @@ import { SidebarTrigger } from "../ui/sidebar"
 import { ReactNode, useState } from "react"
 import useMe from "@/hooks/useMe"
 import Select from "../ui/select"
-import { getActiveBranch, setActiveBranch } from "@/lib/utils"
+import { cn, getActiveBranch, setActiveBranch } from "@/lib/utils"
+import HeaderLinks from "./header-links"
 
 type Props = {
     title?: string
     rigthChildren?: ReactNode
     leftChildren?: ReactNode
-    links?: SubMenuItem[]
+    navOnHeader?: boolean
 }
-const Header = ({ rigthChildren, leftChildren }: Props) => {
+const Header = ({ rigthChildren, leftChildren, navOnHeader }: Props) => {
     const navigate = useNavigate()
     const { data } = useMe()
     const activeBranch = getActiveBranch()
@@ -46,9 +47,14 @@ const Header = ({ rigthChildren, leftChildren }: Props) => {
                         IMB TECH
                     </span>
                 </div>
-                {/* <div className="w-full hidden md:block">
-                    <HeaderLinks defaultLinks={links} />
-                </div> */}
+                <div
+                    className={cn(
+                        "w-full hidden md:block",
+                        !navOnHeader ? "md:hidden" : "",
+                    )}
+                >
+                    <HeaderLinks navOnHeader={navOnHeader} />
+                </div>
                 {leftChildren ? leftChildren : null}
             </div>
             <hgroup className="flex items-center gap-4">

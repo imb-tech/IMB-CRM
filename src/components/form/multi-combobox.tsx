@@ -48,12 +48,13 @@ export function FormMultiCombobox<
     const error = getNestedValue(control._formState.errors, name)
 
     return (
-        <div>
+        <fieldset className="flex flex-col w-full">
             {label && (
                 <FieldLabel
                     htmlFor={name}
                     required={!!required}
                     isError={!!error}
+                    className="text-xs text-muted-foreground"
                 >
                     {label}
                 </FieldLabel>
@@ -65,27 +66,25 @@ export function FormMultiCombobox<
                     required ? { required: `${label || name}ni kiriting` } : {}
                 }
                 render={({ field }) => (
-                    <div className="pt-0.5">
-                        <ShadcnCombobox
-                            options={options}
-                            values={field.value}
-                            setValues={field.onChange}
-                            label={placeholder || label || "Tanlang"}
-                            isError={!!error}
-                            onAdd={onAdd}
-                            valueKey={valueKey}
-                            labelKey={labelKey}
-                            isLoading={isLoading}
-                            skeletonCount={skeletonCount}
-                            onSearchChange={onSearchChange}
-                            allSelected={allSelected}
-                            isSearch={isSearch}
-                            addButtonProps={{
-                                disabled: control._formState.disabled,
-                                ...addButtonProps,
-                            }}
-                        />
-                    </div>
+                    <ShadcnCombobox
+                        options={options}
+                        values={field.value}
+                        setValues={field.onChange}
+                        label={placeholder || label || "Tanlang"}
+                        isError={!!error}
+                        onAdd={onAdd}
+                        valueKey={valueKey}
+                        labelKey={labelKey}
+                        isLoading={isLoading}
+                        skeletonCount={skeletonCount}
+                        onSearchChange={onSearchChange}
+                        allSelected={allSelected}
+                        isSearch={isSearch}
+                        addButtonProps={{
+                            disabled: control._formState.disabled,
+                            ...addButtonProps,
+                        }}
+                    />
                 )}
             />
             {!hideError && error && (
@@ -93,6 +92,6 @@ export function FormMultiCombobox<
                     {control._formState.errors[name]?.message as string}
                 </FieldError>
             )}
-        </div>
+        </fieldset>
     )
 }

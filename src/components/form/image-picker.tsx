@@ -11,7 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Label } from "../ui/label"
 import SeeInView from "../ui/see-in-view"
 import FieldError from "./form-error"
-import { ImagePlus } from "lucide-react"
+import { ImagePlus, Upload } from "lucide-react"
 
 export default function FormImagePicker<IForm extends FieldValues>({
     name,
@@ -131,10 +131,10 @@ export default function FormImagePicker<IForm extends FieldValues>({
                     htmlFor={name}
                     className={cn(
                         !!error && "text-destructive",
-                        "cursor-pointer pt-2",
+                        "cursor-pointer pt-2 flex items-center gap-2 justify-center",
                     )}
                 >
-                    {label}
+                    {label} <Upload size={18} />
                 </Label>
             )}
             {!hideError && !!error && <FieldError>{error.message}</FieldError>}

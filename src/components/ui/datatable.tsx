@@ -288,7 +288,7 @@ export function DataTable<TData>({
                                 .getHeaderGroups()
                                 .map((headerGroup, index) => (
                                     <TableRow
-                                        key={index}
+                                        key={headerGroup.id}
                                         className="border-none "
                                     >
                                         {selecteds_row && (
@@ -310,10 +310,10 @@ export function DataTable<TData>({
                                         )}
                                         {numeration && (
                                             <TableHead
-                                                key={index}
+                                                key={index + headerGroup.id}
                                                 className={cn(
                                                     " px-2  cursor-pointer",
-                                                    index === 0 && "w-8",
+                                                    // index === 0 && "w-20",
                                                 )}
                                             >
                                                 №
@@ -327,8 +327,8 @@ export function DataTable<TData>({
                                                         key={index}
                                                         className={cn(
                                                             " px-2 cursor-pointer",
-                                                            index === 0 &&
-                                                                "w-8",
+                                                            // index === 0 &&
+                                                            //     "w-8",
                                                         )}
                                                         onClick={
                                                             (

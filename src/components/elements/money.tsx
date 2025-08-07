@@ -12,7 +12,7 @@ export default function Money({
             {formatMoney(
                 value,
                 value > 0 ? "text-green-500" : "text-red-500",
-                suffix,
+                suffix ? "so'm" : undefined,
             )}
         </div>
     )
