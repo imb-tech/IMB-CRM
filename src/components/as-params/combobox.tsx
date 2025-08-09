@@ -116,19 +116,33 @@ export function ParamCombobox<T extends Record<string, any>>({
         <Popover modal open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button
-                    variant={"secondary"}
+                    variant={"outline"}
                     role="combobox"
                     aria-expanded={open}
                     className={cn(
-                        "w-max  justify-between font-normal ",
-                        currentValue && "font-medium !text-white",
+                        "w-max font-normal",
+                        currentValue && "font-medium",
                         isError && "!text-destructive",
                         className,
                     )}
                     {...addButtonProps}
                 >
                     {selectedOption?.[labelKey] ?? label}
-                    <ChevronDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+                    {currentValue && (
+                        <X
+                            className="ml-auto h-4 w-4 shrink-0 text-rose-500"
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                handleCancel()
+                            }}
+                        />
+                    )}
+                    <ChevronDown
+                        className={cn(
+                            "ml-1 h-4 w-4 shrink-0 opacity-50",
+                            !currentValue && "ml-auto",
+                        )}
+                    />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="p-0 !min-w-full">

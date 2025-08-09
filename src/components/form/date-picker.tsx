@@ -4,6 +4,7 @@ import { CalendarProps } from "../ui/calendar"
 import FieldError from "./form-error"
 import FieldLabel from "./form-label"
 import { getNestedValue } from "./input"
+import { ClassNameValue } from "tailwind-merge"
 
 export function FormDatePicker<TForm extends FieldValues>({
     name,
@@ -14,15 +15,18 @@ export function FormDatePicker<TForm extends FieldValues>({
     calendarProps,
     hideError = true,
     placeholder,
+    fullWidth,
+    className,
 }: thisProps<TForm>) {
     const error = getNestedValue(control._formState.errors, name)
     return (
-        <div className="flex flex-col">
+        <fieldset className="flex flex-col w-full">
             {label && (
                 <FieldLabel
                     isError={!!error}
                     htmlFor={name}
                     required={required}
+                    className="text-xs text-muted-foreground"
                 >
                     {label}
                 </FieldLabel>
@@ -44,7 +48,8 @@ export function FormDatePicker<TForm extends FieldValues>({
                         setDate={field.onChange}
                         placeholder={placeholder || label}
                         disabled={field.disabled || disabled}
-                        fullWidth
+                        fullWidth={fullWidth}
+                        className={className}
                         isError={!!error}
                     />
                 )}
@@ -54,7 +59,7 @@ export function FormDatePicker<TForm extends FieldValues>({
                     {control._formState.errors[name]?.message as string}
                 </FieldError>
             )}
-        </div>
+        </fieldset>
     )
 }
 
@@ -67,4 +72,6 @@ interface thisProps<TForm extends FieldValues> {
     calendarProps?: CalendarProps | undefined
     hideError?: boolean
     placeholder?: string
+    fullWidth?: boolean
+    className?: ClassNameValue
 }

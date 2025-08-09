@@ -21,6 +21,10 @@ type Props = {
         | "max-w-2xl"
         | "max-w-3xl"
         | "max-w-4xl"
+        | "max-w-5xl"
+        | "max-w-6xl"
+        | "max-w-7xl"
+        | "max-w-full"
         | "max-w-sm"
         | "max-w-md"
     onClose?: () => void
@@ -48,7 +52,7 @@ const Modal = ({
     return (
         <Dialog open={isOpen} onOpenChange={handleClose}>
             {isOpen && (
-                <DialogContent className={size + className}>
+                <DialogContent className={size + className + " max-h-[90vh] overflow-y-auto no-scrollbar"}>
                     {title && <DialogTitle>{title}</DialogTitle>}
                     {!title && (
                         <VisuallyHidden>
@@ -58,7 +62,9 @@ const Modal = ({
                     {description && (
                         <DialogDescription>{description}</DialogDescription>
                     )}
-                    {children}
+                    <div className="">
+                        {children}
+                    </div>
                 </DialogContent>
             )}
         </Dialog>

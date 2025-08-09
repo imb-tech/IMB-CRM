@@ -439,11 +439,17 @@ export function DataTable<TData>({
                                             .map((cell, index) => (
                                                 <TableCell
                                                     key={index}
-                                                    onClick={() =>
-                                                        onRowClick?.(
-                                                            cell.row.original,
-                                                        )
-                                                    }
+                                                    onClick={() => {
+                                                        if (
+                                                            cell.column.id !==
+                                                            "action"
+                                                        ) {
+                                                            onRowClick?.(
+                                                                cell.row
+                                                                    .original,
+                                                            )
+                                                        }
+                                                    }}
                                                     className={cn(
                                                         `cursor-pointer border-r   dark:border-secondary/50 border-secondary last:border-none 
                                                          `,

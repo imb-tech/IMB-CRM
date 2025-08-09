@@ -1,14 +1,19 @@
 type Group = {
     id: number
-    groupName: string
-    course: string
-    teacher: string
-    lessonDays: string
-    lessonTime: string
-    studentCount: number
-    startDate: string
-    endDate: string
-    status: "active" | "completed" | "pending"
+    teacher_name: "Shohjahon Hamidov",
+    course_name: "Test uchun kurs",
+    branch_name: "test Filliali",
+    room_name: "1 xona",
+    shifts: GroupShift[],
+    name: "frontend 1",
+    start_date: "2025-08-01",
+    end_date: "2025-08-31",
+    price: string
+    status: 1,
+    teacher: 13,
+    course: 1,
+    room: 1,
+    branch: 2
 }
 
 type GroupExam = {
@@ -17,4 +22,23 @@ type GroupExam = {
     take_date: string
     min_score: number
     max_score: number
+}
+
+type GroupFields = {
+    name: string,
+    start_date: string
+    end_date: string
+    teacher: number
+    course: number
+    branch: number
+    room: number
+    shifts: GroupShift[]
+}
+
+type GroupShift = {
+    id: number
+    start_time: string
+    end_time: string
+    day_of_week: number
+    enable: boolean
 }

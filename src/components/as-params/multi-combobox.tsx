@@ -26,6 +26,7 @@ type ParamComboboxProps<T extends Record<string, any>> = {
     valueKey: keyof T
     isError?: boolean
     className?: string
+    hideSeach?: boolean
 }
 
 export function ParamMultiCombobox<T extends Record<string, any>>({
@@ -37,6 +38,7 @@ export function ParamMultiCombobox<T extends Record<string, any>>({
     className,
     labelKey,
     valueKey,
+    hideSeach = false,
 }: ParamComboboxProps<T>) {
     const navigate = useNavigate()
     const search: any = useSearch({ from: "/_main" }) as Record<
@@ -70,14 +72,16 @@ export function ParamMultiCombobox<T extends Record<string, any>>({
 
     const selectedLabels =
         currentValues.length > 0 ?
-            currentValues
-                ?.map((val: string) => {
-                    const found = options.find(
-                        (d) => String(d[valueKey]) === val,
-                    )
-                    return found?.[labelKey] || val
-                })
-                .join(", ")
+            currentValues.length > 1 ?
+                `${currentValues.length} ta tanlandi`
+            :   currentValues
+                    ?.map((val: string) => {
+                        const found = options.find(
+                            (d) => String(d[valueKey]) === val,
+                        )
+                        return found?.[labelKey] || val
+                    })
+                    .join(", ")
         :   undefined
 
     return (
@@ -88,30 +92,32 @@ export function ParamMultiCombobox<T extends Record<string, any>>({
                     role="combobox"
                     aria-expanded={open}
                     className={cn(
-                        "w-full justify-between text-muted-foreground font-normal",
+                        "w-full justify-between text-muted-foreground font-normal relative",
                         currentValues.length && "text-foreground font-medium",
                         isError && "!text-destructive",
                         className,
                     )}
                     disabled={disabled}
                 >
-                    {currentValues.length ? selectedLabels : label}
-                    <ChevronDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+                    <span className="mr-auto">
+                        {currentValues.length ? selectedLabels : label}
+                    </span>
+                    {currentValues.length > 0 && (
+                        <span className="cursor-pointer text-destructivep-1">
+                            <X
+                                className="text-destructive"
+                                width={16}
+                                onClick={handleCancel}
+                            />
+                        </span>
+                    )}
+                    <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
+            <PopoverContent className="!min-w-full p-0">
                 <Command>
                     <div className="relative">
-                        <CommandInput placeholder={label} />
-                        {currentValues.length > 0 && (
-                            <span className="absolute cursor-pointer text-destructive top-1.5 right-1 p-1 z-20">
-                                <X
-                                    className="text-destructive"
-                                    width={16}
-                                    onClick={handleCancel}
-                                />
-                            </span>
-                        )}
+                        {!hideSeach && <CommandInput placeholder={label} />}
                     </div>
                     <CommandList>
                         <CommandEmpty>Mavjud emas</CommandEmpty>

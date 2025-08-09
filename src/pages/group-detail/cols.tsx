@@ -1,52 +1,55 @@
+import Money from "@/components/elements/money"
 import { formatMoney } from "@/lib/format-money"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
 import { ColumnDef } from "@tanstack/react-table"
 import { useMemo } from "react"
+import StudentStatus from "../students/student-status"
+import { StatusPopover } from "./status-popover"
 
 export const useGroupStudentCols = () =>
-    useMemo<ColumnDef<Student>[]>(
+    useMemo<ColumnDef<GroupStudent>[]>(
         () => [
             {
-                header: "№",
-                cell: ({ row }) => row.index + 1,
+                header: "FIO",
+                accessorKey: "student_name",
+                enableSorting: true,
             },
             {
-                header: "FIO",
-                accessorKey: "name",
-                enableSorting: true,
+                header: "Qo'shilgan",
+                accessorKey: "start_date",
             },
             {
                 header: "Telefon",
                 accessorKey: "phone",
                 cell: ({ row }) => {
-                    return formatPhoneNumber(row.original.phone)
+                    return formatPhoneNumber(row.original.student_phone)
                 },
             },
             {
                 header: "Holat",
                 accessorKey: "rating",
                 enableSorting: true,
-                cell({ row }) {
-                    return row.original.rating > 4.4 ?
-                            <span className="text-xs bg-green-500/50 py-1 px-2 rounded-lg">
-                                Aktiv
-                            </span>
-                        :   <span className="text-xs bg-gray-500/50 py-1 px-2 rounded-lg">
-                                Muzlatilgan
-                            </span>
+                cell({
+                    row: {
+                        original: { status, allowed_statuses, id },
+                    },
+                }) {
+                    return (
+                        <StatusPopover
+                            student={id}
+                            allowed_statuses={allowed_statuses}
+                            status={status}
+                        />
+                    )
                 },
             },
             {
                 header: "Balans",
                 accessorKey: "balance",
                 enableSorting: true,
-                cell: ({ row }) => {
-                    const v = row.original.balance
-                    return formatMoney(
-                        v,
-                        v > 0 ? "text-green-500" : "text-red-500",
-                    )
-                },
+                cell: ({ row }) => (
+                    <Money value={Number(row.original.balance)} />
+                ),
             },
         ],
         [],

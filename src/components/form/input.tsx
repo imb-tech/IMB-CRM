@@ -57,7 +57,7 @@ export function FormInput<IForm extends FieldValues>({
     return (
         <fieldset
             className={cn(
-                "flex flex-col w-full justify-between ",
+                "flex flex-col w-full justify-between",
                 wrapperClassName,
             )}
         >

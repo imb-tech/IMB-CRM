@@ -45,6 +45,7 @@ const EmployeeCreate = ({ item }: Props) => {
         closeModal()
         form.reset()
         queryClient.invalidateQueries({ queryKey: [EMPLOYEE] })
+        queryClient.removeQueries({ queryKey: [OPTION_ROLES] })
     }
     const headers = {
         "Content-Type": "multipart/form-data",

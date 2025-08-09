@@ -2,7 +2,7 @@ import * as React from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { DayPicker } from "react-day-picker"
 
-import { cn } from "@/lib/utils"
+import { cn, months } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import {
     Select,
@@ -13,31 +13,47 @@ import {
 } from "./select2"
 import { uz } from "date-fns/locale"
 
-export type CalendarProps = React.ComponentProps<typeof DayPicker>
+export type CalendarProps = Omit<
+    React.ComponentProps<typeof DayPicker>,
+    "month" | "onMonthChange" | "components"
+> & {
+    defaultMonth?: Date
+    onSelect?: (date: Date) => void
+}
+
+const generatedYears = Array(new Date().getFullYear() - 2020 + 1).fill(0)
 
 function Calendar({
     className,
     classNames,
     showOutsideDays = true,
+    defaultMonth,
+    onSelect,
     ...props
 }: CalendarProps) {
-    const handleCalendarChange = (
-        _value: string | number,
-        _e: React.ChangeEventHandler<HTMLSelectElement>,
-    ) => {
-        const _event = {
-            target: {
-                value: String(_value),
-            },
-        } as React.ChangeEvent<HTMLSelectElement>
-        _e(_event)
+    const [month, setMonth] = React.useState<Date>(defaultMonth || new Date())
+
+    // Oyni selectdan tanlashda yangilash
+    const handleMonthChange = (monthIndex: number) => {
+        const newMonth = new Date(month.getFullYear(), monthIndex, 1)
+        setMonth(newMonth)
+    }
+
+    // Yilni selectdan tanlashda yangilash
+    const handleYearChange = (year: number) => {
+        const newMonth = new Date(year, month.getMonth(), 1)
+        setMonth(newMonth)
     }
 
     return (
         <DayPicker
+            onSelect={onSelect}
+            month={month}
+            onMonthChange={setMonth}
             showOutsideDays={showOutsideDays}
             className={cn("p-3", className)}
             locale={uz}
+            {...(props as any)}
             classNames={{
                 months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
                 month: "space-y-4",
@@ -79,47 +95,100 @@ function Calendar({
             components={{
                 IconLeft: () => <ChevronLeft className="h-4 w-4" />,
                 IconRight: () => <ChevronRight className="h-4 w-4" />,
-                Dropdown: ({ ...props }) => (
-                    <Select
-                        {...props}
-                        onValueChange={(value) => {
-                            if (props.onChange) {
-                                handleCalendarChange(value, props.onChange)
-                            }
-                        }}
-                        value={props.value as string}
-                    >
-                        <SelectTrigger
-                            className={cn(
-                                buttonVariants({ variant: "ghost" }),
-                                "pl-2 pr-1 py-2 h-7 w-fit font-medium [.is-between_&]:hidden [.is-end_&]:hidden [.is-start.is-end_&]:flex",
-                            )}
-                        >
-                            <SelectValue placeholder={props?.caption}>
-                                {props?.caption}
-                            </SelectValue>
-                        </SelectTrigger>
-                        <SelectContent className="max-h-[var(--radix-popper-available-height);] overflow-y-auto scrolling-auto min-w-[var(--radix-popper-anchor-width)]">
-                            {props.children &&
-                                React.Children.map(props.children, (child) => (
-                                    <SelectItem
-                                        value={
-                                            (child as React.ReactElement<any>)
-                                                ?.props?.value
-                                        }
-                                        className="min-w-[var(--radix-popper-anchor-width)]"
-                                    >
-                                        {
-                                            (child as React.ReactElement<any>)
-                                                ?.props?.children
-                                        }
-                                    </SelectItem>
-                                ))}
-                        </SelectContent>
-                    </Select>
-                ),
+                Caption() {
+                    return (
+                        <div className="flex items-center gap-0.5">
+                            {/* Previous month button */}
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const prevMonth = new Date(
+                                        month.getFullYear(),
+                                        month.getMonth() - 1,
+                                        1,
+                                    )
+                                    setMonth(prevMonth)
+                                }}
+                                className={cn(
+                                    buttonVariants({ variant: "outline" }),
+                                    "h-7 w-7 px-1 flex items-center justify-center",
+                                )}
+                                aria-label="Previous month"
+                            >
+                                <ChevronLeft className="h-4 w-4" />
+                            </button>
+
+                            {/* Year select */}
+                            <Select
+                                value={month.getFullYear().toString()}
+                                onValueChange={(value) =>
+                                    handleYearChange(Number(value))
+                                }
+                            >
+                                <SelectTrigger>
+                                    <SelectValue>
+                                        {month.getFullYear()}
+                                    </SelectValue>
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {generatedYears.map((_, i) => {
+                                        const year = 2020 + i
+                                        return (
+                                            <SelectItem
+                                                key={year}
+                                                value={year.toString()}
+                                            >
+                                                {year}
+                                            </SelectItem>
+                                        )
+                                    })}
+                                </SelectContent>
+                            </Select>
+
+                            {/* Month select */}
+                            <Select
+                                value={month.getMonth().toString()}
+                                onValueChange={(value) =>
+                                    handleMonthChange(Number(value))
+                                }
+                            >
+                                <SelectTrigger>
+                                    <SelectValue>
+                                        {months[month.getMonth()]?.name}
+                                    </SelectValue>
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {months.map((mn) => (
+                                        <SelectItem value={mn.key} key={mn.key}>
+                                            {mn.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+
+                            {/* Next month button */}
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const nextMonth = new Date(
+                                        month.getFullYear(),
+                                        month.getMonth() + 1,
+                                        1,
+                                    )
+                                    setMonth(nextMonth)
+                                }}
+                                className={cn(
+                                    buttonVariants({ variant: "outline" }),
+                                    "h-7 w-7 px-1 flex items-center justify-center",
+                                )}
+                                aria-label="Next month"
+                            >
+                                <ChevronRight className="h-4 w-4" />
+                            </button>
+                        </div>
+                    )
+                },
             }}
-            {...props}
         />
     )
 }

@@ -1,3 +1,4 @@
+import { weekdays } from "@/lib/utils"
 import { ColumnDef } from "@tanstack/react-table"
 import { useMemo } from "react"
 
@@ -5,25 +6,25 @@ export const useGroupCols = () =>
     useMemo<ColumnDef<Group>[]>(
         () => [
             {
-                header: "№",
-                cell: ({ row }) => row.index + 1,
-            },
-            {
                 header: "Guruh nomi",
-                accessorKey: "groupName",
+                accessorKey: "name",
                 enableSorting: true,
             },
             {
                 header: "Kurs",
-                accessorKey: "course",
+                accessorKey: "course_name",
             },
             {
                 header: "Dars Kunlari",
-                accessorKey: "lessonDays",
-            },
-            {
-                header: "Dars vaqti",
-                accessorKey: "lessonTime",
+                cell({ row: { original } }) {
+                    return (
+                        <div>
+                            {original.shifts
+                                ?.map((d) => weekdays[d.day_of_week - 1])
+                                ?.join(", ")}
+                        </div>
+                    )
+                },
             },
             {
                 header: "O'quvchilar soni",
@@ -32,12 +33,12 @@ export const useGroupCols = () =>
             },
             {
                 header: "Ochilgan",
-                accessorKey: "startDate",
+                accessorKey: "start_date",
                 enableSorting: true,
             },
             {
                 header: "Yakunlandi",
-                accessorKey: "endDate",
+                accessorKey: "end_date",
             },
             {
                 header: "Holat",

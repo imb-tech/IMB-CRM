@@ -13,8 +13,8 @@ export interface InputProps
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ({ className, type, fullWidth, suffix, prefixIcon, ...props }, ref) => {
         const [hide, setHide] = React.useState<boolean>(true)
-        const iconClassnames = `absolute right-1 top-1 text-muted-foreground p-1 box-content cursor-pointer backdrop-blur z-2 ${props.disabled && "pointer-events-none cursor-not-allowed opacity-50"}`
-        const searchIconClassnames = `absolute right-1 top-1/2 -translate-y-1/2 text-muted-foreground p-0.5 box-content cursor-pointer backdrop-blur z-1 ${props.disabled && "pointer-events-none cursor-not-allowed opacity-50"}`
+        const iconClassnames = `absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground h-full box-content cursor-pointer backdrop-blur z-2 ${props.disabled && "pointer-events-none cursor-not-allowed opacity-50"}`
+        const searchIconClassnames = `absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground p-0.5 box-content cursor-pointer backdrop-blur z-1 ${props.disabled && "pointer-events-none cursor-not-allowed opacity-50"}`
 
         return (
             <div

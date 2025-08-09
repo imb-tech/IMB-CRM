@@ -87,7 +87,11 @@ export function generateUsername(fullName: string): string {
     const normalized = fullName.trim().toLowerCase()
     const parts = normalized.split(" ")
 
-    return parts.join("_")
+    const sanitizedParts = parts.map(part =>
+        part.replace(/[^a-z0-9_.]/g, "") // faqat ruxsat etilgan belgilarni qoldiradi
+    )
+
+    return sanitizedParts.join("_")
 }
 
 export type teacherSalary = "course_amount" | "by_payments" | "by_debts"
@@ -106,3 +110,6 @@ export const teacherSalaryTypes: { name: string; value: teacherSalary }[] = [
         value: "by_debts",
     },
 ]
+
+
+export const weekdays = ['Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba', 'Yakshanba']

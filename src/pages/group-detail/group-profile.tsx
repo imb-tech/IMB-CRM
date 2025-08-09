@@ -7,7 +7,6 @@ import {
     Clock,
     MapPin,
     User,
-    Building,
     Calendar,
     Edit,
     Trash2,
@@ -18,9 +17,14 @@ import {
     Banknote,
     ChevronUp,
 } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { useCallback, useState } from "react"
+import { cn, weekdays } from "@/lib/utils"
+import { useCallback, useMemo, useState } from "react"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { useParams } from "@tanstack/react-router"
+import { useGet } from "@/hooks/useGet"
+import { GROUP } from "@/constants/api-endpoints"
+import { shiftGroupped } from "@/lib/shift-groupped"
+import { formatMoney } from "@/lib/format-money"
 
 function MiniStatCard({ label, value, icon: Icon, color }: any) {
     const colors = colorClasses[color as string]
@@ -44,32 +48,26 @@ function MiniStatCard({ label, value, icon: Icon, color }: any) {
 }
 
 export default function GroupProfile() {
-    const cards = [
-        {
-            label: "O'quvchi soni",
-            value: 15,
-            icon: Users,
-            color: "blue",
-        },
-        {
-            label: "Vaqt",
-            value: "10:00 - 12:30",
-            icon: Clock,
-            color: "orange",
-        },
-        {
-            label: "Xona",
-            value: "3-xona",
-            icon: MapPin,
-            color: "purple",
-        },
-        {
-            label: "O'qituvchi",
-            value: "Shahboz Nabiyev",
-            icon: User,
-            color: "emerald",
-        },
-    ]
+    const { id } = useParams({ from: "/_main/groups/$id" })
+    const { data } = useGet<Group>(GROUP + "/" + id)
+
+    const cards = useMemo(
+        () => [
+            {
+                label: "O'quvchi soni",
+                value: 15,
+                icon: Users,
+                color: "blue",
+            },
+            {
+                label: "Xona",
+                value: "3-xona",
+                icon: MapPin,
+                color: "purple",
+            },
+        ],
+        [],
+    )
 
     const isMobile = useIsMobile()
     const [open, setOpen] = useState<boolean>(false)
@@ -114,10 +112,10 @@ export default function GroupProfile() {
                             </div>
                             <div>
                                 <h3 className="font-bold text-sm">
-                                    Online FrontEnd
+                                    {data?.name}
                                 </h3>
                                 <p className="text-xs text-indigo-500 dark:text-white">
-                                    Dasturlash
+                                    {data?.course_name}
                                 </p>
                             </div>
                         </div>
@@ -143,7 +141,7 @@ export default function GroupProfile() {
                     <div className="flex items-center gap-2 bg-primary/10 p-3 rounded-md">
                         <Banknote className="text-primary" size={16} />
                         <span className="text-primary font-medium">
-                            300 000 so'm
+                            {formatMoney(data?.price)} so'm
                         </span>
                     </div>
 
@@ -159,11 +157,22 @@ export default function GroupProfile() {
                         <div className="flex items-center gap-2">
                             <Calendar className="w-3 h-3 text-gray-400" />
                             <span className="text-gray-600 text-xs">
-                                Du, Se, Ch, Pa, Ju, Sh
+                                {shiftGroupped(data?.shifts ?? [])?.map(
+                                    (sh) => (
+                                        <div
+                                            key={sh.days}
+                                            className="flex gap-2"
+                                        >
+                                            <p className="flex-1">{sh.days}</p>
+                                            <p>{sh.start_time}</p>
+                                            <p>{sh.end_time}</p>
+                                        </div>
+                                    ),
+                                )}
                             </span>
                         </div>
                         <div className="text-xs text-gray-500">
-                            16.06.2025 - 16.06.2026
+                            {data?.start_date} - {data?.end_date}
                         </div>
                     </div>
 

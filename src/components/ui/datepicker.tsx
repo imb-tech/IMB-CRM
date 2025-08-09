@@ -9,6 +9,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
+import { ClassNameValue } from "tailwind-merge"
 
 export function DatePicker({
     date,
@@ -20,6 +21,7 @@ export function DatePicker({
     defaultValue,
     isError,
     size = "lg",
+    className,
 }: {
     date: Date | any
     setDate: any
@@ -30,6 +32,7 @@ export function DatePicker({
     defaultValue?: Date
     isError?: boolean
     size?: "default" | "lg" | "sm" | "icon"
+    className?: ClassNameValue
 }) {
     return (
         <Popover>
@@ -42,6 +45,7 @@ export function DatePicker({
                         !date && "text-muted-foreground",
                         fullWidth && "w-full",
                         isError && "border-destructive",
+                        className,
                     )}
                     disabled={disabled}
                 >

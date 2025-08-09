@@ -64,7 +64,7 @@ export default function LoginForm() {
         >
             <h1 className="text-3xl">Kirish</h1>
             <FormInput
-                className="!h-12 rounded-xl mt-2"
+                className="!h-12 rounded-xl"
                 methods={methods}
                 name="username"
                 label="Login"
@@ -72,7 +72,7 @@ export default function LoginForm() {
                 autoComplete="on"
             />
             <FormInput
-                className="!h-12 rounded-xl mt-2"
+                className="!h-12 rounded-xl"
                 methods={methods}
                 name="password"
                 type="password"

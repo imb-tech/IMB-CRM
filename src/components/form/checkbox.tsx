@@ -22,7 +22,7 @@ export function FormCheckbox<TForm extends FieldValues>({
                             checked={field.value}
                             onCheckedChange={field.onChange}
                             disabled={disabled || field.disabled}
-                            className="-mt-1"
+                            className="-mt-0.5"
                             id={name}
                         />
                         <FieldLabel

@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/popover"
 import { CheckIcon, ChevronDown, Plus, X } from "lucide-react"
 import { ClassNameValue } from "tailwind-merge"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Skeleton } from "./skeleton"
 import { DEBOUNCETIME } from "@/constants/default"
 
@@ -59,8 +59,21 @@ export function Combobox<T extends Record<string, any>>({
         setOpen(false)
     }
 
+    const rf = useRef<NodeJS.Timeout>()
+
     const handleClickAdd = () => {
         onAdd ? onAdd?.() : undefined
+    }
+
+    function onValueChange(v: string) {
+        if (onSearchChange) {
+            if (rf.current) {
+                clearTimeout(rf.current)
+            }
+            rf.current = setTimeout(() => {
+                onSearchChange(v)
+            }, DEBOUNCETIME)
+        }
     }
 
     const sortedOptions = options?.sort((a, b) => {
@@ -109,13 +122,7 @@ export function Combobox<T extends Record<string, any>>({
             <PopoverContent className="p-0">
                 <Command shouldFilter={onSearchChange ? false : true}>
                     <CommandInput
-                        onValueChange={(text) => {
-                            if (onSearchChange) {
-                                setTimeout(() => {
-                                    onSearchChange(text)
-                                }, DEBOUNCETIME)
-                            }
-                        }}
+                        onValueChange={onValueChange}
                         placeholder={label}
                     />
                     {!!value && (

@@ -6,7 +6,7 @@ import EmployeeCreate from "./create"
 import { useModal } from "@/hooks/useModal"
 import { useState } from "react"
 import DeleteModal from "@/components/custom/delete-modal"
-import { EMPLOYEE } from "@/constants/api-endpoints"
+import { EMPLOYEE, OPTION_ROLES } from "@/constants/api-endpoints"
 import EmployeesHeader from "./employees-header"
 import { useGet } from "@/hooks/useGet"
 import { useSearch } from "@tanstack/react-router"
@@ -69,6 +69,7 @@ const EmployeesMain = () => {
             <DeleteModal
                 modalKey={`${EMPLOYEE}-delete`}
                 id={current?.id}
+                refetchKeys={[OPTION_ROLES]}
                 path={EMPLOYEE}
             />
         </div>
