@@ -29,7 +29,7 @@ export function StatusPopover({
 
     function handleChange(d: number) {
         const data = qC.getQueryData<ListResp<GroupStudent>>([GROUP_STUDENTS])!
-        
+
         qC.setQueriesData<ListResp<GroupStudent>>(
             { queryKey: [GROUP_STUDENTS] },
             {

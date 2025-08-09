@@ -19,9 +19,9 @@ export const OPTION_TEACHERS = OPTION + "teachers"
 export const OPTION_ROOMS = OPTION + "rooms"
 export const EMPLOYEE = "employees"
 export const SALARIES = "salary-types/attach"
-export const STUDENT = 'students'
-export const GROUP = 'platform/groups'
-export const GROUP_STUDENTS = 'platform/group-students'
+export const STUDENT = "students"
+export const GROUP = "platform/groups"
+export const GROUP_STUDENTS = "platform/group-students"
 
 export const REFRESH_TOKEN = "token/refresh"
 export const INVENTORY_CAR = `/car`

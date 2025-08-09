@@ -1,6 +1,6 @@
-type ListResp<T> = { 
-    total_pages: number; 
-    count: number; 
+type ListResp<T> = {
+    total_pages: number
+    count: number
     results: T[]
     total_debts: string
 }

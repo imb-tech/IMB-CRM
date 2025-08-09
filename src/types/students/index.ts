@@ -1,12 +1,12 @@
 type StudentGroup = {
-    id: number,
+    id: number
     name: string
     balance: string
     status: number
 }
 
 type Student = {
-    id: number,
+    id: number
     full_name: string
     username: string
     phone: string

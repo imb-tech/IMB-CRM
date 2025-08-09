@@ -1,18 +1,18 @@
 type Group = {
     id: number
-    teacher_name: "Shohjahon Hamidov",
-    course_name: "Test uchun kurs",
-    branch_name: "test Filliali",
-    room_name: "1 xona",
-    shifts: GroupShift[],
-    name: "frontend 1",
-    start_date: "2025-08-01",
-    end_date: "2025-08-31",
+    teacher_name: "Shohjahon Hamidov"
+    course_name: "Test uchun kurs"
+    branch_name: "test Filliali"
+    room_name: "1 xona"
+    shifts: GroupShift[]
+    name: "frontend 1"
+    start_date: "2025-08-01"
+    end_date: "2025-08-31"
     price: string
-    status: 1,
-    teacher: 13,
-    course: 1,
-    room: 1,
+    status: 1
+    teacher: 13
+    course: 1
+    room: 1
     branch: 2
 }
 
@@ -25,7 +25,7 @@ type GroupExam = {
 }
 
 type GroupFields = {
-    name: string,
+    name: string
     start_date: string
     end_date: string
     teacher: number

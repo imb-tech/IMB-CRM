@@ -87,8 +87,8 @@ export function generateUsername(fullName: string): string {
     const normalized = fullName.trim().toLowerCase()
     const parts = normalized.split(" ")
 
-    const sanitizedParts = parts.map(part =>
-        part.replace(/[^a-z0-9_.]/g, "") // faqat ruxsat etilgan belgilarni qoldiradi
+    const sanitizedParts = parts.map(
+        (part) => part.replace(/[^a-z0-9_.]/g, ""), // faqat ruxsat etilgan belgilarni qoldiradi
     )
 
     return sanitizedParts.join("_")
@@ -111,5 +111,12 @@ export const teacherSalaryTypes: { name: string; value: teacherSalary }[] = [
     },
 ]
 
-
-export const weekdays = ['Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba', 'Yakshanba']
+export const weekdays = [
+    "Dushanba",
+    "Seshanba",
+    "Chorshanba",
+    "Payshanba",
+    "Juma",
+    "Shanba",
+    "Yakshanba",
+]

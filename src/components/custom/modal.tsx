@@ -52,7 +52,13 @@ const Modal = ({
     return (
         <Dialog open={isOpen} onOpenChange={handleClose}>
             {isOpen && (
-                <DialogContent className={size + className + " max-h-[90vh] overflow-y-auto no-scrollbar"}>
+                <DialogContent
+                    className={
+                        size +
+                        className +
+                        " max-h-[90vh] overflow-y-auto no-scrollbar"
+                    }
+                >
                     {title && <DialogTitle>{title}</DialogTitle>}
                     {!title && (
                         <VisuallyHidden>
@@ -62,9 +68,7 @@ const Modal = ({
                     {description && (
                         <DialogDescription>{description}</DialogDescription>
                     )}
-                    <div className="">
-                        {children}
-                    </div>
+                    <div className="">{children}</div>
                 </DialogContent>
             )}
         </Dialog>
