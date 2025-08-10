@@ -12,9 +12,10 @@ import axios from "axios"
 const baseURL = localStorage.getItem('api')!
 
 const axiosInstance = axios.create({
-    baseURL : baseURL + '/api/v1',
+    baseURL: baseURL + '/api/v1',
     headers: {
         "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "true"
     },
 })
 
