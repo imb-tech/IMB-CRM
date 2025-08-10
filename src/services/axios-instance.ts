@@ -8,11 +8,11 @@ import { setAccessToken } from "@/lib/set-token"
 import { QueryClient } from "@tanstack/react-query"
 import axios from "axios"
 
-const baseURL = import.meta.env.VITE_DEFAULT_URL
-// const baseURL = localStorage.getItem('api')!
+// const baseURL = import.meta.env.VITE_DEFAULT_URL
+const baseURL = localStorage.getItem('api')!
 
 const axiosInstance = axios.create({
-    baseURL,
+    baseURL : baseURL + '/api/v1',
     headers: {
         "Content-Type": "application/json",
     },
