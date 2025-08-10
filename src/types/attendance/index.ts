@@ -27,3 +27,17 @@ type AttendanceStudent = {
     attendance: string
     students: { id: number; name: string; status: string }[]
 }
+
+type AttReason = {
+    id: number
+    date: string,
+    status: number
+    reason: string
+}
+
+type StudentAttandence = {
+    id: number,
+    full_name: string
+    phone: string
+    attendances: AttReason[]
+}

@@ -18,7 +18,6 @@ import { useModal } from "@/hooks/useModal"
 import ParamInput from "@/components/as-params/input"
 import { ParamMultiCombobox } from "@/components/as-params/multi-combobox"
 import { studentStatusKeys } from "../students/student-status"
-import { useState } from "react"
 import UpdateStudent from "./update-student"
 
 export default function GroupStudents() {
@@ -28,15 +27,11 @@ export default function GroupStudents() {
     })
     const search = useSearch({ from: "/_main/groups/$id/_main/students" })
     const { openModal } = useModal("append-student")
-    const { openModal: updateOpen } = useModal("update")
-    const [current, setCurrent] = useState<GroupStudent>()
 
     const { data, refetch } = useGet<ListResp<GroupStudent>>(GROUP_STUDENTS, {
         params: { group, ...search },
         options: { queryKey: [GROUP_STUDENTS, search] },
     })
-
-    console.log(search)
 
     const columns = useGroupStudentCols()
 
@@ -133,15 +128,11 @@ export default function GroupStudents() {
                     data={data?.results}
                     viewAll
                     className="max-w-full"
-                    onEdit={({ original }) => {
-                        setCurrent(original)
-                        updateOpen()
-                    }}
                 />
             }
 
             <Modal modalKey="update" title="Tahrirlash" size="max-w-md">
-                <UpdateStudent current={current} />
+                <UpdateStudent />
             </Modal>
 
             <Modal modalKey="append-student" title="O'quvchi qo'shish">

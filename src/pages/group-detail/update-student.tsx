@@ -1,12 +1,14 @@
 import { FormDatePicker } from "@/components/form/date-picker"
 import { Button } from "@/components/ui/button"
 import { GROUP_STUDENTS } from "@/constants/api-endpoints"
+import { useStore } from "@/hooks/use-store"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
 import { useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 
-export default function UpdateStudent({ current }: { current?: GroupStudent }) {
+export default function UpdateStudent() {
+    const { store: current, remove } = useStore<GroupStudent>("student-data")
     const { closeModal } = useModal("update")
     const form = useForm<GroupStudent>({
         defaultValues: current,
@@ -23,6 +25,7 @@ export default function UpdateStudent({ current }: { current?: GroupStudent }) {
             },
             {
                 onSuccess() {
+                    remove()
                     qc.removeQueries({ queryKey: [GROUP_STUDENTS] })
                     closeModal()
                 },

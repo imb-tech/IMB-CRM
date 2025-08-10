@@ -1,9 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Check, X, Clock } from "lucide-react"
 import ParamDatePicker from "@/components/as-params/date-picker"
-import { useSearch } from "@tanstack/react-router"
+import { useParams, useSearch } from "@tanstack/react-router"
 import { useMemo } from "react"
 import SectionHeader from "@/components/elements/section-header"
+import { useGet } from "@/hooks/useGet"
+import { formatPhoneNumber } from "@/lib/format-phone-number"
 
 export default function GroupAttendance() {
     const students = [
@@ -15,7 +17,17 @@ export default function GroupAttendance() {
         { id: 6, name: "Zarina Abdullayeva", phone: "+998901234572" },
     ]
 
-    const { date } = useSearch({ from: "/_main/groups/$id/_main/attendance" })
+    const { date } = useSearch({
+        from: "/_main/groups/$id/_main/attendance",
+    })
+    const { id } = useParams({
+        from: "/_main/groups/$id/_main/attendance",
+    })
+
+    const { data } = useGet<StudentAttandence[]>(
+        "platform/group-students/attendances/" + id,
+    )
+    console.log(data)
 
     const monthlyAttendance: Record<
         string,
@@ -260,7 +272,7 @@ export default function GroupAttendance() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {students.map((student) => {
+                                {data?.map((student) => {
                                     const stats = getStudentStats(student.id)
                                     return (
                                         <tr
@@ -268,13 +280,15 @@ export default function GroupAttendance() {
                                             className="border-t hover:bg-secondary"
                                         >
                                             <td className="p- sticky left-0 bg-secondary border-r">
-                                                <div>
-                                                    <div className="font-light pl-2">
-                                                        {student.name}
+                                                <div className="pl-2">
+                                                    <div className="text-sm">
+                                                        {student.full_name}
                                                     </div>
-                                                    {/* <div className="text-xs text-gray-500">
-                                                            {student.phone}
-                                                        </div> */}
+                                                    <div className="text-xs text-gray-500">
+                                                        {formatPhoneNumber(
+                                                            student.phone,
+                                                        )}
+                                                    </div>
                                                 </div>
                                             </td>
                                             {days.map((day) => {

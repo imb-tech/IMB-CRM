@@ -5,9 +5,15 @@ import { ColumnDef } from "@tanstack/react-table"
 import { useMemo } from "react"
 import StudentStatus from "../students/student-status"
 import { StatusPopover } from "./status-popover"
+import { useModal } from "@/hooks/useModal"
+import { useStore } from "@/hooks/use-store"
+import { Pencil } from "lucide-react"
 
-export const useGroupStudentCols = () =>
-    useMemo<ColumnDef<GroupStudent>[]>(
+export const useGroupStudentCols = () => {
+    const { openModal } = useModal("update")
+    const { setStore } = useStore("student-data")
+
+    return useMemo<ColumnDef<GroupStudent>[]>(
         () => [
             {
                 header: "FIO",
@@ -16,7 +22,21 @@ export const useGroupStudentCols = () =>
             },
             {
                 header: "Qo'shilgan",
-                accessorKey: "start_date",
+                cell: ({ row }) => {
+                    return (
+                        <div className="flex justify-between items-center">
+                            <p>{row.original.start_date}</p>
+                            <Pencil
+                                size={16}
+                                onClick={() => {
+                                    openModal()
+                                    setStore(row.original)
+                                }}
+                                className="text-primary"
+                            />
+                        </div>
+                    )
+                },
             },
             {
                 header: "Telefon",
@@ -54,6 +74,7 @@ export const useGroupStudentCols = () =>
         ],
         [],
     )
+}
 
 export const useGroupSalesCols = () =>
     useMemo<ColumnDef<Student>[]>(

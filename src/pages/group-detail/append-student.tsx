@@ -1,5 +1,6 @@
 import { FormCombobox } from "@/components/form/combobox"
 import { FormDatePicker } from "@/components/form/date-picker"
+import { FormSelect } from "@/components/form/select"
 import { Button } from "@/components/ui/button"
 import { GROUP_STUDENTS, STUDENT } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
@@ -10,11 +11,13 @@ import { useParams } from "@tanstack/react-router"
 import { format } from "date-fns"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { studentStatusKeys } from "../students/student-status"
 
 type Fields = {
     student: number
     group: number
     start_date: string
+    status: string
 }
 
 export default function AppendStudent({
@@ -25,8 +28,6 @@ export default function AppendStudent({
     const { id } = useParams({ strict: false })
     const [search, setSearch] = useState<string>("")
     const { closeModal } = useModal("append-student")
-
-    const qC = useQueryClient()
 
     const { data } = useGet<ListResp<Student>>(STUDENT, {
         params: { search },
@@ -42,6 +43,7 @@ export default function AppendStudent({
         defaultValues: {
             group: Number(id),
             start_date: format(new Date().toISOString(), "yyyy-MM-dd"),
+            status: "1",
         },
     })
 
@@ -65,10 +67,23 @@ export default function AppendStudent({
                 required
             />
 
+            <FormSelect
+                options={Object.entries(studentStatusKeys)?.map(
+                    ([id, name]) => ({ id, name }),
+                )}
+                control={form.control}
+                name="status"
+                labelKey="name"
+                valueKey="id"
+                className="bg-background"
+                label="Holati"
+                required
+            />
+
             <FormDatePicker
                 control={form.control}
                 name="start_date"
-                placeholder="Qo'shilish sanasi"
+                label="Qo'shilish sanasi"
                 className="!w-full"
                 required
                 fullWidth

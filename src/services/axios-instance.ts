@@ -9,6 +9,7 @@ import { QueryClient } from "@tanstack/react-query"
 import axios from "axios"
 
 const baseURL = import.meta.env.VITE_DEFAULT_URL
+// const baseURL = localStorage.getItem('api')!
 
 const axiosInstance = axios.create({
     baseURL,

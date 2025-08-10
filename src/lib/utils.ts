@@ -102,7 +102,7 @@ export const teacherSalaryTypes: { name: string; value: teacherSalary }[] = [
         value: "course_amount",
     },
     {
-        name: "O'quvchilat to'lovidan",
+        name: "O'quvchilar to'lovidan",
         value: "by_payments",
     },
     {
