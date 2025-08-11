@@ -104,7 +104,7 @@ export function MultiCombobox<T extends Record<string, any>>({
                     role="combobox"
                     aria-expanded={open}
                     className={cn(
-                        "w-full  relative justify-between !bg-secondary overflow-hidden px-2 hover:bg-card font-normal text-gray-400 hover:text-gray-400",
+                        "w-full relative justify-between !bg-secondary overflow-hidden px-2 hover:bg-card font-normal text-gray-400 hover:text-gray-400 items-center",
                         values && "font-medium text-foreground",
                         isError && "!border-destructive border",
                         className,
@@ -129,7 +129,7 @@ export function MultiCombobox<T extends Record<string, any>>({
                     {!!values?.length && (
                         <span
                             className={cn(
-                                "absolute cursor-pointer text-destructive top-1.5 right-1 p-1",
+                                "absolute cursor-pointer text-destructive top-1/2 -translate-y-1/2 right-1 p-1",
                                 onAdd && "right-8",
                             )}
                         >

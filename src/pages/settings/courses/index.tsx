@@ -63,7 +63,7 @@ const CoursesMain = () => {
             </Card>
             <Modal
                 modalKey={`${COURSE}-add`}
-                title={`Kurs ${current?.id ? "tahrirlash" : "qo'shish"}`}
+                title={`Kurs ${current?.id ? "tahrirlash" : "yaratish"}`}
             >
                 <CoursesCreate item={current} />
             </Modal>

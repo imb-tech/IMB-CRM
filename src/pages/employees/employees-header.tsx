@@ -39,7 +39,7 @@ export default function EmployeesHeader() {
                     </div>
                     <Button className="!h-10" onClick={openModal}>
                         <Plus className="h-4 w-4" />
-                        Qo'shish
+                        Yaratish
                     </Button>
                 </div>
             </div>

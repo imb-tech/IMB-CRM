@@ -2,6 +2,7 @@ import { FormCheckbox } from "@/components/form/checkbox"
 import { FormDatePicker } from "@/components/form/date-picker"
 import FormInput from "@/components/form/input"
 import { FormSelect } from "@/components/form/select"
+import FormTimeInput from "@/components/form/time-input"
 import { Button } from "@/components/ui/button"
 import {
     GROUP,
@@ -52,8 +53,8 @@ const GroupCreate = ({ item }: Props) => {
                     )
                     return {
                         id: day?.id ?? undefined,
-                        start_time: day?.start_time ?? undefined,
-                        end_time: day?.end_time ?? undefined,
+                        start_time: day?.start_time?.slice(0, 5) ?? undefined,
+                        end_time: day?.end_time?.slice(0, 5) ?? undefined,
                         day_of_week: i + 1,
                         enable: !!day?.id,
                     }
@@ -176,20 +177,18 @@ const GroupCreate = ({ item }: Props) => {
                                     name={`shifts.${i}.enable`}
                                 />
                             </div>
-                            <FormInput
+                            <FormTimeInput
                                 methods={form}
                                 name={`shifts.${i}.start_time`}
-                                type="time"
                                 className="border-none h-8"
                                 wrapperClassName="w-auto"
                                 step={900}
                                 required={watchedShifts[i].enable}
                                 hideError
                             />
-                            <FormInput
+                            <FormTimeInput
                                 methods={form}
                                 name={`shifts.${i}.end_time`}
-                                type="time"
                                 className="border-none h-8"
                                 wrapperClassName="w-auto"
                                 step={900}

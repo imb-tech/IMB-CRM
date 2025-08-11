@@ -61,7 +61,7 @@ const BranchesMain = () => {
             </Card>
             <Modal
                 modalKey={`${BRANCH}-add`}
-                title={`Filial ${current?.id ? "tahrirlash" : "qo'shish"}`}
+                title={`Filial ${current?.id ? "tahrirlash" : "yaratish"}`}
             >
                 <BranchesCreate item={current} />
             </Modal>

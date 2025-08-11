@@ -6,7 +6,6 @@ import { GROUP_STUDENTS, STUDENT } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import { useModal } from "@/hooks/useModal"
 import { usePost } from "@/hooks/usePost"
-import { useQueryClient } from "@tanstack/react-query"
 import { useParams } from "@tanstack/react-router"
 import { format } from "date-fns"
 import { useState } from "react"
@@ -90,7 +89,7 @@ export default function AppendStudent({
             />
 
             <Button className="w-full" loading={isPending}>
-                Qo'shish
+                Yaratish
             </Button>
         </form>
     )

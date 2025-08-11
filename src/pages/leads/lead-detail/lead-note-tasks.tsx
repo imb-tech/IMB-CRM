@@ -482,7 +482,7 @@ export default function LeadNotes() {
                                     size="lg"
                                     loading={isPending}
                                 >
-                                    Qo'shish
+                                    Yaratish
                                 </Button>
                             </div>
                         </div>

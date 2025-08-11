@@ -1,7 +1,9 @@
 import { FormDatePicker } from "@/components/form/date-picker"
+import { FormMultiCombobox } from "@/components/form/multi-combobox"
 import FormTextarea from "@/components/form/textarea"
 import { Button } from "@/components/ui/button"
 import { HOLIDAY } from "@/constants/api-endpoints"
+import useMe from "@/hooks/useMe"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
 import { usePost } from "@/hooks/usePost"
@@ -16,7 +18,10 @@ type Props = {
 const HolidayCreate = ({ item }: Props) => {
     const queryClient = useQueryClient()
     const { closeModal } = useModal(`${HOLIDAY}-add`)
-    const form = useForm<Holiday>({ defaultValues: item || undefined })
+    const { active_branch, data } = useMe()
+    const form = useForm<Holiday>({
+        defaultValues: item || { branches: [active_branch!] },
+    })
 
     function onSuccess() {
         toast.success("Muvaffaqiyatli yangilandi")
@@ -50,7 +55,18 @@ const HolidayCreate = ({ item }: Props) => {
                 control={form.control}
                 label="Sana"
                 name="date"
+                className="mb-2"
             />
+
+            <FormMultiCombobox
+                control={form.control}
+                name="branches"
+                options={data?.branches}
+                labelKey="name"
+                valueKey="id"
+                required
+            />
+
             <FormTextarea required methods={form} label="Sabab" name="reason" />
             <Button
                 className="md:w-max w-full float-end"

@@ -60,7 +60,7 @@ const RoomsMain = () => {
             </Card>
             <Modal
                 modalKey={`${ROOM}-add`}
-                title={`Xona ${current?.id ? "tahrirlash" : "qo'shish"}`}
+                title={`Xona ${current?.id ? "tahrirlash" : "yaratish"}`}
             >
                 <RoomCreate item={current} />
             </Modal>

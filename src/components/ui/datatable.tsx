@@ -82,6 +82,7 @@ interface DataTableProps<TData> {
     clearSelectionTrigger?: any
     controlledRowSelection?: RowSelectionState
     onAllSelectedChange?: (allSelected: boolean) => void
+    setRowClassName?: (item: TData) => string
 }
 
 export function DataTable<TData>({
@@ -115,6 +116,7 @@ export function DataTable<TData>({
     clearSelectionTrigger,
     controlledRowSelection,
     onAllSelectedChange,
+    setRowClassName,
 }: DataTableProps<TData>) {
     const {
         paramName = PAGE_KEY,
@@ -453,6 +455,9 @@ export function DataTable<TData>({
                                                     className={cn(
                                                         `cursor-pointer border-r   dark:border-secondary/50 border-secondary last:border-none 
                                                          `,
+                                                        setRowClassName?.(
+                                                            cell.row.original,
+                                                        ),
                                                     )}
                                                 >
                                                     {flexRender(

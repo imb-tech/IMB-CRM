@@ -14,7 +14,7 @@ const LeadsMain = () => {
             </div>
 
             <Modal
-                title={store?.id ? "Lidni tahrirlash" : "Yangi Lid qo'shish"}
+                title={store?.id ? "Lidni tahrirlash" : "Yangi Lid yaratish"}
             >
                 <CreateLeadModal />
             </Modal>

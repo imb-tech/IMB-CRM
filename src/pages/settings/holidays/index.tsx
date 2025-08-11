@@ -58,7 +58,7 @@ const HolidaysMain = () => {
             <Modal
                 modalKey={`${HOLIDAY}-add`}
                 title={`Ta'til kunini ${
-                    current?.id ? "tahrirlash" : "qo'shish"
+                    current?.id ? "tahrirlash" : "yaratish"
                 }`}
             >
                 <HolidayCreate item={current} />

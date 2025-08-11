@@ -53,12 +53,17 @@ const RolesMain = () => {
                         columns={columns}
                         data={data?.results}
                         loading={isFetching}
+                        setRowClassName={(row) =>
+                            row.editable ? "" : (
+                                "last:!opacity-0 last:!pointer-events-none"
+                            )
+                        }
                     />
                 </CardContent>
             </Card>
             <Modal
                 modalKey={`${ROLE}-add`}
-                title={`Role ${current?.id ? "tahrirlash" : "qo'shish"}`}
+                title={`Role ${current?.id ? "tahrirlash" : "yaratish"}`}
             >
                 <RoleCreate item={current} />
             </Modal>

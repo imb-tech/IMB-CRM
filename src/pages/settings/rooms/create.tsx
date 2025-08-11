@@ -1,5 +1,6 @@
 import { FormCombobox } from "@/components/form/combobox"
 import FormInput from "@/components/form/input"
+import { FormNumberInput } from "@/components/form/number-input"
 import { FormSelect } from "@/components/form/select"
 import { Button } from "@/components/ui/button"
 import { ROOM } from "@/constants/api-endpoints"
@@ -67,6 +68,14 @@ const RoomCreate = ({ item }: Props) => {
                 label="Filial nomi"
                 name="branch"
             />
+
+            <FormNumberInput
+                control={form.control}
+                name="user_limit"
+                label="O'quvchi sig'imi"
+                placeholder="Ixtiyoriy"
+            />
+
             <Button
                 className="md:w-max w-full float-end"
                 type="submit"

@@ -57,13 +57,19 @@ const StudentsMain = () => {
                             <Badge className="text-sm" variant={"outline"}>
                                 {data?.count}
                             </Badge>
-                            <Badge
-                                className="text-sm text-destructive  border-[0.7px] border-destructive font-normal"
-                                variant={"outline"}
-                            >
-                                Qazdorlik :
-                                {formatMoney(Number(data?.total_debts ?? 0))}
-                            </Badge>
+                            {Number(data?.total_debts) < 0 && (
+                                <Badge
+                                    className="text-sm text-destructive  border-[0.7px] border-destructive font-normal"
+                                    variant={"outline"}
+                                >
+                                    Qazdorlik:
+                                    <span className="pl-2">
+                                        {formatMoney(
+                                            Number(data?.total_debts ?? 0),
+                                        )}
+                                    </span>
+                                </Badge>
+                            )}
                             <ParamSwtich paramName="is_active" reverse />
                         </div>
                         <div className="flex gap-4">
@@ -73,7 +79,7 @@ const StudentsMain = () => {
                             </Button>
                             <Button onClick={handleItemAdd}>
                                 <Plus className="h-4 w-4" />
-                                Qo'shish
+                                Yaratish
                             </Button>
                         </div>
                     </div>
@@ -99,7 +105,7 @@ const StudentsMain = () => {
 
             <Modal
                 modalKey={`${STUDENT}-add`}
-                title={`O'quvchi ${current?.id ? "tahrirlash" : "qo'shish"}`}
+                title={`O'quvchi ${current?.id ? "tahrirlash" : "yaratish"}`}
             >
                 <StudentCreate item={current} />
             </Modal>

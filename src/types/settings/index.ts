@@ -17,6 +17,7 @@ type Room = {
     branch_name: string
     created_at: string
     branch: number
+    user_limit: number
 }
 
 type Course = {
@@ -36,6 +37,7 @@ type Holiday = {
     updated_at: string
     date: string
     reason: string
+    branches: number[]
 }
 
 type Branch = {
@@ -51,6 +53,7 @@ type Role = {
     name: string
     permissions: string[]
     employees_count: number
+    editable: boolean
 }
 
 type PaymentType = {

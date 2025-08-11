@@ -238,7 +238,7 @@ export default function LeadDealSelector() {
                 title={
                     form.watch("id") ?
                         "Bo'limni tahrirlash"
-                    :   "Yangi bo'lim qo'shish"
+                    :   "Yangi bo'lim yaratish"
                 }
             >
                 <div className="w-full overflow-hidden px-1">

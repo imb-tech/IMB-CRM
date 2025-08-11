@@ -1,11 +1,9 @@
-import ParamInput from "@/components/as-params/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { DataTable } from "@/components/ui/datatable"
 import { Plus } from "lucide-react"
 import { useGroupCols } from "./columns"
 import { Badge } from "@/components/ui/badge"
-import { ParamCombobox } from "@/components/as-params/combobox"
 import Modal from "@/components/custom/modal"
 import DeleteModal from "@/components/custom/delete-modal"
 import GroupCreate from "./create"
@@ -58,7 +56,7 @@ const GroupsMain = () => {
                         </div>
                         <Button onClick={handleItemAdd}>
                             <Plus className="h-4 w-4" />
-                            Qo'shish
+                            Yaratish
                         </Button>
                     </div>
                     <GroupFilter />
@@ -81,7 +79,7 @@ const GroupsMain = () => {
             </Card>
             <Modal
                 modalKey={`${GROUP}-add`}
-                title={`Guruh ${current?.id ? "tahrirlash" : "qo'shish"}`}
+                title={`Guruh ${current?.id ? "tahrirlash" : "yaratish"}`}
                 size="max-w-4xl"
             >
                 <GroupCreate item={current} />

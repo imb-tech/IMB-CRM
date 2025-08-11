@@ -1,4 +1,5 @@
 import FormInput from "@/components/form/input"
+import FormTimeInput from "@/components/form/time-input"
 import { Button } from "@/components/ui/button"
 import { BRANCH } from "@/constants/api-endpoints"
 import { useModal } from "@/hooks/useModal"
@@ -16,7 +17,16 @@ const BranchesCreate = ({ item }: Props) => {
     const queryClient = useQueryClient()
     const { closeModal } = useModal(`${BRANCH}-add`)
 
-    const form = useForm<Branch>({ defaultValues: item || undefined })
+    const form = useForm<Branch>({
+        defaultValues:
+            item ?
+                {
+                    ...item,
+                    start_time: item?.start_time?.slice(0, 5),
+                    end_time: item?.end_time?.slice(0, 5),
+                }
+            :   undefined,
+    })
 
     const { mutate: mutateCreate, isPending: isPendingCreate } = usePost({
         onSuccess: () => {
@@ -48,15 +58,15 @@ const BranchesCreate = ({ item }: Props) => {
     return (
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
             <FormInput required methods={form} label="Nomi" name="name" />
-            <FormInput
-                type="time"
+            <FormTimeInput
+                step={900}
                 required
                 methods={form}
                 label="Ish boshlanish vaqti"
                 name="start_time"
             />
-            <FormInput
-                type="time"
+            <FormTimeInput
+                step={900}
                 required
                 methods={form}
                 label="Ish tugash vaqti"

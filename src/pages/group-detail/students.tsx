@@ -58,7 +58,7 @@ export default function GroupStudents() {
                         <ParamInput />
                         <Button variant="secondary" onClick={openModal}>
                             <Plus />
-                            Qo'shish
+                            Yaratish
                         </Button>
                     </div>
                 }
@@ -135,7 +135,7 @@ export default function GroupStudents() {
                 <UpdateStudent />
             </Modal>
 
-            <Modal modalKey="append-student" title="O'quvchi qo'shish">
+            <Modal modalKey="append-student" title="O'quvchi yaratish">
                 <AppendStudent onSuccess={refetch} />
             </Modal>
         </div>

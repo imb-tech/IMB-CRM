@@ -51,6 +51,7 @@ const Modal = ({
 
     return (
         <Dialog open={isOpen} onOpenChange={handleClose}>
+            <DialogDescription></DialogDescription>
             {isOpen && (
                 <DialogContent
                     className={

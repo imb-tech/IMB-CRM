@@ -81,7 +81,7 @@ export default function StudentsAttendanceMain() {
 
                     <Table>
                         <TableHeader>
-                            <TableRow className="bg-gray-50">
+                            <TableRow className="bg-secondary">
                                 <TableHead className="w-16">ID</TableHead>
                                 <TableHead>Guruh nomi</TableHead>
                                 <TableHead>{"O'qituvchi"}</TableHead>
@@ -95,7 +95,7 @@ export default function StudentsAttendanceMain() {
                                 <React.Fragment key={course.id}>
                                     <TableRow
                                         className={cn(
-                                            "hover:bg-gray-200 cursor-pointer dark:hover:bg-secondary border-none ",
+                                            "hover:bg-gray-200 cursor-pointer dark:hover:bg-secondary border-none !rounded-md overflow-hidden",
                                             index % 2 !== 0 &&
                                                 "bg-secondary/70",
                                         )}
@@ -146,10 +146,10 @@ export default function StudentsAttendanceMain() {
                                                 colSpan={6}
                                                 className="p-0"
                                             >
-                                                <div className="bg-gray-50 p-4">
+                                                <div className="bg-card p-4">
                                                     <Table>
                                                         <TableHeader>
-                                                            <TableRow className="bg-gray-100">
+                                                            <TableRow className="bg-secondary">
                                                                 <TableHead className="w-16">
                                                                     #
                                                                 </TableHead>
@@ -172,7 +172,7 @@ export default function StudentsAttendanceMain() {
                                                                             student.id
                                                                         }
                                                                         className={cn(
-                                                                            "hover:bg-gray-200  dark:hover:bg-secondary border-none ",
+                                                                            "hover:bg-gray-200  dark:hover:bg-secondary border-none",
                                                                             idx %
                                                                                 2 !==
                                                                                 0 &&

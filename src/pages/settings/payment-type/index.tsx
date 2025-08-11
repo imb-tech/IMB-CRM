@@ -62,7 +62,7 @@ const PaymentTypeMain = () => {
             </Card>
             <Modal
                 modalKey={`${PAYMENT_TYPE}-add`}
-                title={`To'lov turi ${current?.id ? "tahrirlash" : "qo'shish"}`}
+                title={`To'lov turi ${current?.id ? "tahrirlash" : "yaratish"}`}
             >
                 <PaymentTypeCreate item={current} />
             </Modal>
