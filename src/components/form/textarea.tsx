@@ -53,6 +53,7 @@ export function FormTextarea<IForm extends FieldValues>({
                     htmlFor={name}
                     required={required}
                     isError={!!error}
+                    className="text-xs text-muted-foreground"
                 >
                     {label}
                 </FieldLabel>

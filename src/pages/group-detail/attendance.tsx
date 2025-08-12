@@ -7,6 +7,7 @@ import SectionHeader from "@/components/elements/section-header"
 import { useGet } from "@/hooks/useGet"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
 import { cn } from "@/lib/utils"
+import { AttendanceSelect } from "./attendance-select"
 
 export default function GroupAttendance() {
     const students = [
@@ -292,7 +293,7 @@ export default function GroupAttendance() {
                                                     </div>
                                                 </div>
                                             </td>
-                                            {days.map((day) => {
+                                            {days.map((day, i) => {
                                                 const status =
                                                     monthlyAttendance[
                                                         day.dateKey
@@ -302,7 +303,11 @@ export default function GroupAttendance() {
                                                         key={day.day}
                                                         className="p-1 text-center"
                                                     >
-                                                        {day.hasAttendance ?
+                                                        <AttendanceSelect
+                                                            status={i}
+                                                            student={2}
+                                                        />
+                                                        {/* {day.hasAttendance ?
                                                             <div
                                                                 className={`w-8 h-8 rounded-lg flex items-center justify-center mx-auto transition-colors ${getStatusColor(status)}`}
                                                             >
@@ -321,7 +326,7 @@ export default function GroupAttendance() {
                                                                     :   "",
                                                                 )}
                                                             ></div>
-                                                        }
+                                                        } */}
                                                     </td>
                                                 )
                                             })}

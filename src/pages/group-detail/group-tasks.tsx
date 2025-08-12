@@ -5,10 +5,13 @@ import { useNavigate, useSearch } from "@tanstack/react-router"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Plus } from "lucide-react"
 import ExamDetail from "./exam-detail"
+import { useModal } from "@/hooks/useModal"
+import GroupTabs from "./group-tab"
 
 export default function GroupTasks() {
     const data = ["Mavzu", "Vazifa", "Imtixon"]
     const navigate = useNavigate()
+    const { openModal } = useModal("day")
 
     const { id } = useSearch({ strict: false })
 
@@ -39,7 +42,10 @@ export default function GroupTasks() {
                                                     {11 - i}
                                                 </p>
                                                 <p>Dushanba</p>
-                                                <button className="bg-primary/10 px-1 rounded-sm mt-1">
+                                                <button
+                                                    className="bg-primary/10 px-1 rounded-sm mt-1"
+                                                    onClick={openModal}
+                                                >
                                                     <Plus
                                                         className="text-primary"
                                                         size={18}
@@ -119,11 +125,13 @@ export default function GroupTasks() {
                             />
                         </ScrollArea>
                     </CardContent>
-                    <CardContent className="p-2 flex flex-col gap-5 bg-secondary/70 rounded-md">
+                    <CardContent className="flex flex-col gap-5 p-0">
                         <ExamDetail />
                     </CardContent>
                 </Card>
             </div>
+
+            <GroupTabs />
         </div>
     )
 }
