@@ -244,11 +244,11 @@ export default function GroupAttendance() {
             />
             <Card>
                 <CardContent className="p-0">
-                    <div className="overflow-x-auto">
+                    <div className="overflow-x-auto !rounded-sm">
                         <table className="w-full">
                             <thead>
                                 <tr className="bg-secondary">
-                                    <th className="text-left pl-2 font-medium sticky left-0 bg-secondary min-w-[160px]">
+                                    <th className="text-left pl-2 font-medium sticky left-0 bg-secondary min-w-[160px] border-b border-b-background">
                                         O'quvchi
                                     </th>
                                     {days.map((day) => (
@@ -281,7 +281,7 @@ export default function GroupAttendance() {
                                             key={student.id}
                                             className="border-t hover:bg-secondary/40"
                                         >
-                                            <td className="p- sticky left-0 bg-secondary border-r">
+                                            <td className="p- sticky left-0 bg-secondary border-b border-b-background">
                                                 <div className="pl-2">
                                                     <div className="text-sm">
                                                         {student.full_name}
@@ -294,10 +294,6 @@ export default function GroupAttendance() {
                                                 </div>
                                             </td>
                                             {days.map((day, i) => {
-                                                const status =
-                                                    monthlyAttendance[
-                                                        day.dateKey
-                                                    ]?.[student.id]
                                                 return (
                                                     <td
                                                         key={day.day}
@@ -307,26 +303,6 @@ export default function GroupAttendance() {
                                                             status={i}
                                                             student={2}
                                                         />
-                                                        {/* {day.hasAttendance ?
-                                                            <div
-                                                                className={`w-8 h-8 rounded-lg flex items-center justify-center mx-auto transition-colors ${getStatusColor(status)}`}
-                                                            >
-                                                                {getStatusIcon(
-                                                                    status,
-                                                                )}
-                                                            </div>
-                                                        :   <div
-                                                                className={cn(
-                                                                    "w-8 h-8 bg-gray-500/10 rounded-full flex items-center justify-center",
-                                                                    (
-                                                                        day.day >
-                                                                            11
-                                                                    ) ?
-                                                                        "bg-transparent"
-                                                                    :   "",
-                                                                )}
-                                                            ></div>
-                                                        } */}
                                                     </td>
                                                 )
                                             })}
@@ -363,7 +339,7 @@ export default function GroupAttendance() {
                     <div className="flex items-center justify-center flex-wrap gap-6 text-sm">
                         <div className="flex items-center gap-2">
                             <div
-                                className={`w-8 h-8 rounded-lg flex items-center justify-center mx-auto transition-colors ${getStatusColor("present")}`}
+                                className={`w-8 h-8 rounded-full flex items-center justify-center mx-auto transition-colors ${getStatusColor("present")}`}
                             >
                                 {getStatusIcon("present")}
                             </div>
@@ -371,7 +347,7 @@ export default function GroupAttendance() {
                         </div>
                         <div className="flex items-center gap-2">
                             <div
-                                className={`w-8 h-8 rounded-lg flex items-center justify-center mx-auto transition-colors ${getStatusColor("late")}`}
+                                className={`w-8 h-8 rounded-full flex items-center justify-center mx-auto transition-colors ${getStatusColor("late")}`}
                             >
                                 {getStatusIcon("late")}
                             </div>
@@ -379,14 +355,14 @@ export default function GroupAttendance() {
                         </div>
                         <div className="flex items-center gap-2">
                             <div
-                                className={`w-8 h-8 rounded-lg flex items-center justify-center mx-auto transition-colors ${getStatusColor("absent")}`}
+                                className={`w-8 h-8 rounded-full flex items-center justify-center mx-auto transition-colors ${getStatusColor("absent")}`}
                             >
                                 {getStatusIcon("absent")}
                             </div>
                             <span>Kelmadi</span>
                         </div>
                         <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 bg-gray-500/10 rounded-lg flex items-center justify-center"></div>
+                            <div className="w-8 h-8 bg-gray-500/10 rounded-full flex items-center justify-center"></div>
                             <span>Yo'qlama qilinmagan</span>
                         </div>
                     </div>

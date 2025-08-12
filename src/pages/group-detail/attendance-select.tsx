@@ -4,10 +4,9 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import StudentStatus, { studentStatusKeys } from "../students/student-status"
 import { PopoverClose } from "@radix-ui/react-popover"
 import { cn } from "@/lib/utils"
-import { Check, ChevronDown, Clock, X } from "lucide-react"
+import { Check, Clock, X } from "lucide-react"
 import { useQueryClient } from "@tanstack/react-query"
 import { GROUP_STUDENTS } from "@/constants/api-endpoints"
 import { usePost } from "@/hooks/usePost"
@@ -17,11 +16,12 @@ type Props = {
     student: number
 }
 
-const statuses = ["present", "late", "absent"]
+const statuses = ["late", "present", "absent"]
 
 export function AttendanceSelect({ status, student }: Props) {
     const qC = useQueryClient()
     const { mutate } = usePost()
+    let sts = status
 
     function handleChange(d: number) {
         mutate(
@@ -41,8 +41,11 @@ export function AttendanceSelect({ status, student }: Props) {
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="outline" className="p-0 !h-auto border-none">
-                    {status < 4 ?
+                <Button
+                    variant="outline"
+                    className="p-0 !h-auto border-none bg-transparent flex items-center rounded-full hover:bg-gray-500/10"
+                >
+                    {sts < 4 ?
                         <div
                             className={`w-8 h-8 rounded-full flex items-center justify-center mx-auto transition-colors ${getStatusColor("present")}`}
                         >
@@ -58,7 +61,7 @@ export function AttendanceSelect({ status, student }: Props) {
                 </Button>
             </PopoverTrigger>
             <PopoverContent
-                className="w-10 border-none shadow-lg rounded-3xl px-0 py-1 flex flex-col gap-1 items-center -mt-1"
+                className="w-10 border-none shadow-lg rounded-3xl px-0 py-1 flex flex-col gap-1 items-center -mt-[76px]"
                 align="center"
             >
                 {statuses.map((d) => (

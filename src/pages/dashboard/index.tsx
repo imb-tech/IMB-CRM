@@ -21,7 +21,7 @@ const data: TCalendar = {
             endTime: "08:30",
             teacher_name: "Ustoz 1",
             course_name: "Frontend",
-            color: "bg-red-200 dark:bg-red-500  border-red-300",
+            color: "bg-red-200/50 dark:bg-red-500/20  border-red-300",
         },
         {
             id: "2",
@@ -30,7 +30,7 @@ const data: TCalendar = {
             endTime: "09:10",
             teacher_name: "Ustoz 2",
             course_name: "Backend",
-            color: "bg-blue-200 dark:bg-blue-500  border-blue-300",
+            color: "bg-blue-200/50 dark:bg-blue-500/20  border-blue-300",
         },
         {
             id: "3",
@@ -39,7 +39,7 @@ const data: TCalendar = {
             endTime: "09:50",
             teacher_name: "Ustoz 3",
             course_name: "Design",
-            color: "bg-green-200 dark:bg-green-500  border-green-300",
+            color: "bg-green-200/50 dark:bg-green-500/20  border-green-300",
         },
         {
             id: "4",
@@ -48,7 +48,7 @@ const data: TCalendar = {
             endTime: "10:30",
             teacher_name: "Ustoz 4",
             course_name: "Math",
-            color: "bg-yellow-200 dark:bg-yellow-500  border-yellow-300",
+            color: "bg-yellow-200/50 dark:bg-yellow-500/20  border-yellow-300",
         },
         {
             id: "5",
@@ -57,7 +57,7 @@ const data: TCalendar = {
             endTime: "11:10",
             teacher_name: "Ustoz 5",
             course_name: "Physics",
-            color: "bg-pink-200 dark:bg-pink-500  border-pink-300",
+            color: "bg-pink-200/50 dark:bg-pink-500/20  border-pink-300",
         },
         {
             id: "6",
@@ -66,7 +66,7 @@ const data: TCalendar = {
             endTime: "11:50",
             teacher_name: "Ustoz 6",
             course_name: "Speaking",
-            color: "bg-purple-200 dark:bg-purple-500  border-purple-300",
+            color: "bg-purple-200/50 dark:bg-purple-500/20  border-purple-300",
         },
 
         {
@@ -76,7 +76,7 @@ const data: TCalendar = {
             endTime: "08:40",
             teacher_name: "Ustoz A",
             course_name: "Frontend",
-            color: "bg-red-200 dark:bg-red-500 border-red-300",
+            color: "bg-red-200/50 dark:bg-red-500/20 border-red-300",
         },
         {
             id: "8",
@@ -85,7 +85,7 @@ const data: TCalendar = {
             endTime: "09:20",
             teacher_name: "Ustoz B",
             course_name: "Backend",
-            color: "bg-blue-200 dark:bg-blue-500 border-blue-300",
+            color: "bg-blue-200/50 dark:bg-blue-500/20 border-blue-300",
         },
         {
             id: "9",
@@ -94,7 +94,7 @@ const data: TCalendar = {
             endTime: "10:00",
             teacher_name: "Ustoz C",
             course_name: "Design",
-            color: "bg-green-200 dark:bg-green-500 border-green-300",
+            color: "bg-green-200/50 dark:bg-green-500/20 border-green-300",
         },
         {
             id: "10",
@@ -103,7 +103,7 @@ const data: TCalendar = {
             endTime: "10:40",
             teacher_name: "Ustoz D",
             course_name: "Math",
-            color: "bg-yellow-200 dark:bg-yellow-500 border-yellow-300",
+            color: "bg-yellow-200/50 dark:bg-yellow-500/20 border-yellow-300",
         },
         {
             id: "11",
@@ -112,7 +112,7 @@ const data: TCalendar = {
             endTime: "11:20",
             teacher_name: "Ustoz E",
             course_name: "Physics",
-            color: "bg-pink-200 dark:bg-pink-500 border-pink-300",
+            color: "bg-pink-200/50 dark:bg-pink-500/20 border-pink-300",
         },
         {
             id: "12",
@@ -121,7 +121,7 @@ const data: TCalendar = {
             endTime: "12:00",
             teacher_name: "Ustoz F",
             course_name: "Speaking",
-            color: "bg-purple-200 dark:bg-purple-500 border-purple-300",
+            color: "bg-purple-200/50 dark:bg-purple-500/20 border-purple-300",
         },
 
         {
@@ -131,7 +131,7 @@ const data: TCalendar = {
             endTime: "08:50",
             teacher_name: "Ustoz 1",
             course_name: "Frontend",
-            color: "bg-red-200 dark:bg-red-500 border-red-300",
+            color: "bg-red-200/50 dark:bg-red-500/20 border-red-300",
         },
         {
             id: "14",
@@ -140,7 +140,7 @@ const data: TCalendar = {
             endTime: "09:30",
             teacher_name: "Ustoz 2",
             course_name: "Backend",
-            color: "bg-blue-200 dark:bg-blue-500 border-blue-300",
+            color: "bg-blue-200/50 dark:bg-blue-500/20 border-blue-300",
         },
         {
             id: "15",
@@ -149,7 +149,7 @@ const data: TCalendar = {
             endTime: "10:10",
             teacher_name: "Ustoz 3",
             course_name: "Design",
-            color: "bg-green-200 dark:bg-green-500 border-green-300",
+            color: "bg-green-200/50 dark:bg-green-500/20 border-green-300",
         },
         {
             id: "16",
@@ -158,7 +158,7 @@ const data: TCalendar = {
             endTime: "10:50",
             teacher_name: "Ustoz 4",
             course_name: "Math",
-            color: "bg-yellow-200 dark:bg-yellow-500 border-yellow-300",
+            color: "bg-yellow-200/50 dark:bg-yellow-500/20 border-yellow-300",
         },
         {
             id: "17",
@@ -167,7 +167,7 @@ const data: TCalendar = {
             endTime: "11:30",
             teacher_name: "Ustoz 5",
             course_name: "Physics",
-            color: "bg-pink-200 dark:bg-pink-500 border-pink-300",
+            color: "bg-pink-200/50 dark:bg-pink-500/20 border-pink-300",
         },
         {
             id: "18",
@@ -176,7 +176,7 @@ const data: TCalendar = {
             endTime: "12:10",
             teacher_name: "Ustoz 6",
             course_name: "Speaking",
-            color: "bg-purple-200 dark:bg-purple-500 border-purple-300",
+            color: "bg-purple-200/50 dark:bg-purple-500/20 border-purple-300",
         },
 
         {
@@ -186,7 +186,7 @@ const data: TCalendar = {
             endTime: "09:00",
             teacher_name: "Ustoz A",
             course_name: "Frontend",
-            color: "bg-red-200 dark:bg-red-500 border-red-300",
+            color: "bg-red-200/50 dark:bg-red-500/20 border-red-300",
         },
         {
             id: "20",
@@ -195,7 +195,7 @@ const data: TCalendar = {
             endTime: "09:40",
             teacher_name: "Ustoz B",
             course_name: "Backend",
-            color: "bg-blue-200 dark:bg-blue-500 border-blue-300",
+            color: "bg-blue-200/50 dark:bg-blue-500/20 border-blue-300",
         },
         {
             id: "21",
@@ -204,7 +204,7 @@ const data: TCalendar = {
             endTime: "10:20",
             teacher_name: "Ustoz C",
             course_name: "Design",
-            color: "bg-green-200 dark:bg-green-500 border-green-300",
+            color: "bg-green-200/50 dark:bg-green-500/20 border-green-300",
         },
         {
             id: "22",
@@ -213,7 +213,7 @@ const data: TCalendar = {
             endTime: "11:00",
             teacher_name: "Ustoz D",
             course_name: "Math",
-            color: "bg-yellow-200 dark:bg-yellow-500 border-yellow-300",
+            color: "bg-yellow-200/50 dark:bg-yellow-500/20 border-yellow-300",
         },
         {
             id: "23",
@@ -222,7 +222,7 @@ const data: TCalendar = {
             endTime: "11:40",
             teacher_name: "Ustoz E",
             course_name: "Physics",
-            color: "bg-pink-200 dark:bg-pink-500 border-pink-300",
+            color: "bg-pink-200/50 dark:bg-pink-500/20 border-pink-300",
         },
         {
             id: "24",
@@ -231,7 +231,7 @@ const data: TCalendar = {
             endTime: "12:20",
             teacher_name: "Ustoz F",
             course_name: "Speaking",
-            color: "bg-purple-200 dark:bg-purple-500 border-purple-300",
+            color: "bg-purple-200/50 dark:bg-purple-500/20 border-purple-300",
         },
 
         {
@@ -241,7 +241,7 @@ const data: TCalendar = {
             endTime: "09:10",
             teacher_name: "Ustoz 1",
             course_name: "Frontend",
-            color: "bg-red-200 dark:bg-red-500 border-red-300",
+            color: "bg-red-200/50 dark:bg-red-500/20 border-red-300",
         },
         {
             id: "26",
@@ -250,7 +250,7 @@ const data: TCalendar = {
             endTime: "09:50",
             teacher_name: "Ustoz 2",
             course_name: "Backend",
-            color: "bg-blue-200 dark:bg-blue-500 border-blue-300",
+            color: "bg-blue-200/50 dark:bg-blue-500/20 border-blue-300",
         },
         {
             id: "27",
@@ -259,7 +259,7 @@ const data: TCalendar = {
             endTime: "10:30",
             teacher_name: "Ustoz 3",
             course_name: "Design",
-            color: "bg-green-200 dark:bg-green-500 border-green-300",
+            color: "bg-green-200/50 dark:bg-green-500/20 border-green-300",
         },
         {
             id: "28",
@@ -268,7 +268,7 @@ const data: TCalendar = {
             endTime: "11:10",
             teacher_name: "Ustoz 4",
             course_name: "Math",
-            color: "bg-yellow-200 dark:bg-yellow-500 border-yellow-300",
+            color: "bg-yellow-200/50 dark:bg-yellow-500/20 border-yellow-300",
         },
         {
             id: "29",
@@ -277,7 +277,7 @@ const data: TCalendar = {
             endTime: "11:50",
             teacher_name: "Ustoz 5",
             course_name: "Physics",
-            color: "bg-pink-200 dark:bg-pink-500 border-pink-300",
+            color: "bg-pink-200/50 dark:bg-pink-500/20 border-pink-300",
         },
         {
             id: "30",
@@ -286,7 +286,7 @@ const data: TCalendar = {
             endTime: "12:30",
             teacher_name: "Ustoz 6",
             course_name: "Speaking",
-            color: "bg-purple-200 dark:bg-purple-500 border-purple-300",
+            color: "bg-purple-200/50 dark:bg-purple-500/20 border-purple-300",
         },
 
         {
@@ -296,7 +296,7 @@ const data: TCalendar = {
             endTime: "09:20",
             teacher_name: "Ustoz A",
             course_name: "Frontend",
-            color: "bg-red-200 dark:bg-red-500 border-red-300",
+            color: "bg-red-200/50 dark:bg-red-500/20 border-red-300",
         },
         {
             id: "32",
@@ -305,7 +305,7 @@ const data: TCalendar = {
             endTime: "10:00",
             teacher_name: "Ustoz B",
             course_name: "Backend",
-            color: "bg-blue-200 dark:bg-blue-500 border-blue-300",
+            color: "bg-blue-200/50 dark:bg-blue-500/20 border-blue-300",
         },
         {
             id: "33",
@@ -314,7 +314,7 @@ const data: TCalendar = {
             endTime: "10:40",
             teacher_name: "Ustoz C",
             course_name: "Design",
-            color: "bg-green-200 dark:bg-green-500 border-green-300",
+            color: "bg-green-200/50 dark:bg-green-500/20 border-green-300",
         },
         {
             id: "34",
@@ -323,7 +323,7 @@ const data: TCalendar = {
             endTime: "11:20",
             teacher_name: "Ustoz D",
             course_name: "Math",
-            color: "bg-yellow-200 dark:bg-yellow-500 border-yellow-300",
+            color: "bg-yellow-200/50 dark:bg-yellow-500/20 border-yellow-300",
         },
         {
             id: "35",
@@ -332,7 +332,7 @@ const data: TCalendar = {
             endTime: "12:00",
             teacher_name: "Ustoz E",
             course_name: "Physics",
-            color: "bg-pink-200 dark:bg-pink-500 border-pink-300",
+            color: "bg-pink-200/50 dark:bg-pink-500/20 border-pink-300",
         },
         {
             id: "36",
@@ -341,7 +341,7 @@ const data: TCalendar = {
             endTime: "12:40",
             teacher_name: "Ustoz F",
             course_name: "Speaking",
-            color: "bg-purple-200 dark:bg-purple-500 border-purple-300",
+            color: "bg-purple-200/50 dark:bg-purple-500/20 border-purple-300",
         },
 
         {
@@ -351,7 +351,7 @@ const data: TCalendar = {
             endTime: "09:30",
             teacher_name: "Ustoz 1",
             course_name: "Frontend",
-            color: "bg-red-200 dark:bg-red-500 border-red-300",
+            color: "bg-red-200/50 dark:bg-red-500/20 border-red-300",
         },
         {
             id: "38",
@@ -360,7 +360,7 @@ const data: TCalendar = {
             endTime: "10:10",
             teacher_name: "Ustoz 2",
             course_name: "Backend",
-            color: "bg-blue-200 dark:bg-blue-500 border-blue-300",
+            color: "bg-blue-200/50 dark:bg-blue-500/20 border-blue-300",
         },
         {
             id: "39",
@@ -369,7 +369,7 @@ const data: TCalendar = {
             endTime: "10:50",
             teacher_name: "Ustoz 3",
             course_name: "Design",
-            color: "bg-green-200 dark:bg-green-500 border-green-300",
+            color: "bg-green-200/50 dark:bg-green-500/20 border-green-300",
         },
         {
             id: "40",
@@ -378,7 +378,7 @@ const data: TCalendar = {
             endTime: "11:30",
             teacher_name: "Ustoz 4",
             course_name: "Math",
-            color: "bg-yellow-200 dark:bg-yellow-500 border-yellow-300",
+            color: "bg-yellow-200/50 dark:bg-yellow-500/20 border-yellow-300",
         },
         {
             id: "41",
@@ -387,7 +387,7 @@ const data: TCalendar = {
             endTime: "12:10",
             teacher_name: "Ustoz 5",
             course_name: "Physics",
-            color: "bg-pink-200 dark:bg-pink-500 border-pink-300",
+            color: "bg-pink-200/50 dark:bg-pink-500/20 border-pink-300",
         },
         {
             id: "42",
@@ -396,7 +396,7 @@ const data: TCalendar = {
             endTime: "12:50",
             teacher_name: "Ustoz 6",
             course_name: "Speaking",
-            color: "bg-purple-200 dark:bg-purple-500 border-purple-300",
+            color: "bg-purple-200/50 dark:bg-purple-500/20 border-purple-300",
         },
 
         {
@@ -406,7 +406,7 @@ const data: TCalendar = {
             endTime: "09:40",
             teacher_name: "Ustoz A",
             course_name: "Frontend",
-            color: "bg-red-200 dark:bg-red-500 border-red-300",
+            color: "bg-red-200/50 dark:bg-red-500/20 border-red-300",
         },
         {
             id: "44",
@@ -415,7 +415,7 @@ const data: TCalendar = {
             endTime: "10:20",
             teacher_name: "Ustoz B",
             course_name: "Backend",
-            color: "bg-blue-200 dark:bg-blue-500 border-blue-300",
+            color: "bg-blue-200/50 dark:bg-blue-500/20 border-blue-300",
         },
         {
             id: "45",
@@ -424,7 +424,7 @@ const data: TCalendar = {
             endTime: "11:00",
             teacher_name: "Ustoz C",
             course_name: "Design",
-            color: "bg-green-200 dark:bg-green-500 border-green-300",
+            color: "bg-green-200/50 dark:bg-green-500/20 border-green-300",
         },
         {
             id: "46",
@@ -433,7 +433,7 @@ const data: TCalendar = {
             endTime: "11:40",
             teacher_name: "Ustoz D",
             course_name: "Math",
-            color: "bg-yellow-200 dark:bg-yellow-500 border-yellow-300",
+            color: "bg-yellow-200/50 dark:bg-yellow-500/20 border-yellow-300",
         },
         {
             id: "47",
@@ -442,7 +442,7 @@ const data: TCalendar = {
             endTime: "12:20",
             teacher_name: "Ustoz E",
             course_name: "Physics",
-            color: "bg-pink-200 dark:bg-pink-500 border-pink-300",
+            color: "bg-pink-200/50 dark:bg-pink-500/20 border-pink-300",
         },
         {
             id: "48",
@@ -451,7 +451,7 @@ const data: TCalendar = {
             endTime: "13:00",
             teacher_name: "Ustoz F",
             course_name: "Speaking",
-            color: "bg-purple-200 dark:bg-purple-500 border-purple-300",
+            color: "bg-purple-200/50 dark:bg-purple-500/20 border-purple-300",
         },
     ],
     work_start_date: "08:00",

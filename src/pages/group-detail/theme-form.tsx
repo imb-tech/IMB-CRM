@@ -12,7 +12,7 @@ export default function ThemeForm() {
 
     return (
         <form onSubmit={form.handleSubmit(handleSubmit)}>
-            <div className="mb-3 flex flex-col gap-2">
+            <div className="mb-3 flex flex-col gap-4 min-h-[320px]">
                 <FormTextarea
                     methods={form}
                     name="name"

@@ -15,6 +15,7 @@ import {
     Banknote,
     ChevronUp,
     EllipsisVertical,
+    ArrowLeft,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useCallback, useMemo, useState } from "react"
@@ -101,13 +102,13 @@ export default function GroupProfile() {
             )}
             <Card className="bg-card border-0 shadow-sm rounded-md overflow-hidden w-full relative">
                 <CardHeader
-                    className="bg-gradient-to-br from-primary/30 to-primary/20 text-primary dark:text-white p-4 md:px-3 md:py-1"
+                    className="bg-gradient-to-br from-primary/30 to-primary/20 text-black dark:text-white p-4 md:px-3 md:py-1"
                     onClick={() => handleOpen(!open)}
                 >
                     <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-4">
                             <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-                                <GraduationCap className="w-4 h-4" />
+                                <ArrowLeft className="w-4 h-4" />
                             </div>
                             <div>
                                 <h3 className="font-bold text-lg">

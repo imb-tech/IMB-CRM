@@ -54,7 +54,7 @@ export default function TaskForm() {
 
     return (
         <form onSubmit={form.handleSubmit(handleSubmit)}>
-            <div className="mb-3 grid grid-cols-2 gap-2 bg-secondary p-3 rounded-md">
+            <div className="mb-3 grid grid-cols-2 gap-2 bg-secondary dark:bg-card p-3 rounded-md min-h-[320px]">
                 <div className="mb-3 flex flex-col gap-2">
                     <FormTextarea
                         methods={form}

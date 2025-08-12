@@ -129,7 +129,7 @@ export function FileInput<TForm extends FieldValues>({
     return (
         <div
             className={cn(
-                "space-y-2 bg-background px-3 py-2 rounded-md",
+                "space-y-2 bg-background dark:bg-background px-3 py-2 rounded-md border dark:border-secondary",
                 className,
             )}
         >
@@ -137,7 +137,9 @@ export function FileInput<TForm extends FieldValues>({
                 <label
                     className={cn(
                         "text-sm font-medium",
-                        fieldState.error ? "text-red-600" : "text-slate-700",
+                        fieldState.error ? "text-red-600" : (
+                            "text-muted-foreground"
+                        ),
                     )}
                 >
                     {label}
@@ -163,12 +165,12 @@ export function FileInput<TForm extends FieldValues>({
                 className={cn(
                     "relative border-2 border-dashed rounded-md p-2 text-center transition-all duration-200",
                     canAddMore ? "cursor-pointer" : "cursor-not-allowed",
-                    isDragOver ? "border-blue-400 bg-blue-50"
+                    isDragOver ? "border-muted-foreground bg-muted-foreground"
                     : canAddMore ?
                         fieldState.error ?
-                            "border-red-300 hover:border-red-400 hover:bg-red-50"
-                        :   "border-slate-300 hover:border-slate-400 hover:bg-slate-50"
-                    :   "border-slate-200 bg-slate-50 opacity-60",
+                            "border-red-300 hover:border-red-400"
+                        :   "border-secondary hover:border-muted-foreground/40"
+                    :   "border-muted-foreground opacity-60",
                 )}
             >
                 <div className="flex items-center justify-center space-x-2">
@@ -185,7 +187,7 @@ export function FileInput<TForm extends FieldValues>({
                             className={cn(
                                 "text-xs font-medium",
                                 fieldState.error ? "text-red-700" : (
-                                    "text-slate-700"
+                                    "text-muted-foreground"
                                 ),
                             )}
                         >

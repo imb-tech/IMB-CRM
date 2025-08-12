@@ -55,7 +55,7 @@ export default function ExamForm() {
 
     return (
         <form onSubmit={form.handleSubmit(handleSubmit)}>
-            <div className="mb-3 grid grid-cols-2 gap-2 bg-secondary p-3 rounded-md">
+            <div className="mb-3 grid grid-cols-2 gap-2 bg-secondary dark:bg-card p-3 rounded-md min-h-[320px]">
                 <div className="mb-3 flex flex-col gap-2">
                     <FormInput
                         methods={form}
@@ -68,13 +68,13 @@ export default function ExamForm() {
                         control={form.control}
                         name="min_score"
                         label="O'tish bal"
-                        placeholder="- ∞"
+                        placeholder="0"
                     />
                     <FormNumberInput
                         control={form.control}
                         name="max_score"
                         label="Yuqori bal"
-                        placeholder="∞ +"
+                        placeholder="100"
                     />
                     <FileInput
                         control={form.control}
