@@ -54,7 +54,7 @@ export default function MobileHeaderLinks({
                                 value={link.to}
                                 className={`${
                                     isActive(link, pathname) &&
-                                    "!bg-primary !text-primary-foreground"
+                                    "!bg-primary/15 !text-primary"
                                 } font-medium flex items-center gap-2 whitespace-nowrap`}
                             >
                                 {link.title}

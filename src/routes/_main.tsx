@@ -3,6 +3,7 @@ import {
     Outlet,
     useLocation,
     useNavigate,
+    useSearch,
 } from "@tanstack/react-router"
 import { useEffect } from "react"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
@@ -25,15 +26,16 @@ function MainLayout() {
     const pathname = useLocation().pathname
     const navigate = useNavigate()
     const token = getAccessToken()
+    const search = useSearch({ strict: false })
 
     useEffect(() => {
         if (!token) {
-            navigate({ to: "/login" })
+            navigate({ to: "/login", search: { ...search } })
         }
-    }, [pathname])
+    }, [pathname, search])
 
     return (
-        <SidebarProvider defaultOpen={!false}>
+        <SidebarProvider defaultOpen={true}>
             <AppSidebar />
             <SidebarInset>
                 <Outlet />

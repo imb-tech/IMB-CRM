@@ -31,10 +31,10 @@ const PageLayout = ({
     const len = useMemo(() => defaultLinks.length, [defaultLinks])
 
     return (
-        <div className="w-full">
+        <div className="w-full h-full overflow-y-auto">
             <div
                 className={cn(
-                    "fixed top-0 right-0 z-50 transition-[width,height,padding] w-full",
+                    "fixed top-0 right-0 z-10 transition-[width,height,padding] w-full",
                 )}
             >
                 <Header
@@ -51,12 +51,12 @@ const PageLayout = ({
                     navOnHeader ? "pb-0" : "",
                 )}
             >
-                {len ?
+                {len ? (
                     <MobileHeaderLinks
                         defaultLinks={items}
                         navOnHeader={navOnHeader}
                     />
-                :   null}
+                ) : null}
             </div>
 
             <main
