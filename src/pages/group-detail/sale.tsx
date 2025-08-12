@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import ActionDropdown from "@/components/elements/action-dropdown"
 import { Calendar, DollarSign, FileText, Hash } from "lucide-react"
 import { formatMoney } from "@/lib/format-money"
+import SectionHeader from "@/components/elements/section-header"
 
 export default function GroupSale() {
     const isMobile = useIsMobile()
@@ -12,6 +13,10 @@ export default function GroupSale() {
 
     return (
         <div>
+            <SectionHeader
+                title="O'quvchilarga chegirma berish"
+                // rightComponent={<ParamDatePicker className="min-w-0" />}
+            />
             {isMobile ?
                 <div className="flex flex-col gap-2">
                     {data.map((student) => (

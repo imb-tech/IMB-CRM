@@ -205,8 +205,8 @@ export default function GroupScore() {
                         <div className="overflow-x-auto">
                             <table className="w-full">
                                 <thead>
-                                    <tr className="border-b bg-gray-50">
-                                        <th className="text-left p-4 font-medium text-gray-700 sticky left-0 bg-gray-50 min-w-[160px]">
+                                    <tr className="border-b bg-secondary">
+                                        <th className="text-left p-4 font-medium  sticky left-0  bg-secondary min-w-[160px]">
                                             O'quvchi
                                         </th>
                                         {days.map((day) => (
@@ -226,7 +226,7 @@ export default function GroupScore() {
                                                 </div>
                                             </th>
                                         ))}
-                                        <th className="text-center p-4 font-medium text-gray-700 min-w-[100px]">
+                                        <th className="text-center p-4 font-medium text-muted-foreground min-w-[100px]">
                                             Statistika
                                         </th>
                                     </tr>
@@ -239,13 +239,11 @@ export default function GroupScore() {
                                         return (
                                             <tr
                                                 key={student.id}
-                                                className="border-b hover:bg-gray-50"
+                                                className="border-b hover:bg-secondary/40"
                                             >
-                                                <td className="p- sticky left-0 bg-white border-r">
-                                                    <div>
-                                                        <div className="font-medium text-gray-800">
-                                                            {student.name}
-                                                        </div>
+                                                <td className="sticky left-0  bg-secondary border-r">
+                                                    <div className="font-medium pl-2">
+                                                        {student.name}
                                                     </div>
                                                 </td>
                                                 {days.map((day) => {

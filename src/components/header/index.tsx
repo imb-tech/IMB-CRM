@@ -44,7 +44,7 @@ const Header = ({ rigthChildren, leftChildren, navOnHeader }: Props) => {
                 <div className="flex gap-3 items-center sm:min-w-[180px]">
                     <SidebarTrigger className="text-gray-500 dark:text-white" />
                     <span className="text-2xl text-primary font-bold sm:block hidden">
-                        IMB TECH
+                        IMB EDU
                     </span>
                 </div>
                 <div

@@ -32,7 +32,7 @@ const AccordionTrigger = React.forwardRef<
         <AccordionPrimitive.Trigger
             ref={ref}
             className={cn(
-                "flex gap-4 flex-1 items-center justify-between py-4 text-sm font-medium transition-all hover:underline underline-offset-4 [&[data-state=open]>svg]:rotate-180 data-[state=open]:bg-muted",
+                "flex gap-4 flex-1 items-center justify-between py-4 text-sm font-medium transition-all underline-offset-4 [&[data-state=open]>svg]:rotate-180 data-[state=open]:bg-secondary rounded-md relative",
                 className,
             )}
             {...props}
@@ -40,7 +40,7 @@ const AccordionTrigger = React.forwardRef<
             {children}
             {icon &&
                 (typeof icon === "boolean" ?
-                    <ChevronDownIcon className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200" />
+                    <ChevronDownIcon className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 absolute right-3" />
                 :   icon)}
         </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>

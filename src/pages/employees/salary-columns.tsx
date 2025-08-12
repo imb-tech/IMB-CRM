@@ -58,7 +58,7 @@ export const useEmployeeSalaryCols = () => {
                     ),
             },
             {
-                header: "O'zgartirish",
+                header: " ",
                 cell: ({ row }) => {
                     return (
                         <div className="flex flex-wrap gap-2">

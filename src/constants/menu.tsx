@@ -151,13 +151,6 @@ export const groupDetailNav = (groupId: string) => {
     return useMemo(
         () => [
             linkOptions({
-                title: "Davomat",
-                to: `/groups/$id/attendance`,
-                params: {
-                    id: groupId,
-                },
-            }),
-            linkOptions({
                 title: "O'quvchilar",
                 to: `/groups/$id/students`,
                 params: {
@@ -165,22 +158,15 @@ export const groupDetailNav = (groupId: string) => {
                 },
             }),
             linkOptions({
-                title: "Baho",
-                to: `/groups/$id/score`,
+                title: "Davomat",
+                to: `/groups/$id/attendance`,
                 params: {
                     id: groupId,
                 },
             }),
             linkOptions({
-                title: "Eslatma",
-                to: `/groups/$id/notes`,
-                params: {
-                    id: groupId,
-                },
-            }),
-            linkOptions({
-                title: "Imtixon",
-                to: `/groups/$id/exams`,
+                title: "Vazifalar",
+                to: `/groups/$id/tasks`,
                 params: {
                     id: groupId,
                 },
@@ -188,6 +174,13 @@ export const groupDetailNav = (groupId: string) => {
             linkOptions({
                 title: "Chegirma",
                 to: `/groups/$id/sale`,
+                params: {
+                    id: groupId,
+                },
+            }),
+            linkOptions({
+                title: "Eslatma",
+                to: `/groups/$id/notes`,
                 params: {
                     id: groupId,
                 },

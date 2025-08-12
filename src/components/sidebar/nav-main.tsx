@@ -18,7 +18,7 @@ export function NavMain() {
                         <div className="flex gap-3 items-center min-w-[180px]">
                             <SidebarTrigger className="text-gray-500 dark:text-white" />
                             <span className="text-2xl text-primary font-bold">
-                                IMB TECH
+                                IMB EDU
                             </span>
                         </div>
                     </SidebarMenuItem>

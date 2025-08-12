@@ -63,8 +63,8 @@ import { Route as MainGroupsIdMainStudentsImport } from './routes/_main/groups/$
 import { Route as MainGroupsIdMainScoreImport } from './routes/_main/groups/$id/_main/score'
 import { Route as MainGroupsIdMainSaleImport } from './routes/_main/groups/$id/_main/sale'
 import { Route as MainGroupsIdMainNotesImport } from './routes/_main/groups/$id/_main/notes'
-import { Route as MainGroupsIdMainExamsImport } from './routes/_main/groups/$id/_main/exams'
 import { Route as MainGroupsIdMainAttendanceImport } from './routes/_main/groups/$id/_main/attendance'
+import { Route as MainGroupsIdMainTasksIndexImport } from './routes/_main/groups/$id/_main/tasks/index'
 
 // Create Virtual Routes
 
@@ -412,16 +412,18 @@ const MainGroupsIdMainNotesRoute = MainGroupsIdMainNotesImport.update({
   getParentRoute: () => MainGroupsIdMainRoute,
 } as any)
 
-const MainGroupsIdMainExamsRoute = MainGroupsIdMainExamsImport.update({
-  id: '/exams',
-  path: '/exams',
-  getParentRoute: () => MainGroupsIdMainRoute,
-} as any)
-
 const MainGroupsIdMainAttendanceRoute = MainGroupsIdMainAttendanceImport.update(
   {
     id: '/attendance',
     path: '/attendance',
+    getParentRoute: () => MainGroupsIdMainRoute,
+  } as any,
+)
+
+const MainGroupsIdMainTasksIndexRoute = MainGroupsIdMainTasksIndexImport.update(
+  {
+    id: '/tasks/',
+    path: '/tasks/',
     getParentRoute: () => MainGroupsIdMainRoute,
   } as any,
 )
@@ -731,13 +733,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainGroupsIdMainAttendanceImport
       parentRoute: typeof MainGroupsIdMainImport
     }
-    '/_main/groups/$id/_main/exams': {
-      id: '/_main/groups/$id/_main/exams'
-      path: '/exams'
-      fullPath: '/groups/$id/exams'
-      preLoaderRoute: typeof MainGroupsIdMainExamsImport
-      parentRoute: typeof MainGroupsIdMainImport
-    }
     '/_main/groups/$id/_main/notes': {
       id: '/_main/groups/$id/_main/notes'
       path: '/notes'
@@ -835,6 +830,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/students/$id/'
       preLoaderRoute: typeof MainStudentsIdMainIndexImport
       parentRoute: typeof MainStudentsIdMainImport
+    }
+    '/_main/groups/$id/_main/tasks/': {
+      id: '/_main/groups/$id/_main/tasks/'
+      path: '/tasks'
+      fullPath: '/groups/$id/tasks'
+      preLoaderRoute: typeof MainGroupsIdMainTasksIndexImport
+      parentRoute: typeof MainGroupsIdMainImport
     }
   }
 }
@@ -942,22 +944,22 @@ const MainSettingsRouteWithChildren = MainSettingsRoute._addFileChildren(
 
 interface MainGroupsIdMainRouteChildren {
   MainGroupsIdMainAttendanceRoute: typeof MainGroupsIdMainAttendanceRoute
-  MainGroupsIdMainExamsRoute: typeof MainGroupsIdMainExamsRoute
   MainGroupsIdMainNotesRoute: typeof MainGroupsIdMainNotesRoute
   MainGroupsIdMainSaleRoute: typeof MainGroupsIdMainSaleRoute
   MainGroupsIdMainScoreRoute: typeof MainGroupsIdMainScoreRoute
   MainGroupsIdMainStudentsRoute: typeof MainGroupsIdMainStudentsRoute
   MainGroupsIdMainIndexRoute: typeof MainGroupsIdMainIndexRoute
+  MainGroupsIdMainTasksIndexRoute: typeof MainGroupsIdMainTasksIndexRoute
 }
 
 const MainGroupsIdMainRouteChildren: MainGroupsIdMainRouteChildren = {
   MainGroupsIdMainAttendanceRoute: MainGroupsIdMainAttendanceRoute,
-  MainGroupsIdMainExamsRoute: MainGroupsIdMainExamsRoute,
   MainGroupsIdMainNotesRoute: MainGroupsIdMainNotesRoute,
   MainGroupsIdMainSaleRoute: MainGroupsIdMainSaleRoute,
   MainGroupsIdMainScoreRoute: MainGroupsIdMainScoreRoute,
   MainGroupsIdMainStudentsRoute: MainGroupsIdMainStudentsRoute,
   MainGroupsIdMainIndexRoute: MainGroupsIdMainIndexRoute,
+  MainGroupsIdMainTasksIndexRoute: MainGroupsIdMainTasksIndexRoute,
 }
 
 const MainGroupsIdMainRouteWithChildren =
@@ -1100,7 +1102,6 @@ export interface FileRoutesByFullPath {
   '/leads/stats': typeof MainLeadsStatsIndexRoute
   '/settings/': typeof MainSettingsMainIndexRoute
   '/groups/$id/attendance': typeof MainGroupsIdMainAttendanceRoute
-  '/groups/$id/exams': typeof MainGroupsIdMainExamsRoute
   '/groups/$id/notes': typeof MainGroupsIdMainNotesRoute
   '/groups/$id/sale': typeof MainGroupsIdMainSaleRoute
   '/groups/$id/score': typeof MainGroupsIdMainScoreRoute
@@ -1115,6 +1116,7 @@ export interface FileRoutesByFullPath {
   '/students/$id/profile': typeof MainStudentsIdMainProfileRoute
   '/groups/$id/': typeof MainGroupsIdMainIndexRoute
   '/students/$id/': typeof MainStudentsIdMainIndexRoute
+  '/groups/$id/tasks': typeof MainGroupsIdMainTasksIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -1152,7 +1154,6 @@ export interface FileRoutesByTo {
   '/leads/forms': typeof MainLeadsFormsIndexRoute
   '/leads/stats': typeof MainLeadsStatsIndexRoute
   '/groups/$id/attendance': typeof MainGroupsIdMainAttendanceRoute
-  '/groups/$id/exams': typeof MainGroupsIdMainExamsRoute
   '/groups/$id/notes': typeof MainGroupsIdMainNotesRoute
   '/groups/$id/sale': typeof MainGroupsIdMainSaleRoute
   '/groups/$id/score': typeof MainGroupsIdMainScoreRoute
@@ -1165,6 +1166,7 @@ export interface FileRoutesByTo {
   '/students/$id/parents': typeof MainStudentsIdMainParentsRoute
   '/students/$id/payments': typeof MainStudentsIdMainPaymentsRoute
   '/students/$id/profile': typeof MainStudentsIdMainProfileRoute
+  '/groups/$id/tasks': typeof MainGroupsIdMainTasksIndexRoute
 }
 
 export interface FileRoutesById {
@@ -1212,7 +1214,6 @@ export interface FileRoutesById {
   '/_main/leads/stats/': typeof MainLeadsStatsIndexRoute
   '/_main/settings/_main/': typeof MainSettingsMainIndexRoute
   '/_main/groups/$id/_main/attendance': typeof MainGroupsIdMainAttendanceRoute
-  '/_main/groups/$id/_main/exams': typeof MainGroupsIdMainExamsRoute
   '/_main/groups/$id/_main/notes': typeof MainGroupsIdMainNotesRoute
   '/_main/groups/$id/_main/sale': typeof MainGroupsIdMainSaleRoute
   '/_main/groups/$id/_main/score': typeof MainGroupsIdMainScoreRoute
@@ -1227,6 +1228,7 @@ export interface FileRoutesById {
   '/_main/students/$id/_main/profile': typeof MainStudentsIdMainProfileRoute
   '/_main/groups/$id/_main/': typeof MainGroupsIdMainIndexRoute
   '/_main/students/$id/_main/': typeof MainStudentsIdMainIndexRoute
+  '/_main/groups/$id/_main/tasks/': typeof MainGroupsIdMainTasksIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -1269,7 +1271,6 @@ export interface FileRouteTypes {
     | '/leads/stats'
     | '/settings/'
     | '/groups/$id/attendance'
-    | '/groups/$id/exams'
     | '/groups/$id/notes'
     | '/groups/$id/sale'
     | '/groups/$id/score'
@@ -1284,6 +1285,7 @@ export interface FileRouteTypes {
     | '/students/$id/profile'
     | '/groups/$id/'
     | '/students/$id/'
+    | '/groups/$id/tasks'
   fileRoutesByTo: FileRoutesByTo
   to:
     | ''
@@ -1320,7 +1322,6 @@ export interface FileRouteTypes {
     | '/leads/forms'
     | '/leads/stats'
     | '/groups/$id/attendance'
-    | '/groups/$id/exams'
     | '/groups/$id/notes'
     | '/groups/$id/sale'
     | '/groups/$id/score'
@@ -1333,6 +1334,7 @@ export interface FileRouteTypes {
     | '/students/$id/parents'
     | '/students/$id/payments'
     | '/students/$id/profile'
+    | '/groups/$id/tasks'
   id:
     | '__root__'
     | '/_auth'
@@ -1378,7 +1380,6 @@ export interface FileRouteTypes {
     | '/_main/leads/stats/'
     | '/_main/settings/_main/'
     | '/_main/groups/$id/_main/attendance'
-    | '/_main/groups/$id/_main/exams'
     | '/_main/groups/$id/_main/notes'
     | '/_main/groups/$id/_main/sale'
     | '/_main/groups/$id/_main/score'
@@ -1393,6 +1394,7 @@ export interface FileRouteTypes {
     | '/_main/students/$id/_main/profile'
     | '/_main/groups/$id/_main/'
     | '/_main/students/$id/_main/'
+    | '/_main/groups/$id/_main/tasks/'
   fileRoutesById: FileRoutesById
 }
 
@@ -1585,12 +1587,12 @@ export const routeTree = rootRoute
       "parent": "/_main/groups/$id",
       "children": [
         "/_main/groups/$id/_main/attendance",
-        "/_main/groups/$id/_main/exams",
         "/_main/groups/$id/_main/notes",
         "/_main/groups/$id/_main/sale",
         "/_main/groups/$id/_main/score",
         "/_main/groups/$id/_main/students",
-        "/_main/groups/$id/_main/"
+        "/_main/groups/$id/_main/",
+        "/_main/groups/$id/_main/tasks/"
       ]
     },
     "/_main/leads/forms/$id": {
@@ -1673,10 +1675,6 @@ export const routeTree = rootRoute
       "filePath": "_main/groups/$id/_main/attendance.tsx",
       "parent": "/_main/groups/$id/_main"
     },
-    "/_main/groups/$id/_main/exams": {
-      "filePath": "_main/groups/$id/_main/exams.tsx",
-      "parent": "/_main/groups/$id/_main"
-    },
     "/_main/groups/$id/_main/notes": {
       "filePath": "_main/groups/$id/_main/notes.tsx",
       "parent": "/_main/groups/$id/_main"
@@ -1732,6 +1730,10 @@ export const routeTree = rootRoute
     "/_main/students/$id/_main/": {
       "filePath": "_main/students/$id/_main/index.tsx",
       "parent": "/_main/students/$id/_main"
+    },
+    "/_main/groups/$id/_main/tasks/": {
+      "filePath": "_main/groups/$id/_main/tasks/index.tsx",
+      "parent": "/_main/groups/$id/_main"
     }
   }
 }

@@ -128,6 +128,8 @@ export default function GroupStudents() {
                     data={data?.results}
                     viewAll
                     className="max-w-full"
+                    numeration
+                    selecteds_row
                 />
             }
 

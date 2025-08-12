@@ -409,6 +409,7 @@ export function DataTable<TData>({
                                             rowColor?.(row.original),
                                             index % 2 !== 0 &&
                                                 "bg-secondary/70 rounded-xl ",
+                                            "!h-12 text-sm",
                                         )}
                                     >
                                         {selecteds_row && (
