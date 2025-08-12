@@ -26,7 +26,7 @@ const SIDEBAR_COOKIE_NAME = "sidebar:state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
 const SIDEBAR_WIDTH = "12rem"
 const SIDEBAR_WIDTH_MOBILE = "12rem"
-const SIDEBAR_WIDTH_ICON = "3rem"
+const SIDEBAR_WIDTH_ICON = "4rem"
 const SIDEBAR_KEYBOARD_SHORTCUT = "b"
 
 type SidebarContext = {
@@ -48,6 +48,24 @@ function useSidebar() {
     }
 
     return context
+}
+
+function getCookie(name: string): string | null {
+    if (typeof document === "undefined") return null
+
+    const value = `; ${document.cookie}`
+    const parts = value.split(`; ${name}=`)
+    if (parts.length === 2) {
+        const cookieValue = parts.pop()?.split(";").shift()
+        return cookieValue || null
+    }
+    return null
+}
+
+function setCookie(name: string, value: string, maxAge: number) {
+    if (typeof document === "undefined") return
+
+    document.cookie = `${name}=${value}; path=/; max-age=${maxAge}`
 }
 
 const SidebarProvider = React.forwardRef<
@@ -75,7 +93,14 @@ const SidebarProvider = React.forwardRef<
 
         // This is the internal state of the sidebar.
         // We use openProp and setOpenProp for control from outside the component.
-        const [_open, _setOpen] = React.useState(defaultOpen)
+        const [_open, _setOpen] = React.useState(() => {
+            const savedState = getCookie(SIDEBAR_COOKIE_NAME)
+            if (savedState !== null) {
+                return savedState === "true"
+            }
+            return defaultOpen
+        })
+
         const open = openProp ?? _open
         const setOpen = React.useCallback(
             (value: boolean | ((value: boolean) => boolean)) => {
@@ -88,16 +113,28 @@ const SidebarProvider = React.forwardRef<
                 }
 
                 // This sets the cookie to keep the sidebar state.
-                document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+                setCookie(
+                    SIDEBAR_COOKIE_NAME,
+                    openState.toString(),
+                    SIDEBAR_COOKIE_MAX_AGE,
+                )
             },
             [setOpenProp, open],
         )
 
+        React.useEffect(() => {
+            const savedState = getCookie(SIDEBAR_COOKIE_NAME)
+            if (savedState !== null && openProp === undefined) {
+                const isOpen = savedState === "true"
+                _setOpen(isOpen)
+            }
+        }, [openProp])
+
         // Helper to toggle the sidebar.
         const toggleSidebar = React.useCallback(() => {
-            return isMobile ?
-                    setOpenMobile((open) => !open)
-                :   setOpen((open) => !open)
+            return isMobile
+                ? setOpenMobile((open) => !open)
+                : setOpen((open) => !open)
         }, [isMobile, setOpen, setOpenMobile])
 
         // Adds a keyboard shortcut to toggle the sidebar.
@@ -251,21 +288,21 @@ const Sidebar = React.forwardRef<
                         "relative h-svh w-[--sidebar-width] bg-transparent transition-[width] duration-200 ease-linear",
                         "group-data-[collapsible=offcanvas]:w-0",
                         "group-data-[side=right]:rotate-180",
-                        variant === "floating" || variant === "inset" ?
-                            "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4))]"
-                        :   "group-data-[collapsible=icon]:w-[--sidebar-width-icon]",
+                        variant === "floating" || variant === "inset"
+                            ? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4))]"
+                            : "group-data-[collapsible=icon]:w-[--sidebar-width-icon]",
                     )}
                 />
                 <div
                     className={cn(
                         "fixed inset-y-0 z-10 hidden h-svh w-[--sidebar-width] transition-[left,right,width] duration-200 ease-linear lg:flex",
-                        side === "left" ?
-                            "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
-                        :   "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
+                        side === "left"
+                            ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
+                            : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
                         // Adjust the padding for floating and inset variants.
-                        variant === "floating" || variant === "inset" ?
-                            "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4)_+2px)]"
-                        :   "group-data-[collapsible=icon]:w-[--sidebar-width-icon] dark:group-data-[side=left]:border-r dark:group-data-[side=right]:border-l",
+                        variant === "floating" || variant === "inset"
+                            ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)_+_theme(spacing.4)_+2px)]"
+                            : "group-data-[collapsible=icon]:w-[--sidebar-width-icon] dark:group-data-[side=left]:border-r dark:group-data-[side=right]:border-l",
                         className,
                     )}
                     {...props}
@@ -293,9 +330,8 @@ const SidebarTrigger = React.forwardRef<
         <Button
             ref={ref}
             data-sidebar="trigger"
-            variant="ghost"
             size="icon"
-            className={cn("h-7 w-7", className)}
+            variant={"ghost"}
             onClick={(event) => {
                 onClick?.(event)
                 toggleSidebar()
@@ -593,13 +629,13 @@ const SidebarMenuButton = React.forwardRef<
                 className={cn(
                     sidebarMenuButtonVariants({ variant, size }),
                     className,
-                    isActive ? "!bg-primary !text-primary-foreground " : "",
-                    "hover:bg-secondary",
+                    isActive ? "!bg-primary !text-primary" : "",
+                    "hover:bg-primary/15 hover:text-primary",
+                    "hover:translate-x-1 transition-transform duration-200 ease-out",
                 )}
                 {...props}
             />
         )
-
         if (!tooltip) {
             return button
         }
