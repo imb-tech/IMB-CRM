@@ -43,7 +43,7 @@ export const useEmployeeCols = () =>
                     return (
                         <div className="flex flex-wrap gap-2">
                             {row?.original.branches?.map((br, i) => (
-                                <p>
+                                <p key={br.id}>
                                     {i > 0 ? "," : ""}
                                     {br.name}
                                 </p>

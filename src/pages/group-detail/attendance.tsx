@@ -6,6 +6,7 @@ import { useMemo } from "react"
 import SectionHeader from "@/components/elements/section-header"
 import { useGet } from "@/hooks/useGet"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
+import { cn } from "@/lib/utils"
 
 export default function GroupAttendance() {
     const students = [
@@ -277,7 +278,7 @@ export default function GroupAttendance() {
                                     return (
                                         <tr
                                             key={student.id}
-                                            className="border-t hover:bg-secondary"
+                                            className="border-t hover:bg-secondary/40"
                                         >
                                             <td className="p- sticky left-0 bg-secondary border-r">
                                                 <div className="pl-2">
@@ -309,7 +310,17 @@ export default function GroupAttendance() {
                                                                     status,
                                                                 )}
                                                             </div>
-                                                        :   <div className="w-8 h-8 bg-gray-500/10 rounded-lg flex items-center justify-center"></div>
+                                                        :   <div
+                                                                className={cn(
+                                                                    "w-8 h-8 bg-gray-500/10 rounded-full flex items-center justify-center",
+                                                                    (
+                                                                        day.day >
+                                                                            11
+                                                                    ) ?
+                                                                        "bg-transparent"
+                                                                    :   "",
+                                                                )}
+                                                            ></div>
                                                         }
                                                     </td>
                                                 )
@@ -343,7 +354,7 @@ export default function GroupAttendance() {
 
             {/* Legend */}
             <Card>
-                <CardContent className="p-4">
+                <CardContent className="p-4 pb-0">
                     <div className="flex items-center justify-center flex-wrap gap-6 text-sm">
                         <div className="flex items-center gap-2">
                             <div

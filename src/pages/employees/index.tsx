@@ -10,6 +10,7 @@ import { EMPLOYEE, OPTION_ROLES } from "@/constants/api-endpoints"
 import EmployeesHeader from "./employees-header"
 import { useGet } from "@/hooks/useGet"
 import { useSearch } from "@tanstack/react-router"
+import HrAccordion from "./hr-accordion"
 
 const EmployeesMain = () => {
     const { openModal: openModalEmployee } = useModal(`${EMPLOYEE}-add`)
@@ -38,11 +39,12 @@ const EmployeesMain = () => {
     return (
         <div className="w-full">
             <div className="mb-3 md:mb-1">
-                <EmployeesHeader />
+                {/* <EmployeesHeader /> */}
             </div>
             <Card className="rounded-lg">
                 <CardContent>
-                    <DataTable
+                    <HrAccordion loading={isFetching} users={data?.results}/>
+                    {/* <DataTable
                         onEdit={(row) => handleItemEdit(row.original)}
                         onDelete={(row) => handleItemDelete(row.original)}
                         columns={
@@ -54,8 +56,9 @@ const EmployeesMain = () => {
                         loading={isFetching}
                         selecteds_row
                         viewAll
+                        className="hidden"
                         numeration
-                    />
+                    /> */}
                 </CardContent>
             </Card>
             <Modal

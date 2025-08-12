@@ -3,11 +3,11 @@ import { formatMoney } from "@/lib/format-money"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
 import { ColumnDef } from "@tanstack/react-table"
 import { useMemo } from "react"
-import StudentStatus from "../students/student-status"
 import { StatusPopover } from "./status-popover"
 import { useModal } from "@/hooks/useModal"
 import { useStore } from "@/hooks/use-store"
 import { Pencil } from "lucide-react"
+import { Input } from "@/components/ui/input"
 
 export const useGroupStudentCols = () => {
     const { openModal } = useModal("update")
@@ -121,28 +121,34 @@ export const useGroupSalesCols = () =>
     )
 
 export const useGroupExamsCols = () =>
-    useMemo<ColumnDef<GroupExam>[]>(
+    useMemo<ColumnDef<GroupStudent>[]>(
         () => [
             {
-                header: "№",
-                cell: ({ row }) => row.index + 1,
+                header: "FISH",
+                accessorKey: "student_name",
             },
             {
-                header: "Nomi",
-                accessorKey: "name",
+                header: "Natija",
+                accessorKey: "max_score",
+                cell() {
+                    return <Input type="number" className="h-8" placeholder="0" />
+                },
+            },
+        ],
+        [],
+    )
+
+export const useGroupScoreCols = () =>
+    useMemo<ColumnDef<GroupStudent>[]>(
+        () => [
+            {
+                header: "F.I.SH",
+                accessorKey: "student_name",
                 enableSorting: true,
             },
             {
-                header: "Topshirish sanasi",
-                accessorKey: "take_date",
-            },
-            {
-                header: "O'tish bali",
-                accessorKey: "min_score",
-            },
-            {
-                header: "Maksimal bal",
-                accessorKey: "max_score",
+                header: "Natija",
+                accessorKey: "balance",
             },
         ],
         [],

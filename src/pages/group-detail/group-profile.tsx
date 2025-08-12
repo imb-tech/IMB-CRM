@@ -4,9 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import {
     GraduationCap,
     Users,
-    Clock,
     MapPin,
-    User,
     Calendar,
     Edit,
     Trash2,
@@ -16,8 +14,9 @@ import {
     MoreHorizontal,
     Banknote,
     ChevronUp,
+    EllipsisVertical,
 } from "lucide-react"
-import { cn, weekdays } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import { useCallback, useMemo, useState } from "react"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useParams } from "@tanstack/react-router"
@@ -84,7 +83,7 @@ export default function GroupProfile() {
     return (
         <div
             className={cn(
-                "fixed md:static w-full bottom-0 left-0 right-0",
+                "fixed md:static w-full bottom-0 left-0 right-0 z-10",
                 open ? "top-0 flex items-end" : "",
                 isMobile ? "p-2" : "",
             )}
@@ -102,26 +101,92 @@ export default function GroupProfile() {
             )}
             <Card className="bg-card border-0 shadow-sm rounded-md overflow-hidden w-full relative">
                 <CardHeader
-                    className="bg-gradient-to-br from-indigo-500/40 to-purple-600/40 text-indigo-500 dark:text-white p-4"
+                    className="bg-gradient-to-br from-primary/30 to-primary/20 text-primary dark:text-white p-4 md:px-3 md:py-1"
                     onClick={() => handleOpen(!open)}
                 >
                     <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-2 flex-1">
+                        <div className="flex items-center gap-2">
                             <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
                                 <GraduationCap className="w-4 h-4" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-sm">
+                                <h3 className="font-bold text-lg">
                                     {data?.name}
                                 </h3>
-                                <p className="text-xs text-indigo-500 dark:text-white">
-                                    {data?.course_name}
-                                </p>
                             </div>
                         </div>
-                        <Badge className="bg-white/20 text-indigo-500 dark:text-white border-0 text-xs">
+                        <Badge className="bg-white/20 text-indigo-500 dark:text-white border-0 text-xs ml-auto md:ml-2">
                             Faol
                         </Badge>
+                        <div className="ml-auto hidden md:block">
+                            <div className="hidden md:flex items-center gap-3 py-2 text-sm">
+                                <div className="bg-card/40 rounded-sm px-3 py-1">
+                                    <span className="text-xs text-muted-foreground">
+                                        O'qituvchi
+                                    </span>
+                                    <div className="text-sm flex items-center gap-2 mt-0.5">
+                                        <p>{data?.teacher_name}</p>
+                                    </div>
+                                </div>
+                                <div className="bg-card/40 rounded-sm px-3 py-1">
+                                    <span className="text-xs text-muted-foreground">
+                                        Dars vaqti
+                                    </span>
+                                    <div className="text-sm flex items-center gap-2 mt-0.5">
+                                        {shiftGroupped(data?.shifts ?? [])?.map(
+                                            (sh, i) => (
+                                                <div
+                                                    key={sh.days}
+                                                    className="flex gap-2"
+                                                >
+                                                    {i > 0 ? "|" : ""}
+                                                    <p className="flex-1">
+                                                        {sh.days}
+                                                    </p>
+                                                    <p>{sh.start_time}</p>
+                                                    <p>{sh.end_time}</p>
+                                                </div>
+                                            ),
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="bg-card/40 rounded-sm px-3 py-1">
+                                    <span className="text-xs text-muted-foreground">
+                                        Kurs nomi
+                                    </span>
+                                    <div className="text-sm flex items-center gap-2 mt-0.5">
+                                        <p>{data?.course_name}</p>
+                                    </div>
+                                </div>
+                                <div className="bg-card/40 rounded-sm px-3 py-1">
+                                    <span className="text-xs text-muted-foreground">
+                                        Kurs narxi
+                                    </span>
+                                    <div className="flex items-center gap-2 mt-0.5 ">
+                                        {/* <Banknote className="w-3 h-3" /> */}
+                                        <p className="text-sm">
+                                            {formatMoney(data?.price)}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="bg-card/40 rounded-sm px-3 py-1">
+                                    <span className="text-xs text-muted-foreground">
+                                        Davomiyligi
+                                    </span>
+                                    <div className="flex items-center gap-2 mt-0.5">
+                                        {/* <Calendar className="w-3 h-3" /> */}
+                                        <div className="text-sm">
+                                            {data?.start_date} /{" "}
+                                            {data?.end_date}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="rounded-sm px-3 py-3 h-full cursor-pointer">
+                                    <EllipsisVertical />
+                                </div>
+                            </div>
+                        </div>
+
                         {isMobile && (
                             <span className={open ? "rotate-180" : ""}>
                                 <ChevronUp size={32} />
@@ -132,10 +197,10 @@ export default function GroupProfile() {
 
                 <CardContent
                     className={cn(
-                        "p-4 space-y-4",
-                        !isMobile ? ""
-                        : open ? "h-[420px] transition-all duration-300"
-                        : "h-[0px] py-0 transition-all duration-300 overflow-hidden",
+                        "p-4 space-y-4 transition-all duration-300",
+                        open && isMobile ? "h-[420px]" : (
+                            "h-[0px] py-0 overflow-hidden"
+                        ),
                     )}
                 >
                     <div className="flex items-center gap-2 bg-primary/10 p-3 rounded-md">
@@ -177,46 +242,46 @@ export default function GroupProfile() {
                     </div>
 
                     {/* Actions */}
-                    <div className="grid grid-cols-3 gap-1 pt-3 border-t">
+                    <div className="grid grid-cols-3 md:grid-cols-6 gap-1 pt-3 border-t">
                         <Button
                             size="sm"
                             variant="ghost"
-                            className="h-8 p-1 text-blue-600 hover:bg-blue-50"
+                            className="h-8 p-1 text-blue-600 hover:bg-blue-500/20"
                         >
                             <Edit size={15} />
                         </Button>
                         <Button
                             size="sm"
                             variant="ghost"
-                            className="h-8 p-1 text-red-600 hover:bg-red-50"
+                            className="h-8 p-1 text-red-600 hover:bg-red-500/20"
                         >
                             <Trash2 size={15} />
                         </Button>
                         <Button
                             size="sm"
                             variant="ghost"
-                            className="h-8 p-1 text-yellow-600 hover:bg-yellow-50"
+                            className="h-8 p-1 text-yellow-600 hover:bg-yellow-500/20"
                         >
                             <MessageSquare size={15} />
                         </Button>
                         <Button
                             size="sm"
                             variant="ghost"
-                            className="h-8 p-1 text-green-600 hover:bg-green-50"
+                            className="h-8 p-1 text-green-600 hover:bg-green-500/20"
                         >
                             <UserPlus size={15} />
                         </Button>
                         <Button
                             size="sm"
                             variant="ghost"
-                            className="h-8 p-1 text-purple-600 hover:bg-purple-50"
+                            className="h-8 p-1 text-purple-600 hover:bg-purple-500/20"
                         >
                             <Eye size={15} />
                         </Button>
                         <Button
                             size="sm"
                             variant="ghost"
-                            className="h-8 p-1 text-gray-600 hover:bg-gray-50"
+                            className="h-8 p-1 text-gray-600 hover:bg-gray-500/20"
                         >
                             <MoreHorizontal size={15} />
                         </Button>

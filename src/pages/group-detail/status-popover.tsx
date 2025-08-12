@@ -4,7 +4,6 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { ReactNode } from "react"
 import StudentStatus, { studentStatusKeys } from "../students/student-status"
 import { PopoverClose } from "@radix-ui/react-popover"
 import { cn } from "@/lib/utils"
@@ -28,19 +27,6 @@ export function StatusPopover({
     const { mutate } = usePost()
 
     function handleChange(d: number) {
-        const data = qC.getQueryData<ListResp<GroupStudent>>([GROUP_STUDENTS])!
-
-        qC.setQueriesData<ListResp<GroupStudent>>(
-            { queryKey: [GROUP_STUDENTS] },
-            {
-                ...data,
-                results: data?.results?.map((e) => ({
-                    ...e,
-                    status: e.id == student ? d : e.status,
-                })),
-            },
-        )
-
         mutate(
             "platform/group-students/change-status",
             {
@@ -48,11 +34,8 @@ export function StatusPopover({
                 group_student: student,
             },
             {
-                onError() {
-                    qC.setQueriesData<ListResp<GroupStudent>>(
-                        { queryKey: [GROUP_STUDENTS] },
-                        data,
-                    )
+                onSuccess() {
+                    qC.refetchQueries({ queryKey: [GROUP_STUDENTS] })
                 },
             },
         )
@@ -64,11 +47,12 @@ export function StatusPopover({
                 <Button variant="outline" className="p-0 !h-auto border-none">
                     <span
                         className={cn(
-                            "p-1 px-2 text-xs flex items-center gap-1 rounded-sm cursor-pointer select-none",
+                            "p-1 px-2 text-xs flex items-center justify-center gap-1 rounded-sm cursor-pointer select-none",
                             status == 3 ? "bg-red-500/20 "
                             : status == 0 ? "bg-yellow-500/20 "
                             : status == 2 ? "bg-gray-500/20 "
                             : "bg-green-500/30 ",
+                            "w-[80px]",
                         )}
                     >
                         {studentStatusKeys[status.toString()]}
@@ -77,8 +61,8 @@ export function StatusPopover({
                 </Button>
             </PopoverTrigger>
             <PopoverContent
-                className="w-32 border-none p-2 shadow-sm rounded-xl"
-                align="start"
+                className="w-[94px] border-none p-2 shadow-sm rounded-xl"
+                align="center"
             >
                 <div className="flex flex-col gap-1 items-start">
                     {allowed_statuses?.map((d) => (
@@ -86,7 +70,7 @@ export function StatusPopover({
                             <span
                                 onClick={() => handleChange(d)}
                                 key={d}
-                                className="hover:scale-105 transition-all duration-200"
+                                className="hover:scale-110 transition-all duration-200"
                             >
                                 <StudentStatus status={d} />
                             </span>

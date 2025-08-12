@@ -21,7 +21,7 @@ export default function StudentStatus({
     return (
         <span
             className={cn(
-                "p-1 px-2 text-xs flex items-center gap-1 rounded-sm cursor-pointer select-none",
+                "p-1 px-2 text-xs flex items-center justify-center gap-1 rounded-sm cursor-pointer select-none w-[80px]",
                 status == 3 ? "bg-red-500/20 "
                 : status == 0 ? "bg-yellow-500/20 "
                 : status == 2 ? "bg-gray-500/20 "

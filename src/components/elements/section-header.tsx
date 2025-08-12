@@ -15,14 +15,12 @@ export default function SectionHeader({
     return (
         <div
             className={cn(
-                "mb-1 py-2 flex items-center justify-between",
+                "mb-1 py-1 pb-1 flex items-end justify-between",
                 className,
             )}
             {...props}
         >
-            <h1 className="text-lg md:text-2xl font-medium text-emerald-900 mb-2">
-                {title}
-            </h1>
+            <h1 className="text-lg md:text-2xl font-light">{title}</h1>
             <div>{rightComponent}</div>
         </div>
     )
