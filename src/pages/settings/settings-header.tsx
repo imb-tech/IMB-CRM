@@ -23,7 +23,7 @@ export default function SettingsHeader({
         <div className="flex items-center gap-3 ">
             <div className="flex items-center gap-3 flex-1">
                 <h1 className="text-xl">{activeLink?.title}</h1>
-                <Badge variant={"outline"} className="text-sm">
+                <Badge className="text-sm">
                     {dataCount}
                 </Badge>
             </div>

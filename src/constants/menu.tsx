@@ -228,6 +228,13 @@ export const studentDetailNav = (studentId: string) => {
                     id: studentId,
                 },
             }),
+              linkOptions({
+                title: "O'zlashtirish",
+                to: "/students/$id/parents",
+                params: {
+                    id: studentId,
+                },
+            }),
         ],
         [],
     )

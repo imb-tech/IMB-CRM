@@ -50,10 +50,13 @@ export const useStudentsCols = () =>
                                     key={gr.id}
                                     className={cn(
                                         "p-1 text-xs rounded-sm flex items-center justify-between",
-                                        gr.status == -1 ? "bg-red-500/20 "
-                                        : gr.status == 0 ? "bg-orange-500/20 "
-                                        : gr.status == 2 ? "bg-gray-500/20 "
-                                        : "bg-green-500/30 ",
+                                        gr.status == -1
+                                            ? "bg-red-500/20 "
+                                            : gr.status == 0
+                                            ? "bg-orange-500/20 "
+                                            : gr.status == 2
+                                            ? "bg-gray-500/20 "
+                                            : "bg-green-500/30 ",
                                     )}
                                 >
                                     <span>{gr.name}</span>

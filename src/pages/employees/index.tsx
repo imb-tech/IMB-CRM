@@ -1,20 +1,14 @@
 import { Card, CardContent } from "@/components/ui/card"
-import { DataTable } from "@/components/ui/datatable"
-import { useEmployeeCols } from "./columns"
 import Modal from "@/components/custom/modal"
 import EmployeeCreate from "./create"
-import { useModal } from "@/hooks/useModal"
 import { useState } from "react"
 import DeleteModal from "@/components/custom/delete-modal"
 import { EMPLOYEE, OPTION_ROLES } from "@/constants/api-endpoints"
-import EmployeesHeader from "./employees-header"
 import { useGet } from "@/hooks/useGet"
 import { useSearch } from "@tanstack/react-router"
 import HrAccordion from "./hr-accordion"
 
 const EmployeesMain = () => {
-    const { openModal: openModalEmployee } = useModal(`${EMPLOYEE}-add`)
-    const { openModal: openModalDelete } = useModal(`${EMPLOYEE}-delete`)
     const [current, setCurrent] = useState<Employee | null>(null)
     const { role, ...params } = useSearch({ from: "/_main/employees" })
 
@@ -22,43 +16,13 @@ const EmployeesMain = () => {
         params: { role: role === "all" ? undefined : role, ...params },
     })
 
-    const handleItemEdit = (item: Employee) => {
-        if (item.id) {
-            setCurrent(item)
-            openModalEmployee()
-        }
-    }
-    const handleItemDelete = (item: Employee) => {
-        if (item.id) {
-            setCurrent(item)
-            openModalDelete()
-        }
-    }
-    const columns = useEmployeeCols()
+
 
     return (
         <div className="w-full">
-            <div className="mb-3 md:mb-1">
-                {/* <EmployeesHeader /> */}
-            </div>
             <Card className="rounded-lg">
                 <CardContent>
-                    <HrAccordion loading={isFetching} users={data?.results}/>
-                    {/* <DataTable
-                        onEdit={(row) => handleItemEdit(row.original)}
-                        onDelete={(row) => handleItemDelete(row.original)}
-                        columns={
-                            role !== "all" ?
-                                columns.filter((r) => r.header !== "Role")
-                            :   columns
-                        }
-                        data={data?.results}
-                        loading={isFetching}
-                        selecteds_row
-                        viewAll
-                        className="hidden"
-                        numeration
-                    /> */}
+                    <HrAccordion loading={isFetching} users={data?.results} />
                 </CardContent>
             </Card>
             <Modal

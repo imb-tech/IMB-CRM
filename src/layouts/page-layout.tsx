@@ -15,6 +15,7 @@ type Props = {
     className?: ClassNameValue
     style?: CSSProperties
     navOnHeader?: boolean
+    classNameLink?: ClassNameValue
 }
 
 const PageLayout = ({
@@ -25,6 +26,7 @@ const PageLayout = ({
     style,
     className,
     navOnHeader = false,
+    classNameLink,
 }: Props) => {
     const { pathname } = useLocation()
     const defaultLinks = items ? items : findChildPaths(menuItems, pathname)
@@ -55,6 +57,7 @@ const PageLayout = ({
                     <MobileHeaderLinks
                         defaultLinks={items}
                         navOnHeader={navOnHeader}
+                        classNameLink={classNameLink}
                     />
                 ) : null}
             </div>

@@ -4,17 +4,21 @@ import { useEffect, useRef } from "react"
 import { findChildPaths, useIsActive } from "./header-links"
 import { menuItems } from "@/constants/menu"
 import { cn } from "@/lib/utils"
+import { ClassNameValue } from "tailwind-merge"
 
 export default function MobileHeaderLinks({
     defaultLinks,
     navOnHeader,
+    classNameLink,
 }: {
     defaultLinks?: SubMenuItem[]
     navOnHeader?: boolean
+    classNameLink?: ClassNameValue
 }) {
     const { pathname } = useLocation()
-    const items =
-        defaultLinks ? defaultLinks : findChildPaths(menuItems, pathname)
+    const items = defaultLinks
+        ? defaultLinks
+        : findChildPaths(menuItems, pathname)
     const navigate = useNavigate()
     const { isActive } = useIsActive()
 
@@ -46,7 +50,7 @@ export default function MobileHeaderLinks({
                     value={pathname}
                     onValueChange={(path) => navigate({ to: path })}
                 >
-                    <TabsList className="flex-nowrap bg-background">
+                    <TabsList className={cn("flex-nowrap bg-background gap-2",classNameLink)}>
                         {items.map((link, index) => (
                             <TabsTrigger
                                 key={link.title}
