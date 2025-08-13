@@ -56,7 +56,7 @@ export default function GroupStudents() {
                             hideSeach
                         />
                         <ParamInput />
-                        <Button variant="secondary" onClick={openModal}>
+                        <Button  onClick={openModal}>
                             <Plus />
                             Yaratish
                         </Button>

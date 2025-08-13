@@ -6,28 +6,29 @@ export const useColumns = () =>
     useMemo<ColumnDef<Course>[]>(
         () => [
             {
-                header: "Nomi",
+                header: "Sana",
                 accessorKey: "name",
                 enableSorting: true,
-                cell({ row }) {
-                    return <p className="min-w-[220px]">{row.original.name}</p>
-                },
+                cell: ({ row }) => "2025-08-21",
             },
             {
-                header: "Kurs narxi",
+                header: "Turi",
                 accessorKey: "price",
                 enableSorting: true,
-                cell: ({ row }) => formatMoney(row.original.price),
+                cell: ({ row }) => "Guruhga qo'shildi",
             },
             {
-                header: "Kurs davomiyligi (oy)",
+                header: "Izoh",
                 accessorKey: "duration",
                 enableSorting: true,
+                cell: ({ row }) =>
+                    "Sinov darsi uchun guruhga qo'shilgan o'quvchi",
             },
             {
-                header: "Filial",
+                header: "Hodim",
                 accessorKey: "branch",
-                cell: ({ row }) => row.original.branch_name,
+                enableSorting: true,
+                cell: ({ row }) => "Abidsamatov Ozodbek",
             },
         ],
         [],

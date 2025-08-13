@@ -64,7 +64,7 @@ export const useEmployeeSalaryCols = () => {
                         <div className="flex flex-wrap gap-2">
                             <Button
                                 size="sm"
-                                variant="secondary"
+                                
                                 onClick={() => {
                                     setStore(row.original)
                                     openModal()

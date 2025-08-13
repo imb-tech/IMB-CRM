@@ -71,9 +71,11 @@ const StudnetPaymentMain = (props: Props) => {
 
             {!isAll ? (
                 <div>
-                    <div className="grid grid-cols-2 px-3  border-b py-3 mb-2 bg-muted rounded-md ">
+                    <div className="grid grid-cols-4 px-3  border-b py-3 mb-2 bg-muted rounded-md ">
                         <p className="font-medium">Guruh nomi</p>
-                        <p className="font-medium">Balans</p>
+                        <p className="font-medium">Guruhdagi holati</p>
+                        <p className="font-medium">Balansi</p>
+                        <p className="font-medium">Keyingi to'lov sanasi</p>
                     </div>
                     {group?.map((item, index) => (
                         <Accordion

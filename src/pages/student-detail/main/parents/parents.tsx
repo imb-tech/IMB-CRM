@@ -18,7 +18,7 @@ function StudentParentsMain({}: Props) {
             <div className="flex  mb-3 flex-row items-center gap-3 justify-between">
                 <div className="flex items-center gap-3">
                     <h1 className="text-xl font-medium ">
-                        {"Ma'sullar ro'yxati"}
+                        {"Ota ona"}
                     </h1>
                     <Badge className="text-sm">1</Badge>
                 </div>
@@ -34,7 +34,10 @@ function StudentParentsMain({}: Props) {
                 columns={columns}
                 data={parents}
                 loading={isFetching}
+                onEdit={()=>{}}
+                onDelete={()=>{}}
                 numeration
+                viewAll
             />
         </div>
     )

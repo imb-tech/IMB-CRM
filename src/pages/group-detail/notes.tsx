@@ -91,7 +91,7 @@ export default function GroupNotes() {
             <SectionHeader
                 title="Eslatmalar"
                 rightComponent={
-                    <Button variant="secondary">
+                    <Button >
                         <Plus />
                         Yangi
                     </Button>
@@ -108,7 +108,6 @@ export default function GroupNotes() {
                             <div className="space-y-4">
                                 <div className="flex flex-col sm:flex-row sm:items-center  gap-3">
                                     <Badge
-                                        variant="secondary"
                                         className="bg-green-200  hover:bg-green-300 w-fit py-1"
                                     >
                                         <User className="w-3 h-3 mr-1" />
