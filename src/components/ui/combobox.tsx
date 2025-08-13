@@ -79,21 +79,17 @@ export function Combobox<T extends Record<string, any>>({
     const sortedOptions = options?.sort((a, b) => {
         const isASelected = a[valueKey] == value
         const isBSelected = b[valueKey] == value
-        return (
-            isASelected === isBSelected ? 0
-            : isASelected ? -1
-            : 1
-        )
+        return isASelected === isBSelected ? 0 : isASelected ? -1 : 1
     })
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button
-                    variant="outline"
+                    variant={"secondary"}
                     role="combobox"
                     className={cn(
-                        "w-full justify-between bg-background   px-2 hover:bg-background font-normal text-gray-400 hover:text-gray-400",
+                        "w-full justify-between   px-2 hover:bg-background font-normal text-gray-400 hover:text-gray-400",
                         value && "font-medium text-foreground",
                         isError && " border-destructive",
                         className,
@@ -102,11 +98,11 @@ export function Combobox<T extends Record<string, any>>({
                 >
                     <div className="flex items-center gap-2 ">
                         <ChevronDown className=" h-4 w-4  text-primary opacity-50 " />
-                        {value ?
-                            options
-                                ?.find((d) => d[valueKey] == value)
-                                ?.[labelKey]?.toString() || value
-                        :   label}
+                        {value
+                            ? options
+                                  ?.find((d) => d[valueKey] == value)
+                                  ?.[labelKey]?.toString() || value
+                            : label}
                     </div>
                     <span
                         onClick={(e) => {
@@ -137,7 +133,7 @@ export function Combobox<T extends Record<string, any>>({
                     <CommandList>
                         <CommandEmpty>Mavjud emas</CommandEmpty>
                         <CommandGroup>
-                            {options?.map((d, i) => (
+                            {sortedOptions?.map((d, i) => (
                                 <CommandItem
                                     key={i}
                                     onSelect={() => handleSelect(d)}
@@ -146,15 +142,15 @@ export function Combobox<T extends Record<string, any>>({
                                     <CheckIcon
                                         className={cn(
                                             "ml-auto h-4 w-4",
-                                            value == d[valueKey] ?
-                                                "opacity-100"
-                                            :   "opacity-0",
+                                            value == d[valueKey]
+                                                ? "opacity-100"
+                                                : "opacity-0",
                                         )}
                                     />
                                 </CommandItem>
                             ))}
 
-                            {isLoading ?
+                            {isLoading ? (
                                 <div className="space-y-1">
                                     {Array.from({ length: skeletonCount }).map(
                                         (_, index) => (
@@ -167,7 +163,7 @@ export function Combobox<T extends Record<string, any>>({
                                         ),
                                     )}
                                 </div>
-                            :   null}
+                            ) : null}
                         </CommandGroup>
                     </CommandList>
                 </Command>
