@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_main/students/$id/_main")({
         const navigate = useNavigate()
         return (
             <PageLayout>
-                <div className="flex flex-col gap-3 h-screen">
+                <div className="flex flex-col gap-3 ">
                     <div className="flex justify-between gap-3">
                         <div className="flex items-center gap-3">
                             <Button
@@ -39,7 +39,7 @@ export const Route = createFileRoute("/_main/students/$id/_main")({
                     </div>
 
                     <StudentProfile />
-                    <div className="max-w-full min-h-full pb-16 col-span-2">
+                    <div className="max-w-full   col-span-2">
                         <div className="bg-card p-3 rounded-md">
                             <MobileHeaderLinks
                                 defaultLinks={items}
