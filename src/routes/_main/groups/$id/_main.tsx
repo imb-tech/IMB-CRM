@@ -10,17 +10,17 @@ export const Route = createFileRoute("/_main/groups/$id/_main")({
         const items = groupDetailNav(id?.toString() ?? "")
         return (
             <PageLayout items={[]}>
-                <div className="flex flex-col gap-3 h-screen">
+                <div className="flex flex-col gap-3 h-full overflow-y-auto">
                     <div className="w-full flex flex-col gap-2">
                         <GroupProfile />
                     </div>
-                    <div className="max-w-full min-h-full pb-16 col-span-2">
-                        <div className="bg-card p-3 rounded-md">
+                    <div className="h-full">
+                        <div className="bg-card p-3 rounded-md h-full">
                             <MobileHeaderLinks
                                 defaultLinks={items}
                                 // navOnHeader={navOnHeader}
                             />
-                            <div className="pt-2 px-1">
+                            <div className="pt-2 px-1 h-full">
                                 <Outlet />
                             </div>
                         </div>

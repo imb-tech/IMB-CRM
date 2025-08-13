@@ -16,9 +16,8 @@ export default function MobileHeaderLinks({
     classNameLink?: ClassNameValue
 }) {
     const { pathname } = useLocation()
-    const items = defaultLinks
-        ? defaultLinks
-        : findChildPaths(menuItems, pathname)
+    const items =
+        defaultLinks ? defaultLinks : findChildPaths(menuItems, pathname)
     const navigate = useNavigate()
     const { isActive } = useIsActive()
 

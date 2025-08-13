@@ -28,7 +28,7 @@ export default function GroupStudents() {
     const search = useSearch({ from: "/_main/groups/$id/_main/students" })
     const { openModal } = useModal("append-student")
 
-    const { data, refetch } = useGet<ListResp<GroupStudent>>(GROUP_STUDENTS, {
+    const { data, refetch } = useGet<GroupStudent[]>(GROUP_STUDENTS, {
         params: { group, ...search },
         options: { queryKey: [GROUP_STUDENTS, search] },
     })
@@ -58,14 +58,14 @@ export default function GroupStudents() {
                         <ParamInput />
                         <Button  onClick={openModal}>
                             <Plus />
-                            Yaratish
+                            O'quvchi
                         </Button>
                     </div>
                 }
             />
             {isMobile ?
                 <div className="flex flex-col gap-2">
-                    {data?.results.map((student) => (
+                    {data?.map((student) => (
                         <Card
                             key={student.id}
                             className="border-0 shadow-sm bg-secondary"
@@ -125,7 +125,7 @@ export default function GroupStudents() {
                 </div>
             :   <DataTable
                     columns={columns}
-                    data={data?.results}
+                    data={data}
                     viewAll
                     className="max-w-full"
                     numeration

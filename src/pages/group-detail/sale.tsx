@@ -1,241 +1,131 @@
 import { DataTable } from "@/components/ui/datatable"
 import { useGroupSalesCols } from "./cols"
-import { useIsMobile } from "@/hooks/use-mobile"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import ActionDropdown from "@/components/elements/action-dropdown"
-import { Calendar, DollarSign, FileText, Hash } from "lucide-react"
-import { formatMoney } from "@/lib/format-money"
 import SectionHeader from "@/components/elements/section-header"
+import { useGet } from "@/hooks/useGet"
+import { useParams, useSearch } from "@tanstack/react-router"
+import { GROUP_STUDENTS } from "@/constants/api-endpoints"
+import { useMemo } from "react"
+import Modal from "@/components/custom/modal"
+import { useModal } from "@/hooks/useModal"
+import { useForm } from "react-hook-form"
+import { FormNumberInput } from "@/components/form/number-input"
+import { Button } from "@/components/ui/button"
+import FormTextarea from "@/components/form/textarea"
+import { usePost } from "@/hooks/usePost"
+import DeleteModal from "@/components/custom/delete-modal"
 
 export default function GroupSale() {
-    const isMobile = useIsMobile()
     const columns = useGroupSalesCols()
+    const { openModal, closeModal } = useModal("1")
+    const { openModal: openDelete } = useModal("delete")
+
+    const { id: group } = useParams({
+        from: "/_main/groups/$id/_main/sale",
+    })
+
+    const search = useSearch({ from: "/_main/groups/$id/_main/sale" })
+
+    const { data, refetch, isLoading } = useGet<ListResp<StudentDiscount>>(
+        "platform/group-students/discounts",
+        { params: { group } },
+    )
+
+    const { data: students } = useGet<GroupStudent[]>(GROUP_STUDENTS, {
+        params: { group, ...search, status: 1 },
+    })
+
+    const mergedData = useMemo<StudentMergeDiscount[]>(() => {
+        if (!students?.length) {
+            return []
+        }
+        return students.map((st) => {
+            const std = data?.results.find((t) => t.group_student == st.id)
+            return {
+                ...st,
+                ...std,
+                group_student: st.id,
+            }
+        })
+    }, [students, data])
+
+    const { mutate, isPending } = usePost({
+        onSuccess() {
+            refetch()
+            closeModal()
+            form.reset({})
+        },
+    })
+
+    const form = useForm<StudentDiscount>()
+
+    function handleSubmit(v: StudentMergeDiscount) {
+        mutate("platform/group-students/discounts", {
+            amount: v.amount,
+            group_student: v.group_student,
+            count: v.count,
+            reason: v.reason,
+        })
+    }
 
     return (
         <div>
-            <SectionHeader
-                title="O'quvchilarga chegirma berish"
-                // rightComponent={<ParamDatePicker className="min-w-0" />}
+            <SectionHeader title="O'quvchilarga chegirma berish" />
+            <DataTable
+                columns={columns}
+                data={mergedData}
+                viewAll
+                loading={isLoading}
+                numeration
+                onEdit={({ original }) => {
+                    form.setValue("amount", Number(original.amount))
+                    form.setValue("count", Number(original.count))
+                    form.setValue("reason", original.reason ?? "")
+                    form.setValue(
+                        "group_student",
+                        Number(original.group_student),
+                    )
+                    openModal()
+                }}
+                onDelete={({ original }) => {
+                    openDelete()
+                    form.setValue("id", Number(original.id))
+                }}
             />
-            {isMobile ?
-                <div className="flex flex-col gap-2">
-                    {data.map((student) => (
-                        <Card
-                            key={student.id}
-                            className="border-0 shadow-sm bg-secondary"
-                        >
-                            <CardHeader className="pb-0">
-                                <div className="flex items-center justify-between">
-                                    <h3 className="text-lg font-medium text-primary">
-                                        {student.name}
-                                    </h3>
-                                    <ActionDropdown />
-                                </div>
-                            </CardHeader>
 
-                            <CardContent className="space-y-4">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-background">
-                                            <Hash className="h-4 w-4 text-muted-foreground" />
-                                        </div>
-                                        <div>
-                                            <p className="text-sm text-muted-foreground">
-                                                Chegirma soni
-                                            </p>
-                                            <p className="font-medium">{6}</p>
-                                        </div>
-                                    </div>
+            <DeleteModal
+                id={form.watch("id")}
+                path="platform/group-students/discounts"
+            />
 
-                                    <div className="flex items-center gap-3">
-                                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-background">
-                                            <Calendar className="h-4 w-4 text-muted-foreground" />
-                                        </div>
-                                        <div>
-                                            <p className="text-sm text-muted-foreground">
-                                                Berilgan sana
-                                            </p>
-                                            <p className="font-medium">
-                                                {"01-06-2025"}
-                                            </p>
-                                        </div>
-                                    </div>
+            <Modal modalKey="1" title="O'quvchi uchun chegirma">
+                <form
+                    className="flex flex-col gap-3 py-2"
+                    onSubmit={form.handleSubmit(handleSubmit)}
+                >
+                    <FormNumberInput
+                        control={form.control}
+                        name="amount"
+                        label="Chegirmadagi krus narxi"
+                        placeholder="Misol: 799 000"
+                    />
 
-                                    <div className="flex items-center gap-3">
-                                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-background">
-                                            <DollarSign className="h-4 w-4 text-muted-foreground" />
-                                        </div>
-                                        <div>
-                                            <p className="text-sm text-muted-foreground">
-                                                Chigirmadagi kurs narxi
-                                            </p>
-                                            <p className="font-medium">
-                                                {formatMoney(400000)}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+                    <FormNumberInput
+                        control={form.control}
+                        name="count"
+                        label="Chegirmalar soni"
+                        placeholder="Amal qilish soni"
+                    />
 
-                                <div className="pt-2 border-t border-gray-100">
-                                    <div className="flex items-start gap-3">
-                                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-background">
-                                            <FileText className="h-4 w-4 text-muted-foreground" />
-                                        </div>
-                                        <div className="flex-1">
-                                            <p className="text-sm text-muted-foreground mb-1">
-                                                Izoh
-                                            </p>
-                                            <p className="text-sm leading-relaxed">
-                                                Lorem ipsum dolor sit amet
-                                                consectetur adipisicing elit.
-                                                Quis, recusandae?
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
-            :   <DataTable columns={columns} data={data} viewAll />}
+                    <FormTextarea
+                        methods={form}
+                        name="reason"
+                        label="Izoh"
+                        placeholder="Izoh yoki chegirma sababini kiritishingiz mumkin"
+                    />
+
+                    <Button loading={isPending}>Saqlash</Button>
+                </form>
+            </Modal>
         </div>
     )
 }
-
-const data: Student[] = [
-    {
-        id: 1,
-        img: "img1.jpg",
-        name: "Azizbek Qodirov",
-        rating: 4.8,
-        phone: "+998901112233",
-        groups: "08:00-08:30 - GURUH 1 - Shohjahon Hamidov",
-        balance: 150000,
-    },
-    {
-        id: 2,
-        img: "img2.jpg",
-        name: "Dilnoza Ismoilova",
-        rating: 4.5,
-        phone: "+998901223344",
-        groups: "08:00-08:30 - GURUH 1 - Shohjahon Hamidov",
-        balance: 90000,
-    },
-    {
-        id: 3,
-        img: "img3.jpg",
-        name: "Sherzod Beknazarov",
-        rating: 4.7,
-        phone: "+998903334455",
-        groups: "08:00-08:30 - GURUH 1 - Shohjahon Hamidov",
-        balance: 120000,
-    },
-    {
-        id: 4,
-        img: "img4.jpg",
-        name: "Laylo Raximova",
-        rating: 4.2,
-        phone: "+998907778899",
-        groups: "08:00-08:30 - GURUH 1 - Shohjahon Hamidov",
-        balance: 30000,
-    },
-    {
-        id: 5,
-        img: "img5.jpg",
-        name: "Komil Jumayev",
-        rating: 4.6,
-        phone: "+998908889900",
-        groups: "08:00-08:30 - GURUH 1 - Shohjahon Hamidov",
-        balance: 75000,
-    },
-    {
-        id: 6,
-        img: "img6.jpg",
-        name: "Maftuna Eshonova",
-        rating: 4.9,
-        phone: "+998901112244",
-        groups: "08:00-08:30 - GURUH 1 - Shohjahon Hamidov",
-        balance: -180000,
-    },
-    {
-        id: 7,
-        img: "img7.jpg",
-        name: "Oybek Ermatov",
-        rating: 4.3,
-        phone: "+998909901122",
-        groups: "08:00-08:30 - GURUH 1 - Shohjahon Hamidov",
-        balance: 60000,
-    },
-    {
-        id: 8,
-        img: "img8.jpg",
-        name: "Nargiza Karimova",
-        rating: 5.0,
-        phone: "+998903210987",
-        groups: "08:00-08:30 - GURUH 1 - Shohjahon Hamidov",
-        balance: -210000,
-    },
-    {
-        id: 9,
-        img: "img9.jpg",
-        name: "Botir Saidov",
-        rating: 4.1,
-        phone: "+998901998877",
-        groups: "08:00-08:30 - GURUH 1 - Shohjahon Hamidov",
-        balance: 25000,
-    },
-    {
-        id: 10,
-        img: "img10.jpg",
-        name: "Shaxnoza Murodova",
-        rating: 4.8,
-        phone: "+998905556677",
-        groups: "08:00-08:30 - GURUH 1 - Shohjahon Hamidov",
-        balance: -135000,
-    },
-    {
-        id: 11,
-        img: "img11.jpg",
-        name: "Anvar Zokirov",
-        rating: 4.4,
-        phone: "+998901002244",
-        groups: "08:00-08:30 - GURUH 1 - Shohjahon Hamidov",
-        balance: 78000,
-    },
-    {
-        id: 12,
-        img: "img12.jpg",
-        name: "Madina Qahhorova",
-        rating: 4.6,
-        phone: "+998909977665",
-        groups: "08:00-08:30 - GURUH 1 - Shohjahon Hamidov",
-        balance: 88000,
-    },
-    {
-        id: 13,
-        img: "img13.jpg",
-        name: "Sardor Alimov",
-        rating: 4.7,
-        phone: "+998903300440",
-        groups: "08:00-08:30 - GURUH 1 - Shohjahon Hamidov",
-        balance: 67000,
-    },
-    {
-        id: 14,
-        img: "img14.jpg",
-        name: "Zilola Ro‘ziboyeva",
-        rating: 4.5,
-        phone: "+998901010203",
-        groups: "08:00-08:30 - GURUH 1 - Shohjahon Hamidov",
-        balance: -93000,
-    },
-    {
-        id: 15,
-        img: "img15.jpg",
-        name: "Islomjon Xoliqov",
-        rating: 4.2,
-        phone: "+998907070707",
-        groups: "08:00-08:30 - GURUH 1 - Shohjahon Hamidov",
-        balance: 40000,
-    },
-]

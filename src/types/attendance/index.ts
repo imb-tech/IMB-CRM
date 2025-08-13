@@ -39,5 +39,11 @@ type StudentAttandence = {
     id: number,
     full_name: string
     phone: string
+    statistics: {
+        all: number
+        absent: number
+        present: number
+        late: number
+    }
     attendances: AttReason[]
 }

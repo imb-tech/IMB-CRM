@@ -18,6 +18,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Clock, Home } from "lucide-react"
 import generateTimeSlots from "@/lib/generate-time-slots"
 import ParamDatePicker from "../../components/as-params/date-picker"
+import { Link } from "@tanstack/react-router"
 
 type Props = {
     work: WorkTime[]
@@ -199,24 +200,38 @@ export default function FullCalendar({
                                                 className="text-center p-1 border"
                                                 colSpan={colSpan}
                                             >
-                                                <div
-                                                    className={`text-xs min-h-[50px] rounded p-1  flex flex-col items-center justify-center ${booking.color}`}
+                                                <Link
+                                                    to="/groups/$id/students"
+                                                    params={{ id: "5" }}
                                                 >
-                                                    <div className="flex items-center whitespace-nowrap">
-                                                        <span className="font-medium">
+                                                    <div
+                                                        className={`text-xs min-h-[50px] rounded p-1  flex flex-col items-center justify-center font-extralight ${booking.color}`}
+                                                    >
+                                                        <div className="flex items-center whitespace-nowrap">
+                                                            <span className="font-medium">
+                                                                {
+                                                                    booking.course_name
+                                                                }
+                                                            </span>
+                                                            <span className="ml-1">
+                                                                (
+                                                                {
+                                                                    booking.startTime
+                                                                }
+                                                                -
+                                                                {
+                                                                    booking.endTime
+                                                                }
+                                                                )
+                                                            </span>
+                                                        </div>
+                                                        <span>
                                                             {
-                                                                booking.course_name
+                                                                booking.teacher_name
                                                             }
                                                         </span>
-                                                        <span className="ml-1">
-                                                            ({booking.startTime}
-                                                            -{booking.endTime})
-                                                        </span>
                                                     </div>
-                                                    <span>
-                                                        {booking.teacher_name}
-                                                    </span>
-                                                </div>
+                                                </Link>
                                             </TableCell>
                                         )
                                     })}

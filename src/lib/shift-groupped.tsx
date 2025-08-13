@@ -1,15 +1,16 @@
 import { formatTime } from "./utils"
 
+export const daysMap: Record<number, string> = {
+    1: "Du",
+    2: "Se",
+    3: "Cho",
+    4: "Pa",
+    5: "Ju",
+    6: "Sha",
+    7: "Ya",
+}
+
 export function shiftGroupped(shifts: GroupShift[]) {
-    const daysMap: Record<number, string> = {
-        1: "Du",
-        2: "Se",
-        3: "Cho",
-        4: "Pa",
-        5: "Ju",
-        6: "Sha",
-        7: "Ya",
-    }
 
     const grouped: Record<string, number[]> = {}
 
