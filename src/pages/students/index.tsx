@@ -54,12 +54,12 @@ const StudentsMain = () => {
                     <div className="flex  justify-between items-center gap-3 ">
                         <div className="flex items-center gap-3">
                             <h1 className="text-xl">O'quvchilar</h1>
-                            <Badge className="text-sm" variant={"outline"}>
+                            <Badge className="text-sm">
                                 {data?.count}
                             </Badge>
                             {Number(data?.total_debts) < 0 && (
                                 <Badge
-                                    className="text-sm text-destructive  border-[0.7px] border-destructive font-normal"
+                                    className="text-sm text-red-600 bg-red-600/10  border-[0.7px] border-destructive font-normal"
                                     variant={"outline"}
                                 >
                                     Qazdorlik:
@@ -70,10 +70,14 @@ const StudentsMain = () => {
                                     </span>
                                 </Badge>
                             )}
-                            <ParamSwtich paramName="is_active" reverse />
                         </div>
                         <div className="flex gap-4">
-                            <Button variant={"secondary"}>
+                            <ParamSwtich
+                                label="Arxiv"
+                                paramName="is_active"
+                                reverse
+                            />
+                            <Button >
                                 <Plus className="h-4 w-4" />
                                 SMS YUBORISH
                             </Button>
@@ -96,7 +100,6 @@ const StudentsMain = () => {
                         }
                         onEdit={(row) => handleItemEdit(row.original)}
                         onDelete={(row) => handleItemDelete(row.original)}
-                        viewAll
                         selecteds_row
                         numeration
                     />

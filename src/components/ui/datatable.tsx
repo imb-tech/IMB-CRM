@@ -117,6 +117,7 @@ export function DataTable<TData>({
     controlledRowSelection,
     onAllSelectedChange,
     setRowClassName,
+    height,
 }: DataTableProps<TData>) {
     const {
         paramName = PAGE_KEY,
@@ -484,7 +485,7 @@ export function DataTable<TData>({
                     </Table>
                 :   null}
                 {data?.length === 0 && !loading ?
-                    <EmptyBox data={data} />
+                    <EmptyBox data={data} height={height} />
                 :   null}
             </div>
             {!viewAll && data?.length ?

@@ -32,7 +32,7 @@ export function FormSelect<
                     htmlFor={name}
                     required={!!required}
                     isError={!!error}
-                    className="text-xs text-muted-foreground"
+                    className="text-xs"
                 >
                     {label}
                 </FieldLabel>

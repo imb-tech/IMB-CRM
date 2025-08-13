@@ -55,7 +55,7 @@ export function FormNumberInput<IForm extends FieldValues>({
                     htmlFor={name}
                     required={required}
                     isError={!!fieldState.error}
-                    className="text-xs text-muted-foreground"
+                    className="text-xs"
                 >
                     {label}
                 </FieldLabel>

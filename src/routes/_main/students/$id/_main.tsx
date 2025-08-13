@@ -22,7 +22,6 @@ export const Route = createFileRoute("/_main/students/$id/_main")({
                     <div className="flex justify-between gap-3">
                         <div className="flex items-center gap-3">
                             <Button
-                                variant={"secondary"}
                                 className="min-w-4"
                                 onClick={() => {
                                     navigate({ to: "/students" })
@@ -34,7 +33,7 @@ export const Route = createFileRoute("/_main/students/$id/_main")({
                                 {"O'quvchi ma'lumoti"}
                             </h1>
                         </div>
-                        <Button variant={"secondary"}>
+                        <Button>
                             <Edit size={16} />
                         </Button>
                     </div>
@@ -42,7 +41,10 @@ export const Route = createFileRoute("/_main/students/$id/_main")({
                     <StudentProfile />
                     <div className="max-w-full min-h-full pb-16 col-span-2">
                         <div className="bg-card p-3 rounded-md">
-                            <MobileHeaderLinks defaultLinks={items} classNameLink={"bg-secondary"} />
+                            <MobileHeaderLinks
+                                defaultLinks={items}
+                                classNameLink={"bg-muted"}
+                            />
                             <div className="pt-2 px-1">
                                 <Outlet />
                             </div>

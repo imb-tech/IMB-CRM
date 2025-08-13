@@ -121,7 +121,7 @@ export default function GroupProfile() {
                         <div className="ml-auto hidden md:block">
                             <div className="hidden md:flex items-center gap-3 py-2 text-sm">
                                 <div className="bg-card/40 rounded-sm px-3 py-1">
-                                    <span className="text-xs text-muted-foreground">
+                                    <span className="text-xs">
                                         O'qituvchi
                                     </span>
                                     <div className="text-sm flex items-center gap-2 mt-0.5">
@@ -129,7 +129,7 @@ export default function GroupProfile() {
                                     </div>
                                 </div>
                                 <div className="bg-card/40 rounded-sm px-3 py-1">
-                                    <span className="text-xs text-muted-foreground">
+                                    <span className="text-xs">
                                         Dars vaqti
                                     </span>
                                     <div className="text-sm flex items-center gap-2 mt-0.5">
@@ -151,7 +151,7 @@ export default function GroupProfile() {
                                     </div>
                                 </div>
                                 <div className="bg-card/40 rounded-sm px-3 py-1">
-                                    <span className="text-xs text-muted-foreground">
+                                    <span className="text-xs">
                                         Kurs nomi
                                     </span>
                                     <div className="text-sm flex items-center gap-2 mt-0.5">
@@ -159,7 +159,7 @@ export default function GroupProfile() {
                                     </div>
                                 </div>
                                 <div className="bg-card/40 rounded-sm px-3 py-1">
-                                    <span className="text-xs text-muted-foreground">
+                                    <span className="text-xs">
                                         Kurs narxi
                                     </span>
                                     <div className="flex items-center gap-2 mt-0.5 ">
@@ -170,7 +170,7 @@ export default function GroupProfile() {
                                     </div>
                                 </div>
                                 <div className="bg-card/40 rounded-sm px-3 py-1">
-                                    <span className="text-xs text-muted-foreground">
+                                    <span className="text-xs">
                                         Davomiyligi
                                     </span>
                                     <div className="flex items-center gap-2 mt-0.5">

@@ -22,7 +22,7 @@ function StudentParentsMain({}: Props) {
                     </h1>
                     <Badge className="text-sm">1</Badge>
                 </div>
-                <Button variant={"secondary"} className="flex gap-1">
+                <Button  className="flex gap-1">
                     <Plus className="w-5 h-5" />
                     <span className="sm:block hidden">
                         {"Qo'shish"}

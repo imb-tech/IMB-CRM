@@ -50,7 +50,7 @@ function HrAccordion({ loading, users }: Props) {
                     <Badge className="text-sm">{data?.length}</Badge>
                 </div>
 
-                <div className="grid grid-cols-2 px-3 border-b pb-3 text-primary">
+                <div className="grid grid-cols-2 px-3 border-b py-3 mb-2 bg-muted rounded-md">
                     <p>Rol nomi</p>
                     <p>Xodimlar soni</p>
                 </div>
@@ -85,7 +85,8 @@ function HrAccordion({ loading, users }: Props) {
                                     loading={loading}
                                     viewAll
                                     data={users}
-                                    skeletonRowCount={2}
+                                    skeletonRowCount={5}
+                                    height="h-[30vh]"
                                 />
                             </AccordionContent>
                         </AccordionItem>

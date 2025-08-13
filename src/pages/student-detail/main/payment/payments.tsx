@@ -60,7 +60,7 @@ const StudnetPaymentMain = (props: Props) => {
                         />
                         <Label>{"Barchasi"}</Label>
                     </div>
-                    <Button variant={"secondary"} className="flex gap-1">
+                    <Button className="flex gap-1">
                         <Plus className="w-5 h-5" />
                         <span className="sm:block hidden">
                             {"To'lovni amalga oshirish"}
@@ -71,7 +71,7 @@ const StudnetPaymentMain = (props: Props) => {
 
             {!isAll ? (
                 <div>
-                    <div className="grid grid-cols-2 px-3  border-b pb-3 text-primary gap-14 w-full text-[16px] text-start">
+                    <div className="grid grid-cols-2 px-3  border-b py-3 mb-2 bg-muted rounded-md ">
                         <p className="font-medium">Guruh nomi</p>
                         <p className="font-medium">Balans</p>
                     </div>

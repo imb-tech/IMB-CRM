@@ -21,9 +21,11 @@ function StudentGroupMain({}: Props) {
                     </h1>
                     <Badge className="text-sm">1</Badge>
                 </div>
-                <Button variant={"secondary"} className="flex gap-1">
+                <Button className="flex gap-1">
                     <Plus className="w-5 h-5" />
-                    <span className="sm:block hidden">{"Guruhga qo'shish"}</span>
+                    <span className="sm:block hidden">
+                        {"Guruhga qo'shish"}
+                    </span>
                 </Button>
             </div>
             <DataTable
@@ -39,45 +41,3 @@ function StudentGroupMain({}: Props) {
 
 export default StudentGroupMain
 
-const groupsData = [
-    {
-        id: 1,
-        name: "Group A (Advanced Math)",
-        startDate: "2023-09-01",
-        endDate: "2024-08-31",
-        performance: "Excellent",
-        paymentStatus: "Paid",
-        balance: "$0.00",
-        status: "Active",
-    },
-    {
-        id: 2,
-        name: "Group B (Physics Basics)",
-        startDate: "2024-01-15",
-        endDate: "2024-06-30",
-        performance: "Good",
-        paymentStatus: "Paid",
-        balance: "$0.00",
-        status: "Active",
-    },
-    {
-        id: 3,
-        name: "Group C (Archived History)",
-        startDate: "2022-03-01",
-        endDate: "2022-12-31",
-        performance: "Average",
-        paymentStatus: "Paid",
-        balance: "$0.00",
-        status: "Archived",
-    },
-    {
-        id: 4,
-        name: "Group D (Pending Payment)",
-        startDate: "2024-07-01",
-        endDate: "2024-12-31",
-        performance: "N/A",
-        paymentStatus: "Pending",
-        balance: "$250.00",
-        status: "Active",
-    },
-]
