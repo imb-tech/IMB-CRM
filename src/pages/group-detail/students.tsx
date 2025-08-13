@@ -58,7 +58,7 @@ export default function GroupStudents() {
                         <ParamInput />
                         <Button variant="secondary" onClick={openModal}>
                             <Plus />
-                            Yaratish
+                            O'quvchi
                         </Button>
                     </div>
                 }

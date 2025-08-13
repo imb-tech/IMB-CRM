@@ -34,6 +34,7 @@ type ParamComboboxProps<T extends Record<string, any>> = {
     skeletonCount?: number
     onSearchChange?: (val: string) => void
     addButtonProps?: ButtonProps
+    dontAllowClear?: boolean
 }
 
 export function ParamCombobox<T extends Record<string, any>>({
@@ -51,6 +52,7 @@ export function ParamCombobox<T extends Record<string, any>>({
     skeletonCount = 5,
     isLoading,
     addButtonProps,
+    dontAllowClear = false,
 }: ParamComboboxProps<T>) {
     const navigate = useNavigate()
     const search: any = useSearch({ from: "/_main" }) as Record<
@@ -61,7 +63,7 @@ export function ParamCombobox<T extends Record<string, any>>({
     const [open, setOpen] = useState(false)
 
     useEffect(() => {
-        if (defaultOpt) {
+        if (defaultOpt && !currentValue) {
             navigate({
                 search: {
                     ...search,
@@ -128,7 +130,7 @@ export function ParamCombobox<T extends Record<string, any>>({
                     {...addButtonProps}
                 >
                     {selectedOption?.[labelKey] ?? label}
-                    {currentValue && (
+                    {currentValue && !dontAllowClear && (
                         <X
                             className="ml-auto h-4 w-4 shrink-0 text-rose-500"
                             onClick={(e) => {

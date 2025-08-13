@@ -8,31 +8,63 @@ import { PopoverClose } from "@radix-ui/react-popover"
 import { cn } from "@/lib/utils"
 import { Check, Clock, X } from "lucide-react"
 import { useQueryClient } from "@tanstack/react-query"
-import { GROUP_STUDENTS } from "@/constants/api-endpoints"
-import { usePost } from "@/hooks/usePost"
+import { useParams, useSearch } from "@tanstack/react-router"
+import { usePatch } from "@/hooks/usePatch"
 
 type Props = {
     status: number
     student: number
+    id?: number
 }
 
 const statuses = ["late", "present", "absent"]
 
-export function AttendanceSelect({ status, student }: Props) {
+const sk: Record<string, string> = {
+    "-1": "absent",
+    "1": "present",
+    "2": "late",
+}
+
+const ks: Record<string, number> = {
+    absent: -1,
+    present: 1,
+    late: 2,
+}
+
+export function AttendanceSelect({ status, student, id: attId }: Props) {
     const qC = useQueryClient()
-    const { mutate } = usePost()
-    let sts = status
+    const { mutate } = usePatch()
+    const { id } = useParams({ from: "/_main/groups/$id/_main/attendance" })
+    const { date } = useSearch({ from: "/_main/groups/$id/_main/attendance" })
+
+    const queryKey = ["platform/group-students/attendances/" + id + "/" + date]
 
     function handleChange(d: number) {
+        const oldData = qC.getQueryData<StudentAttandence[]>(queryKey)
+        qC.setQueryData(
+            queryKey,
+            oldData?.map((st) => {
+                if (st.id == student) {
+                    return {
+                        ...st,
+                        attendances: st.attendances?.map((at) =>
+                            at.id === attId ?
+                                { ...at, status: d == status ? 0 : d }
+                            :   at,
+                        ),
+                    }
+                } else return st
+            }),
+        )
+
         mutate(
-            "platform/group-students/change-status",
+            "platform/group-students/attendance/" + attId,
             {
-                status: d,
-                group_student: student,
+                status: d == status ? 0 : d,
             },
             {
-                onSuccess() {
-                    qC.refetchQueries({ queryKey: [GROUP_STUDENTS] })
+                onError() {
+                    qC.setQueryData(queryKey, oldData)
                 },
             },
         )
@@ -45,40 +77,43 @@ export function AttendanceSelect({ status, student }: Props) {
                     variant="outline"
                     className="p-0 !h-auto border-none bg-transparent flex items-center rounded-full hover:bg-gray-500/10"
                 >
-                    {sts < 4 ?
+                    {status != 0 && status != 3 ?
                         <div
-                            className={`w-8 h-8 rounded-full flex items-center justify-center mx-auto transition-colors ${getStatusColor("present")}`}
+                            className={`w-7 h-7 rounded-full flex items-center justify-center mx-auto transition-colors ${getStatusColor(sk[status.toString()])}`}
                         >
-                            {getStatusIcon("present")}
+                            {getStatusIcon(sk[status.toString()])}
                         </div>
                     :   <div
                             className={cn(
-                                "w-8 h-8 bg-gray-500/10 rounded-full flex items-center justify-center",
-                                status > 11 ? "bg-transparent" : "",
+                                "w-7 h-7 rounded-full flex items-center justify-center border border-separate border-gray-300 dark:border-gray-400/40",
+                                status == 3 ?
+                                    "bg-gray-500/5 border-transparent dark:border-transparent"
+                                :   "",
                             )}
                         ></div>
                     }
                 </Button>
             </PopoverTrigger>
-            <PopoverContent
-                className="w-10 border-none shadow-lg rounded-3xl px-0 py-1 flex flex-col gap-1 items-center -mt-[76px]"
+            {status != 3 && <PopoverContent
+                className="w-10 border-none shadow-lg rounded-3xl px-0 py-1 flex flex-col gap-1 items-center -mt-[68px]"
                 align="center"
             >
                 {statuses.map((d) => (
-                    <PopoverClose>
+                    <PopoverClose key={d}>
                         <div
-                            className={`w-8 h-8 rounded-full flex items-center justify-center mx-auto transition-colors ${getStatusColor(d)}`}
+                            className={`w-7 h-7 rounded-full flex items-center justify-center mx-auto transition-colors ${getStatusColor(d)}`}
+                            onClick={() => handleChange(ks[d])}
                         >
                             {getStatusIcon(d)}
                         </div>
                     </PopoverClose>
                 ))}
-            </PopoverContent>
+            </PopoverContent>}
         </Popover>
     )
 }
 
-const getStatusIcon = (status: string) => {
+export const getStatusIcon = (status: string) => {
     switch (status) {
         case "present":
             return <Check className="text-green-600" size={14} />
@@ -91,7 +126,7 @@ const getStatusIcon = (status: string) => {
     }
 }
 
-const getStatusColor = (status: string) => {
+export const getStatusColor = (status: string) => {
     switch (status) {
         case "present":
             return "bg-green-600/20 hover:bg-green-600/40"

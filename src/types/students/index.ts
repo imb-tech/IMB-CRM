@@ -54,3 +54,16 @@ type AllPaymentStudent = {
     payment_type: string
     received_by: string
 }
+
+type StudentDiscount = {
+    id: number
+    group_student: number
+    date: string
+    count: number
+    reason: string
+    author_name: string
+    created_at: string
+    amount: number
+}
+
+type StudentMergeDiscount = Partial<StudentDiscount> & Partial<GroupStudent>

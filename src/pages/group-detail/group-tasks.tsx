@@ -21,12 +21,12 @@ export default function GroupTasks() {
     const { id } = useSearch({ strict: false })
 
     return (
-        <div className="w-full h-full">
+        <div className="w-full">
             <div className="max-w-full mx-auto h-full">
                 <SectionHeader title="Vazifalar" />
-                <Card className="grid grid-cols-2 h-full">
-                    <CardContent className="p-0  h-full">
-                        <ScrollArea className="max-h-[80%] overflow-y-auto no-scrollbar-x ">
+                <Card className="grid grid-cols-2 ">
+                    <CardContent className="p-0">
+                        <ScrollArea className="overflow-y-auto no-scrollbar-x max-h-[500px]">
                             <div className="flex flex-col gap-2 pr-5">
                                 {Array(10)
                                     .fill(0)
@@ -120,7 +120,9 @@ export default function GroupTasks() {
                                                                     ) => {
                                                                         e.stopPropagation()
                                                                         e.preventDefault()
-                                                                        setStore("task")
+                                                                        setStore(
+                                                                            "task",
+                                                                        )
                                                                         openModal()
                                                                     }}
                                                                 />

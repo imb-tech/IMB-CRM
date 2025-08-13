@@ -16,9 +16,8 @@ export default function MobileHeaderLinks({
     classNameLink?: ClassNameValue
 }) {
     const { pathname } = useLocation()
-    const items = defaultLinks
-        ? defaultLinks
-        : findChildPaths(menuItems, pathname)
+    const items =
+        defaultLinks ? defaultLinks : findChildPaths(menuItems, pathname)
     const navigate = useNavigate()
     const { isActive } = useIsActive()
 
@@ -50,7 +49,12 @@ export default function MobileHeaderLinks({
                     value={pathname}
                     onValueChange={(path) => navigate({ to: path })}
                 >
-                    <TabsList className={cn("flex-nowrap bg-background gap-2",classNameLink)}>
+                    <TabsList
+                        className={cn(
+                            "flex-nowrap dark:bg-background gap-1",
+                            classNameLink,
+                        )}
+                    >
                         {items.map((link, index) => (
                             <TabsTrigger
                                 key={link.title}

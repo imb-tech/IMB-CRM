@@ -77,43 +77,48 @@ export const useGroupStudentCols = () => {
 }
 
 export const useGroupSalesCols = () =>
-    useMemo<ColumnDef<Student>[]>(
+    useMemo<ColumnDef<StudentMergeDiscount>[]>(
         () => [
             {
-                header: "№",
-                cell: ({ row }) => row.index + 1,
-            },
-            {
                 header: "FIO",
-                accessorKey: "name",
-                enableSorting: true,
+                accessorKey: "student_name",
             },
             {
                 header: "Chegirma soni",
-                accessorKey: "phone",
-                cell: () => {
-                    return 10
-                },
-            },
-            {
-                header: "Berilgan sana",
-                accessorKey: "rating",
-                cell: () => {
-                    return "01-06-2025"
-                },
-            },
-            {
-                header: "Izoh",
-                accessorKey: "balance",
-                cell: () => {
-                    return "Soxta ma'lumotalar bilan to'ldirildi"
+                accessorKey: "count",
+                cell({ row: { original } }) {
+                    return original.count ?? "-"
                 },
             },
             {
                 header: "To'lov summasi",
-                accessorKey: "balance",
-                cell: () => {
-                    return formatMoney(450000)
+                cell: ({
+                    row: {
+                        original: { amount },
+                    },
+                }) => {
+                    return amount ? formatMoney(amount) : "-"
+                },
+            },
+            {
+                header: "Izoh",
+                accessorKey: "reason",
+                cell({ row: { original } }) {
+                    return original.count ?? "-"
+                },
+            },
+            {
+                header: "Xodim",
+                accessorKey: "author_name",
+                cell({ row: { original } }) {
+                    return original.count ?? "-"
+                },
+            },
+            {
+                header: "Berilgan sana",
+                accessorKey: "date",
+                cell({ row: { original } }) {
+                    return original.count ?? "-"
                 },
             },
         ],
@@ -131,7 +136,9 @@ export const useGroupExamsCols = () =>
                 header: "Natija",
                 accessorKey: "max_score",
                 cell() {
-                    return <Input type="number" className="h-8" placeholder="0" />
+                    return (
+                        <Input type="number" className="h-8" placeholder="0" />
+                    )
                 },
             },
         ],
