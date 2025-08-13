@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { CalendarDays, KeyRound, Phone, PhoneCall, School } from "lucide-react"
+import { CalendarDays, Edit, KeyRound, PhoneCall, School } from "lucide-react"
 
 type Props = {}
 
@@ -8,10 +9,10 @@ function StudentProfile({}: Props) {
     return (
         <div className="bg-card border-divider border relative rounded-lg  p-4 flex lg:flex-row flex-col gap-5 lg:gap-0 lg:justify-between lg:items-end">
             <div className="flex flex-col sm:flex-row items-start gap-6 h-full">
-                <div className="border border-divider   sm:h-full sm:max-w-[160px] rounded-lg">
+                <div className="border border-divider   sm:h-full sm:max-w-[170px] rounded-lg">
                     <img
                         alt="blah blah"
-                        className="w-full h-full object-cover rounded-lg max-h-[160px] object-center"
+                        className="w-full h-full object-cover rounded-lg max-h-[170px] object-center"
                         src={"/user.jpg"}
                     />
                 </div>
@@ -19,13 +20,13 @@ function StudentProfile({}: Props) {
                 <div className="flex flex-col gap-2">
                     <ul className="h-full flex flex-col items-stretch gap-2">
                         <li className="flex items-center gap-3">
-                            <h1 className="font-bold text-xl">
+                            <h1 className="font-bold sm:text-xl text-lg">
                                 {" "}
                                 Abdisamatov Ozodbek
                             </h1>
                             <Badge
                                 className={
-                                    "bg-green-600/10 text-green-600 w-fit"
+                                    "bg-green-600/10 text-green-600 w-fit whitespace-nowrap"
                                 }
                             >
                                 {student.status}
@@ -77,6 +78,10 @@ function StudentProfile({}: Props) {
                     <span className="text-xl">1 000 000</span>
                 </div>
             </div>
+
+            <Button className="absolute top-2 right-2">
+                <Edit size={16} />
+            </Button>
         </div>
     )
 }

@@ -14,19 +14,15 @@ function StudentParentsMain({}: Props) {
     const columns = useColumns()
 
     return (
-        <div className="mt-4">
+        <div className="mt-1">
             <div className="flex  mb-3 flex-row items-center gap-3 justify-between">
                 <div className="flex items-center gap-3">
-                    <h1 className="text-xl font-medium ">
-                        {"Ota ona"}
-                    </h1>
+                    <h1 className="text-xl font-medium ">{"Ota-Ona"}</h1>
                     <Badge className="text-sm">1</Badge>
                 </div>
-                <Button  className="flex gap-1">
+                <Button className="flex gap-1">
                     <Plus className="w-5 h-5" />
-                    <span className="sm:block hidden">
-                        {"Qo'shish"}
-                    </span>
+                    <span className="sm:block hidden">{"Qo'shish"}</span>
                 </Button>
             </div>
 
@@ -34,8 +30,8 @@ function StudentParentsMain({}: Props) {
                 columns={columns}
                 data={parents}
                 loading={isFetching}
-                onEdit={()=>{}}
-                onDelete={()=>{}}
+                onEdit={() => {}}
+                onDelete={() => {}}
                 numeration
                 viewAll
             />

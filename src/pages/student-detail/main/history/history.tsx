@@ -11,7 +11,7 @@ const StudentHistoryMain = (props: Props) => {
 
     const columns = useColumns()
     return (
-        <div className="mt-4">
+        <div className="mt-1">
             <div className="flex  mb-3 flex-row items-center gap-3 justify-between">
                 <div className="flex items-center gap-3">
                     <h1 className="text-xl font-medium ">

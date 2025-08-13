@@ -8,7 +8,7 @@ export interface InputProps
     fullWidth?: boolean
     suffix?: React.ReactNode
     prefixIcon?: React.ReactNode
-}
+} 
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ({ className, type, fullWidth, suffix, prefixIcon, ...props }, ref) => {

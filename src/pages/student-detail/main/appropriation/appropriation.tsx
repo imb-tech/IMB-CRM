@@ -12,15 +12,13 @@ import {
 } from "@/components/ui/accordion"
 import { useCallback, useState } from "react"
 import { useNavigate, useParams, useSearch } from "@tanstack/react-router"
-import StudentGroupHeader from "./group-header"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-import { Plus } from "lucide-react"
+import StudentApproHeader from "./group-header"
 
 type Props = {}
 
-const StudnetPaymentMain = (props: Props) => {
+const StudentAppropriationMain = (props: Props) => {
     const { id } = useParams({ strict: false }) as { id: string }
     const search: any = useSearch({ strict: false })
     const navigate = useNavigate()
@@ -30,7 +28,7 @@ const StudnetPaymentMain = (props: Props) => {
     const clickAccordion = useCallback(
         (key: string) => {
             navigate({
-                to: "/students/$id/payments",
+                to: "/students/$id/appropriation",
                 params: { id },
                 search: (prev) => ({
                     ...prev,
@@ -46,36 +44,27 @@ const StudnetPaymentMain = (props: Props) => {
             <div className="flex  mb-3 flex-row items-center gap-3 justify-between">
                 <div className="flex items-center gap-3">
                     <h1 className="text-xl font-medium ">
-                        {"To'lovlar tarxi "}
+                        {"O'zlashtirish ro'yxati "}
                     </h1>
                     <Badge className="text-sm">
                         {formatMoney(group?.length)}
                     </Badge>
                 </div>
-                <div className="flex items-center gap-5">
-                    <div className=" flex items-center gap-2 ">
-                        <Switch
-                            checked={isAll}
-                            onCheckedChange={(e) => setIsAll(e)}
-                        />
-                        <Label>{"Barchasi"}</Label>
-                    </div>
-                    <Button className="flex gap-1">
-                        <Plus className="w-5 h-5" />
-                        <span className="sm:block hidden">
-                            {"To'lovni amalga oshirish"}
-                        </span>
-                    </Button>
+                <div className=" flex items-center gap-2 ">
+                    <Switch
+                        checked={isAll}
+                        onCheckedChange={(e) => setIsAll(e)}
+                    />
+                    <Label>{"Barchasi"}</Label>
                 </div>
             </div>
 
             {!isAll ? (
                 <div>
-                    <div className="grid grid-cols-4 px-3  border-b py-3 mb-2 bg-muted rounded-md  text-muted-foreground text-sm">
+                    <div className="grid grid-cols-3 px-3  border-b py-3 mb-2 bg-muted rounded-md  text-muted-foreground text-sm">
                         <p>Guruh nomi</p>
-                        <p>Guruhdagi holati</p>
-                        <p>Balansi</p>
-                        <p>Keyingi to'lov sanasi</p>
+                        <p>O'rtacha imtihon balli</p>
+                        <p>Topshiriqlar balli</p>
                     </div>
                     {group?.map((item, index) => (
                         <Accordion
@@ -89,39 +78,34 @@ const StudnetPaymentMain = (props: Props) => {
                         >
                             <AccordionItem value={item?.id?.toString()}>
                                 <AccordionTrigger className="px-3">
-                                    <StudentGroupHeader
+                                    <StudentApproHeader
                                         data={item}
                                         key={index}
                                     />
                                 </AccordionTrigger>
                                 <AccordionContent className="flex   flex-col gap-4 text-balance pl-3">
-                                    <PaymenTable
-                                        data={payments}
-                                        isFetching
-                                        isGroup={false}
-                                    />
+                                    <PaymenTable data={payments} isFetching />
                                 </AccordionContent>
                             </AccordionItem>
                         </Accordion>
                     ))}
                 </div>
             ) : (
-                <PaymenTable data={payments} isFetching isGroup={true} />
+                <PaymenTable data={payments} isFetching />
             )}
         </div>
     )
 }
 
-export default StudnetPaymentMain
+export default StudentAppropriationMain
 
 type PropsTable = {
     isFetching: boolean
     data: AllPaymentStudent[]
-    isGroup: boolean
 }
 
-const PaymenTable = ({ data, isFetching, isGroup }: PropsTable) => {
-    const columns = useColumns({ isGroup })
+const PaymenTable = ({ data, isFetching }: PropsTable) => {
+    const columns = useColumns()
     return (
         <div className="mt-1">
             <DataTable
@@ -129,8 +113,6 @@ const PaymenTable = ({ data, isFetching, isGroup }: PropsTable) => {
                 data={data}
                 // loading={isFetching}
                 numeration
-                onEdit={() => {}}
-                viewAll={!isGroup}
             />
         </div>
     )

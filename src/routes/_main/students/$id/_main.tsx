@@ -9,7 +9,7 @@ import {
     useNavigate,
     useParams,
 } from "@tanstack/react-router"
-import { ArrowLeft, Edit } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 
 export const Route = createFileRoute("/_main/students/$id/_main")({
     component: () => {
@@ -19,23 +19,18 @@ export const Route = createFileRoute("/_main/students/$id/_main")({
         return (
             <PageLayout>
                 <div className="flex flex-col gap-3 ">
-                    <div className="flex justify-between gap-3">
-                        <div className="flex items-center gap-3">
-                            <Button
-                                className="min-w-4"
-                                onClick={() => {
-                                    navigate({ to: "/students" })
-                                }}
-                            >
-                                <ArrowLeft size={18} />
-                            </Button>
-                            <h1 className="text-xl font-semibold">
-                                {"O'quvchi ma'lumoti"}
-                            </h1>
-                        </div>
-                        <Button>
-                            <Edit size={16} />
+                    <div className="flex items-center gap-3">
+                        <Button
+                            className="min-w-4"
+                            onClick={() => {
+                                navigate({ to: "/students" })
+                            }}
+                        >
+                            <ArrowLeft size={18} />
                         </Button>
+                        <h1 className="text-xl font-semibold">
+                            {"O'quvchi ma'lumoti"}
+                        </h1>
                     </div>
 
                     <StudentProfile />

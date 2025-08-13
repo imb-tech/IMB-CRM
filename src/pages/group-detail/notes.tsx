@@ -1,8 +1,6 @@
 import { useState } from "react"
-import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Clock, User, Edit2, Trash2, Check, X, Plus } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
 import SectionHeader from "@/components/elements/section-header"
