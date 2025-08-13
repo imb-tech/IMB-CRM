@@ -70,7 +70,7 @@ export const useEmployeeSalaryCols = () => {
                                     openModal()
                                 }}
                             >
-                                <Pencil size={18} />
+                                <Pencil size={14} />
                             </Button>
                         </div>
                     )

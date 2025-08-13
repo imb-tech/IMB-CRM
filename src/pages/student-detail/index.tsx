@@ -1,73 +1,54 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import {
-    DollarSign,
-    Edit,
-    Mail,
-    MessageSquare,
-    Phone,
-    User,
-    Users,
-} from "lucide-react"
+import { cn } from "@/lib/utils"
+import { PhoneCall } from "lucide-react"
 
 type Props = {}
 
 function StudentProfile({}: Props) {
     return (
-        <Card className=" shadow-sm ">
-            <CardHeader className="flex flex-col md:flex-row items-start md:items-center gap-4 p-4 relative">
-                <Avatar className="h-20 w-20">
-                    <AvatarImage
-                        alt={student.fullName}
-                        src={
-                            student.photoUrl ||
-                            "/placeholder.svg?height=100&width=100&query=student photo"
-                        }
+        <div className="bg-card border-divider border relative rounded-lg  p-4 flex lg:flex-row flex-col gap-5 lg:gap-0 lg:justify-between lg:items-start">
+            <div className="flex flex-col sm:flex-row items-start gap-6 h-full">
+                <div className="border border-divider   sm:h-full sm:w-[135px] rounded-lg">
+                    <img
+                        alt="blah blah"
+                        className="w-full h-full object-cover rounded-lg max-h-[130px] object-center"
+                        src={"/user.jpg"}
                     />
-                    <AvatarFallback>
-                        {student.fullName
-                            .split(" ")
-                            .map((n) => n[0])
-                            .join("")}
-                    </AvatarFallback>
-                </Avatar>
-                <div className="grid gap-1 flex-grow">
-                    <CardTitle className="text-xl font-bold">
-                        {student.fullName}
-                    </CardTitle>
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                        <Phone className="h-4 w-4" />
-                        <span>{student.phone}</span>
+                </div>
+                <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-3">
+                        <h1 className="font-bold text-xl">
+                            {" "}
+                            Abdisamatov Ozodbek
+                        </h1>
+                        <Badge
+                            className={"bg-green-600/10 text-green-600 w-fit"}
+                        >
+                            {student.status}
+                        </Badge>
                     </div>
-                    <Badge className={"bg-green-600/10 text-green-600 w-fit"}>
-                        {student.status}
-                    </Badge>
+                    <div className="flex gap-2 items-center text-foreground-500">
+                        <PhoneCall size={16} /> <span>+998 88 102 30 42</span>
+                    </div>
+                </div>
+            </div>
+
+            <div className="flex-col border border-divider py-3 whitespace-nowrap px-6 rounded-lg flex items-start justify-center gap-1">
+                <div className="flex items-center w-full border-b pb-2 dark:border-b-zinc-700">
+                    <span className=" min-w-24 font-medium ">{"Baho"}:</span>
+                    <span className={cn(" font-medium")}>0</span>
+                </div>
+                <div className="flex items-center w-full border-b pb-2 dark:border-b-zinc-700">
+                    <span className=" min-w-24 font-medium ">{"Bonus"}:</span>
+                    <span className={cn(" font-medium")}>0</span>
                 </div>
 
-                <Button
-                    variant={"secondary"}
-                    className="absolute top-2 right-4"
-                >
-                    <Edit size={18} />
-                </Button>
-            </CardHeader>
-
-            <CardFooter className="flex flex-wrap gap-3 pt-4 border-t">
-                <Button className="bg-blue-600/10 hover:bg-blue-700/10 text-blue-500">
-                    <Users className="mr-2 h-4 w-4" /> Guruhga qo'shish
-                </Button>
-                <Button variant={"secondary"}>
-                    <DollarSign className="mr-2 h-4 w-4" /> To'lovni amalga
-                    oshirish
-                </Button>
-                <Button className="bg-orange-600/10 hover:bg-orange-700/10 text-orange-500">
-                    <MessageSquare className="mr-2 h-4 w-4" />
-                    SMS yuboring
-                </Button>
-            </CardFooter>
-        </Card>
+                <div className="flex items-center ">
+                    <strong className="min-w-24 text-xl">{"Balans"}:</strong>
+                    <span className="text-xl">0</span>
+                </div>
+            </div>
+        </div>
     )
 }
 
@@ -233,22 +214,7 @@ const student = {
             description: "Parent logged in to portal.",
         },
     ],
-    parentsData: [
-        {
-            id: 1,
-            name: "John Johnson (Father)",
-            phone: "+1 (555) 999-8888",
-            email: "john.johnson@example.com",
-            loginAccess: true,
-        },
-        {
-            id: 2,
-            name: "Jane Johnson (Mother)",
-            phone: "+1 (555) 777-6666",
-            email: "jane.johnson@example.com",
-            loginAccess: true,
-        },
-    ],
+
     discountsData: [
         {
             id: 1,
