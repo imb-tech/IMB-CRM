@@ -121,18 +121,6 @@ export const menuItems = [
                 items: [],
             }),
             linkOptions({
-                title: "Xonalar",
-                to: "/settings/rooms",
-                enabled: true,
-                items: [],
-            }),
-            linkOptions({
-                title: "Kurslar",
-                to: "/settings/courses",
-                enabled: true,
-                items: [],
-            }),
-            linkOptions({
                 title: "To'lov turlari",
                 to: "/settings/payment-type",
                 enabled: true,
