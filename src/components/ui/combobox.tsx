@@ -91,7 +91,7 @@ export function Combobox<T extends Record<string, any>>({
                     className={cn(
                         "w-full justify-between   px-2 hover:bg-background font-normal text-gray-400 hover:text-gray-400",
                         value && "font-medium text-foreground",
-                        isError && " border-destructive",
+                        isError && "border border-destructive",
                         className,
                     )}
                     disabled={disabled}

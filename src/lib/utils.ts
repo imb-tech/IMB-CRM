@@ -120,3 +120,24 @@ export const weekdays = [
     "Shanba",
     "Yakshanba",
 ]
+
+export const optionYears = (
+    valueKey: string = "value",
+    labelKey: string = "label",
+    startYear: number = new Date().getFullYear(),
+    endYear: number = 2023
+) => {
+    const years: {
+        [valueKey]: number
+        [labelKey]: string
+    }[] = [];
+
+    for (let year = startYear; year >= endYear; year--) {
+        years.push({
+            [valueKey]: year,
+            [labelKey]: year.toString(),
+        });
+    }
+
+    return years;
+};

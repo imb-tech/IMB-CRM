@@ -26,7 +26,7 @@ export default function GroupTasks() {
                 <SectionHeader title="Vazifalar" />
                 <Card className="grid grid-cols-2 ">
                     <CardContent className="p-0">
-                        <ScrollArea className="overflow-y-auto no-scrollbar-x max-h-[500px]">
+                        <ScrollArea>
                             <div className="flex flex-col gap-2 pr-5">
                                 {Array(10)
                                     .fill(0)

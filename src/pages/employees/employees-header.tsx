@@ -29,7 +29,7 @@ export default function EmployeesHeader() {
     return (
         <ParamTabProvider defaultValue={"all"} paramName="role">
             <div className="flex items-start justify-between flex-col md:flex-row gap-2">
-                <ParamTabList options={options} />
+                <ParamTabList options={options} paramName="tabs" />
                 <div className="flex items-start gap-2 w-full justify-end">
                     <div className="w-full md:w-[240px]">
                         <ParamInput

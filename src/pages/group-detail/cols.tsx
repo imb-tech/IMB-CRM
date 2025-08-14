@@ -6,12 +6,13 @@ import { useMemo } from "react"
 import { StatusPopover } from "./status-popover"
 import { useModal } from "@/hooks/useModal"
 import { useStore } from "@/hooks/use-store"
-import { Pencil } from "lucide-react"
+import { MessageSquareMore, Pencil, Trash2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 
 export const useGroupStudentCols = () => {
     const { openModal } = useModal("update")
     const { setStore } = useStore("student-data")
+    const { openModal: openDelete } = useModal("delete-student")
 
     return useMemo<ColumnDef<GroupStudent>[]>(
         () => [
@@ -24,7 +25,7 @@ export const useGroupStudentCols = () => {
                 header: "Qo'shilgan",
                 cell: ({ row }) => {
                     return (
-                        <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-3">
                             <p>{row.original.start_date}</p>
                             <Pencil
                                 size={16}
@@ -70,6 +71,27 @@ export const useGroupStudentCols = () => {
                 cell: ({ row }) => (
                     <Money value={Number(row.original.balance)} />
                 ),
+            },
+            {
+                header: " ",
+                cell({ row: { original } }) {
+                    return (
+                        <div className="flex items-center justify-center gap-3 text-sm">
+                            <MessageSquareMore
+                                className="text-orange-300 cursor-pointer"
+                                size={18}
+                            />
+                            <Trash2
+                                className="text-rose-500 cursor-pointer"
+                                size={18}
+                                onClick={() => {
+                                    setStore(original)
+                                    openDelete()
+                                }}
+                            />
+                        </div>
+                    )
+                },
             },
         ],
         [],

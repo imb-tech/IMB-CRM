@@ -34,6 +34,7 @@ interface ParamDateRangePickerProps {
     showYesterday?: boolean
     showLastWeek?: boolean
     showLastMonth?: boolean
+    itemClassName?: string
 }
 
 export default function ParamDateRangePicker({
@@ -48,9 +49,12 @@ export default function ParamDateRangePicker({
     showYesterday = false,
     showLastWeek = false,
     showLastMonth = false,
+    itemClassName,
 }: ParamDateRangePickerProps) {
     const router = useRouter()
     const search = useSearch({ from: "__root__" })
+    const showIntervals =
+        showYesterday || showLastWeek || showLastMonth || showToday
 
     const fromDateString = search[fromParamName]
     const toDateString = search[toParamName]
@@ -162,38 +166,56 @@ export default function ParamDateRangePicker({
     return (
         <div
             className={cn(
-                "relative flex items-center gap-1 bg-card rounded-md py-1.5 px-1",
+                "relative flex items-center bg-card rounded-md py-1.5 px-1",
                 className,
             )}
         >
-            <div className="flex gap-2">
-                {list.map((preset) => (
-                    <span
-                        key={preset}
-                        className={cn(
-                            "px-3 py-1 rounded-sm text-sm cursor-pointer transition-colors",
-                            isActivePreset(preset) ?
-                                "bg-primary/20 text-primary"
-                            :   "hover:bg-primary/30",
-                        )}
-                        onClick={() => handlePresetClick(preset)}
-                    >
-                        {
+            {showIntervals && (
+                <div className="flex gap-2 mr-1">
+                    {list.map((preset) => (
+                        <span
+                            key={preset}
+                            className={cn(
+                                "px-3 py-1 rounded-sm text-sm cursor-pointer transition-colors",
+                                itemClassName,
+                                isActivePreset(preset) ?
+                                    "bg-primary/20 text-primary"
+                                :   "hover:bg-primary/30 hover:text-primary",
+                            )}
+                            onClick={() => handlePresetClick(preset)}
+                        >
                             {
-                                today: "Bugun",
-                                yesterday: "Kecha",
-                                week: "Hafta",
-                                month: "Oy",
-                            }[preset]
-                        }
-                    </span>
-                ))}
-            </div>
+                                {
+                                    today: "Bugun",
+                                    yesterday: "Kecha",
+                                    week: "Hafta",
+                                    month: "Oy",
+                                }[preset]
+                            }
+                        </span>
+                    ))}
+                </div>
+            )}
 
             <div className="text-right flex items-center gap-2">
                 <Popover open={isOpen} onOpenChange={setIsOpen}>
                     <PopoverTrigger asChild>
-                        <div className="text-white hover:bg-primary/20 flex items-center gap-2 cursor-pointer px-2 py-0.5 rounded-sm">
+                        <div
+                            className={cn(
+                                "hover:bg-primary/20 flex items-center gap-2 cursor-pointer px-2 py-0.5 rounded-sm",
+                                selectedRange?.from && selectedRange?.to ?
+                                    "bg-secondary pr-0"
+                                :   "",
+                                itemClassName,
+                                (
+                                    (selectedRange?.from &&
+                                        selectedRange?.to) ||
+                                        presetParam
+                                ) ?
+                                    "rounded-r-none"
+                                :   "",
+                            )}
+                        >
                             <span className="font-light">
                                 {selectedRange?.from && selectedRange?.to ?
                                     formatDateRange()
@@ -209,7 +231,9 @@ export default function ParamDateRangePicker({
                                 mode="range"
                                 defaultMonth={selectedRange?.from}
                                 selected={selectedRange}
-                                onSelect={(range) => setSelectedRange(range)}
+                                onSelect={(range) =>
+                                    setSelectedRange(range as any)
+                                }
                                 numberOfMonths={2}
                                 className="rounded-md border"
                             />
@@ -252,13 +276,18 @@ export default function ParamDateRangePicker({
                 </Popover>
             </div>
 
-            {selectedRange?.from && selectedRange?.to && !disabled && (
-                <X
-                    onClick={reset}
-                    size={16}
-                    className="text-rose-500 cursor-pointer mx-2"
-                />
-            )}
+            {((selectedRange?.from && selectedRange?.to) || presetParam) &&
+                !disabled && (
+                    <button
+                        className={cn(itemClassName, "pl-0 pr-2 rounded-l-none")}
+                    >
+                        <X
+                            onClick={reset}
+                            size={16}
+                            className="text-rose-500 cursor-pointer"
+                        />
+                    </button>
+                )}
         </div>
     )
 }
