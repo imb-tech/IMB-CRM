@@ -19,7 +19,6 @@ function IncomeMain() {
                             <Button
                                 onClick={() => navigate({ to: "/finance" })}
                                 size={"sm"}
-                                variant={"secondary"}
                                 icon={<ArrowLeft size={20} />}
                             />
                             <h1 className="text-xl">Daromad tarixi </h1>

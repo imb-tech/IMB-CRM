@@ -9,7 +9,7 @@ import {
     useNavigate,
     useParams,
 } from "@tanstack/react-router"
-import { ArrowLeft, Edit } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 
 export const Route = createFileRoute("/_main/students/$id/_main")({
     component: () => {
@@ -18,31 +18,28 @@ export const Route = createFileRoute("/_main/students/$id/_main")({
         const navigate = useNavigate()
         return (
             <PageLayout>
-                <div className="flex flex-col gap-3 h-screen">
-                    <div className="flex justify-between gap-3">
-                        <div className="flex items-center gap-3">
-                            <Button
-                                variant={"secondary"}
-                                className="min-w-4"
-                                onClick={() => {
-                                    navigate({ to: "/students" })
-                                }}
-                            >
-                                <ArrowLeft size={18} />
-                            </Button>
-                            <h1 className="text-xl font-semibold">
-                                {"O'quvchi ma'lumoti"}
-                            </h1>
-                        </div>
-                        <Button variant={"secondary"}>
-                            <Edit size={16} />
+                <div className="flex flex-col gap-3 ">
+                    <div className="flex items-center gap-3">
+                        <Button
+                            className="min-w-4"
+                            onClick={() => {
+                                navigate({ to: "/students" })
+                            }}
+                        >
+                            <ArrowLeft size={18} />
                         </Button>
+                        <h1 className="text-xl font-semibold">
+                            {"O'quvchi ma'lumoti"}
+                        </h1>
                     </div>
 
                     <StudentProfile />
-                    <div className="max-w-full min-h-full pb-16 col-span-2">
+                    <div className="max-w-full   col-span-2">
                         <div className="bg-card p-3 rounded-md">
-                            <MobileHeaderLinks defaultLinks={items} classNameLink={"bg-secondary"} />
+                            <MobileHeaderLinks
+                                defaultLinks={items}
+                                classNameLink={"bg-muted"}
+                            />
                             <div className="pt-2 px-1">
                                 <Outlet />
                             </div>

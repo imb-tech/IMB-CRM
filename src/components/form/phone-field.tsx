@@ -93,7 +93,7 @@ export default function PhoneField<IForm extends FieldValues>({
                     htmlFor={name}
                     required={required}
                     isError={!!error}
-                    className="text-xs text-muted-foreground"
+                    className="text-xs"
                 >
                     {label}
                 </FieldLabel>
@@ -107,13 +107,13 @@ export default function PhoneField<IForm extends FieldValues>({
                     className,
                 )}
                 inputClassName={cn(
-                    "w-full !h-full !text-foreground !rounded-r-md !px-3 !bg-background !border-input !text-sm",
+                    "w-full !h-full !text-foreground !rounded-r-md !px-3 !bg-secondary !border-input !text-sm",
                     inputClassName,
                 )}
                 countrySelectorStyleProps={{
                     // className="hidden",
                     buttonClassName:
-                        "h-full !px-3 !rounded-l-md !bg-background !border-input",
+                        "h-full !px-3 !rounded-l-md !bg-secondary border-none !border-card !border-r",
                     ...countrySelectorStyleProps,
                 }}
                 value={val}

@@ -1,53 +1,87 @@
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { PhoneCall } from "lucide-react"
+import { CalendarDays, Edit, KeyRound, PhoneCall, School } from "lucide-react"
 
 type Props = {}
 
 function StudentProfile({}: Props) {
     return (
-        <div className="bg-card border-divider border relative rounded-lg  p-4 flex lg:flex-row flex-col gap-5 lg:gap-0 lg:justify-between lg:items-start">
+        <div className="bg-card border-divider border relative rounded-lg  p-4 flex lg:flex-row flex-col gap-5 lg:gap-0 lg:justify-between lg:items-end">
             <div className="flex flex-col sm:flex-row items-start gap-6 h-full">
-                <div className="border border-divider   sm:h-full sm:w-[135px] rounded-lg">
+                <div className="border border-divider   sm:h-full sm:max-w-[170px] rounded-lg">
                     <img
                         alt="blah blah"
-                        className="w-full h-full object-cover rounded-lg max-h-[130px] object-center"
+                        className="w-full h-full object-cover rounded-lg max-h-[170px] object-center"
                         src={"/user.jpg"}
                     />
                 </div>
+
                 <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-3">
-                        <h1 className="font-bold text-xl">
-                            {" "}
-                            Abdisamatov Ozodbek
-                        </h1>
-                        <Badge
-                            className={"bg-green-600/10 text-green-600 w-fit"}
-                        >
-                            {student.status}
-                        </Badge>
-                    </div>
-                    <div className="flex gap-2 items-center text-foreground-500">
-                        <PhoneCall size={16} /> <span>+998 88 102 30 42</span>
-                    </div>
+                    <ul className="h-full flex flex-col items-stretch gap-2">
+                        <li className="flex items-center gap-3">
+                            <h1 className="font-bold sm:text-xl text-lg">
+                                {" "}
+                                Abdisamatov Ozodbek
+                            </h1>
+                            <Badge
+                                className={
+                                    "bg-green-600/10 text-green-600 w-fit whitespace-nowrap"
+                                }
+                            >
+                                {student.status}
+                            </Badge>
+                        </li>
+                        <li className="flex flex-col sm:flex-row gap-2 sm:items-center">
+                            <div className="flex gap-2 items-center min-w-52 text-foreground-500">
+                                <PhoneCall size={16} />{" "}
+                                <span>{"Telefon raqami"}:</span>
+                            </div>
+                            <span>+98 93 102 30 42</span>
+                        </li>
+                        <li className="flex flex-col sm:flex-row gap-2 sm:items-center">
+                            <div className="flex gap-2 items-center min-w-52 text-foreground-500">
+                                <School size={16} />{" "}
+                                <span>{"Filliallari"}:</span>
+                            </div>
+                            <span>Novza, Chilonzor</span>
+                        </li>
+                        <li className="flex flex-col sm:flex-row gap-2 sm:items-center">
+                            <div className="flex gap-2 items-center min-w-52 text-foreground-500">
+                                <CalendarDays size={16} />{" "}
+                                <span>{"Tug'ilgan sana"}:</span>
+                            </div>
+                            <span>05-02-2003</span>
+                        </li>
+                        <li className="flex flex-col sm:flex-row gap-2 sm:items-center">
+                            <div className="flex gap-2 items-center min-w-52 text-foreground-500">
+                                <KeyRound size={16} /> <span>{"Login"}:</span>
+                            </div>
+                            <span>ozodbek</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
             <div className="flex-col border border-divider py-3 whitespace-nowrap px-6 rounded-lg flex items-start justify-center gap-1">
                 <div className="flex items-center w-full border-b pb-2 dark:border-b-zinc-700">
-                    <span className=" min-w-24 font-medium ">{"Baho"}:</span>
-                    <span className={cn(" font-medium")}>0</span>
+                    <span className=" min-w-28 font-medium ">{"Baho"}:</span>
+                    <span className={cn("w-full font-medium")}>68,5</span>
                 </div>
                 <div className="flex items-center w-full border-b pb-2 dark:border-b-zinc-700">
-                    <span className=" min-w-24 font-medium ">{"Bonus"}:</span>
-                    <span className={cn(" font-medium")}>0</span>
+                    <span className=" min-w-28 font-medium ">{"Imtihon"}:</span>
+                    <span className={cn(" font-medium")}>37,5</span>
                 </div>
 
                 <div className="flex items-center ">
-                    <strong className="min-w-24 text-xl">{"Balans"}:</strong>
-                    <span className="text-xl">0</span>
+                    <strong className="min-w-28 text-xl">{"Balans"}:</strong>
+                    <span className="text-xl">1 000 000</span>
                 </div>
             </div>
+
+            <Button className="absolute top-2 right-2">
+                <Edit size={16} />
+            </Button>
         </div>
     )
 }

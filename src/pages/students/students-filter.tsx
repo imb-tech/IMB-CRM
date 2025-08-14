@@ -3,7 +3,7 @@ import ParamInput from "@/components/as-params/input"
 
 export default function StudentsFilter() {
     return (
-        <div className="grid lg:grid-cols-6 md:grid-cols-2 gap-2 ">
+        <div className="grid lg:grid-cols-6 md:grid-cols-2 gap-2 items-center">
             <ParamInput fullWidth />
             <ParamCombobox
                 isSearch={false}

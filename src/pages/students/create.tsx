@@ -72,7 +72,6 @@ const StudentCreate = ({ item }: Props) => {
                 <FormImagePicker
                     methods={form}
                     name="photo"
-                    label="Rasm"
                     avatar
                 />
             </div>
@@ -114,7 +113,7 @@ const StudentCreate = ({ item }: Props) => {
                 name="branches"
             />
 
-            <div className="grid grid-cols-2 items-start gap-1">
+            <div className="grid grid-cols-2 items-start gap-3">
                 <FormInput
                     required
                     methods={form}

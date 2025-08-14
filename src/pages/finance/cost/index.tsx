@@ -19,7 +19,6 @@ function CostMain() {
                             <Button
                                 onClick={() => navigate({ to: "/finance" })}
                                 size={"sm"}
-                                variant={"secondary"}
                                 icon={<ArrowLeft size={20} />}
                             />
                             <h1 className="text-xl">Xarajatlar tarixi</h1>

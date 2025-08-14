@@ -1,31 +1,29 @@
-import { formatMoney } from "@/lib/format-money"
 import { ColumnDef } from "@tanstack/react-table"
 import { useMemo } from "react"
 
 export const useColumns = () =>
-    useMemo<ColumnDef<Course>[]>(
+    useMemo<ColumnDef<AllPaymentStudent>[]>(
         () => [
             {
                 header: "Sana",
-                accessorKey: "name",
+                accessorKey: "price",
                 enableSorting: true,
                 cell: ({ row }) => "2025-08-21",
             },
             {
-                header: "Turi",
+                header: "Nomi",
                 accessorKey: "price",
                 enableSorting: true,
-                cell: ({ row }) => "Guruhga qo'shildi",
+                cell: ({ row }) => "Buglarni to'g'irlash barchasini",
             },
             {
-                header: "Izoh",
+                header: "Bahosi",
                 accessorKey: "duration",
                 enableSorting: true,
-                cell: ({ row }) =>
-                    "Sinov darsi uchun guruhga qo'shilgan o'quvchi",
+                cell: ({ row }) => "85",
             },
             {
-                header: "Hodim",
+                header: "Ma'sul shaxs",
                 accessorKey: "branch",
                 enableSorting: true,
                 cell: ({ row }) => "Abidsamatov Ozodbek",

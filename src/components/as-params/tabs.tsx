@@ -81,7 +81,6 @@ const ParamTabs: React.FC<ParamTabsProps> = ({
                                     {option.label}
                                     {!!option.badge && (
                                         <Badge
-                                            variant="secondary"
                                             className={cn(
                                                 "rounded-full absolute -top-3.5 -right-3.5 border-2 border-background",
                                                 search[paramName] ==

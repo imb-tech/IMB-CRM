@@ -19,32 +19,15 @@ export const useColumns = ({ isGroup }: { isGroup: boolean }) =>
                 },
             },
             {
-                header: "Turi",
-                accessorKey: "type",
+                header: "To'lov turi",
+                accessorKey: "payment_type",
                 enableSorting: true,
-                cell: ({ row }) => (
-                    <span className="whitespace-nowrap">
-                        {row.original.type}
-                    </span>
-                ),
             },
             {
                 header: "Summa",
                 accessorKey: "amount",
                 enableSorting: true,
                 cell: ({ row }) => formatMoney(row.original.amount),
-            },
-            {
-                header: "Qaytarilgan",
-                accessorKey: "returned_amount",
-                enableSorting: true,
-                cell: ({ row }) => formatMoney(row.original.returned_amount),
-            },
-            {
-                header: "Bonus",
-                accessorKey: "bonus",
-                enableSorting: true,
-                cell: ({ row }) => formatMoney(row.original.bonus),
             },
             ...(isGroup
                 ? [
@@ -61,7 +44,7 @@ export const useColumns = ({ isGroup }: { isGroup: boolean }) =>
                 enableSorting: true,
             },
             {
-                header: "Yaratilgan sana",
+                header: "Amliyot sanasi",
                 accessorKey: "created_at",
                 enableSorting: true,
                 cell({ row }) {
@@ -74,11 +57,6 @@ export const useColumns = ({ isGroup }: { isGroup: boolean }) =>
                         </p>
                     )
                 },
-            },
-            {
-                header: "To'lov turi",
-                accessorKey: "payment_type",
-                enableSorting: true,
             },
             {
                 header: "Qabul qildi",

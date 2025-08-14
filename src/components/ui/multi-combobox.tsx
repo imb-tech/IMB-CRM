@@ -58,10 +58,9 @@ export function MultiCombobox<T extends Record<string, any>>({
 
     const handleSelect = (option: T) => {
         const newValue = option[valueKey]
-        const updatedValues =
-            values?.find((v) => v === newValue) ?
-                values?.filter((v) => v !== newValue)
-            :   (values || []).concat(newValue)
+        const updatedValues = values?.find((v) => v === newValue)
+            ? values?.filter((v) => v !== newValue)
+            : (values || []).concat(newValue)
         setValues(updatedValues)
     }
     const rf = useRef<NodeJS.Timeout>()
@@ -74,11 +73,7 @@ export function MultiCombobox<T extends Record<string, any>>({
     const sortedOptions = options?.slice().sort((a, b) => {
         const aSelected = selectedSet.has(a[valueKey])
         const bSelected = selectedSet.has(b[valueKey])
-        return (
-            aSelected === bSelected ? 0
-            : aSelected ? -1
-            : 1
-        )
+        return aSelected === bSelected ? 0 : aSelected ? -1 : 1
     })
 
     const handleSelectAll = () => {
@@ -102,9 +97,10 @@ export function MultiCombobox<T extends Record<string, any>>({
             <PopoverTrigger asChild>
                 <Button
                     role="combobox"
+                    variant={"secondary"}
                     aria-expanded={open}
                     className={cn(
-                        "w-full relative justify-between !bg-secondary overflow-hidden px-2 hover:bg-card font-normal text-gray-400 hover:text-gray-400 items-center",
+                        "w-full relative justify-between  overflow-hidden px-2 hover:bg-card font-normal text-gray-400 hover:text-gray-400 items-center",
                         values && "font-medium text-foreground",
                         isError && "!border-destructive border",
                         className,
@@ -114,16 +110,16 @@ export function MultiCombobox<T extends Record<string, any>>({
                     <div className="flex items-center gap-2">
                         <ChevronDown className=" h-4 w-4  text-primary opacity-50 " />
                         <span className="line-clamp-1 break-all whitespace-pre">
-                            {values?.length && values?.length < 3 ?
-                                options
-                                    ?.filter((d) =>
-                                        values?.includes(d[valueKey]),
-                                    )
-                                    .map((d) => d[labelKey])
-                                    .join(", ")
-                            : values?.length ?
-                                values?.length + " ta tanlandi"
-                            :   label}
+                            {values?.length && values?.length < 3
+                                ? options
+                                      ?.filter((d) =>
+                                          values?.includes(d[valueKey]),
+                                      )
+                                      .map((d) => d[labelKey])
+                                      .join(", ")
+                                : values?.length
+                                ? values?.length + " ta tanlandi"
+                                : label}
                         </span>
                     </div>
                     {!!values?.length && (
@@ -174,9 +170,9 @@ export function MultiCombobox<T extends Record<string, any>>({
                                     <CheckIcon
                                         className={cn(
                                             "ml-auto h-4 w-4",
-                                            values?.includes(d[valueKey]) ?
-                                                "opacity-100"
-                                            :   "opacity-0",
+                                            values?.includes(d[valueKey])
+                                                ? "opacity-100"
+                                                : "opacity-0",
                                         )}
                                     />
                                 </CommandItem>
@@ -196,7 +192,7 @@ export function MultiCombobox<T extends Record<string, any>>({
                                 </>
                             )}
 
-                            {isLoading ?
+                            {isLoading ? (
                                 <div className="space-y-1">
                                     {Array.from({ length: skeletonCount }).map(
                                         (_, index) => (
@@ -209,7 +205,7 @@ export function MultiCombobox<T extends Record<string, any>>({
                                         ),
                                     )}
                                 </div>
-                            :   null}
+                            ) : null}
                         </CommandGroup>
                     </CommandList>
                 </Command>

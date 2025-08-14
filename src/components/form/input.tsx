@@ -9,7 +9,7 @@ import { ClassNameValue } from "tailwind-merge"
 import { Input } from "../ui/input"
 import FieldError from "./form-error"
 import FieldLabel from "./form-label"
-
+ 
 interface IProps<IForm extends FieldValues> {
     methods: UseFormReturn<IForm>
     name: Path<IForm>
@@ -66,7 +66,7 @@ export function FormInput<IForm extends FieldValues>({
                     htmlFor={name}
                     required={required}
                     isError={error}
-                    className="text-xs text-muted-foreground"
+                    className="text-xs"
                 >
                     {label}
                 </FieldLabel>

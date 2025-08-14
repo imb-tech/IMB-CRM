@@ -171,7 +171,6 @@ export default function LeadDealSelector() {
                                         })
                                         handleOpen()
                                     }}
-                                    // variant="secondary"
                                     className="w-full rounded-md hover:bg-primary/10 py-2 px-3 font-light flex items-center justify-between [&_svg]:opacity-0 [&_svg]:hover:opacity-100 text-[16px]"
                                 >
                                     <span className="pl-1">{itm.name}</span>
@@ -227,7 +226,7 @@ export default function LeadDealSelector() {
                     }}
                 >
                     <p className="flex-1">{"Yangi yaratish"}</p>
-                    <Button size={"sm"} variant="secondary" className="px-2">
+                    <Button size={"sm"} className="px-2">
                         <Plus />
                     </Button>
                 </div>

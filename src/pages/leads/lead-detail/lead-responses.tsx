@@ -21,7 +21,7 @@ export default function LeadResponses() {
                             :   "",
                         )}
                     >
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs">
                             {field.form_field.label}
                         </p>
                         <p>

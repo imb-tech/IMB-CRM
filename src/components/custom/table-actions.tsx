@@ -105,7 +105,7 @@ export default function TableActions({
                 )}
                 {onDelete && (
                     <Button
-                        icon={<Trash2 className="text-destructive" size={16} />}
+                        icon={<Trash2 className="text-red-600" size={16} />}
                         size="sm"
                         className="p-0 h-3"
                         variant="ghost"

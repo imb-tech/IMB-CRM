@@ -9,9 +9,6 @@ export const useColumns = () =>
                 header: "FIO",
                 accessorKey: "full_name",
                 enableSorting: true,
-                cell({ row }) {
-                    return <p className="min-w-[220px]">{row.original.full_name}</p>
-                },
             },
             {
                 header: "Telefon raqam",

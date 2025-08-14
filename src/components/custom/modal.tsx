@@ -8,13 +8,17 @@ import {
     DialogDescription,
     DialogTitle,
 } from "../ui/dialog"
+import { cn } from "@/lib/utils"
+import { ClassNameValue } from "tailwind-merge"
 
 type Props = {
     modalKey?: string
     title?: ReactNode
     description?: ReactNode
     children?: ReactNode
-    className?: string
+    className?: ClassNameValue
+    classNameTitle?: ClassNameValue
+    classNameIcon?: ClassNameValue
     size?:
         | "max-w-lg"
         | "max-w-xl"
@@ -23,7 +27,7 @@ type Props = {
         | "max-w-4xl"
         | "max-w-5xl"
         | "max-w-6xl"
-        | "max-w-7xl"
+        | "max-w-[90%]"
         | "max-w-full"
         | "max-w-sm"
         | "max-w-md"
@@ -36,6 +40,8 @@ const Modal = ({
     description,
     children,
     modalKey = "default",
+    classNameTitle,
+    classNameIcon,
     className = "",
     size = "max-w-lg",
     onClose,
@@ -51,16 +57,13 @@ const Modal = ({
 
     return (
         <Dialog open={isOpen} onOpenChange={handleClose}>
-            <DialogDescription></DialogDescription>
             {isOpen && (
-                <DialogContent
-                    className={
-                        size +
-                        className +
-                        " max-h-[90vh] overflow-y-auto no-scrollbar"
-                    }
-                >
-                    {title && <DialogTitle>{title}</DialogTitle>}
+                <DialogContent classNameIcon={classNameIcon} className={cn(size, className)}>
+                    {title && (
+                        <DialogTitle className={cn(classNameTitle)}>
+                            {title}
+                        </DialogTitle>
+                    )}
                     {!title && (
                         <VisuallyHidden>
                             <DialogTitle>title</DialogTitle>
@@ -69,7 +72,7 @@ const Modal = ({
                     {description && (
                         <DialogDescription>{description}</DialogDescription>
                     )}
-                    <div className="">{children}</div>
+                    {children}
                 </DialogContent>
             )}
         </Dialog>

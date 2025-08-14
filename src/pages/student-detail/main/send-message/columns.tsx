@@ -7,29 +7,23 @@ export const useColumns = () =>
         () => [
             {
                 header: "Sana",
-                accessorKey: "name",
-                enableSorting: true,
-                cell: ({ row }) => "2025-08-21",
-            },
-            {
-                header: "Turi",
                 accessorKey: "price",
                 enableSorting: true,
-                cell: ({ row }) => "Guruhga qo'shildi",
+                cell: ({ row }) => "2025-08-21 18:00",
             },
             {
-                header: "Izoh",
+                header: "Kim yuborgan",
                 accessorKey: "duration",
                 enableSorting: true,
-                cell: ({ row }) =>
-                    "Sinov darsi uchun guruhga qo'shilgan o'quvchi",
+                cell: ({ row }) => "Abdisamatov Ozodbek",
             },
             {
-                header: "Hodim",
+                header: "Xabar",
                 accessorKey: "branch",
                 enableSorting: true,
-                cell: ({ row }) => "Abidsamatov Ozodbek",
+                cell: ({ row }) => "Imtihonda 100% lik yechgani uchun berilgan",
             },
+
         ],
         [],
     )

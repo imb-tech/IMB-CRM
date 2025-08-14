@@ -78,7 +78,7 @@ export const PromptProvider: React.FC<{ children: ReactNode }> = ({
                     />
                     <DialogFooter className="!flex !flex-row items-center gap-4">
                         <Button onClick={handleConfirm}>Tasdiqlash</Button>
-                        <Button onClick={handleCancel} variant="secondary">
+                        <Button onClick={handleCancel} variant="destructive">
                             Bekor qilish
                         </Button>
                     </DialogFooter>
