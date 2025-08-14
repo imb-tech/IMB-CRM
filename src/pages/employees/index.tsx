@@ -7,6 +7,8 @@ import { EMPLOYEE, OPTION_ROLES } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import { useSearch } from "@tanstack/react-router"
 import HrAccordion from "./hr-accordion"
+import { useModal } from "@/hooks/useModal"
+import { Button } from "@/components/ui/button"
 
 const EmployeesMain = () => {
     const [current, setCurrent] = useState<Employee | null>(null)
@@ -16,12 +18,13 @@ const EmployeesMain = () => {
         params: { role: role === "all" ? undefined : role, ...params },
     })
 
-
+    const { openModal } = useModal(`${EMPLOYEE}-add`)
 
     return (
         <div className="w-full">
             <Card className="rounded-lg">
                 <CardContent>
+                    <Button onClick={openModal}>Yaratish</Button>
                     <HrAccordion loading={isFetching} users={data?.results} />
                 </CardContent>
             </Card>
