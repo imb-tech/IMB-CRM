@@ -19,6 +19,7 @@ import { Clock, Home } from "lucide-react"
 import generateTimeSlots from "@/lib/generate-time-slots"
 import ParamDatePicker from "../../components/as-params/date-picker"
 import { Link } from "@tanstack/react-router"
+import useHistoryNavigate from "@/hooks/use-history-navigate"
 
 type Props = {
     work: WorkTime[]
@@ -36,6 +37,8 @@ export default function FullCalendar({
     const [timeInterval, setTimeInterval] = useState("30")
     const [timeSlots, setTimeSlots] = useState<string[]>([])
     const [skipCells, setSkipCells] = useState<Record<string, boolean>>({})
+
+    const { push } = useHistoryNavigate()
 
     useEffect(() => {
         const newTimeSlots = generateTimeSlots(
@@ -200,38 +203,29 @@ export default function FullCalendar({
                                                 className="text-center p-1 border"
                                                 colSpan={colSpan}
                                             >
-                                                <Link
-                                                    to="/groups/$id/students"
-                                                    params={{ id: "5" }}
+                                                <div
+                                                    className={`text-xs min-h-[50px] rounded p-1  flex flex-col items-center justify-center font-extralight ${booking.color}`}
+                                                    onClick={() =>
+                                                        push(
+                                                            "/groups/5/students",
+                                                        )
+                                                    }
                                                 >
-                                                    <div
-                                                        className={`text-xs min-h-[50px] rounded p-1  flex flex-col items-center justify-center font-extralight ${booking.color}`}
-                                                    >
-                                                        <div className="flex items-center whitespace-nowrap">
-                                                            <span className="font-medium">
-                                                                {
-                                                                    booking.course_name
-                                                                }
-                                                            </span>
-                                                            <span className="ml-1">
-                                                                (
-                                                                {
-                                                                    booking.startTime
-                                                                }
-                                                                -
-                                                                {
-                                                                    booking.endTime
-                                                                }
-                                                                )
-                                                            </span>
-                                                        </div>
-                                                        <span>
+                                                    <div className="flex items-center whitespace-nowrap">
+                                                        <span className="font-medium">
                                                             {
-                                                                booking.teacher_name
+                                                                booking.course_name
                                                             }
                                                         </span>
+                                                        <span className="ml-1">
+                                                            ({booking.startTime}
+                                                            -{booking.endTime})
+                                                        </span>
                                                     </div>
-                                                </Link>
+                                                    <span>
+                                                        {booking.teacher_name}
+                                                    </span>
+                                                </div>
                                             </TableCell>
                                         )
                                     })}

@@ -34,6 +34,7 @@ import {
 import Modal from "@/components/custom/modal"
 import GroupCreate from "../groups/create"
 import { useModal } from "@/hooks/useModal"
+import useHistoryNavigate from "@/hooks/use-history-navigate"
 
 function MiniStatCard({ label, value, icon: Icon, color }: any) {
     const colors = colorClasses[color as string]
@@ -60,6 +61,7 @@ export default function GroupProfile() {
     const { id } = useParams({ from: "/_main/groups/$id" })
     const { data } = useGet<Group>(GROUP + "/" + id)
     const { openModal } = useModal(`${GROUP}-add`)
+    const { back } = useHistoryNavigate()
 
     const cards = useMemo(
         () => [
@@ -117,13 +119,14 @@ export default function GroupProfile() {
                 >
                     <div className="flex items-center gap-2">
                         <div className="flex items-center gap-4">
-                            <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
+                            <div
+                                className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center"
+                                onClick={back}
+                            >
                                 <ArrowLeft className="w-4 h-4" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-lg">
-                                    {data?.name}
-                                </h3>
+                                <h3 className="text-lg">{data?.name}</h3>
                             </div>
                         </div>
                         <Badge className="bg-white/20 text-indigo-500 dark:text-white border-0 text-xs ml-auto md:ml-2">
