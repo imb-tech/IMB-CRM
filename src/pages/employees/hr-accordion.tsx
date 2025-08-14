@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/accordion"
 import { OPTION_ROLES } from "@/constants/api-endpoints"
 import { useEmployeeCols } from "./columns"
+import { Badge } from "@/components/ui/badge"
+import { cn } from "@/lib/utils"
 
 type Props = {
     loading?: boolean
@@ -41,7 +43,14 @@ function HrAccordion({ loading, users }: Props) {
     return (
         <div className="overflow-x-auto hidden lg:block">
             <div className="w-full">
-                <div className="grid grid-cols-2 px-3 mb-4">
+                <div className="flex items-center gap-3 mb-3">
+                    <h1 className="text-xl font-medium ">
+                        {"Hodimlar ro'yxati"}
+                    </h1>
+                    <Badge className="text-sm">{data?.length}</Badge>
+                </div>
+
+                <div className="grid grid-cols-2 px-3 border-b py-3 mb-2 bg-muted rounded-md">
                     <p>Rol nomi</p>
                     <p>Xodimlar soni</p>
                 </div>
@@ -59,11 +68,11 @@ function HrAccordion({ loading, users }: Props) {
                     >
                         <AccordionItem
                             value={item?.id?.toString()}
-                            className="border-none"
+                            className={cn(
+                                 search?.role === data[i + 1]?.id && "!border-none"
+                            )}
                         >
-                            <AccordionTrigger
-                                className={i % 2 === 0 ? "!bg-secondary" : ""}
-                            >
+                            <AccordionTrigger>
                                 <div className="grid grid-cols-2 w-full text-start px-3">
                                     <p>{item.name}</p>
                                     <p>{item.employees_count}</p>
@@ -76,7 +85,8 @@ function HrAccordion({ loading, users }: Props) {
                                     loading={loading}
                                     viewAll
                                     data={users}
-                                    skeletonRowCount={2}
+                                    skeletonRowCount={5}
+                                    height="h-[30vh]"
                                 />
                             </AccordionContent>
                         </AccordionItem>

@@ -30,7 +30,7 @@ export function NavMain() {
                                     key={title}
                                     activeProps={{
                                         className:
-                                            "[&_button]:bg-primary hover:[&_button]:bg-primary hover:[&_button]:text-primary-foreground text-primary-foreground",
+                                            "[&_button]:bg-primary/10  hover:[&_button]:bg-primary/10 hover:[&_button]:text-primary text-primary",
                                     }}
                                     className="rounded-lg"
                                 >

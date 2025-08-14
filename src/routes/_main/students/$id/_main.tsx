@@ -1,22 +1,49 @@
+import MobileHeaderLinks from "@/components/header/mobile-header-links"
+import { Button } from "@/components/ui/button"
 import { studentDetailNav } from "@/constants/menu"
 import PageLayout from "@/layouts/page-layout"
-import StudentCard from "@/pages/student-detail/student-card"
-import { createFileRoute, Outlet, useParams } from "@tanstack/react-router"
+import StudentProfile from "@/pages/student-detail"
+import {
+    createFileRoute,
+    Outlet,
+    useNavigate,
+    useParams,
+} from "@tanstack/react-router"
+import { ArrowLeft } from "lucide-react"
 
 export const Route = createFileRoute("/_main/students/$id/_main")({
     component: () => {
         const { id } = useParams({ strict: false })
         const items = studentDetailNav(id?.toString() ?? "")
+        const navigate = useNavigate()
         return (
-            <PageLayout items={items}>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div className="max-w-full pb-16  col-span-2">
-                        <div className="bg-background p-3 rounded-md">
-                            <Outlet />
-                        </div>
+            <PageLayout>
+                <div className="flex flex-col gap-3 ">
+                    <div className="flex items-center gap-3">
+                        <Button
+                            className="min-w-4"
+                            onClick={() => {
+                                navigate({ to: "/students" })
+                            }}
+                        >
+                            <ArrowLeft size={18} />
+                        </Button>
+                        <h1 className="text-xl font-semibold">
+                            {"O'quvchi ma'lumoti"}
+                        </h1>
                     </div>
-                    <div>
-                        <StudentCard />
+
+                    <StudentProfile />
+                    <div className="max-w-full   col-span-2">
+                        <div className="bg-card p-3 rounded-md">
+                            <MobileHeaderLinks
+                                defaultLinks={items}
+                                classNameLink={"bg-muted"}
+                            />
+                            <div className="pt-2 px-1">
+                                <Outlet />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </PageLayout>

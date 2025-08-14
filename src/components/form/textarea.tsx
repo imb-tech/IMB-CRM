@@ -53,6 +53,7 @@ export function FormTextarea<IForm extends FieldValues>({
                     htmlFor={name}
                     required={required}
                     isError={!!error}
+                    className="text-xs text-muted-foreground"
                 >
                     {label}
                 </FieldLabel>
@@ -63,11 +64,12 @@ export function FormTextarea<IForm extends FieldValues>({
                 disabled={disabled || methods.formState.disabled}
                 placeholder={props.placeholder || label}
                 id={name}
-                className={
-                    !!error && label ?
-                        "border-destructive focus:border-border !ring-destructive"
-                    :   ""
-                }
+                className={cn(
+                    className,
+                    !!error && label
+                        ? "border-destructive focus:border-border !ring-destructive"
+                        : "",
+                )}
             />
             {!hideError && errors[name] && (
                 <FieldError>{errors[name]?.message as string}</FieldError>

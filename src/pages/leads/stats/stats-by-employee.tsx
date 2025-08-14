@@ -60,7 +60,7 @@ export default function StatsByEmployee() {
                                 <p className="font-medium">{user.full_name}</p>
                             </div>
                             <Badge
-                                variant="secondary"
+
                                 className="font-semibold"
                             >
                                 {user.count} Lidlar

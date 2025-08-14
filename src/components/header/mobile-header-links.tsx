@@ -4,13 +4,16 @@ import { useEffect, useRef } from "react"
 import { findChildPaths, useIsActive } from "./header-links"
 import { menuItems } from "@/constants/menu"
 import { cn } from "@/lib/utils"
+import { ClassNameValue } from "tailwind-merge"
 
 export default function MobileHeaderLinks({
     defaultLinks,
     navOnHeader,
+    classNameLink,
 }: {
     defaultLinks?: SubMenuItem[]
     navOnHeader?: boolean
+    classNameLink?: ClassNameValue
 }) {
     const { pathname } = useLocation()
     const items =
@@ -46,7 +49,12 @@ export default function MobileHeaderLinks({
                     value={pathname}
                     onValueChange={(path) => navigate({ to: path })}
                 >
-                    <TabsList className="flex-nowrap bg-background">
+                    <TabsList
+                        className={cn(
+                            "flex-nowrap bg-background gap-2",
+                            classNameLink,
+                        )}
+                    >
                         {items.map((link, index) => (
                             <TabsTrigger
                                 key={link.title}
@@ -54,9 +62,10 @@ export default function MobileHeaderLinks({
                                 value={link.to}
                                 className={`${
                                     isActive(link, pathname) &&
-                                    "!bg-primary !text-primary-foreground"
-                                } font-medium flex items-center gap-2 whitespace-nowrap`}
+                                    "!bg-primary/15 !text-primary"
+                                } font-medium flex items-center gap-1.5 whitespace-nowrap`}
                             >
+                                {(link as any).icon && (link as any).icon}{" "}
                                 {link.title}
                             </TabsTrigger>
                         ))}

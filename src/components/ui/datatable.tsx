@@ -117,6 +117,7 @@ export function DataTable<TData>({
     controlledRowSelection,
     onAllSelectedChange,
     setRowClassName,
+    height,
 }: DataTableProps<TData>) {
     const {
         paramName = PAGE_KEY,
@@ -187,8 +188,9 @@ export function DataTable<TData>({
             rowSelection,
             pagination: {
                 pageIndex: search[paramName] ? +search[paramName] - 1 : 0,
-                pageSize:
-                    search[pageSizeParamName] ? +search[pageSizeParamName] : 25,
+                pageSize: search[pageSizeParamName]
+                    ? +search[pageSizeParamName]
+                    : 25,
             },
         },
         manualPagination:
@@ -281,7 +283,7 @@ export function DataTable<TData>({
                     </Table>
                 )}
 
-                {data?.length ?
+                {data?.length ? (
                     <Table
                         className={`${className} select-text  bg-card rounded-md`}
                     >
@@ -333,13 +335,11 @@ export function DataTable<TData>({
                                                             //     "w-8",
                                                         )}
                                                         onClick={
-                                                            (
-                                                                header.column
-                                                                    .columnDef
-                                                                    .enableSorting
-                                                            ) ?
-                                                                header.column.getToggleSortingHandler()
-                                                            :   undefined
+                                                            header.column
+                                                                .columnDef
+                                                                .enableSorting
+                                                                ? header.column.getToggleSortingHandler()
+                                                                : undefined
                                                         }
                                                     >
                                                         <div className="cursor-pointer flex items-center gap-1 select-none w-max">
@@ -350,39 +350,37 @@ export function DataTable<TData>({
                                                                 header.getContext(),
                                                             )}
 
-                                                            {(
-                                                                header.column
-                                                                    .columnDef
-                                                                    .enableSorting
-                                                            ) ?
-                                                                ({
-                                                                    asc: (
-                                                                        <ChevronUp
-                                                                            className="text-muted-foreground"
-                                                                            width={
-                                                                                16
-                                                                            }
-                                                                        />
-                                                                    ),
-                                                                    desc: (
-                                                                        <ChevronDown
-                                                                            className="text-muted-foreground"
-                                                                            width={
-                                                                                16
-                                                                            }
-                                                                        />
-                                                                    ),
-                                                                }[
-                                                                    header.column.getIsSorted() as string
-                                                                ] ?? (
-                                                                    <ChevronsUpDown
-                                                                        className="text-muted-foreground"
-                                                                        width={
-                                                                            16
-                                                                        }
-                                                                    />
-                                                                ))
-                                                            :   null}
+                                                            {header.column
+                                                                .columnDef
+                                                                .enableSorting
+                                                                ? {
+                                                                      asc: (
+                                                                          <ChevronUp
+                                                                              className="text-muted-foreground"
+                                                                              width={
+                                                                                  16
+                                                                              }
+                                                                          />
+                                                                      ),
+                                                                      desc: (
+                                                                          <ChevronDown
+                                                                              className="text-muted-foreground"
+                                                                              width={
+                                                                                  16
+                                                                              }
+                                                                          />
+                                                                      ),
+                                                                  }[
+                                                                      header.column.getIsSorted() as string
+                                                                  ] ?? (
+                                                                      <ChevronsUpDown
+                                                                          className="text-muted-foreground"
+                                                                          width={
+                                                                              16
+                                                                          }
+                                                                      />
+                                                                  )
+                                                                : null}
                                                         </div>
                                                     </TableHead>
                                                 )
@@ -393,7 +391,7 @@ export function DataTable<TData>({
                         </TableHeader>
 
                         <TableBody>
-                            {table.getRowModel().rows?.length > 0 ?
+                            {table.getRowModel().rows?.length > 0 ? (
                                 table.getRowModel().rows?.map((row, index) => (
                                     <TableRow
                                         key={index}
@@ -454,11 +452,11 @@ export function DataTable<TData>({
                                                         }
                                                     }}
                                                     className={cn(
-                                                        `cursor-pointer border-r   dark:border-secondary/50 border-secondary last:border-none 
-                                                         `,
+                                                        ` border-r   dark:border-secondary/50 border-secondary last:border-none `,
                                                         setRowClassName?.(
                                                             cell.row.original,
                                                         ),
+                                                        onRowClick && "cursor-pointer"
                                                     )}
                                                 >
                                                     {flexRender(
@@ -470,7 +468,8 @@ export function DataTable<TData>({
                                             ))}
                                     </TableRow>
                                 ))
-                            :   <TableRow>
+                            ) : (
+                                <TableRow>
                                     <TableCell
                                         colSpan={columns?.length}
                                         className="h-24 text-center"
@@ -478,50 +477,53 @@ export function DataTable<TData>({
                                         Mavjud emas
                                     </TableCell>
                                 </TableRow>
-                            }
+                            )}
                         </TableBody>
                         <TableFooter></TableFooter>
                     </Table>
-                :   null}
-                {data?.length === 0 && !loading ?
-                    <EmptyBox data={data} />
-                :   null}
+                ) : null}
+                {data?.length === 0 && !loading ? (
+                    <EmptyBox data={data} height={height} />
+                ) : null}
             </div>
-            {!viewAll && data?.length ?
+            {!viewAll && data?.length ? (
                 <div className="pt-4 mx-auto w-full relative flex justify-center">
                     {!!viewCount && !!table.getRowModel().rows?.length && (
                         <p className="absolute top-6 left-2">
                             Soni:{" "}
-                            {typeof viewCount === "number" ?
-                                viewCount
-                            :   table.getRowModel().rows?.length}{" "}
+                            {typeof viewCount === "number"
+                                ? viewCount
+                                : table.getRowModel().rows?.length}{" "}
                             ta
                         </p>
                     )}
-                    {totalPages ?
+                    {totalPages ? (
                         <ParamPagination
                             disabled={disabled || loading}
                             {...paginationProps}
                         />
-                    : cursorPagination ?
+                    ) : cursorPagination ? (
                         <CursorPagination
                             {...cursorPagination}
                             disabled={disabled || loading}
                         />
-                    : limitOffsetPagination ?
+                    ) : limitOffsetPagination ? (
                         <LimitOffsetPagination
                             {...limitOffsetPagination}
                             disabled={disabled || loading}
                         />
-                    :   <ParamPagination
+                    ) : (
+                        <ParamPagination
                             disabled={disabled || loading}
                             {...paginationProps}
                             totalPages={table.getPageCount() || 1}
                             PageSize={table.getState().pagination.pageSize}
                         />
-                    }
+                    )}
                 </div>
-            :   ""}
+            ) : (
+                ""
+            )}
         </main>
     )
 }

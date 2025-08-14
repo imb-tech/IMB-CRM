@@ -1,3 +1,4 @@
+import { daysMap } from "@/lib/shift-groupped"
 import { weekdays } from "@/lib/utils"
 import { ColumnDef } from "@tanstack/react-table"
 import { useMemo } from "react"
@@ -20,7 +21,7 @@ export const useGroupCols = () =>
                     return (
                         <div>
                             {original.shifts
-                                ?.map((d) => weekdays[d.day_of_week - 1])
+                                ?.map((d) => daysMap[d.day_of_week])
                                 ?.join(", ")}
                         </div>
                     )
@@ -28,7 +29,7 @@ export const useGroupCols = () =>
             },
             {
                 header: "O'quvchilar soni",
-                accessorKey: "studentCount",
+                accessorKey: "students_count.new",
                 enableSorting: true,
             },
             {

@@ -1,13 +1,20 @@
 import { linkOptions } from "@tanstack/react-router"
 import {
+    ArchiveRestore,
+    Award,
     CalendarRange,
     ChartNoAxesCombined,
     ClipboardList,
+    DollarSign,
     GraduationCap,
     House,
     Layers,
+    MessageCircleMore,
     NotebookText,
+    NotepadText,
+    Percent,
     Settings,
+    Users,
     Users2,
 } from "lucide-react"
 import { ReactNode, useMemo } from "react"
@@ -114,18 +121,6 @@ export const menuItems = [
                 items: [],
             }),
             linkOptions({
-                title: "Xonalar",
-                to: "/settings/rooms",
-                enabled: true,
-                items: [],
-            }),
-            linkOptions({
-                title: "Kurslar",
-                to: "/settings/courses",
-                enabled: true,
-                items: [],
-            }),
-            linkOptions({
                 title: "To'lov turlari",
                 to: "/settings/payment-type",
                 enabled: true,
@@ -196,6 +191,7 @@ export const studentDetailNav = (studentId: string) => {
             linkOptions({
                 title: "Guruhlar",
                 to: "/students/$id/groups",
+                icon: <Layers width={16} />,
                 params: {
                     id: studentId,
                 },
@@ -203,6 +199,31 @@ export const studentDetailNav = (studentId: string) => {
             linkOptions({
                 title: "To'lovlar",
                 to: "/students/$id/payments",
+                icon: <DollarSign width={16} />,
+                params: {
+                    id: studentId,
+                },
+            }),
+            linkOptions({
+                title: "O'zlashtirish",
+                to: "/students/$id/appropriation",
+                icon: <Award width={16} />,
+                params: {
+                    id: studentId,
+                },
+            }),
+            linkOptions({
+                title: "Chegirma",
+                to: "/students/$id/discount",
+                icon: <Percent width={16} />,
+                params: {
+                    id: studentId,
+                },
+            }),
+            linkOptions({
+                title: "Ota-Ona",
+                to: "/students/$id/parents",
+                icon: <Users width={16} />,
                 params: {
                     id: studentId,
                 },
@@ -210,6 +231,15 @@ export const studentDetailNav = (studentId: string) => {
             linkOptions({
                 title: "Eslatmalar",
                 to: "/students/$id/notes",
+                icon: <NotepadText width={16} />,
+                params: {
+                    id: studentId,
+                },
+            }),
+            linkOptions({
+                title: "SMS Xabarlar",
+                to: "/students/$id/send-message",
+                icon: <MessageCircleMore width={16} />,
                 params: {
                     id: studentId,
                 },
@@ -217,13 +247,7 @@ export const studentDetailNav = (studentId: string) => {
             linkOptions({
                 title: "Tarix",
                 to: "/students/$id/history",
-                params: {
-                    id: studentId,
-                },
-            }),
-            linkOptions({
-                title: "Ma'sullar",
-                to: "/students/$id/parents",
+                icon: <ArchiveRestore width={16} />,
                 params: {
                     id: studentId,
                 },

@@ -13,7 +13,7 @@ export function FormDatePicker<TForm extends FieldValues>({
     control,
     required = false,
     calendarProps,
-    hideError = true,
+    hideError = false,
     placeholder,
     fullWidth,
     className,
@@ -26,7 +26,7 @@ export function FormDatePicker<TForm extends FieldValues>({
                     isError={!!error}
                     htmlFor={name}
                     required={required}
-                    className="text-xs text-muted-foreground"
+                    className="text-xs"
                 >
                     {label}
                 </FieldLabel>

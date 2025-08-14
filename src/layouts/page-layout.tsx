@@ -15,6 +15,7 @@ type Props = {
     className?: ClassNameValue
     style?: CSSProperties
     navOnHeader?: boolean
+    classNameLink?: ClassNameValue
 }
 
 const PageLayout = ({
@@ -25,13 +26,14 @@ const PageLayout = ({
     style,
     className,
     navOnHeader = false,
+    classNameLink,
 }: Props) => {
     const { pathname } = useLocation()
     const defaultLinks = items ? items : findChildPaths(menuItems, pathname)
     const len = useMemo(() => defaultLinks.length, [defaultLinks])
 
     return (
-        <div className="w-full">
+        <div className="w-full h-full overflow-y-auto">
             <div
                 className={cn(
                     "fixed top-0 right-0 z-50 transition-[width,height,padding] w-full",
@@ -51,12 +53,13 @@ const PageLayout = ({
                     navOnHeader ? "pb-0" : "",
                 )}
             >
-                {len ?
+                {len ? (
                     <MobileHeaderLinks
                         defaultLinks={items}
                         navOnHeader={navOnHeader}
+                        classNameLink={classNameLink}
                     />
-                :   null}
+                ) : null}
             </div>
 
             <main

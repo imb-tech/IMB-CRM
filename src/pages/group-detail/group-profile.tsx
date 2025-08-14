@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
-    GraduationCap,
     Users,
     MapPin,
     Calendar,
@@ -15,6 +14,9 @@ import {
     Banknote,
     ChevronUp,
     EllipsisVertical,
+    ArrowLeft,
+    MessageSquareMore,
+    Pencil,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useCallback, useMemo, useState } from "react"
@@ -22,8 +24,17 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { useParams } from "@tanstack/react-router"
 import { useGet } from "@/hooks/useGet"
 import { GROUP } from "@/constants/api-endpoints"
-import { shiftGroupped } from "@/lib/shift-groupped"
+import { daysMap, shiftGroupped } from "@/lib/shift-groupped"
 import { formatMoney } from "@/lib/format-money"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import Modal from "@/components/custom/modal"
+import GroupCreate from "../groups/create"
+import { useModal } from "@/hooks/useModal"
+import useHistoryNavigate from "@/hooks/use-history-navigate"
 
 function MiniStatCard({ label, value, icon: Icon, color }: any) {
     const colors = colorClasses[color as string]
@@ -49,6 +60,8 @@ function MiniStatCard({ label, value, icon: Icon, color }: any) {
 export default function GroupProfile() {
     const { id } = useParams({ from: "/_main/groups/$id" })
     const { data } = useGet<Group>(GROUP + "/" + id)
+    const { openModal } = useModal(`${GROUP}-add`)
+    const { back } = useHistoryNavigate()
 
     const cards = useMemo(
         () => [
@@ -101,18 +114,19 @@ export default function GroupProfile() {
             )}
             <Card className="bg-card border-0 shadow-sm rounded-md overflow-hidden w-full relative">
                 <CardHeader
-                    className="bg-gradient-to-br from-primary/30 to-primary/20 text-primary dark:text-white p-4 md:px-3 md:py-1"
+                    className="bg-gradient-to-br from-primary/30 to-primary/20 text-black dark:text-white p-4 md:px-3 md:py-1"
                     onClick={() => handleOpen(!open)}
                 >
                     <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-                                <GraduationCap className="w-4 h-4" />
+                        <div className="flex items-center gap-4">
+                            <div
+                                className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center"
+                                onClick={back}
+                            >
+                                <ArrowLeft className="w-4 h-4" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-lg">
-                                    {data?.name}
-                                </h3>
+                                <h3 className="text-lg">{data?.name}</h3>
                             </div>
                         </div>
                         <Badge className="bg-white/20 text-indigo-500 dark:text-white border-0 text-xs ml-auto md:ml-2">
@@ -121,7 +135,7 @@ export default function GroupProfile() {
                         <div className="ml-auto hidden md:block">
                             <div className="hidden md:flex items-center gap-3 py-2 text-sm">
                                 <div className="bg-card/40 rounded-sm px-3 py-1">
-                                    <span className="text-xs text-muted-foreground">
+                                    <span className="text-xs">
                                         O'qituvchi
                                     </span>
                                     <div className="text-sm flex items-center gap-2 mt-0.5">
@@ -129,29 +143,28 @@ export default function GroupProfile() {
                                     </div>
                                 </div>
                                 <div className="bg-card/40 rounded-sm px-3 py-1">
-                                    <span className="text-xs text-muted-foreground">
+                                    <span className="text-xs">
                                         Dars vaqti
                                     </span>
-                                    <div className="text-sm flex items-center gap-2 mt-0.5">
-                                        {shiftGroupped(data?.shifts ?? [])?.map(
-                                            (sh, i) => (
-                                                <div
-                                                    key={sh.days}
-                                                    className="flex gap-2"
-                                                >
-                                                    {i > 0 ? "|" : ""}
-                                                    <p className="flex-1">
-                                                        {sh.days}
-                                                    </p>
-                                                    <p>{sh.start_time}</p>
-                                                    <p>{sh.end_time}</p>
-                                                </div>
-                                            ),
-                                        )}
+                                    <div className="text-sm flex items-center mt-0.5">
+                                        {(data?.shifts ?? [])?.map((sh, i) => (
+                                            <div
+                                                key={sh.day_of_week}
+                                                className="flex"
+                                            >
+                                                {/* {i > 0 ? "|" : ""} */}
+                                                <p>
+                                                    {i == 0 ? "" : ", "}
+                                                    {daysMap[sh.day_of_week]}
+                                                </p>
+                                                {/* <p>{sh.start_time}</p>
+                                                    <p>{sh.end_time}</p> */}
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
                                 <div className="bg-card/40 rounded-sm px-3 py-1">
-                                    <span className="text-xs text-muted-foreground">
+                                    <span className="text-xs">
                                         Kurs nomi
                                     </span>
                                     <div className="text-sm flex items-center gap-2 mt-0.5">
@@ -159,7 +172,7 @@ export default function GroupProfile() {
                                     </div>
                                 </div>
                                 <div className="bg-card/40 rounded-sm px-3 py-1">
-                                    <span className="text-xs text-muted-foreground">
+                                    <span className="text-xs">
                                         Kurs narxi
                                     </span>
                                     <div className="flex items-center gap-2 mt-0.5 ">
@@ -170,7 +183,7 @@ export default function GroupProfile() {
                                     </div>
                                 </div>
                                 <div className="bg-card/40 rounded-sm px-3 py-1">
-                                    <span className="text-xs text-muted-foreground">
+                                    <span className="text-xs">
                                         Davomiyligi
                                     </span>
                                     <div className="flex items-center gap-2 mt-0.5">
@@ -182,7 +195,50 @@ export default function GroupProfile() {
                                     </div>
                                 </div>
                                 <div className="rounded-sm px-3 py-3 h-full cursor-pointer">
-                                    <EllipsisVertical />
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <EllipsisVertical />
+                                        </PopoverTrigger>
+                                        <PopoverContent
+                                            className="p-0 w-[160px]"
+                                            side="bottom"
+                                            align="end"
+                                        >
+                                            <div className="bg-background rounded-sm flex flex-col p-3 gap-3 text-sm cursor-pointer">
+                                                <div className="flex items-center gap-2 hover:pl-1 transition-all duration-150">
+                                                    <MessageSquareMore
+                                                        className="text-orange-300"
+                                                        size={18}
+                                                    />
+                                                    <p>SMS yuborish</p>
+                                                </div>
+                                                <div className="flex items-center gap-2 hover:pl-1 transition-all duration-150">
+                                                    <Trash2
+                                                        className="text-rose-500"
+                                                        size={18}
+                                                    />
+                                                    <p>O'chirish</p>
+                                                </div>
+                                                <div
+                                                    className="flex items-center gap-2 hover:pl-1 transition-all duration-150"
+                                                    onClick={openModal}
+                                                >
+                                                    <Pencil
+                                                        className="text-primary"
+                                                        size={18}
+                                                    />
+                                                    <p>Tahrirlash</p>
+                                                </div>
+                                                <div className="flex items-center gap-2 hover:pl-1 transition-all duration-150">
+                                                    <UserPlus
+                                                        className="text-blue-500"
+                                                        size={18}
+                                                    />
+                                                    <p>O'quvchi</p>
+                                                </div>
+                                            </div>
+                                        </PopoverContent>
+                                    </Popover>
                                 </div>
                             </div>
                         </div>
@@ -288,6 +344,14 @@ export default function GroupProfile() {
                     </div>
                 </CardContent>
             </Card>
+
+            <Modal
+                modalKey={`${GROUP}-add`}
+                title={`Guruhni tahrirlash`}
+                size="max-w-4xl"
+            >
+                <GroupCreate item={data ?? null} />
+            </Modal>
         </div>
     )
 }

@@ -2,57 +2,76 @@ import { DataTable } from "@/components/ui/datatable"
 import { useGet } from "@/hooks/useGet"
 import { GROUP_STUDENTS } from "@/constants/api-endpoints"
 import { useGroupExamsCols } from "./cols"
-import { useForm } from "react-hook-form"
-import FormInput from "@/components/form/input"
-import { FormDatePicker } from "@/components/form/date-picker"
-import { FormNumberInput } from "@/components/form/number-input"
+import { Tabs, TabsContent } from "@/components/ui/tabs"
+import { useSearch } from "@tanstack/react-router"
+import { FileText } from "lucide-react"
+
+const data = ["Mavzu", "Vazifa", "Imtixon"]
+const files = [
+    "Illustration.svg (0.1 MB)",
+    "people (1).png (0.0 MB)",
+    "people.png (0.0 MB)",
+]
 
 export default function ExamDetail() {
-    const { data: students } = useGet<ListResp<GroupStudent>>(GROUP_STUDENTS, {
+    const { data: students } = useGet<GroupStudent[]>(GROUP_STUDENTS, {
         params: { group: 5 },
         options: { queryKey: [GROUP_STUDENTS] },
     })
-    const form = useForm<GroupExam>()
+    const { id } = useSearch({ strict: false })
 
     const columns = useGroupExamsCols()
 
     return (
-        <form className="p-2">
-            <div className="mb-2 grid grid-cols-2 gap-2">
-                <FormInput
-                    methods={form}
-                    name="name"
-                    label="Imtixon nomi"
-                    placeholder="Misol: 1-oy bitiruv"
-                    required
-                />
-                <FormDatePicker
-                    control={form.control}
-                    name="take_date"
-                    label="Imtixon sanasi"
-                    required
-                    placeholder="Tanlang"
-                />
-                <FormNumberInput
-                    control={form.control}
-                    name="min_score"
-                    label="O'tish bal"
-                    placeholder="- ∞"
-                />
-                <FormNumberInput
-                    control={form.control}
-                    name="max_score"
-                    label="Yuqori bal"
-                    placeholder="∞ +"
-                />
+        <div>
+            <div>
+                <p className="text-muted-foreground">
+                    {data[Number(id)]}ga tegishli fayllar
+                </p>
+                <div className="flex mt-2 gap-2">
+                    {files?.slice(0, 3 - Number(id)).map((file) => (
+                        <div
+                            className="bg-blue-400/10 p-2 rounded-md flex items-center gap-2 text-muted-foreground text-sm hover:text-slate-200 cursor-pointer hover:underline"
+                            key={file}
+                        >
+                            <FileText />
+                            <span>{file}</span>
+                        </div>
+                    ))}
+                </div>
             </div>
-            <DataTable
-                columns={columns}
-                data={students?.results}
-                viewAll
-                className="max-w-full"
-                numeration
-            />
-        </form>
+            <div className="mt-3">
+                <p className="text-muted-foreground">O'quvchilar</p>
+                <Tabs value={id?.toString()}>
+                    <TabsContent value="0">
+                        <DataTable
+                            columns={columns}
+                            data={students}
+                            viewAll
+                            className="max-w-full"
+                            numeration
+                        />
+                    </TabsContent>
+                    <TabsContent value="1">
+                        <DataTable
+                            columns={columns}
+                            data={[]}
+                            viewAll
+                            className="max-w-full"
+                            numeration
+                        />
+                    </TabsContent>
+                    <TabsContent value="2">
+                        <DataTable
+                            columns={columns}
+                            data={students}
+                            viewAll
+                            className="max-w-full"
+                            numeration
+                        />
+                    </TabsContent>
+                </Tabs>
+            </div>
+        </div>
     )
 }

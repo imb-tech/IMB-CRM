@@ -52,7 +52,6 @@ const FinanceCard = ({ data }: Props) => {
                     <div className={`text-2xl font-bold `}>{value}</div>
                     <div className="flex items-center mt-2">
                         <Badge
-                            variant="secondary"
                             className={`${badgeBg} ${textColor}  border-0`}
                         >
                             {change}

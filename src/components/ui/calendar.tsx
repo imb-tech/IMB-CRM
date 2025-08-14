@@ -18,7 +18,7 @@ export type CalendarProps = Omit<
     "month" | "onMonthChange" | "components"
 > & {
     defaultMonth?: Date
-    onSelect?: (date: Date) => void
+    onSelect?: (date: Date[]) => void
 }
 
 const generatedYears = Array(new Date().getFullYear() - 2020 + 1).fill(0)
@@ -149,7 +149,7 @@ function Calendar({
                             <Select
                                 value={month.getMonth().toString()}
                                 onValueChange={(value) =>
-                                    handleMonthChange(Number(value))
+                                    handleMonthChange(Number(value) - 1)
                                 }
                             >
                                 <SelectTrigger>

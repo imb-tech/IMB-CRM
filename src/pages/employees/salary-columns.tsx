@@ -64,13 +64,13 @@ export const useEmployeeSalaryCols = () => {
                         <div className="flex flex-wrap gap-2">
                             <Button
                                 size="sm"
-                                variant="secondary"
+                                
                                 onClick={() => {
                                     setStore(row.original)
                                     openModal()
                                 }}
                             >
-                                <Pencil size={18} />
+                                <Pencil size={14} />
                             </Button>
                         </div>
                     )

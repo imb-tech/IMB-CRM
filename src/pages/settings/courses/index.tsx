@@ -17,7 +17,7 @@ const CoursesMain = () => {
     const { openModal: openModalDelete } = useModal(`${COURSE}-delete`)
     const [current, setCurrent] = useState<Course | null>(null)
 
-    const params = useSearch({ from: "/_main/settings/_main/courses" })
+    const params = useSearch({ from: "/_main/groups/" })
     const { data, isFetching } = useGet<ListResp<Course>>(COURSE, { params })
 
     const handleItemAdd = () => {
@@ -45,6 +45,7 @@ const CoursesMain = () => {
                     <SettingsHeader
                         dataCount={data?.count}
                         handleAdd={handleItemAdd}
+                        pageTitle="Kurslar"
                     />
                     <DataTable
                         onDelete={(row) => handleItemDelete(row.original)}

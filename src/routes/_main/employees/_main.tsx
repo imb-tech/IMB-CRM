@@ -3,7 +3,7 @@ import { createFileRoute, Outlet } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/_main/employees/_main")({
     component: () => (
-        <PageLayout navOnHeader={false}>
+        <PageLayout navOnHeader={false} classNameLink={"bg-card"}>
             <Outlet />
         </PageLayout>
     ),
