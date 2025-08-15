@@ -25,7 +25,7 @@ export default function LoginForm() {
             if (refresh) {
                 setRefreshToken(refresh)
             }
-            window.location.replace("/")
+            window?.location?.replace?.("/")
         },
     })
     const methods = useForm<Form>({
