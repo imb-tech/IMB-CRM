@@ -17,8 +17,6 @@ import {
 import { Card, CardContent } from "@/components/ui/card"
 import { Clock, Home } from "lucide-react"
 import generateTimeSlots from "@/lib/generate-time-slots"
-import ParamDatePicker from "../../components/as-params/date-picker"
-import { Link } from "@tanstack/react-router"
 import useHistoryNavigate from "@/hooks/use-history-navigate"
 
 type Props = {
@@ -28,13 +26,13 @@ type Props = {
     work_end_date: string
 }
 
-export default function FullCalendar({
+export default function DailyCalendarEmployees({
     rooms,
     work,
     work_start_date,
     work_end_date,
 }: Props) {
-    const [timeInterval, setTimeInterval] = useState("30")
+    const [timeInterval, setTimeInterval] = useState("15")
     const [timeSlots, setTimeSlots] = useState<string[]>([])
     const [skipCells, setSkipCells] = useState<Record<string, boolean>>({})
 
@@ -114,7 +112,6 @@ export default function FullCalendar({
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between  gap-4">
                     <div className=" flex items-center gap-4">
                         <h1 className="font-medium text-xl">Dars jadvali</h1>
-                        <ParamDatePicker />
                     </div>
                     <div className="flex items-center gap-2">
                         <Clock className="h-4 w-4 text-muted-foreground" />
@@ -150,7 +147,7 @@ export default function FullCalendar({
                                 {timeSlots.map((slot, index) => (
                                     <TableHead
                                         key={index}
-                                        className="text-center min-w-[80px] border-l last:rounded-tr-md"
+                                        className="text-center min-w-[80px] last:rounded-tr-md"
                                     >
                                         {slot}
                                     </TableHead>
@@ -164,8 +161,15 @@ export default function FullCalendar({
                                     key={room.id}
                                     className="border-b-none"
                                 >
-                                    <TableCell className="font-medium sticky left-0 z-20 bg-secondary">
-                                        {room.name}
+                                    <TableCell className="font-medium border-b sticky left-0 z-20 border-secondary bg-background">
+                                        <div className="flex flex-col py-2">
+                                            <span className="whitespace-nowrap mb-[2px]">
+                                                Doniyor Eshmamatov
+                                            </span>
+                                            <span className="whitespace-nowrap text-muted-foreground">
+                                                {"Software Engineer"}
+                                            </span>
+                                        </div>
                                     </TableCell>
                                     {timeSlots.map((timeSlot) => {
                                         const cellKey = `${room.id}-${timeSlot}`
@@ -183,12 +187,8 @@ export default function FullCalendar({
                                             return (
                                                 <TableCell
                                                     key={cellKey}
-                                                    className="text-center p-1 "
-                                                >
-                                                    <span className="text-muted-foreground/50 text-xs">
-                                                        Bo'sh
-                                                    </span>
-                                                </TableCell>
+                                                    className="text-center p-1 border-l border-b border-secondary"
+                                                ></TableCell>
                                             )
                                         }
 
@@ -200,11 +200,11 @@ export default function FullCalendar({
                                         return (
                                             <TableCell
                                                 key={cellKey}
-                                                className="text-center p-1"
+                                                className="text-center p-0 border border-secondary"
                                                 colSpan={colSpan}
                                             >
                                                 <div
-                                                    className={`text-xs min-h-[50px] rounded p-1  flex flex-col items-center justify-center font-extralight ${booking.color}`}
+                                                    className={`text-xs min-h-[30px] p-1  flex flex-col items-center justify-center font-extralight bg-primary/20`}
                                                     onClick={() =>
                                                         push(
                                                             "/groups/5/students",
@@ -212,19 +212,16 @@ export default function FullCalendar({
                                                     }
                                                 >
                                                     <div className="flex items-center whitespace-nowrap">
-                                                        <span className="font-medium">
-                                                            {
-                                                                booking.course_name
-                                                            }
+                                                        <span className="ml-1">
+                                                            {booking.startTime}
                                                         </span>
                                                         <span className="ml-1">
-                                                            ({booking.startTime}
-                                                            -{booking.endTime})
+                                                            /
+                                                        </span>
+                                                        <span className="ml-1">
+                                                            {booking.endTime}
                                                         </span>
                                                     </div>
-                                                    <span>
-                                                        {booking.teacher_name}
-                                                    </span>
                                                 </div>
                                             </TableCell>
                                         )

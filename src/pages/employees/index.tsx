@@ -24,7 +24,7 @@ const EmployeesMain = () => {
         <div className="w-full">
             <Card className="rounded-lg">
                 <CardContent>
-                    <Button onClick={openModal}>Yaratish</Button>
+                    {/* <Button onClick={openModal}>Yaratish</Button> */}
                     <HrAccordion loading={isFetching} users={data?.results} />
                 </CardContent>
             </Card>

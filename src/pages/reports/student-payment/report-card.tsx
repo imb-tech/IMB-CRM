@@ -9,40 +9,24 @@ type Props = {
     data: {
         title: string
         value: string | number
-        change: string
-        icon: JSX.Element
-        bgColor: string
         badgeBg: string
         textColor: string
-        iconLarge: JSX.Element
         url: string
     }
 }
 
 const ReportCard = ({ data }: Props) => {
-    const {
-        title,
-        value,
-        change,
-        icon,
-        bgColor,
-        badgeBg,
-        textColor,
-        url,
-        iconLarge,
-    } = data
+    const { title, value, badgeBg, textColor, url } = data
     return (
         <Link to={url}>
             <Card
                 className={clsx(
                     "relative overflow-hidden border-none shadow-none hover:shadow-sm transition-all bg-card p-5 rounded-lg",
-                    // `${bgColor}`,
-                    // `${textColor}`,
                 )}
             >
                 <CardHeader className="p-0 mb-4">
                     <div className="flex items-center gap-2 justify-between">
-                        <CardTitle className="text-3xl font-extralight opacity-70 p-0">
+                        <CardTitle className="text-2xl font-extralight opacity-70 p-0">
                             {title}
                         </CardTitle>
                         <div className="flex items-center gap-2 pl-3">
@@ -54,10 +38,10 @@ const ReportCard = ({ data }: Props) => {
                         </div> */}
                     </div>
                 </CardHeader>
-                <CardContent className="flex flex-col-reverse gap-3 p-2 pt-4 px-0 items-start">
+                <CardContent className="flex flex-col-reverse gap-3 pt-4 px-0 items-start">
                     {/* <span className="text-muted-foreground">/</span> */}
                     <Badge
-                        className={`${badgeBg} ${textColor}  border-0 text-2xl font-light`}
+                        className={`${badgeBg} ${textColor}  border-0 text-2xl font-light hover:${badgeBg}`}
                     >
                         <div className="flex items-center gap-1">
                             <DollarSign className={textColor} />

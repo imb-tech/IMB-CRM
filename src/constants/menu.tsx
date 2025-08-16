@@ -160,6 +160,13 @@ export const groupDetailNav = (groupId: string) => {
                 },
             }),
             linkOptions({
+                title: "Baholar",
+                to: `/groups/$id/score`,
+                params: {
+                    id: groupId,
+                },
+            }),
+            linkOptions({
                 title: "Vazifalar",
                 to: `/groups/$id/tasks`,
                 params: {
