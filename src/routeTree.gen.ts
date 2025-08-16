@@ -75,6 +75,9 @@ const MainAttendanceImport = createFileRoute('/_main/attendance')()
 const AuthLoginLazyImport = createFileRoute('/_auth/login')()
 const MainStudentsIdImport = createFileRoute('/_main/students/$id')()
 const MainGroupsIdImport = createFileRoute('/_main/groups/$id')()
+const MainEmployeesMainAttendanceLazyImport = createFileRoute(
+  '/_main/employees/_main/attendance',
+)()
 
 // Create/Update Routes
 
@@ -240,6 +243,17 @@ const MainAttendanceMainIndexRoute = MainAttendanceMainIndexImport.update({
   path: '/',
   getParentRoute: () => MainAttendanceMainRoute,
 } as any)
+
+const MainEmployeesMainAttendanceLazyRoute =
+  MainEmployeesMainAttendanceLazyImport.update({
+    id: '/attendance',
+    path: '/attendance',
+    getParentRoute: () => MainEmployeesMainRoute,
+  } as any).lazy(() =>
+    import('./routes/_main/employees/_main/attendance.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
 const MainStudentsIdMainRoute = MainStudentsIdMainImport.update({
   id: '/_main',
@@ -695,6 +709,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainStudentsIdMainImport
       parentRoute: typeof MainStudentsIdRoute
     }
+    '/_main/employees/_main/attendance': {
+      id: '/_main/employees/_main/attendance'
+      path: '/attendance'
+      fullPath: '/employees/attendance'
+      preLoaderRoute: typeof MainEmployeesMainAttendanceLazyImport
+      parentRoute: typeof MainEmployeesMainImport
+    }
     '/_main/attendance/_main/': {
       id: '/_main/attendance/_main/'
       path: '/'
@@ -901,12 +922,14 @@ const MainAttendanceRouteWithChildren = MainAttendanceRoute._addFileChildren(
 interface MainEmployeesMainRouteChildren {
   MainEmployeesMainHrRoute: typeof MainEmployeesMainHrRoute
   MainEmployeesMainSalaryRoute: typeof MainEmployeesMainSalaryRoute
+  MainEmployeesMainAttendanceLazyRoute: typeof MainEmployeesMainAttendanceLazyRoute
   MainEmployeesMainIndexRoute: typeof MainEmployeesMainIndexRoute
 }
 
 const MainEmployeesMainRouteChildren: MainEmployeesMainRouteChildren = {
   MainEmployeesMainHrRoute: MainEmployeesMainHrRoute,
   MainEmployeesMainSalaryRoute: MainEmployeesMainSalaryRoute,
+  MainEmployeesMainAttendanceLazyRoute: MainEmployeesMainAttendanceLazyRoute,
   MainEmployeesMainIndexRoute: MainEmployeesMainIndexRoute,
 }
 
@@ -1115,6 +1138,7 @@ export interface FileRoutesByFullPath {
   '/settings/roles': typeof MainSettingsMainRolesRoute
   '/settings/rooms': typeof MainSettingsMainRoomsRoute
   '/students/$id': typeof MainStudentsIdMainRouteWithChildren
+  '/employees/attendance': typeof MainEmployeesMainAttendanceLazyRoute
   '/attendance/': typeof MainAttendanceMainIndexRoute
   '/employees/': typeof MainEmployeesMainIndexRoute
   '/leads/$id': typeof MainLeadsIdIndexRoute
@@ -1171,6 +1195,7 @@ export interface FileRoutesByTo {
   '/settings/roles': typeof MainSettingsMainRolesRoute
   '/settings/rooms': typeof MainSettingsMainRoomsRoute
   '/students/$id': typeof MainStudentsIdMainRouteWithChildren
+  '/employees/attendance': typeof MainEmployeesMainAttendanceLazyRoute
   '/leads/$id': typeof MainLeadsIdIndexRoute
   '/leads/forms': typeof MainLeadsFormsIndexRoute
   '/leads/stats': typeof MainLeadsStatsIndexRoute
@@ -1230,6 +1255,7 @@ export interface FileRoutesById {
   '/_main/settings/_main/rooms': typeof MainSettingsMainRoomsRoute
   '/_main/students/$id': typeof MainStudentsIdRouteWithChildren
   '/_main/students/$id/_main': typeof MainStudentsIdMainRouteWithChildren
+  '/_main/employees/_main/attendance': typeof MainEmployeesMainAttendanceLazyRoute
   '/_main/attendance/_main/': typeof MainAttendanceMainIndexRoute
   '/_main/employees/_main/': typeof MainEmployeesMainIndexRoute
   '/_main/leads/$id/': typeof MainLeadsIdIndexRoute
@@ -1288,6 +1314,7 @@ export interface FileRouteTypes {
     | '/settings/roles'
     | '/settings/rooms'
     | '/students/$id'
+    | '/employees/attendance'
     | '/attendance/'
     | '/employees/'
     | '/leads/$id'
@@ -1343,6 +1370,7 @@ export interface FileRouteTypes {
     | '/settings/roles'
     | '/settings/rooms'
     | '/students/$id'
+    | '/employees/attendance'
     | '/leads/$id'
     | '/leads/forms'
     | '/leads/stats'
@@ -1400,6 +1428,7 @@ export interface FileRouteTypes {
     | '/_main/settings/_main/rooms'
     | '/_main/students/$id'
     | '/_main/students/$id/_main'
+    | '/_main/employees/_main/attendance'
     | '/_main/attendance/_main/'
     | '/_main/employees/_main/'
     | '/_main/leads/$id/'
@@ -1532,6 +1561,7 @@ export const routeTree = rootRoute
       "children": [
         "/_main/employees/_main/hr",
         "/_main/employees/_main/salary",
+        "/_main/employees/_main/attendance",
         "/_main/employees/_main/"
       ]
     },
@@ -1675,6 +1705,10 @@ export const routeTree = rootRoute
         "/_main/students/$id/_main/payments",
         "/_main/students/$id/_main/send-message"
       ]
+    },
+    "/_main/employees/_main/attendance": {
+      "filePath": "_main/employees/_main/attendance.lazy.tsx",
+      "parent": "/_main/employees/_main"
     },
     "/_main/attendance/_main/": {
       "filePath": "_main/attendance/_main/index.tsx",
