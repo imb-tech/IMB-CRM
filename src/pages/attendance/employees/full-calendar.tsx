@@ -8,10 +8,10 @@ import {
 } from "@/components/ui/table"
 import { Card, CardContent } from "@/components/ui/card"
 import { Home } from "lucide-react"
-import { formatPhoneNumber } from "@/lib/format-phone-number"
-import ParamDateRange from "@/components/as-params/date-picker-range"
 import { useMemo } from "react"
-import { cn } from "@/lib/utils"
+import { cn, months, optionYears } from "@/lib/utils"
+import { ParamCombobox } from "@/components/as-params/combobox"
+import { formatDate } from "date-fns"
 
 type Props = {
     data: TCalendarAttendance
@@ -19,12 +19,12 @@ type Props = {
 
 const statusText: { [key: string]: { text: string; bgColor: string } } = {
     present: {
-        text: "Kelgan",
-        bgColor: "bg-green-200 dark:bg-green-400",
+        text: "6s 25m",
+        bgColor: "bg-green-500/20 dark:bg-green-400/30",
     },
     absent: {
         text: "Kelmagan",
-        bgColor: "bg-red-200 dark:bg-red-400",
+        bgColor: "bg-red-500/20 dark:bg-red-400/30",
     },
 }
 
@@ -40,32 +40,63 @@ export default function FullCalendarEmployees({ data }: Props) {
         return map
     }, [data])
 
+    const currentDate = formatDate(new Date(), "MM")
+    const currentMonth = useMemo(
+        () => months.find((k) => k.key == currentDate),
+        [currentDate],
+    )
+
     return (
         <Card>
-            <CardContent className="space-y-4 rounded-md">
+            <CardContent className="space-y-2 rounded-md p-3">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between  gap-4">
                     <div className=" flex items-center gap-4">
                         <h1 className="font-medium text-xl">
                             Xodimlar davomati
                         </h1>
                     </div>
-                    <ParamDateRange />
+                    <div className="flex gap-1">
+                        <ParamCombobox
+                            isSearch={false}
+                            label="Oy"
+                            className="w-full dark:!bg-background"
+                            options={months.map((d) => ({
+                                label: d.name,
+                                value: d.key,
+                            }))}
+                            defaultOpt={{
+                                label: currentMonth?.name,
+                                value: currentMonth?.key,
+                            }}
+                            dontAllowClear
+                            paramName="month"
+                        />
+                        <ParamCombobox
+                            isSearch={false}
+                            label="Yil"
+                            className="w-full dark:!bg-background"
+                            options={optionYears("label", "value")}
+                            defaultOpt={optionYears("label", "value")[0]}
+                            dontAllowClear
+                            paramName="year"
+                        />
+                    </div>
                 </div>
 
                 <div className="overflow-x-auto w-full">
                     <Table>
-                        <TableHeader>
-                            <TableRow>
+                        <TableHeader className="border-none">
+                            <TableRow className="border-none">
                                 <TableHead className="rounded-tl-md sticky left-0 z-20 bg-secondary">
                                     <div className="whitespace-nowrap flex items-center gap-2  ">
                                         <Home className="h-4 w-4 text-muted-foreground" />
-                                        <span>Xodimlar / Sana</span>
+                                        <span>Xodim / Sana</span>
                                     </div>
                                 </TableHead>
                                 {data.dates.map((item, index) => (
                                     <TableHead
                                         key={index}
-                                        className="text-center min-w-[80px] border-l last:rounded-tr-md"
+                                        className="text-center min-w-[80px] border-last:rounded-tr-md"
                                     >
                                         {item.date.slice(-2)}
                                     </TableHead>
@@ -79,20 +110,18 @@ export default function FullCalendarEmployees({ data }: Props) {
                                     key={employe.id}
                                     className="border-b-none"
                                 >
-                                    <TableCell className="border-b sticky left-0 z-20 bg-secondary">
-                                        <div className="flex flex-col">
-                                            <span className="whitespace-nowrap">
+                                    <TableCell className="border-b sticky left-0 z-20 border-r border-secondary bg-background">
+                                        <div className="flex flex-col py-2">
+                                            <span className="whitespace-nowrap mb-[2px]">
                                                 {employe.first_name}
                                             </span>
-                                            <span className="whitespace-nowrap">
-                                                {formatPhoneNumber(
-                                                    employe.phone,
-                                                )}
+                                            <span className="whitespace-nowrap text-muted-foreground">
+                                                {"Software Engineer"}
                                             </span>
                                         </div>
                                     </TableCell>
 
-                                    {data.dates.map((dateItem) => {
+                                    {data.dates.map((dateItem, i) => {
                                         const status =
                                             attendanceMap[employe.id]?.[
                                                 dateItem.date
@@ -100,11 +129,11 @@ export default function FullCalendarEmployees({ data }: Props) {
                                         return (
                                             <TableCell
                                                 key={`${employe.id}-${dateItem.date}`}
-                                                className="text-center p-1 border"
+                                                className="text-center px-2"
                                             >
                                                 <div
                                                     className={cn(
-                                                        "text-xs min-h-[50px] rounded p-1 flex flex-col items-center justify-center",
+                                                        "text-xs min-h-[30px] rounded p-1 flex flex-col items-center justify-center",
                                                         statusText[status]
                                                             ?.bgColor,
                                                     )}

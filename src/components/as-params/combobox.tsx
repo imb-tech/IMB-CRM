@@ -63,7 +63,7 @@ export function ParamCombobox<T extends Record<string, any>>({
     const [open, setOpen] = useState(false)
 
     useEffect(() => {
-        if (defaultOpt && !currentValue) {
+        if (!!defaultOpt && !currentValue) {
             navigate({
                 search: {
                     ...search,
@@ -72,7 +72,7 @@ export function ParamCombobox<T extends Record<string, any>>({
             })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [defaultOpt])
+    }, [defaultOpt, search])
 
     const handleSelect = (option: T) => {
         const returnValue = option[valueKey]

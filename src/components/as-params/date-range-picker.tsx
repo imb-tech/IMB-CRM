@@ -179,7 +179,7 @@ export default function ParamDateRangePicker({
                                 "px-3 py-1 rounded-sm text-sm cursor-pointer transition-colors",
                                 itemClassName,
                                 isActivePreset(preset) ?
-                                    "bg-primary/20 text-primary"
+                                    "!bg-primary/20 text-primary hover:!text-primary"
                                 :   "hover:bg-primary/30 hover:text-primary",
                             )}
                             onClick={() => handlePresetClick(preset)}
@@ -279,7 +279,10 @@ export default function ParamDateRangePicker({
             {((selectedRange?.from && selectedRange?.to) || presetParam) &&
                 !disabled && (
                     <button
-                        className={cn(itemClassName, "pl-0 pr-2 rounded-l-none")}
+                        className={cn(
+                            itemClassName,
+                            "pl-0 pr-2 rounded-l-none",
+                        )}
                     >
                         <X
                             onClick={reset}
