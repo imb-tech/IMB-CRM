@@ -289,7 +289,7 @@ export function DataTable<TData>({
                     </Table>
                 )}
 
-                {hasFixedRowCount ? (
+                {(hasFixedRowCount && !loading) ? (
                     <Table
                         className={`${className} select-text  bg-card rounded-md`}
                     >

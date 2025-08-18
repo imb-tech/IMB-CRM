@@ -63,7 +63,7 @@ export default function ParamTabList({
                                 link.id === currValue && activeClassName
                             } p-0 h-auto`}
                         >
-                            {renderOption(link, link.id === currValue)}
+                            {renderOption(link, link.id === currValue)} 
                         </TabsTrigger>
                     :   <TabsTrigger
                             key={link.id}
@@ -71,7 +71,7 @@ export default function ParamTabList({
                             value={link.id as string}
                             className={`${
                                 link.id === currValue &&
-                                "!bg-primary !text-primary-foreground"
+                                "!bg-primary/10 !text-primary"
                             } font-medium flex items-center gap-2 whitespace-nowrap`}
                         >
                             {link.name}
