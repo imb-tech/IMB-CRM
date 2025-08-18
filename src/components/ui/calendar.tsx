@@ -82,8 +82,8 @@ function Calendar({
                 ),
                 day_range_end: "day-range-end",
                 day_selected:
-                    "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
-                day_today: "bg-accent text-accent-foreground",
+                    "bg-primary/10 text-primary hover:bg-primary hover:text-primary focus:bg-primary/15 focus:text-primary",
+                day_today: "bg-primary/10 text-primary",
                 day_outside:
                     "day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
                 day_disabled: "text-muted-foreground opacity-50",
@@ -97,7 +97,7 @@ function Calendar({
                 IconRight: () => <ChevronRight className="h-4 w-4" />,
                 Caption() {
                     return (
-                        <div className="flex items-center gap-0.5">
+                        <div className="flex items-center gap-2">
                             {/* Previous month button */}
                             <button
                                 type="button"
@@ -110,8 +110,8 @@ function Calendar({
                                     setMonth(prevMonth)
                                 }}
                                 className={cn(
-                                    buttonVariants({ variant: "outline" }),
-                                    "h-7 w-7 px-1 flex items-center justify-center",
+                                    buttonVariants({ variant: "ghost" }),
+                                    "h-7  px-2 flex items-center justify-center",
                                 )}
                                 aria-label="Previous month"
                             >
@@ -125,7 +125,7 @@ function Calendar({
                                     handleYearChange(Number(value))
                                 }
                             >
-                                <SelectTrigger>
+                                <SelectTrigger className="bg-transparent">
                                     <SelectValue>
                                         {month.getFullYear()}
                                     </SelectValue>
@@ -152,7 +152,7 @@ function Calendar({
                                     handleMonthChange(Number(value) - 1)
                                 }
                             >
-                                <SelectTrigger>
+                                <SelectTrigger className="bg-transparent">
                                     <SelectValue>
                                         {months[month.getMonth()]?.name}
                                     </SelectValue>
@@ -178,8 +178,8 @@ function Calendar({
                                     setMonth(nextMonth)
                                 }}
                                 className={cn(
-                                    buttonVariants({ variant: "outline" }),
-                                    "h-7 w-7 px-1 flex items-center justify-center",
+                                    buttonVariants({ variant: "ghost" }),
+                                    "h-7  px-2 flex items-center justify-center",
                                 )}
                                 aria-label="Next month"
                             >

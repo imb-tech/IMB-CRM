@@ -22,13 +22,13 @@ function CostMain() {
                                 icon={<ArrowLeft size={20} />}
                             />
                             <h1 className="text-xl">Xarajatlar tarixi</h1>
-                            <Badge variant={"outline"} className="text-sm">
+                            <Badge  className="text-sm">
                                 {data.length}
                             </Badge>
                         </div>
                         <ParamDateRange />
                     </div>
-                    <DataTable columns={columns} data={data} />
+                    <DataTable columns={columns} data={data} numeration />
                 </CardContent>
             </Card>
         </div>

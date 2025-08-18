@@ -8,7 +8,7 @@ import { setAccessToken } from "@/lib/set-token"
 import { QueryClient } from "@tanstack/react-query"
 import axios, { AxiosError } from "axios"
 
-const baseURL = import.meta.env.VITE_DEFAULT_URL
+export const baseURL = import.meta.env.VITE_DEFAULT_URL
 // const baseURL = localStorage.getItem('api')! + '/api/v1'
 
 const axiosInstance = axios.create({

@@ -4,9 +4,8 @@ import ExportAsExcel from "@/components/custom/export-excel"
 import { buttonVariants } from "@/components/ui/button"
 import useMe from "@/hooks/useMe"
 import { months, optionYears } from "@/lib/utils"
-import { useSearch } from "@tanstack/react-router"
 
-export default function ReportsFilter() {
+export default function FinanceFilter() {
     const { data, active_branch } = useMe()
 
     return (
@@ -22,20 +21,20 @@ export default function ReportsFilter() {
             />
             <ParamCombobox
                 dontAllowClear
+                paramName="year"
+                options={optionYears()}
+                isSearch={false}
+                label="Yil"
+                className="!bg-background dark:!bg-secondary"
+            />
+            <ParamCombobox
+                dontAllowClear
                 paramName="month"
                 options={months}
                 isSearch={false}
                 valueKey="key"
                 labelKey="name"
                 label="Oy"
-                className="!bg-background dark:!bg-secondary"
-            />
-            <ParamCombobox
-                dontAllowClear
-                paramName="year"
-                options={optionYears()}
-                isSearch={false}
-                label="Yil"
                 className="!bg-background dark:!bg-secondary"
             />
             <ParamCombobox
@@ -53,7 +52,7 @@ export default function ReportsFilter() {
                 label="Filial"
                 className="w-[160px] rounded-sm !bg-background dark:!bg-secondary"
             />
-            <ExportAsExcel url="url" name="reports" />
+            <ExportAsExcel url="url" name="finance" />
         </aside>
     )
 }

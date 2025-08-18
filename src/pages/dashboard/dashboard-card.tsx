@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
+import { Link } from "@tanstack/react-router"
 import {
     Users,
     BookOpen,
@@ -92,12 +93,14 @@ export default function DashboardCard() {
                             { icon: Icon, label, value, bgColor, iconColor },
                             index,
                         ) => (
-                            <div
+                            <Link
+                                to="/students"
+                                search={{ page_tabs: label }}
                                 className={cn(
-                                    "px-2 ",
-                                    index === 3 || index == 6 ?
-                                        "xl:border-r border-white/40"
-                                    :   "",
+                                    "px-2 hover:scale-105 transition-all cursor-pointer hover:shadow-lg",
+                                    index === 3 || index == 6
+                                        ? "xl:border-r"
+                                        : "",
                                 )}
                             >
                                 <div
@@ -114,7 +117,7 @@ export default function DashboardCard() {
                                         {value}
                                     </p>
                                 </div>
-                            </div>
+                            </Link>
                         ),
                     )}
                 </div>

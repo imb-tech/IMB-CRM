@@ -53,10 +53,11 @@ const RolesMain = () => {
                         columns={columns}
                         data={data?.results}
                         loading={isFetching}
+                        numeration
                         setRowClassName={(row) =>
-                            row.editable ? "" : (
-                                "last:!opacity-0 last:!pointer-events-none"
-                            )
+                            row.editable
+                                ? ""
+                                : "last:!opacity-0 last:!pointer-events-none"
                         }
                     />
                 </CardContent>

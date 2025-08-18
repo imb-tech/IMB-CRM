@@ -9,7 +9,6 @@ import {
 import FinanceCard from "./finance-card"
 import FinanceInExChart from "./finance-inex-chart"
 import FinanceBenefitChart from "./finance-benefit-chart"
-import ParamTabs from "@/components/as-params/tabs"
 import CostAndIncomeMain from "./reports"
 import ParamTabList, { ParamTabProvider } from "@/components/as-params/tab"
 import { cn } from "@/lib/utils"
@@ -18,6 +17,7 @@ import Modal from "@/components/custom/modal"
 import { useModal } from "@/hooks/useModal"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import FinanceFilter from "./finance-filter"
 
 export const cardData = [
     {
@@ -64,7 +64,7 @@ export const cardData = [
         textColor: "text-blue-700 dark:text-blue-400",
         url: "/finance/income",
     },
-]
+] 
 
 const tabsData = [
     {
@@ -83,7 +83,10 @@ const FinanceMain = () => {
         console.log("text-primary")
     }
     return (
-        <div className="w-full space-y-4">
+        <div className="w-full space-y-3">
+            <div className="flex justify-end">
+                <FinanceFilter/>
+            </div>
             <Card className="w-full">
                 <CardContent>
                     <h3 className="text-lg font-semibold mb-4">
