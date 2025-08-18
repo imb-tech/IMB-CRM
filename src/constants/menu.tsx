@@ -84,7 +84,7 @@ export const menuItems = [
         title: "Davomatlar",
         icon: <CalendarRange width={20} />,
         to: "/attendance",
-        enabled: true,
+        enabled: false,
         items: [
             linkOptions({
                 title: "Guruhlar davomati",

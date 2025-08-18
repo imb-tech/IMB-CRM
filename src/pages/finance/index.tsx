@@ -1,10 +1,22 @@
 import { Card, CardContent } from "@/components/ui/card"
-import { TrendingUp, TrendingDown, DollarSign, CreditCard } from "lucide-react"
+import {
+    TrendingUp,
+    TrendingDown,
+    DollarSign,
+    CreditCard,
+    Plus,
+} from "lucide-react"
 import FinanceCard from "./finance-card"
 import FinanceInExChart from "./finance-inex-chart"
 import FinanceBenefitChart from "./finance-benefit-chart"
-import ParamTabs from "@/components/as-params/tabs"
 import CostAndIncomeMain from "./reports"
+import ParamTabList, { ParamTabProvider } from "@/components/as-params/tab"
+import { cn } from "@/lib/utils"
+import { formatMoney } from "@/lib/format-money"
+import Modal from "@/components/custom/modal"
+import { useModal } from "@/hooks/useModal"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import FinanceFilter from "./finance-filter"
 
 export const cardData = [
@@ -56,20 +68,19 @@ export const cardData = [
 
 const tabsData = [
     {
-        value: "income",
-        label: "Kirim",
+        id: "income",
+        name: "Kirim",
     },
     {
-        value: "cost",
-        label: "Chiqim",
+        id: "cost",
+        name: "Chiqim",
     },
 ]
 
 const FinanceMain = () => {
-
-    const onAddTabs =()=>{
-        console.log("text-primary");
-        
+    const { openModal } = useModal("create-category")
+    const onAddTabs = () => {
+        console.log("text-primary")
     }
     return (
         <div className="w-full space-y-3">
@@ -95,12 +106,57 @@ const FinanceMain = () => {
                 <FinanceBenefitChart />
             </div>
 
-            <Card>
-                <CardContent className="space-y-4">
-                    <ParamTabs options={tabsData} onAdd={onAddTabs} />
-                    <CostAndIncomeMain />
-                </CardContent>
-            </Card>
+            <ParamTabProvider paramName="page_tabs">
+                <Card>
+                    <CardContent className="space-y-4">
+                        <div className="flex items-center">
+                            <ParamTabList
+                                options={tabsData}
+                                paramName="page_tabs"
+                                wrapperClassName="w-auto"
+                                listClassName="h-auto gap-1 bg-transparent"
+                                renderOption={(item, actv) => (
+                                    <div
+                                        className={cn(
+                                            "px-2 py-4 min-w-32 border rounded-md",
+                                            actv ? "text-primary" : "",
+                                        )}
+                                    >
+                                        <p>{item.name}</p>
+                                        <p
+                                            className={cn(
+                                                "text-muted-foreground",
+                                            )}
+                                        >
+                                            {formatMoney(40050000)}
+                                        </p>
+                                    </div>
+                                )}
+                            />
+                            <div
+                                className={cn(
+                                    "px-2 py-[24px] min-w-20 border rounded-md text-sm flex items-center justify-center cursor-pointer hover:bg-secondary",
+                                )}
+                                onClick={openModal}
+                            >
+                                <Plus className="text-primary" />
+                            </div>
+                        </div>
+                        <CostAndIncomeMain />
+                    </CardContent>
+                </Card>
+            </ParamTabProvider>
+
+            <Modal
+                modalKey="create-category"
+                title="Kategoriya yaratish"
+                size="max-w-md"
+            >
+                <form className="flex flex-col gap-2">
+                    <Input placeholder={"Misol: Boshqa xarajatlar"} fullWidth />
+                    <Button className="w-full">Yaratish</Button>
+                </form>
+            </Modal>
             {/* <div className="grid gap-4 lg:grid-cols-2">
                 <ChartColumn />
                 <FinanceStatus />

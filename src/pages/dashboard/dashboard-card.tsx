@@ -15,11 +15,12 @@ import {
 
 const statsData = [
     {
-        icon: Users,
-        label: "Lidlar",
-        value: 400,
-        bgColor: "bg-purple-50 dark:bg-purple-900/10",
-        iconColor: "text-purple-600 dark:text-purple-400",
+        icon: GraduationCap,
+        label: "Talabalar",
+        value: 200,
+
+        bgColor: "bg-green-50 dark:bg-green-900/10",
+        iconColor: "text-green-600 dark:text-green-400",
     },
     {
         icon: BookOpen,
@@ -29,19 +30,18 @@ const statsData = [
         iconColor: "text-amber-600 dark:text-amber-400",
     },
     {
+        icon: GraduationCap,
+        label: "Muzlatilgan",
+        value: 200,
+        bgColor: "bg-gray-50 dark:bg-secondary/20",
+        iconColor: "text-gray-600 dark:text-gray-400",
+    },
+    {
         icon: UserCheck,
         label: "Tark etganlar",
         value: 600,
         bgColor: "bg-rose-50 dark:bg-rose-900/10",
         iconColor: "text-rose-600 dark:text-rose-400",
-    },
-    {
-        icon: GraduationCap,
-        label: "Talabalar",
-        value: 200,
-
-        bgColor: "bg-green-50 dark:bg-green-900/10",
-        iconColor: "text-green-600 dark:text-green-400",
     },
     {
         icon: Clock,

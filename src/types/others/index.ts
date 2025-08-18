@@ -42,7 +42,7 @@ type SearchParams = {
     plan_id?: string
     month?: string
     last_company_id?: number
-    tabs?: "card" | "table"
+    tabs?: string
     day?: string
     task?: string
     page_tabs?: string

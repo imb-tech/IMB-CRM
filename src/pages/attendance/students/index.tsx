@@ -9,10 +9,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Card, CardContent } from "@/components/ui/card"
-import { ParamCombobox } from "@/components/as-params/combobox"
-import { cn, months, optionYears } from "@/lib/utils"
-import ParamDateRangePicker from "@/components/as-params/date-range-picker"
-import { buttonVariants } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import StudentAttendance from "./stats"
 
 export default function StudentsAttendanceMain() {
@@ -21,53 +18,6 @@ export default function StudentsAttendanceMain() {
     return (
         <div className="w-full flex flex-col gap-3">
             <div className="bg-background p-3 rounded-md dark:bg-card">
-                <div className="flex items-center gap-2 mb-3">
-                    <ParamCombobox
-                        isSearch={false}
-                        label="O'qituvchi"
-                        className="w-full"
-                        options={[
-                            {
-                                label: "Barchasi",
-                                value: "all",
-                            },
-                            {
-                                label: "Faol",
-                                value: "active",
-                            },
-                        ]}
-                        paramName="status"
-                    />
-                    <ParamCombobox
-                        isSearch={false}
-                        label="Oy"
-                        className="w-full"
-                        options={months}
-                        labelKey="name"
-                        valueKey="key"
-                        paramName="status"
-                    />
-                    <ParamCombobox
-                        isSearch={false}
-                        label="Yil"
-                        className="w-full "
-                        options={optionYears("label", "value")}
-                        paramName="status"
-                    />
-                    <div className="w-full">
-                        <ParamDateRangePicker
-                            showToday
-                            showYesterday
-                            showLastWeek
-                            itemClassName={buttonVariants({
-                                variant: "ghost",
-                                className: "rounded-sm gap-2 ",
-                            })}
-                            placeholder="Sana bo'yicha"
-                            className="p-0 bg-secondary"
-                        />
-                    </div>
-                </div>
                 <StudentAttendance />
             </div>
             <Card>
