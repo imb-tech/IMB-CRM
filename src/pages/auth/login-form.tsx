@@ -40,7 +40,7 @@ export default function LoginForm() {
         const newVals = `{username:${vals.username}},{password:${vals.password}}`
 
         const encryptData = {
-            // encrypted_data: encryptMessage(newVals),
+            encrypted_data: encryptMessage(newVals),
             ...vals
         }
 
