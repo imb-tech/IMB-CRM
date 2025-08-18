@@ -14,28 +14,28 @@ import { cn } from "@/lib/utils"
 export const description = "A multiple bar chart"
 
 type Data = {
-    desktop: number
-    mobile: number
+    Kirim: number
+    Chiqim: number
     month: string
 }
 
 const chartData: Data[] = [
-    { month: "January", desktop: 186, mobile: 80 },
-    { month: "February", desktop: 305, mobile: 200 },
-    { month: "March", desktop: 237, mobile: 120 },
-    { month: "April", desktop: 73, mobile: 190 },
-    { month: "May", desktop: 209, mobile: 130 },
-    { month: "June", desktop: 214, mobile: 140 },
+    { month: "January", Kirim: 186, Chiqim: 80 },
+    { month: "February", Kirim: 305, Chiqim: 200 },
+    { month: "March", Kirim: 237, Chiqim: 120 },
+    { month: "April", Kirim: 73, Chiqim: 190 },
+    { month: "May", Kirim: 209, Chiqim: 130 },
+    { month: "June", Kirim: 214, Chiqim: 140 },
 ]
 
 const chartConfig = {
-    desktop: {
+    Kirim: {
         label: "Chiqim",
-        color: "fill-rose-500/30 bg-rose-500/30",
+        color: "fill-red-500/60 bg-red-500/60",
     },
-    mobile: {
+    Chiqim: {
         label: "Kirim",
-        color: "fill-blue-500/30 bg-blue-500/30",
+        color: "fill-blue-500/60 bg-blue-500/60",
     },
 } satisfies ChartConfig
 
@@ -49,7 +49,7 @@ export default function FinanceInExChart() {
                         <p>Kirim</p>
                     </div>
                     <div className="flex items-center gap-2 hover:bg-secondary py-1 px-3 rounded-md cursor-pointer">
-                        <span className="bg-rose-500/60 block w-4 h-4 rounded"></span>
+                        <span className="bg-red-500/60 block w-4 h-4 rounded"></span>
                         <p>Chiqim</p>
                     </div>
                 </div>
@@ -67,14 +67,14 @@ export default function FinanceInExChart() {
                         />
                         <Tooltip content={<CustomTooltip />} />
                         <Bar
-                            dataKey="mobile"
-                            className={chartConfig.mobile.color}
+                            dataKey="Chiqim"
+                            className={chartConfig.Chiqim.color}
                             radius={4}
                             stackId={"b"}
                         />
                         <Bar
-                            dataKey="desktop"
-                            className={chartConfig.desktop.color}
+                            dataKey="Kirim"
+                            className={chartConfig.Kirim.color}
                             radius={4}
                             stackId={"a"}
                         />
@@ -93,7 +93,7 @@ const CustomTooltip = ({
     if (active && payload && payload.length) {
         return (
             <div className="custom-tooltip bg-secondary p-3 px-2 rounded-lg flex flex-col gap-2">
-                <p className="label">{`Date: ${label}`}</p>
+                <p className="label">{`${label}`}</p>
                 {payload.map((entry, index) => (
                     <div
                         className="flex items-center gap-2 hover:bg-secondary py-1 px-3 rounded-md cursor-pointer"
