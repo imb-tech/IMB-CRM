@@ -51,7 +51,7 @@ export default function MobileHeaderLinks({
                 >
                     <TabsList
                         className={cn(
-                            "flex-nowrap bg-background gap-2",
+                            "flex-nowrap bg-secondary gap-2",
                             classNameLink,
                         )}
                     >
@@ -61,8 +61,7 @@ export default function MobileHeaderLinks({
                                 ref={(el) => (tabsRef.current[index] = el)}
                                 value={link.to}
                                 className={`${
-                                    isActive(link, pathname) &&
-                                    "!bg-primary/15 !text-primary"
+                                    isActive(link, pathname) && "!bg-primary"
                                 } font-medium flex items-center gap-1.5 whitespace-nowrap`}
                             >
                                 {(link as any).icon && (link as any).icon}{" "}

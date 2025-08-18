@@ -2,6 +2,8 @@ import ParamTabList, { ParamTabProvider } from "@/components/as-params/tab"
 import { TabsContent } from "@/components/ui/tabs"
 import { lazy } from "react"
 import ReportsFilter from "./student-payment/students-filter"
+import StudentsAttendanceMain from "../attendance/students"
+import EmployeesAttendanceMain from "../attendance/employees"
 
 const StudentPayment = lazy(() => import("./student-payment"))
 
@@ -12,30 +14,34 @@ const ReportsMain = () => {
             name: "O'quvchilar to'lovi",
         },
         {
-            id: "2",
-            name: "2",
+            id: "attendance",
+            name: "O'quvchilar davomati",
         },
         {
-            id: "3",
-            name: "3",
-        },
-        {
-            id: "4",
-            name: "4",
+            id: "attendance_emp",
+            name: "Hodimlar davomati",
         },
     ]
 
     return (
         <div>
-            {/* <ParamTabs options={options} /> */}
             <ParamTabProvider defaultValue="student_payments">
                 <div className="flex items-center justify-between">
-                    <ParamTabList options={options} listClassName="dark:bg-secondary" />
+                    <ParamTabList
+                        options={options}
+                        listClassName="dark:bg-secondary"
+                    />
                     <ReportsFilter />
                 </div>
                 <div className="mt-2">
                     <TabsContent value="student_payments" className="mt-0">
                         <StudentPayment />
+                    </TabsContent>
+                    <TabsContent value="attendance" className="mt-0">
+                        <StudentsAttendanceMain />
+                    </TabsContent>
+                    <TabsContent value="attendance_emp" className="mt-0">
+                        <EmployeesAttendanceMain />
                     </TabsContent>
                 </div>
             </ParamTabProvider>
