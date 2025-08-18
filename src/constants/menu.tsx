@@ -60,7 +60,7 @@ export const menuItems = [
                 items: [],
             }),
             linkOptions({
-                title: "Yo'qlama qilmoq",
+                title: "Yo'qlama",
                 to: "/employees/attendance",
                 enabled: true,
                 items: [],
@@ -84,7 +84,7 @@ export const menuItems = [
         title: "Davomatlar",
         icon: <CalendarRange width={20} />,
         to: "/attendance",
-        enabled: true,
+        enabled: false,
         items: [
             linkOptions({
                 title: "Guruhlar davomati",

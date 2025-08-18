@@ -12,7 +12,7 @@ export default function StudentPaymentsNumber() {
 
 export const cardData = [
     {
-        title: "To'lovchi",
+        title: "Umumiy summa",
         value: "10 000",
         badgeBg: "bg-blue-200 dark:bg-blue-900/40",
         textColor: "text-blue-600 dark:text-blue-400",

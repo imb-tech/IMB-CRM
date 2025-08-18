@@ -9,7 +9,7 @@ import { useMemo } from "react"
 export default function SettingsHeader({
     dataCount,
     handleAdd,
-    pageTitle
+    pageTitle,
 }: {
     dataCount?: number
     handleAdd: () => void
@@ -22,16 +22,19 @@ export default function SettingsHeader({
     )
 
     return (
-        <div className="flex items-center gap-3 ">
+        <div className="flex items-center gap-3">
             <div className="flex items-center gap-3 flex-1">
                 <h1 className="text-xl">{pageTitle ?? activeLink?.title}</h1>
-                <Badge className="text-sm">
-                    {dataCount}
-                </Badge>
+                <Badge className="text-sm">{dataCount}</Badge>
             </div>
-            <span className={buttonVariants({ variant: "secondary" })}>
+            <label
+                className={buttonVariants({
+                    variant: "secondary",
+                })}
+                htmlFor="is_active"
+            >
                 <ParamSwtich paramName="is_active" reverse label="Arxiv" />
-            </span>
+            </label>
             <Button onClick={handleAdd}>
                 <Plus className="h-4 w-4" />
                 Yaratish
