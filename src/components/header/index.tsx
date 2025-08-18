@@ -5,7 +5,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
-import { Link, useNavigate } from "@tanstack/react-router"
+import { Link, useLocation, useNavigate } from "@tanstack/react-router"
 import { LogOut, User } from "lucide-react"
 import { ThemeColorToggle } from "./color-toggle"
 import { SidebarTrigger } from "../ui/sidebar"
@@ -26,6 +26,7 @@ const Header = ({ rigthChildren, leftChildren, navOnHeader }: Props) => {
     const { data } = useMe()
     const activeBranch = getActiveBranch()
     const [branch, setBranch] = useState(activeBranch)
+    const { pathname } = useLocation()
 
     const handleLogOut = () => {
         navigate({ to: "/login" })
@@ -59,15 +60,17 @@ const Header = ({ rigthChildren, leftChildren, navOnHeader }: Props) => {
             </div>
             <hgroup className="flex items-center gap-4">
                 {rigthChildren ? rigthChildren : null}
-                <Select
-                    value={branch}
-                    setValue={(v) => changeBranch(v.toString())}
-                    className="w-full"
-                    labelKey="name"
-                    valueKey="id"
-                    options={data?.branches ?? []}
-                    label="Barcha filiallar"
-                />
+                {pathname !== "/reports" && pathname !== "/finance" && (
+                    <Select
+                        value={branch}
+                        setValue={(v) => changeBranch(v.toString())}
+                        className="w-full"
+                        labelKey="name"
+                        valueKey="id"
+                        options={data?.branches ?? []}
+                        label="Barcha filiallar"
+                    />
+                )}
                 <ThemeColorToggle />
                 <DropdownMenu>
                     <div className="relative h-10">

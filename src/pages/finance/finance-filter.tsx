@@ -5,7 +5,7 @@ import { buttonVariants } from "@/components/ui/button"
 import useMe from "@/hooks/useMe"
 import { months, optionYears } from "@/lib/utils"
 
-export default function ReportsFilter() {
+export default function FinanceFilter() {
     const { data, active_branch } = useMe()
 
     return (
@@ -52,7 +52,7 @@ export default function ReportsFilter() {
                 label="Filial"
                 className="w-[160px] rounded-sm !bg-background dark:!bg-secondary"
             />
-            <ExportAsExcel url="url" name="reports" />
+            <ExportAsExcel url="url" name="finance" />
         </aside>
     )
 }

@@ -5,6 +5,7 @@ import FinanceInExChart from "./finance-inex-chart"
 import FinanceBenefitChart from "./finance-benefit-chart"
 import ParamTabs from "@/components/as-params/tabs"
 import CostAndIncomeMain from "./reports"
+import FinanceFilter from "./finance-filter"
 
 export const cardData = [
     {
@@ -51,7 +52,7 @@ export const cardData = [
         textColor: "text-blue-700 dark:text-blue-400",
         url: "/finance/income",
     },
-]
+] 
 
 const tabsData = [
     {
@@ -71,7 +72,10 @@ const FinanceMain = () => {
         
     }
     return (
-        <div className="w-full space-y-4">
+        <div className="w-full space-y-3">
+            <div className="flex justify-end">
+                <FinanceFilter/>
+            </div>
             <Card className="w-full">
                 <CardContent>
                     <h3 className="text-lg font-semibold mb-4">

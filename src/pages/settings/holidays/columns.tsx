@@ -5,10 +5,6 @@ export const useHolidaysCols = () =>
     useMemo<ColumnDef<Holiday>[]>(
         () => [
             {
-                header: "№",
-                cell: ({ row }) => row.index + 1,
-            },
-            {
                 header: "Sana",
                 accessorKey: "date",
             },

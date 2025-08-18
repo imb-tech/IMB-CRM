@@ -7,10 +7,6 @@ export const useIncomeCols = () =>
     useMemo<ColumnDef<Income>[]>(
         () => [
             {
-                header: "№",
-                cell: ({ row }) => row.index + 1,
-            },
-            {
                 header: "Nomi",
                 accessorKey: "name",
                 enableSorting: true,
