@@ -78,7 +78,7 @@ const ParamTabs: React.FC<ParamTabsProps> = ({
                                     }
                                     disabled={disabled}
                                 >
-                                    {option.label}
+                                    {option.label} 
                                     {!!option.badge && (
                                         <Badge
                                             className={cn(
