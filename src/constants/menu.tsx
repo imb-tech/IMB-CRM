@@ -60,7 +60,7 @@ export const menuItems = [
                 items: [],
             }),
             linkOptions({
-                title: "Yo'qlama qilmoq",
+                title: "Yo'qlama",
                 to: "/employees/attendance",
                 enabled: true,
                 items: [],

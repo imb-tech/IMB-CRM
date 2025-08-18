@@ -1,10 +1,10 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { TrendingUp, TrendingDown, DollarSign, CreditCard } from "lucide-react"
 import FinanceCard from "./finance-card"
-import FinanceStatus from "./finance-status"
-import { ChartColumn } from "./finance-chart"
 import FinanceInExChart from "./finance-inex-chart"
 import FinanceBenefitChart from "./finance-benefit-chart"
+import ParamTabs from "@/components/as-params/tabs"
+import CostAndIncomeMain from "./reports"
 
 export const cardData = [
     {
@@ -53,7 +53,23 @@ export const cardData = [
     },
 ]
 
+const tabsData = [
+    {
+        value: "income",
+        label: "Kirim",
+    },
+    {
+        value: "cost",
+        label: "Chiqim",
+    },
+]
+
 const FinanceMain = () => {
+
+    const onAddTabs =()=>{
+        console.log("text-primary");
+        
+    }
     return (
         <div className="w-full space-y-4">
             <Card className="w-full">
@@ -75,19 +91,25 @@ const FinanceMain = () => {
                 <FinanceBenefitChart />
             </div>
 
-            <div className="grid gap-4 lg:grid-cols-2">
+            <Card>
+                <CardContent className="space-y-4">
+                    <ParamTabs options={tabsData} onAdd={onAddTabs} />
+                    <CostAndIncomeMain />
+                </CardContent>
+            </Card>
+            {/* <div className="grid gap-4 lg:grid-cols-2">
                 <ChartColumn />
                 <FinanceStatus />
 
-                {/* <Card className="lg:col-span-3">
+                <Card className="lg:col-span-3">
                     <CardContent>
                         <h3 className="text-lg mb-4 font-semibold">
                             Bo'limlar Daromadi
                         </h3>
                         <BarChartLabel />
                     </CardContent>
-                </Card> */}
-            </div>
+                </Card>
+            </div> */}
         </div>
     )
 }

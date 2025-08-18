@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils"
 import { useNavigate, useSearch } from "@tanstack/react-router"
-import { PlusCircle } from "lucide-react"
+import { Plus } from "lucide-react"
 import { ReactNode } from "react"
 import { ClassNameValue } from "tailwind-merge"
 import { Badge } from "../ui/badge"
@@ -97,9 +97,9 @@ const ParamTabs: React.FC<ParamTabsProps> = ({
                     {!!onAdd && (
                         <TabsTrigger value="add" asChild>
                             <Button
-                                icon={<PlusCircle width={18} />}
+                                icon={<Plus width={22} />}
                                 variant="ghost"
-                                className="!text-primary h-8"
+                                className="!text-primary h-8 p-0"
                             />
                         </TabsTrigger>
                     )}

@@ -24,7 +24,7 @@ export default function StudentAttendance() {
     return (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {data.map((d, i) => (
-                <Card key={i} className="bg-secondary dark:bg-background">
+                <Card key={i} className="bg-secondary">
                     <CardContent
                         className={cn("flex flex-col-reverse items-center py-5 rounded-md")}
                     >

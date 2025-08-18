@@ -25,7 +25,7 @@ export default function StudentsAttendanceMain() {
                     <ParamCombobox
                         isSearch={false}
                         label="O'qituvchi"
-                        className="w-full dark:!bg-background"
+                        className="w-full"
                         options={[
                             {
                                 label: "Barchasi",
@@ -41,7 +41,7 @@ export default function StudentsAttendanceMain() {
                     <ParamCombobox
                         isSearch={false}
                         label="Oy"
-                        className="w-full dark:!bg-background"
+                        className="w-full"
                         options={months}
                         labelKey="name"
                         valueKey="key"
@@ -50,7 +50,7 @@ export default function StudentsAttendanceMain() {
                     <ParamCombobox
                         isSearch={false}
                         label="Yil"
-                        className="w-full dark:!bg-background"
+                        className="w-full "
                         options={optionYears("label", "value")}
                         paramName="status"
                     />
@@ -61,10 +61,10 @@ export default function StudentsAttendanceMain() {
                             showLastWeek
                             itemClassName={buttonVariants({
                                 variant: "ghost",
-                                className: "rounded-sm gap-2 !bg-transparent",
+                                className: "rounded-sm gap-2 ",
                             })}
                             placeholder="Sana bo'yicha"
-                            className="p-0 bg-secondary dark:bg-background"
+                            className="p-0 bg-secondary"
                         />
                     </div>
                 </div>
