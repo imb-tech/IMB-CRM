@@ -43,12 +43,12 @@ export default function FinanceInExChart() {
     return (
         <Card className="p-0 select-none">
             <CardHeader className="">
-                <div className="flex items-center text-xl gap-3 font-light">
-                    <div className="flex items-center gap-2 hover:bg-secondary py-1 px-3 rounded-md cursor-pointer">
+                <div className="flex items-center  gap-3 font-light">
+                    <div className="flex items-center gap-2  py-1 px-3 rounded-md ">
                         <span className="bg-blue-500/60 block w-4 h-4 rounded"></span>
                         <p>Kirim</p>
                     </div>
-                    <div className="flex items-center gap-2 hover:bg-secondary py-1 px-3 rounded-md cursor-pointer">
+                    <div className="flex items-center gap-2  py-1 px-3 rounded-md ">
                         <span className="bg-red-500/60 block w-4 h-4 rounded"></span>
                         <p>Chiqim</p>
                     </div>
