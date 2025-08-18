@@ -10,11 +10,18 @@ export default function ParamTabList({
     wrapperClassName,
     options = [],
     paramName = "tabs",
+    renderOption,
+    activeClassName,
 }: {
     listClassName?: ClassNameValue
     wrapperClassName?: ClassNameValue
     options?: { id: number | string; name: string }[]
     paramName?: keyof SearchParams
+    renderOption?: (
+        v: { id: number | string; name: string },
+        isActive: boolean,
+    ) => ReactNode
+    activeClassName?: ClassNameValue
 }) {
     const search = useSearch({ from: "__root__" })
     const currValue = search[paramName]
@@ -46,19 +53,30 @@ export default function ParamTabList({
                     listClassName,
                 )}
             >
-                {options.map((link, index) => (
-                    <TabsTrigger
-                        key={link.id}
-                        ref={(el) => (tabsRef.current[index] = el)}
-                        value={link.id as string}
-                        className={`${
-                            link.id === currValue &&
-                            "!bg-primary !text-primary-foreground"
-                        } font-medium flex items-center gap-2 whitespace-nowrap`}
-                    >
-                        {link.name}
-                    </TabsTrigger>
-                ))}
+                {options.map((link, index) =>
+                    renderOption ?
+                        <TabsTrigger
+                            key={link.id}
+                            ref={(el) => (tabsRef.current[index] = el)}
+                            value={link.id as string}
+                            className={`${
+                                link.id === currValue && activeClassName
+                            } p-0 h-auto`}
+                        >
+                            {renderOption(link, link.id === currValue)}
+                        </TabsTrigger>
+                    :   <TabsTrigger
+                            key={link.id}
+                            ref={(el) => (tabsRef.current[index] = el)}
+                            value={link.id as string}
+                            className={`${
+                                link.id === currValue &&
+                                "!bg-primary !text-primary-foreground"
+                            } font-medium flex items-center gap-2 whitespace-nowrap`}
+                        >
+                            {link.name}
+                        </TabsTrigger>,
+                )}
             </TabsList>
         </div>
     )

@@ -21,16 +21,16 @@ const ReportCard = ({ data }: Props) => {
         <Link to={url}>
             <Card
                 className={clsx(
-                    "relative overflow-hidden border-none shadow-none hover:shadow-sm transition-all bg-card p-5 rounded-lg",
+                    "relative overflow-hidden border-none shadow-none hover:shadow-sm transition-all bg-card p-4 rounded-lg",
                 )}
             >
                 <CardHeader className="p-0 mb-4">
                     <div className="flex items-center gap-2 justify-between">
-                        <CardTitle className="text-2xl font-extralight opacity-70 p-0">
+                        <CardTitle className="text-xl font-extralight opacity-70 p-0">
                             {title}
                         </CardTitle>
                         <div className="flex items-center gap-2 pl-3">
-                            <Users className={textColor} />
+                            <Users className={textColor} size={18} />
                             <div className={`text-lg font-light`}>{value}</div>
                         </div>
                         {/* <div className={`rounded-full ${badgeBg} p-2`}>

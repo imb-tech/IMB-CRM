@@ -6,7 +6,7 @@ import {
 import { getAccessToken, getRefreshToken } from "@/lib/get-token"
 import { setAccessToken } from "@/lib/set-token"
 import { QueryClient } from "@tanstack/react-query"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 
 const baseURL = import.meta.env.VITE_DEFAULT_URL
 // const baseURL = localStorage.getItem('api')! + '/api/v1'
@@ -83,6 +83,14 @@ export function setupAxiosInterceptors(queryClient: QueryClient) {
                 // await queryClient.invalidateQueries({ queryKey: [GET_ME] });
                 await new Promise((resolve) => setTimeout(resolve, 100))
                 return axiosInstance(originalRequest)
+            }
+
+            if (status === 500 || status === 502) {
+                error.response.status = 400;
+                error.response.data = {
+                    detail: "Serverga ulanishda muammo",
+                };
+
             }
 
             return Promise.reject(error)
