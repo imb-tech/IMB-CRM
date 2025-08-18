@@ -60,6 +60,12 @@ export const menuItems = [
                 items: [],
             }),
             linkOptions({
+                title: "Yo'qlama qilmoq",
+                to: "/employees/attendance",
+                enabled: true,
+                items: [],
+            }),
+            linkOptions({
                 title: "Maoshlar",
                 to: "/employees/salary",
                 enabled: true,

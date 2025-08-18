@@ -8,7 +8,7 @@ import { useGet } from "@/hooks/useGet"
 import { useSearch } from "@tanstack/react-router"
 import HrAccordion from "./hr-accordion"
 
-const EmployeesMain = () => {
+const EmployeesAttendance = () => {
     const [current, setCurrent] = useState<Employee | null>(null)
     const { role, ...params } = useSearch({ from: "/_main/employees" })
 
@@ -42,4 +42,4 @@ const EmployeesMain = () => {
     )
 }
 
-export default EmployeesMain
+export default EmployeesAttendance
