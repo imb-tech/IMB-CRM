@@ -52,6 +52,7 @@ const HolidaysMain = () => {
                         loading={isFetching}
                         data={data?.results}
                         viewAll
+                        numeration
                     />
                 </CardContent>
             </Card>

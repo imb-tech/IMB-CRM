@@ -69,9 +69,9 @@ export default function ParamDateRangePicker({
     const toDate = toDateString ? new Date(toDateString) : undefined
 
     const [selectedRange, setSelectedRange] = useState<DateRange | undefined>(
-        fromDate && toDate && !presetParam ?
-            { from: fromDate, to: toDate }
-        :   undefined,
+        fromDate && toDate && !presetParam
+            ? { from: fromDate, to: toDate }
+            : undefined,
     )
     const [isOpen, setIsOpen] = useState(false)
 
@@ -88,10 +88,12 @@ export default function ParamDateRangePicker({
             if (disabled) return
             const newSearch = {
                 ...search,
-                [fromParamName]:
-                    newFromDate ? format(newFromDate, dateFormat) : undefined,
-                [toParamName]:
-                    newToDate ? format(newToDate, dateFormat) : undefined,
+                [fromParamName]: newFromDate
+                    ? format(newFromDate, dateFormat)
+                    : undefined,
+                [toParamName]: newToDate
+                    ? format(newToDate, dateFormat)
+                    : undefined,
                 [presetParamName]: preset || undefined,
             }
             router.navigate({
@@ -155,10 +157,13 @@ export default function ParamDateRangePicker({
         if (disabled) return
 
         const range =
-            preset === "today" ? todayRange
-            : preset === "yesterday" ? yesterdayRange
-            : preset === "week" ? weekRange
-            : monthRange
+            preset === "today"
+                ? todayRange
+                : preset === "yesterday"
+                ? yesterdayRange
+                : preset === "week"
+                ? weekRange
+                : monthRange
 
         updateSearchParams(range.from, range.to, preset)
     }
@@ -178,9 +183,9 @@ export default function ParamDateRangePicker({
                             className={cn(
                                 "px-3 py-1 rounded-sm text-sm cursor-pointer transition-colors",
                                 itemClassName,
-                                isActivePreset(preset) ?
-                                    "!bg-primary/20 text-primary hover:!text-primary"
-                                :   "hover:bg-primary/30 hover:text-primary",
+                                isActivePreset(preset)
+                                    ? "!bg-primary/20 text-primary hover:!text-primary"
+                                    : "hover:bg-primary/30 hover:text-primary",
                             )}
                             onClick={() => handlePresetClick(preset)}
                         >
@@ -203,74 +208,66 @@ export default function ParamDateRangePicker({
                         <div
                             className={cn(
                                 "hover:bg-primary/20 flex items-center gap-2 cursor-pointer px-2 py-0.5 rounded-sm",
-                                selectedRange?.from && selectedRange?.to ?
-                                    "bg-secondary pr-0"
-                                :   "",
+                                selectedRange?.from && selectedRange?.to
+                                    ? "bg-secondary pr-0"
+                                    : "",
                                 itemClassName,
-                                (
-                                    (selectedRange?.from &&
-                                        selectedRange?.to) ||
-                                        presetParam
-                                ) ?
-                                    "rounded-r-none"
-                                :   "",
+                                (selectedRange?.from && selectedRange?.to) ||
+                                    presetParam
+                                    ? "rounded-r-none"
+                                    : "",
                             )}
                         >
                             <span className="font-light">
-                                {selectedRange?.from && selectedRange?.to ?
-                                    formatDateRange()
-                                :   placeholder}
+                                {selectedRange?.from && selectedRange?.to
+                                    ? formatDateRange()
+                                    : placeholder}
                             </span>
                             <Calendar className="h-4 w-4" />
                         </div>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
-                        <div className="p-3 space-y-3">
-                            <CalendarComponent
-                                initialFocus
-                                mode="range"
-                                defaultMonth={selectedRange?.from}
-                                selected={selectedRange}
-                                onSelect={(range) =>
-                                    setSelectedRange(range as any)
-                                }
-                                numberOfMonths={2}
-                                className="rounded-md border"
-                            />
-                            <div className="flex justify-between items-center pt-3 border-t">
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => {
-                                        reset()
-                                        setIsOpen(false)
-                                    }}
-                                >
-                                    Tozalash
-                                </Button>
-                                <Button
-                                    size="sm"
-                                    onClick={() => {
-                                        if (
-                                            selectedRange?.from &&
-                                            selectedRange?.to
-                                        ) {
-                                            updateSearchParams(
-                                                selectedRange.from,
-                                                selectedRange.to,
-                                                undefined,
-                                            )
-                                        }
-                                        setIsOpen(false)
-                                    }}
-                                    disabled={
-                                        !selectedRange?.from ||
-                                        !selectedRange?.to
+                        <CalendarComponent
+                            initialFocus
+                            mode="range"
+                            defaultMonth={selectedRange?.from}
+                            selected={selectedRange}
+                            onSelect={(range) => setSelectedRange(range as any)}
+                            numberOfMonths={2}
+                            className="rounded-md "
+                        />
+                        <div className="flex justify-end items-center gap-3 p-3 border-t">
+                            <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => {
+                                    reset()
+                                    setIsOpen(false)
+                                }}
+                            >
+                                Tozalash
+                            </Button>
+                            <Button
+                                size="sm"
+                                onClick={() => {
+                                    if (
+                                        selectedRange?.from &&
+                                        selectedRange?.to
+                                    ) {
+                                        updateSearchParams(
+                                            selectedRange.from,
+                                            selectedRange.to,
+                                            undefined,
+                                        )
                                     }
-                                >
-                                    Davom etish
-                                </Button>
-                            </div>
+                                    setIsOpen(false)
+                                }}
+                                disabled={
+                                    !selectedRange?.from || !selectedRange?.to
+                                }
+                            >
+                                Davom etish
+                            </Button>
                         </div>
                     </PopoverContent>
                 </Popover>

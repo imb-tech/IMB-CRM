@@ -2,30 +2,25 @@ import { Badge } from "@/components/ui/badge"
 import { DataTable } from "@/components/ui/datatable"
 import { useCostAndIncomeCols } from "./columns"
 import ParamDateRange from "@/components/as-params/date-picker-range"
-import { Button } from "@/components/ui/button"
-import { ArrowLeft } from "lucide-react"
-import { useNavigate, useSearch } from "@tanstack/react-router"
+import {  useSearch } from "@tanstack/react-router"
 
 function CostAndIncomeMain() {
     const search = useSearch({ from: "/_main/finance/" })
-    const navigate = useNavigate()
     const columns = useCostAndIncomeCols()
     return (
         <DataTable
             columns={columns}
             data={data}
+            numeration
             head={
                 <div className="flex mb-3  justify-between items-center gap-3 ">
                     <div className="flex items-center gap-3">
-                        <Button
-                            onClick={() => navigate({ to: "/finance" })}
-                            size={"sm"}
-                            icon={<ArrowLeft size={20} />}
-                        />
-                        <h1 className="text-xl">{`${search?.page_tabs==="cost" ? "Xarajatlar" : "Daromadlar"} tarixi`}</h1>
-                        <Badge variant={"outline"} className="text-sm">
-                            {data.length}
-                        </Badge>
+                        <h1 className="text-xl">{`${
+                            search?.page_tabs === "cost"
+                                ? "Xarajatlar"
+                                : "Daromadlar"
+                        } tarixi`}</h1>
+                        <Badge className="text-sm">{data.length}</Badge>
                     </div>
                     <ParamDateRange />
                 </div>

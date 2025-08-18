@@ -5,10 +5,6 @@ export const useRolesCols = () =>
     useMemo<ColumnDef<Role>[]>(
         () => [
             {
-                header: "№",
-                cell: ({ row }) => row.index + 1,
-            },
-            {
                 header: "Nomi",
                 accessorKey: "name",
             },

@@ -28,7 +28,7 @@ function IncomeMain() {
                         </div>
                         <ParamDateRange />
                     </div>
-                    <DataTable columns={columns} data={data} />
+                    <DataTable columns={columns} data={data} numeration />
                 </CardContent>
             </Card>
         </div>
