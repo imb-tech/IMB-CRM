@@ -4,7 +4,7 @@ type Dashboard = {
 
 type WorkTime = {
     id: string
-    roomId: string
+    roomId: number
     startTime: string
     endTime: string
     course_name: string
@@ -13,7 +13,7 @@ type WorkTime = {
 }
 
 type RoomList = {
-    id: string
+    id: number
     name: string
 }
 

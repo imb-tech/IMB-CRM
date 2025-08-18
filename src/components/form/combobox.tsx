@@ -32,7 +32,7 @@ export function FormCombobox<
     placeholder,
     required,
     control,
-    hideError = true,
+    hideError = false,
     valueKey,
     labelKey,
     onAdd,

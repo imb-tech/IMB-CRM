@@ -10,9 +10,10 @@ import GroupCreate from "./create"
 import { useModal } from "@/hooks/useModal"
 import { useState } from "react"
 import { GROUP } from "@/constants/api-endpoints"
-import { useNavigate, useSearch } from "@tanstack/react-router"
+import { useSearch } from "@tanstack/react-router"
 import { useGet } from "@/hooks/useGet"
 import GroupFilter from "./group-filter"
+import useHistoryNavigate from "@/hooks/use-history-navigate"
 
 const GroupsMain = () => {
     const { openModal: openModalGroup } = useModal(`${GROUP}-add`)
@@ -23,7 +24,7 @@ const GroupsMain = () => {
 
     const { data, isFetching } = useGet<ListResp<Group>>(GROUP, { params })
 
-    const navigate = useNavigate()
+    const { push } = useHistoryNavigate()
 
     const handleItemAdd = () => {
         setCurrent(null)
@@ -65,12 +66,7 @@ const GroupsMain = () => {
                         onDelete={(row) => handleItemDelete(row.original)}
                         columns={columns}
                         data={data?.results}
-                        onRowClick={({ id }) =>
-                            navigate({
-                                to: "/groups/$id",
-                                params: { id: id.toString() },
-                            })
-                        }
+                        onRowClick={({ id }) => push(`/groups/${id}/students`)}
                         loading={isFetching}
                         viewAll
                         selecteds_row

@@ -11,6 +11,7 @@ import { format } from "date-fns"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { studentStatusKeys } from "../students/student-status"
+import showFormErrors from "@/lib/show-form-errors"
 
 type Fields = {
     student: number
@@ -47,7 +48,17 @@ export default function AppendStudent({
     })
 
     function onSubmit(v: Fields) {
-        mutate(GROUP_STUDENTS, v)
+        if (!v.student) {
+            return form.setError("student", {
+                type: "required",
+                message: "O'quvchini tanlang",
+            })
+        }
+        mutate(GROUP_STUDENTS, v, {
+            onError(err) {
+                showFormErrors(err, form)
+            },
+        })
     }
 
     return (
@@ -56,6 +67,7 @@ export default function AppendStudent({
             onSubmit={form.handleSubmit(onSubmit)}
         >
             <FormCombobox
+                key={form.formState.errors.student?.message}
                 control={form.control}
                 name="student"
                 options={data?.results}

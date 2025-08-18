@@ -25,7 +25,7 @@ export default function LoginForm() {
             if (refresh) {
                 setRefreshToken(refresh)
             }
-            window.location.replace("/")
+            window?.location?.replace?.("/")
         },
     })
     const methods = useForm<Form>({
@@ -40,7 +40,8 @@ export default function LoginForm() {
         const newVals = `{username:${vals.username}},{password:${vals.password}}`
 
         const encryptData = {
-            encrypted_data: encryptMessage(newVals),
+            // encrypted_data: encryptMessage(newVals),
+            ...vals
         }
 
         mutate(LOGIN, encryptData, {

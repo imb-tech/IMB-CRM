@@ -1,48 +1,68 @@
+import { ParamCombobox } from "@/components/as-params/combobox"
 import ParamInput from "@/components/as-params/input"
-import ParamTabList, { ParamTabProvider } from "@/components/as-params/tab"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { EMPLOYEE, OPTION_ROLES } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import { useModal } from "@/hooks/useModal"
+import { useSearch } from "@tanstack/react-router"
 import { Plus } from "lucide-react"
 import { useMemo } from "react"
 
-export default function EmployeesHeader() {
+export default function EmployeesHeader({
+    allEmployes,
+}: {
+    allEmployes?: number
+}) {
     const { data } = useGet<RoleOption[]>(OPTION_ROLES)
     const { openModal } = useModal(`${EMPLOYEE}-add`)
 
+    const { role } = useSearch({ strict: false })
+
+    const usersCount =
+        data?.reduce((acc, curr) => acc + curr.employees_count, 0) ?? 0
+
     const options = useMemo(() => {
-        const usersCount =
-            data?.reduce((acc, curr) => acc + curr.employees_count, 0) ?? 0
         return [
-            {
-                id: "all",
-                name: `Barchasi ${usersCount > 0 ? "(" + usersCount + ")" : ""}`,
-            },
             ...(data ?? [])?.map((usr) => ({
                 id: usr.id,
                 name: `${usr.name} ${usr.employees_count > 0 ? "(" + usr.employees_count + ")" : ""}`,
+                count: usr.employees_count,
             })),
         ]
     }, [data])
 
     return (
-        <ParamTabProvider defaultValue={"all"} paramName="role">
-            <div className="flex items-start justify-between flex-col md:flex-row gap-2">
-                <ParamTabList options={options} />
-                <div className="flex items-start gap-2 w-full justify-end">
-                    <div className="w-full md:w-[240px]">
-                        <ParamInput
-                            className="h-10 shadow-none border-none px-3"
-                            fullWidth
-                        />
-                    </div>
-                    <Button className="!h-10" onClick={openModal}>
-                        <Plus className="h-4 w-4" />
-                        Yaratish
-                    </Button>
-                </div>
+        <div className="flex items-center flex-col md:justify-between md:flex-row gap-2 mb-2">
+            <div className="flex items-center gap-3">
+                <h1 className="text-xl font-medium ">{"Hodimlar ro'yxati"}</h1>
+                <Badge className="text-sm">
+                    {role ?
+                        data?.find((r) => r.id === role)?.employees_count
+                    :   allEmployes}
+                </Badge>
             </div>
-        </ParamTabProvider>
+            <div className="flex items-center gap-2 justify-end">
+                <div className="w-full md:w-[240px]">
+                    <ParamInput
+                        className="h-10 shadow-none border-none px-3"
+                        fullWidth
+                    />
+                </div>
+                <ParamCombobox
+                    options={options}
+                    labelKey="name"
+                    valueKey="id"
+                    paramName="role"
+                    label="Rol"
+                    isSearch={false}
+                    className="!h-10 min-w-[140px]"
+                />
+                <Button className="!h-10" onClick={openModal}>
+                    <Plus className="h-4 w-4" />
+                    Yaratish
+                </Button>
+            </div>
+        </div>
     )
 }

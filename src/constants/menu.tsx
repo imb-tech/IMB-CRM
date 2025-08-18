@@ -60,6 +60,12 @@ export const menuItems = [
                 items: [],
             }),
             linkOptions({
+                title: "Yo'qlama qilmoq",
+                to: "/employees/attendance",
+                enabled: true,
+                items: [],
+            }),
+            linkOptions({
                 title: "Maoshlar",
                 to: "/employees/salary",
                 enabled: true,
@@ -121,18 +127,6 @@ export const menuItems = [
                 items: [],
             }),
             linkOptions({
-                title: "Xonalar",
-                to: "/settings/rooms",
-                enabled: true,
-                items: [],
-            }),
-            linkOptions({
-                title: "Kurslar",
-                to: "/settings/courses",
-                enabled: true,
-                items: [],
-            }),
-            linkOptions({
                 title: "To'lov turlari",
                 to: "/settings/payment-type",
                 enabled: true,
@@ -167,6 +161,13 @@ export const groupDetailNav = (groupId: string) => {
             linkOptions({
                 title: "Davomat",
                 to: `/groups/$id/attendance`,
+                params: {
+                    id: groupId,
+                },
+            }),
+            linkOptions({
+                title: "Baholar",
+                to: `/groups/$id/score`,
                 params: {
                     id: groupId,
                 },

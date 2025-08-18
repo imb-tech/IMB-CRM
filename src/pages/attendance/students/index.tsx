@@ -8,205 +8,233 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-import ParamDateRange from "@/components/as-params/date-picker-range"
 import { ParamCombobox } from "@/components/as-params/combobox"
-import { cn } from "@/lib/utils"
+import { cn, months, optionYears } from "@/lib/utils"
+import ParamDateRangePicker from "@/components/as-params/date-range-picker"
+import { buttonVariants } from "@/components/ui/button"
+import StudentAttendance from "./stats"
 
 export default function StudentsAttendanceMain() {
     const [openRows, setOpenRows] = React.useState<AttendanceStudent | null>()
 
     return (
-        <div className="w-full">
-            <Card>
-                <CardContent className="space-y-4 rounded-md">
-                    <h1 className="font-medium text-xl">
-                        O'quvchilar davomati
-                    </h1>
-
-                    <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-2 ">
-                        <div className="w-full">
-                            <ParamDateRange className="w-full" />
-                        </div>
-                        <ParamCombobox
-                            isSearch={false}
-                            label="Davomat holati"
-                            className="w-full"
-                            options={[
-                                {
-                                    label: "Barchasi",
-                                    value: "all",
-                                },
-                                {
-                                    label: "Faol",
-                                    value: "active",
-                                },
-                            ]}
-                            paramName="status"
-                        />
-                        <ParamCombobox
-                            isSearch={false}
-                            label="O'qituvchi"
-                            className="w-full"
-                            options={[
-                                {
-                                    label: "Barchasi",
-                                    value: "all",
-                                },
-                                {
-                                    label: "Faol",
-                                    value: "active",
-                                },
-                            ]}
-                            paramName="status"
-                        />
-                        <ParamCombobox
-                            isSearch={false}
-                            label="Holat"
-                            className="w-full"
-                            options={[
-                                {
-                                    label: "Barchasi",
-                                    value: "all",
-                                },
-                                {
-                                    label: "Faol",
-                                    value: "active",
-                                },
-                            ]}
-                            paramName="status"
+        <div className="w-full flex flex-col gap-3">
+            <div className="bg-background p-3 rounded-md dark:bg-card">
+                <div className="flex items-center gap-2 mb-3">
+                    <ParamCombobox
+                        isSearch={false}
+                        label="O'qituvchi"
+                        className="w-full dark:!bg-background"
+                        options={[
+                            {
+                                label: "Barchasi",
+                                value: "all",
+                            },
+                            {
+                                label: "Faol",
+                                value: "active",
+                            },
+                        ]}
+                        paramName="status"
+                    />
+                    <ParamCombobox
+                        isSearch={false}
+                        label="Oy"
+                        className="w-full dark:!bg-background"
+                        options={months}
+                        labelKey="name"
+                        valueKey="key"
+                        paramName="status"
+                    />
+                    <ParamCombobox
+                        isSearch={false}
+                        label="Yil"
+                        className="w-full dark:!bg-background"
+                        options={optionYears("label", "value")}
+                        paramName="status"
+                    />
+                    <div className="w-full">
+                        <ParamDateRangePicker
+                            showToday
+                            showYesterday
+                            showLastWeek
+                            itemClassName={buttonVariants({
+                                variant: "ghost",
+                                className: "rounded-sm gap-2 !bg-transparent",
+                            })}
+                            placeholder="Sana bo'yicha"
+                            className="p-0 bg-secondary dark:bg-background"
                         />
                     </div>
+                </div>
+                <StudentAttendance />
+            </div>
+            <Card>
+                <CardContent className="space-y-4 rounded-md">
+                    <div className="rounded-sm overflow-hidden">
+                        <Table>
+                            <TableHeader>
+                                <TableRow className="bg-secondary">
+                                    <TableHead className="w-16">ID</TableHead>
+                                    <TableHead>Guruh</TableHead>
+                                    <TableHead>{"O'qituvchi"}</TableHead>
+                                    <TableHead>Guruh davomiyigi</TableHead>
+                                    <TableHead>{"O'quvchilar soni"}</TableHead>
+                                    <TableHead>
+                                        {"Qilinmagan davomatlar"}
+                                    </TableHead>
+                                    <TableHead>{"Dars qoldirishlar"}</TableHead>
+                                    <TableHead>
+                                        {"Darsga qatnashishlar"}
+                                    </TableHead>
+                                    <TableHead className="w-12"></TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {data.map((course, index) => (
+                                    <React.Fragment key={course.id}>
+                                        <TableRow
+                                            className={cn(
+                                                "hover:bg-gray-200 cursor-pointer dark:hover:bg-secondary border-none !rounded-md overflow-hidden h-12",
+                                                index % 2 !== 0 &&
+                                                    "bg-secondary/70",
+                                            )}
+                                            onClick={() => {
+                                                if (
+                                                    openRows?.id === course.id
+                                                ) {
+                                                    setOpenRows(null)
+                                                } else {
+                                                    setOpenRows(course)
+                                                }
+                                            }}
+                                        >
+                                            <TableCell className="font-medium border-r border-r-secondary">
+                                                {course.id}
+                                            </TableCell>
+                                            <TableCell className="border-r border-r-secondary">
+                                                {course.groupName}
+                                            </TableCell>
+                                            <TableCell className="border-r border-r-secondary">
+                                                {course.teacher}
+                                            </TableCell>
+                                            <TableCell className="border-r border-r-secondary">
+                                                {course.duration}
+                                            </TableCell>
+                                            <TableCell className="border-r border-r-secondary">
+                                                {27}
+                                            </TableCell>
+                                            <TableCell className="border-r border-r-secondary">
+                                                {3}
+                                            </TableCell>
+                                            <TableCell className="border-r border-r-secondary">
+                                                {9}
+                                            </TableCell>
+                                            <TableCell className="border-r border-r-secondary">
+                                                {159}
+                                            </TableCell>
+                                            <TableCell>
+                                                <ChevronDown
+                                                    className={cn(
+                                                        "h-4 w-4 transition-all",
 
-                    <Table>
-                        <TableHeader>
-                            <TableRow className="bg-secondary">
-                                <TableHead className="w-16">ID</TableHead>
-                                <TableHead>Guruh nomi</TableHead>
-                                <TableHead>{"O'qituvchi"}</TableHead>
-                                <TableHead>Guruh davomiyigi</TableHead>
-                                <TableHead>{"Kelmagan o'quvchilar"}</TableHead>
-                                <TableHead className="w-12"></TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {data.map((course, index) => (
-                                <React.Fragment key={course.id}>
-                                    <TableRow
-                                        className={cn(
-                                            "hover:bg-gray-200 cursor-pointer dark:hover:bg-secondary border-none !rounded-md overflow-hidden",
-                                            index % 2 !== 0 &&
-                                                "bg-secondary/70",
-                                        )}
-                                        onClick={() => {
-                                            if (openRows?.id === course.id) {
-                                                setOpenRows(null)
-                                            } else {
-                                                setOpenRows(course)
-                                            }
-                                        }}
-                                    >
-                                        <TableCell className="font-medium border-r border-r-secondary">
-                                            {course.id}
-                                        </TableCell>
-                                        <TableCell className="border-r border-r-secondary">
-                                            {course.groupName}
-                                        </TableCell>
-                                        <TableCell className="border-r border-r-secondary">
-                                            {course.teacher}
-                                        </TableCell>
-                                        <TableCell className="border-r border-r-secondary">
-                                            {course.duration}
-                                        </TableCell>
-                                        <TableCell className="border-r border-r-secondary">
-                                            <Badge
-                                                variant="destructive"
-                                                className="bg-red-200 text-red-600 "
-                                            >
-                                                {course.attendance}
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell>
-                                            <ChevronDown
-                                                className={cn(
-                                                    "h-4 w-4 transition-all",
-
-                                                    course.id === openRows?.id ?
-                                                        " rotate-180"
-                                                    :   "rotate-0",
-                                                )}
-                                            />
-                                        </TableCell>
-                                    </TableRow>
-
-                                    {course.id === openRows?.id && (
-                                        <TableRow className="transition-all">
-                                            <TableCell
-                                                colSpan={6}
-                                                className="p-0"
-                                            >
-                                                <div className="bg-card p-4">
-                                                    <Table>
-                                                        <TableHeader>
-                                                            <TableRow className="bg-secondary">
-                                                                <TableHead className="w-16">
-                                                                    #
-                                                                </TableHead>
-                                                                <TableHead>
-                                                                    Ism
-                                                                </TableHead>
-                                                                <TableHead>
-                                                                    Izoh
-                                                                </TableHead>
-                                                            </TableRow>
-                                                        </TableHeader>
-                                                        <TableBody>
-                                                            {course.students.map(
-                                                                (
-                                                                    student,
-                                                                    idx,
-                                                                ) => (
-                                                                    <TableRow
-                                                                        key={
-                                                                            student.id
-                                                                        }
-                                                                        className={cn(
-                                                                            "hover:bg-gray-200  dark:hover:bg-secondary border-none",
-                                                                            idx %
-                                                                                2 !==
-                                                                                0 &&
-                                                                                "bg-secondary/70",
-                                                                        )}
-                                                                    >
-                                                                        <TableCell className="font-medium">
-                                                                            {
-                                                                                student.id
-                                                                            }
-                                                                        </TableCell>
-                                                                        <TableCell>
-                                                                            {
-                                                                                student.name
-                                                                            }
-                                                                        </TableCell>
-                                                                        <TableCell className="text-gray-500">
-                                                                            {
-                                                                                student.status
-                                                                            }
-                                                                        </TableCell>
-                                                                    </TableRow>
-                                                                ),
-                                                            )}
-                                                        </TableBody>
-                                                    </Table>
-                                                </div>
+                                                        (
+                                                            course.id ===
+                                                                openRows?.id
+                                                        ) ?
+                                                            " rotate-180"
+                                                        :   "rotate-0",
+                                                    )}
+                                                />
                                             </TableCell>
                                         </TableRow>
-                                    )}
-                                </React.Fragment>
-                            ))}
-                        </TableBody>
-                    </Table>
+
+                                        {course.id === openRows?.id && (
+                                            <TableRow className="transition-all">
+                                                <TableCell
+                                                    colSpan={9}
+                                                    className="p-3"
+                                                >
+                                                    <div className="bg-card rounded-sm overflow-hidden">
+                                                        <Table>
+                                                            <TableHeader>
+                                                                <TableRow className="bg-secondary">
+                                                                    <TableHead className="w-16">
+                                                                        #
+                                                                    </TableHead>
+                                                                    <TableHead>
+                                                                        Ism
+                                                                    </TableHead>
+                                                                    <TableHead>
+                                                                        Qatnashgan
+                                                                    </TableHead>
+                                                                    <TableHead>
+                                                                        Qatnashmagan
+                                                                    </TableHead>
+                                                                    <TableHead>
+                                                                        Davomat
+                                                                        qilinmadi
+                                                                    </TableHead>
+                                                                </TableRow>
+                                                            </TableHeader>
+                                                            <TableBody>
+                                                                {course.students.map(
+                                                                    (
+                                                                        student,
+                                                                        idx,
+                                                                    ) => (
+                                                                        <TableRow
+                                                                            key={
+                                                                                student.id
+                                                                            }
+                                                                            className={cn(
+                                                                                "hover:bg-gray-200  dark:hover:bg-secondary border-none",
+                                                                                idx %
+                                                                                    2 !==
+                                                                                    0 &&
+                                                                                    "bg-secondary/70",
+                                                                            )}
+                                                                        >
+                                                                            <TableCell className="font-medium">
+                                                                                {
+                                                                                    student.id
+                                                                                }
+                                                                            </TableCell>
+                                                                            <TableCell>
+                                                                                {
+                                                                                    student.name
+                                                                                }
+                                                                            </TableCell>
+                                                                            <TableCell className="text-green-400">
+                                                                                {
+                                                                                    20
+                                                                                }
+                                                                            </TableCell>
+                                                                            <TableCell className="text-rose-500">
+                                                                                {
+                                                                                    20
+                                                                                }
+                                                                            </TableCell>
+                                                                            <TableCell className="text-muted-foreground">
+                                                                                {
+                                                                                    20
+                                                                                }
+                                                                            </TableCell>
+                                                                        </TableRow>
+                                                                    ),
+                                                                )}
+                                                            </TableBody>
+                                                        </Table>
+                                                    </div>
+                                                </TableCell>
+                                            </TableRow>
+                                        )}
+                                    </React.Fragment>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </div>
                 </CardContent>
             </Card>
         </div>

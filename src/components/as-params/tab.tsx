@@ -9,18 +9,21 @@ export default function ParamTabList({
     listClassName,
     wrapperClassName,
     options = [],
+    paramName = "tabs",
 }: {
     listClassName?: ClassNameValue
     wrapperClassName?: ClassNameValue
     options?: { id: number | string; name: string }[]
+    paramName?: keyof SearchParams
 }) {
-    const { role } = useSearch({ from: "/_main/employees" })
+    const search = useSearch({ from: "__root__" })
+    const currValue = search[paramName]
 
     const tabsRef = useRef<(HTMLButtonElement | null)[]>([])
 
     useEffect(() => {
         if (!options.length) return
-        const activeIndex = options.findIndex((link) => link.id === role)
+        const activeIndex = options.findIndex((link) => link.id === currValue)
         if (activeIndex !== -1 && tabsRef.current[activeIndex]) {
             tabsRef.current[activeIndex]?.scrollIntoView({
                 behavior: "smooth",
@@ -28,7 +31,7 @@ export default function ParamTabList({
                 block: "nearest",
             })
         }
-    }, [role, options])
+    }, [currValue, options])
 
     return (
         <div
@@ -49,7 +52,7 @@ export default function ParamTabList({
                         ref={(el) => (tabsRef.current[index] = el)}
                         value={link.id as string}
                         className={`${
-                            link.id === role &&
+                            link.id === currValue &&
                             "!bg-primary !text-primary-foreground"
                         } font-medium flex items-center gap-2 whitespace-nowrap`}
                     >

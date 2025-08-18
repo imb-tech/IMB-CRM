@@ -17,7 +17,7 @@ const RoomsMain = () => {
     const { openModal: openModalDelete } = useModal(`${ROOM}-delete`)
     const [current, setCurrent] = useState<Room | null>(null)
 
-    const params = useSearch({ from: "/_main/settings/_main/rooms" })
+    const params = useSearch({ from: "/_main/groups/" })
     const { data, isFetching } = useGet<ListResp<Room>>(ROOM, { params })
 
     const handleItemAdd = () => {
@@ -45,6 +45,7 @@ const RoomsMain = () => {
                     <SettingsHeader
                         dataCount={data?.count}
                         handleAdd={handleItemAdd}
+                        pageTitle="Xonalar"
                     />
                     <DataTable
                         onDelete={(row) => handleItemDelete(row.original)}

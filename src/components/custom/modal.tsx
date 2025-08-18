@@ -58,7 +58,7 @@ const Modal = ({
     return (
         <Dialog open={isOpen} onOpenChange={handleClose}>
             {isOpen && (
-                <DialogContent classNameIcon={classNameIcon} className={cn(size, className)}>
+                <DialogContent classNameIcon={classNameIcon} className={cn(size, className)} onInteractOutside={(e) => e.preventDefault()}>
                     {title && (
                         <DialogTitle className={cn(classNameTitle)}>
                             {title}

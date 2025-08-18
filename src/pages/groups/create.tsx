@@ -15,6 +15,7 @@ import useMe from "@/hooks/useMe"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
 import { usePost } from "@/hooks/usePost"
+import showFormErrors from "@/lib/show-form-errors"
 import { cn, weekdays } from "@/lib/utils"
 import { useQueryClient } from "@tanstack/react-query"
 import { useFieldArray, useForm } from "react-hook-form"
@@ -89,11 +90,21 @@ const GroupCreate = ({ item }: Props) => {
             shifts: values.shifts?.filter((c) => c.enable),
         }
         if (item?.id) {
-            patch(`${GROUP}/${item.id}`, nv)
+            patch(`${GROUP}/${item.id}`, nv, {
+                onError(err) {
+                    showFormErrors(err, form)
+                },
+            })
         } else {
-            mutate(GROUP, nv)
+            mutate(GROUP, nv, {
+                onError(error) {
+                    showFormErrors(error, form)
+                },
+            })
         }
     }
+
+    console.log(form.formState.errors.start_date?.message)
 
     return (
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -141,13 +152,12 @@ const GroupCreate = ({ item }: Props) => {
                         hideError
                     />
 
-                    <div className="grid grid-cols-2 gap-2">
+                    <div className="grid grid-cols-2 gap-2 items-start">
                         <FormDatePicker
                             control={form.control}
                             name="start_date"
                             label="Boshlanish sanasi"
                             className="md:w-auto"
-                            hideError
                             required
                         />
 
@@ -156,7 +166,6 @@ const GroupCreate = ({ item }: Props) => {
                             name="end_date"
                             label="Tugash sanasi"
                             className="md:w-auto"
-                            hideError
                             required
                         />
                     </div>

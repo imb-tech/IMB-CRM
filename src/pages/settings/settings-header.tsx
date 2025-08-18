@@ -9,9 +9,11 @@ import { useMemo } from "react"
 export default function SettingsHeader({
     dataCount,
     handleAdd,
+    pageTitle
 }: {
     dataCount?: number
     handleAdd: () => void
+    pageTitle?: string
 }) {
     const links = findChildPaths(menuItems, location.pathname)
     const activeLink = useMemo(
@@ -22,7 +24,7 @@ export default function SettingsHeader({
     return (
         <div className="flex items-center gap-3 ">
             <div className="flex items-center gap-3 flex-1">
-                <h1 className="text-xl">{activeLink?.title}</h1>
+                <h1 className="text-xl">{pageTitle ?? activeLink?.title}</h1>
                 <Badge className="text-sm">
                     {dataCount}
                 </Badge>

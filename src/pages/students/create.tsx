@@ -8,6 +8,7 @@ import useMe from "@/hooks/useMe"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
 import { usePost } from "@/hooks/usePost"
+import showFormErrors from "@/lib/show-form-errors"
 import { generateUsername } from "@/lib/utils"
 import { useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
@@ -60,20 +61,24 @@ const StudentCreate = ({ item }: Props) => {
                 :   values.photo,
         }
         if (item?.id) {
-            patch(`${STUDENT}/${item?.id}`, v)
+            patch(`${STUDENT}/${item?.id}`, v, {
+                onError(err) {
+                    showFormErrors(err, form)
+                },
+            })
         } else {
-            mutate(STUDENT, v)
+            mutate(STUDENT, v, {
+                onError(err) {
+                    showFormErrors(err, form)
+                },
+            })
         }
     }
 
     return (
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="md:col-span-2">
-                <FormImagePicker
-                    methods={form}
-                    name="photo"
-                    avatar
-                />
+                <FormImagePicker methods={form} name="photo" avatar />
             </div>
             <FormInput
                 required

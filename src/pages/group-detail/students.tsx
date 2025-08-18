@@ -1,14 +1,8 @@
 import { DataTable } from "@/components/ui/datatable"
 import { useGroupStudentCols } from "./cols"
-import StatusBadge from "@/components/elements/status-badge"
-import Money from "@/components/elements/money"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { formatPhoneNumber } from "@/lib/format-phone-number"
-import ActionDropdown from "@/components/elements/action-dropdown"
-import { useIsMobile } from "@/hooks/use-mobile"
 import SectionHeader from "@/components/elements/section-header"
 import { Button } from "@/components/ui/button"
-import { Phone, Plus, Wallet } from "lucide-react"
+import { Plus } from "lucide-react"
 import { useGet } from "@/hooks/useGet"
 import { GROUP_STUDENTS } from "@/constants/api-endpoints"
 import { useParams, useSearch } from "@tanstack/react-router"
@@ -19,14 +13,16 @@ import ParamInput from "@/components/as-params/input"
 import { ParamMultiCombobox } from "@/components/as-params/multi-combobox"
 import { studentStatusKeys } from "../students/student-status"
 import UpdateStudent from "./update-student"
+import DeleteModal from "@/components/custom/delete-modal"
+import { useStore } from "@/hooks/use-store"
 
 export default function GroupStudents() {
-    const isMobile = useIsMobile()
     const { id: group } = useParams({
         from: "/_main/groups/$id/_main/students",
     })
     const search = useSearch({ from: "/_main/groups/$id/_main/students" })
     const { openModal } = useModal("append-student")
+    const { store, remove } = useStore<GroupStudent>("student-data")
 
     const { data, refetch } = useGet<GroupStudent[]>(GROUP_STUDENTS, {
         params: { group, ...search },
@@ -56,90 +52,36 @@ export default function GroupStudents() {
                             hideSeach
                         />
                         <ParamInput />
-                        <Button  onClick={openModal}>
+                        <Button onClick={openModal}>
                             <Plus />
                             O'quvchi
                         </Button>
                     </div>
                 }
             />
-            {isMobile ?
-                <div className="flex flex-col gap-2">
-                    {data?.map((student) => (
-                        <Card
-                            key={student.id}
-                            className="border-0 shadow-sm bg-secondary"
-                        >
-                            <CardHeader className="pb-0">
-                                <div className="flex items-center">
-                                    <h3 className="text-lg font-medium text-primary flex-1">
-                                        {student.student_name}
-                                    </h3>
-                                    <p className="font-medium">
-                                        <StatusBadge status={1} />
-                                    </p>
-                                    <ActionDropdown />
-                                </div>
-                            </CardHeader>
-
-                            <CardContent className="space-y-4">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-background">
-                                            <Phone className="h-4 w-4 text-muted-foreground" />
-                                        </div>
-                                        <div>
-                                            <p className="text-sm text-muted-foreground">
-                                                Telefon
-                                            </p>
-                                            <p className="font-medium">
-                                                {formatPhoneNumber(
-                                                    student.student_phone,
-                                                )}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex items-center gap-3">
-                                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-background">
-                                            <Wallet className="h-4 w-4 text-muted-foreground" />
-                                        </div>
-                                        <div>
-                                            <p className="text-sm text-muted-foreground">
-                                                Balans
-                                            </p>
-                                            <p className="font-medium">
-                                                <Money
-                                                    value={Number(
-                                                        student.balance,
-                                                    )}
-                                                    suffix
-                                                />
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
-            :   <DataTable
-                    columns={columns}
-                    data={data}
-                    viewAll
-                    className="max-w-full"
-                    numeration
-                    selecteds_row
-                />
-            }
+            <DataTable
+                columns={columns}
+                data={data}
+                viewAll
+                className="max-w-full"
+                numeration
+                selecteds_row
+            />
 
             <Modal modalKey="update" title="Tahrirlash" size="max-w-md">
                 <UpdateStudent />
             </Modal>
 
-            <Modal modalKey="append-student" title="O'quvchi yaratish">
+            <Modal modalKey="append-student" title="O'quvchi qo'shish">
                 <AppendStudent onSuccess={refetch} />
             </Modal>
+
+            <DeleteModal
+                id={store?.id}
+                onSuccessAction={remove}
+                modalKey="delete-student"
+                path="platform/group-students"
+            />
         </div>
     )
 }

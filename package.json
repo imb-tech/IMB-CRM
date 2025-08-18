@@ -63,6 +63,7 @@
         "date-fns": "^4.1.0",
         "embla-carousel-autoplay": "^8.3.1",
         "embla-carousel-react": "^8.3.1",
+        "framer-motion": "^12.23.12",
         "google-libphonenumber": "^3.2.40",
         "input-otp": "^1.4.2",
         "jsencrypt": "^3.3.2",
