@@ -125,7 +125,7 @@ export function MultiCombobox<T extends Record<string, any>>({
                     {!!values?.length && (
                         <span
                             className={cn(
-                                "absolute cursor-pointer text-destructive top-1/2 -translate-y-1/2 right-1 p-1",
+                                "absolute cursor-pointer text-red-600 top-1/2 -translate-y-1/2 right-1 p-1",
                                 onAdd && "right-8",
                             )}
                         >

@@ -46,7 +46,7 @@ export default function FormInputOTP<IForm extends FieldValues>({
             {label && (
                 <FieldLabel
                     htmlFor={name}
-                    className={cn(!!errors?.[name] && "text-destructive")}
+                    className={cn(!!errors?.[name] && "text-red-600")}
                     required={required}
                     isError={!!errors?.[name]}
                 >

@@ -3,20 +3,33 @@ type StudentGroup = {
     name: string
     balance: string
     status: number
+    start_date: string
+    group: number
 }
 
 type Student = {
     id: number
     full_name: string
     username: string
-    phone: string
     photo: string
+    password: string
+    phone: string
     balance: string
     gpa: string
-    password: string
     branches: number[]
     branches_data: Branch[]
     groups: StudentGroup[]
+    group_data: {
+        status: number
+        start_date: string
+        group: number | null
+    }
+    parents: {
+        full_name: string
+        username: string
+        phone: string
+        password: string
+    }
 }
 
 type GroupStudent = {

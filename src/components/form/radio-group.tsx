@@ -67,7 +67,7 @@ export default function FormRadioGroup<IForm extends FieldValues>({
                 <Label
                     htmlFor={name}
                     className={cn(
-                        !!error && "text-destructive",
+                        !!error && "text-red-600",
                         "cursor-pointer",
                     )}
                 >
@@ -100,7 +100,7 @@ export default function FormRadioGroup<IForm extends FieldValues>({
                                             lastReturnValue
                                         ]?.toString()}
                                         className={cn(
-                                            !!error && "text-destructive",
+                                            !!error && "text-red-600",
                                             "cursor-pointer",
                                             itemClassName,
                                         )}

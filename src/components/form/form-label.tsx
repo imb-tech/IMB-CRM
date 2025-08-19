@@ -20,13 +20,13 @@ export default function FieldLabel({
         <label
             className={cn(
                 "select-none leading-[1.4] pb-0.5 text-sm cursor-pointer",
-                isError && "text-destructive",
+                isError && "text-red-600",
                 className,
             )}
             htmlFor={htmlFor}
         >
             {children}{" "}
-            {required && <span className="text-destructive pl-1">*</span>}
+            {required && <span className="text-red-600 pl-1">*</span>}
         </label>
     )
 }

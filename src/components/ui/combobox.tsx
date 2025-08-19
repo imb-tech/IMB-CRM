@@ -110,7 +110,7 @@ export function Combobox<T extends Record<string, any>>({
                                 ?.[labelKey]?.toString() || value
                         :   label}
                     </div>
-                    <span
+                    {onAdd && <span
                         onClick={(e) => {
                             e.stopPropagation()
                             handleClickAdd()
@@ -118,7 +118,7 @@ export function Combobox<T extends Record<string, any>>({
                         className="dark:bg-card bg-slate-200 hover:bg-slate-300 hover:scale-105 p-1 rounded-full"
                     >
                         <Plus className=" h-4 w-4 shrink-0  text-primary" />
-                    </span>
+                    </span>}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="p-0">
@@ -128,9 +128,9 @@ export function Combobox<T extends Record<string, any>>({
                         placeholder={label}
                     />
                     {!!value && (
-                        <span className="absolute cursor-pointer text-destructive top-1.5 right-1 p-1">
+                        <span className="absolute cursor-pointer text-red-600 top-1.5 right-1 p-1">
                             <X
-                                className="text-destructive"
+                                className="text-red-600"
                                 width={16}
                                 onClick={() => setValue(null)}
                             />

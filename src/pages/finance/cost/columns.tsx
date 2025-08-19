@@ -16,7 +16,7 @@ export const useCostCols = () =>
                 accessorKey: "price",
                 enableSorting: true,
                 cell: ({ row }) => (
-                    <span className="text-destructive font-medium">
+                    <span className="text-red-600 font-medium">
                         {formatMoney(row.original.price)}
                     </span>
                 ),

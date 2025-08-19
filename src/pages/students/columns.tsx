@@ -49,8 +49,8 @@ export const useStudentsCols = () =>
             {
                 header: "Guruhlar",
                 cell: ({ row }) => {
-                    return row.original.groups.length < 1 ? (
-                        row.original.groups?.[0].name
+                    return row.original.groups.length < 2 ? (
+                        row.original.groups?.[0]?.name || "-"
                     ) : (
                         <Popover>
                             <PopoverTrigger asChild>
@@ -95,7 +95,12 @@ export const useStudentsCols = () =>
                 accessorKey: "balance",
                 enableSorting: true,
                 cell: ({ row }) => {
-                    return formatMoney(row.original.balance)
+                    const { balance } = row.original
+                    return (
+                        <span className={Number(balance) < 0 ? "text-red-500" : ""}>
+                            {formatMoney(balance)}
+                        </span>
+                    )
                 },
             },
         ],

@@ -122,7 +122,7 @@ export function ParamCombobox<T extends Record<string, any>>({
                     role="combobox"
                     aria-expanded={open}
                     className={cn(
-                        "w-max font-normal justify-between",
+                        "w-full font-normal justify-between",
                         currentValue && "font-medium",
                         isError && "!text-destructive",
                         className,
@@ -179,7 +179,7 @@ export function ParamCombobox<T extends Record<string, any>>({
                                     <CommandItem
                                         key={i}
                                         onSelect={() => handleSelect(d)}
-                                        className="text-nowrap"
+                                        className="break-all"
                                     >
                                         {d[labelKey]}
                                         <CheckIcon
