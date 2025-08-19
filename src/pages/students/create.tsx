@@ -51,16 +51,6 @@ const StudentCreate = ({ item }: Props) => {
               }
             : {
                   branches: [active_branch!],
-                  ...(openedAccordion === "1"
-                      ? [
-                            {
-                                group_data: {
-                                    start_date: String(new Date()),
-                                    status: 1,
-                                },
-                            },
-                        ]
-                      : []),
               },
     })
     const photo = form.watch("photo")
@@ -111,6 +101,17 @@ const StudentCreate = ({ item }: Props) => {
             })
         }
     }
+
+    useEffect(() => {
+        if (openedAccordion === "1") {
+            const current = form.getValues("group_data") || {}
+            form.setValue("group_data", {
+                start_date: current.start_date || String(new Date()),
+                status: current.status ?? 1,
+                group: current.group || null,
+            })
+        }
+    }, [openedAccordion])
 
     useEffect(() => {
         if (isSuccess && photo) {

@@ -22,7 +22,7 @@ type Student = {
     group_data: {
         status: number
         start_date: string
-        group: number
+        group: number | null
     }
     parents: {
         full_name: string
