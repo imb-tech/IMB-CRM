@@ -21,7 +21,6 @@ import { generateUsername } from "@/lib/utils"
 import { useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
-import { studentStatusKeys } from "./student-status"
 import { FormCombobox } from "@/components/form/combobox"
 import { useEffect, useState } from "react"
 import { useGet } from "@/hooks/useGet"
@@ -52,6 +51,16 @@ const StudentCreate = ({ item }: Props) => {
               }
             : {
                   branches: [active_branch!],
+                  ...(openedAccordion === "1"
+                      ? [
+                            {
+                                group_data: {
+                                    start_date: String(new Date()),
+                                    status: 1,
+                                },
+                            },
+                        ]
+                      : []),
               },
     })
     const photo = form.watch("photo")
@@ -112,13 +121,20 @@ const StudentCreate = ({ item }: Props) => {
         }
     }, [isPending])
 
+    console.log(form.formState.errors)
+
     return (
         <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-4 mt-5 px-1"
         >
             <div className="md:col-span-2">
-                <FormImagePicker methods={form} name="photo" avatar label="Rasm" />
+                <FormImagePicker
+                    methods={form}
+                    name="photo"
+                    avatar
+                    label="Rasm"
+                />
             </div>
             <FormInput
                 required
@@ -201,9 +217,16 @@ const StudentCreate = ({ item }: Props) => {
                                 required={openedAccordion === "1"}
                             />
                             <FormSelect
-                                options={Object.entries(studentStatusKeys)?.map(
-                                    ([id, name]) => ({ id, name }),
-                                )}
+                                options={[
+                                    {
+                                        name: "Aktiv",
+                                        id: "1",
+                                    },
+                                    {
+                                        name: "Yangi",
+                                        id: "0",
+                                    },
+                                ]}
                                 control={form.control}
                                 name="group_data.status"
                                 labelKey="name"

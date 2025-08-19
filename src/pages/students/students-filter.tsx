@@ -61,12 +61,20 @@ export default function StudentsFilter() {
             <ParamCombobox
                 isSearch={false}
                 label="Guruhdagi holati"
-                options={Object.entries(studentStatusKeys)?.map(
-                    ([id, name]) => ({ id, name }),
+                options={[
+                    {
+                        name: "Barchasi",
+                        id: "",
+                    },
+                ].concat(
+                    Object.entries(studentStatusKeys)?.map(([id, name]) => ({
+                        id,
+                        name,
+                    })),
                 )}
                 labelKey="name"
                 valueKey="id"
-                paramName="group_students__status"
+                paramName="group_status"
             />
             <ParamCombobox
                 isSearch={false}
@@ -74,7 +82,7 @@ export default function StudentsFilter() {
                 options={[
                     {
                         label: "Barchasi",
-                        value: "0",
+                        value: "",
                     },
                     {
                         label: "Qarzdor",
