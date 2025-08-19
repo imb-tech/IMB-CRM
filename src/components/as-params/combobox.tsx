@@ -16,7 +16,7 @@ import { DEBOUNCETIME } from "@/constants/default"
 import { cn } from "@/lib/utils"
 import { useNavigate, useSearch } from "@tanstack/react-router"
 import { CheckIcon, ChevronDown, X } from "lucide-react"
-import { ReactNode, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Skeleton } from "../ui/skeleton"
 
 type ParamComboboxProps<T extends Record<string, any>> = {
@@ -33,9 +33,8 @@ type ParamComboboxProps<T extends Record<string, any>> = {
     isLoading?: boolean
     skeletonCount?: number
     onSearchChange?: (val: string) => void
-    handleSelectItem?: (option: SearchParams) => void
     addButtonProps?: ButtonProps
-    renderOption?: (item: T) => ReactNode
+    dontAllowClear?: boolean
 }
 
 export function ParamCombobox<T extends Record<string, any>>({
@@ -53,8 +52,7 @@ export function ParamCombobox<T extends Record<string, any>>({
     skeletonCount = 5,
     isLoading,
     addButtonProps,
-    handleSelectItem,
-    renderOption,
+    dontAllowClear = false,
 }: ParamComboboxProps<T>) {
     const navigate = useNavigate()
     const search: any = useSearch({ from: "/_main" }) as Record<
@@ -65,7 +63,7 @@ export function ParamCombobox<T extends Record<string, any>>({
     const [open, setOpen] = useState(false)
 
     useEffect(() => {
-        if (defaultOpt) {
+        if (!!defaultOpt && !currentValue) {
             navigate({
                 search: {
                     ...search,
@@ -74,7 +72,7 @@ export function ParamCombobox<T extends Record<string, any>>({
             })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [defaultOpt])
+    }, [defaultOpt, search])
 
     const handleSelect = (option: T) => {
         const returnValue = option[valueKey]
@@ -93,11 +91,8 @@ export function ParamCombobox<T extends Record<string, any>>({
             search: updatedSearch,
         })
         setOpen(false)
-        if (handleSelectItem) {
-            handleSelectItem(updatedSearch as any)
-        }
     }
-
+ 
     const handleCancel = () => {
         const updatedSearch = { ...search, [paramName]: undefined }
         asloClear.forEach((param) => {
@@ -112,7 +107,11 @@ export function ParamCombobox<T extends Record<string, any>>({
     const sortedOptions = options?.sort((a, b) => {
         const isASelected = a[valueKey] == currentValue
         const isBSelected = b[valueKey] == currentValue
-        return isASelected === isBSelected ? 0 : isASelected ? -1 : 1
+        return (
+            isASelected === isBSelected ? 0
+            : isASelected ? -1
+            : 1
+        )
     })
 
     return (
@@ -123,17 +122,32 @@ export function ParamCombobox<T extends Record<string, any>>({
                     role="combobox"
                     aria-expanded={open}
                     className={cn(
-                        "w-full  justify-between font-normal ",
-                        currentValue && "font-medium !text-white",
+                        "w-max font-normal justify-between",
+                        currentValue && "font-medium",
                         isError && "!text-destructive",
+                        className,
                     )}
                     {...addButtonProps}
                 >
                     {selectedOption?.[labelKey] ?? label}
-                    <ChevronDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+                    {currentValue && !dontAllowClear && (
+                        <X
+                            className="ml-auto h-4 w-4 shrink-0 text-rose-500"
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                handleCancel()
+                            }}
+                        />
+                    )}
+                    <ChevronDown
+                        className={cn(
+                            "ml-1 h-4 w-4 shrink-0 opacity-50",
+                            !currentValue && "ml-auto",
+                        )}
+                    />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className={cn("p-0 !min-w-full ", className)}>
+            <PopoverContent className="p-0 !min-w-full">
                 <Command shouldFilter={onSearchChange ? false : true}>
                     <div className="relative">
                         {isSearch && (
@@ -157,34 +171,33 @@ export function ParamCombobox<T extends Record<string, any>>({
                         )}
                     </div>
                     <CommandList>
-                        <CommandEmpty>{"Mavjud emas"}</CommandEmpty>
+                        <CommandEmpty>Mavjud emas</CommandEmpty>
                         <CommandGroup>
                             {sortedOptions.map((d, i) => {
                                 const optionValue = d[valueKey]
-
                                 return (
                                     <CommandItem
                                         key={i}
                                         onSelect={() => handleSelect(d)}
                                         className="text-nowrap"
                                     >
-                                        {!!renderOption
-                                            ? renderOption(d)
-                                            : d[labelKey as keyof T]}
+                                        {d[labelKey]}
                                         <CheckIcon
                                             className={cn(
                                                 "ml-auto h-4 w-4",
-                                                String(currentValue) ===
-                                                    String(optionValue)
-                                                    ? "opacity-100"
-                                                    : "opacity-0",
+                                                (
+                                                    String(currentValue) ===
+                                                        String(optionValue)
+                                                ) ?
+                                                    "opacity-100"
+                                                :   "opacity-0",
                                             )}
                                         />
                                     </CommandItem>
                                 )
                             })}
 
-                            {isLoading ? (
+                            {isLoading ?
                                 <div className="space-y-1">
                                     {Array.from({ length: skeletonCount }).map(
                                         (_, index) => (
@@ -197,7 +210,7 @@ export function ParamCombobox<T extends Record<string, any>>({
                                         ),
                                     )}
                                 </div>
-                            ) : null}
+                            :   null}
                         </CommandGroup>
                     </CommandList>
                 </Command>

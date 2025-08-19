@@ -220,11 +220,11 @@ const StudentCreate = ({ item }: Props) => {
                                 options={[
                                     {
                                         name: "Aktiv",
-                                        id: "1",
+                                        id: 1,
                                     },
                                     {
                                         name: "Yangi",
-                                        id: "0",
+                                        id: 0,
                                     },
                                 ]}
                                 control={form.control}
