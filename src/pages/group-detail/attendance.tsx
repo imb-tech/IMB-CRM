@@ -8,6 +8,7 @@ import { AttendanceSelect } from "./attendance-select"
 import { ParamCombobox } from "@/components/as-params/combobox"
 import AttendanceFooter from "./attendance-footer"
 import { formatDate } from "date-fns"
+import { formatDateToUz } from "@/lib/utils"
 
 export default function GroupAttendance() {
     const { id } = useParams({
@@ -21,6 +22,15 @@ export default function GroupAttendance() {
 
     const { data: days } = useGet<string[]>(
         "platform/groups/days-to-teach/" + id,
+    )
+
+    const months = useMemo(
+        () =>
+            options?.map((d) => ({
+                value: d,
+                label: formatDateToUz(d),
+            })) ?? [],
+        [options],
     )
 
     const { data } = useGet<StudentAttandence[]>(
@@ -49,10 +59,10 @@ export default function GroupAttendance() {
 
     const defaultOpt = useMemo(
         () =>
-            options?.length ?
-                (options?.find((usr) => usr === currDate) ?? options[0])
+            months?.length ?
+                (months?.find((usr) => usr.value === currDate) ?? months[0])
             :   null,
-        [options],
+        [months],
     )
 
     return (
@@ -64,16 +74,8 @@ export default function GroupAttendance() {
                         <ParamCombobox
                             dontAllowClear
                             paramName="date"
-                            defaultOpt={{
-                                value: defaultOpt,
-                                label: defaultOpt,
-                            }}
-                            options={
-                                options?.map((e) => ({
-                                    value: e,
-                                    label: e.split("-").reverse().join("-"),
-                                })) ?? []
-                            }
+                            defaultOpt={defaultOpt}
+                            options={months}
                             isSearch={false}
                             label="Oy bo'yicha"
                             className="w-[160px]"

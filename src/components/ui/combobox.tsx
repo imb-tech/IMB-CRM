@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/popover"
 import { CheckIcon, ChevronDown, Plus, X } from "lucide-react"
 import { ClassNameValue } from "tailwind-merge"
-import { useRef, useState } from "react"
+import { ReactNode, useRef, useState } from "react"
 import { Skeleton } from "./skeleton"
 import { DEBOUNCETIME } from "@/constants/default"
 
@@ -34,6 +34,7 @@ export type ComboboxProps<T extends Record<string, any>> = {
     valueKey?: keyof T
     skeletonCount?: number
     onSearchChange?: (val: string) => void
+    renderOption?: (item: T) => ReactNode
 }
 
 export function Combobox<T extends Record<string, any>>({
@@ -50,6 +51,7 @@ export function Combobox<T extends Record<string, any>>({
     isLoading,
     skeletonCount = 5,
     onSearchChange,
+    renderOption,
 }: ComboboxProps<T>) {
     const [open, setOpen] = useState(false)
 
@@ -79,7 +81,11 @@ export function Combobox<T extends Record<string, any>>({
     const sortedOptions = options?.sort((a, b) => {
         const isASelected = a[valueKey] == value
         const isBSelected = b[valueKey] == value
-        return isASelected === isBSelected ? 0 : isASelected ? -1 : 1
+        return (
+            isASelected === isBSelected ? 0
+            : isASelected ? -1
+            : 1
+        )
     })
 
     return (
@@ -98,11 +104,11 @@ export function Combobox<T extends Record<string, any>>({
                 >
                     <div className="flex items-center gap-2 ">
                         <ChevronDown className=" h-4 w-4  text-primary opacity-50 " />
-                        {value
-                            ? options
-                                  ?.find((d) => d[valueKey] == value)
-                                  ?.[labelKey]?.toString() || value
-                            : label}
+                        {value ?
+                            options
+                                ?.find((d) => d[valueKey] == value)
+                                ?.[labelKey]?.toString() || value
+                        :   label}
                     </div>
                     {onAdd && <span
                         onClick={(e) => {
@@ -137,20 +143,23 @@ export function Combobox<T extends Record<string, any>>({
                                 <CommandItem
                                     key={i}
                                     onSelect={() => handleSelect(d)}
+                                    className={!!renderOption ? "p-0 pr-2" : ""}
                                 >
-                                    {d[labelKey]}
+                                    {renderOption ?
+                                        renderOption(d)
+                                    :   d[labelKey]}
                                     <CheckIcon
                                         className={cn(
                                             "ml-auto h-4 w-4",
-                                            value == d[valueKey]
-                                                ? "opacity-100"
-                                                : "opacity-0",
+                                            value == d[valueKey] ?
+                                                "opacity-100"
+                                            :   "opacity-0",
                                         )}
                                     />
                                 </CommandItem>
                             ))}
 
-                            {isLoading ? (
+                            {isLoading ?
                                 <div className="space-y-1">
                                     {Array.from({ length: skeletonCount }).map(
                                         (_, index) => (
@@ -163,7 +172,7 @@ export function Combobox<T extends Record<string, any>>({
                                         ),
                                     )}
                                 </div>
-                            ) : null}
+                            :   null}
                         </CommandGroup>
                     </CommandList>
                 </Command>
