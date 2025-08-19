@@ -121,7 +121,7 @@ export function DataTable<TData>({
     setRowClassName,
     height,
     hasFixedRowCount = true,
-    minRows = 15,
+    minRows = 10,
 }: DataTableProps<TData>) {
     const {
         paramName = PAGE_KEY,
@@ -289,7 +289,7 @@ export function DataTable<TData>({
                     </Table>
                 )}
 
-                {(hasFixedRowCount && !loading) ? (
+                {!loading ? (
                     <Table
                         className={`${className} select-text  bg-card rounded-md`}
                     >
@@ -301,7 +301,7 @@ export function DataTable<TData>({
                                         key={headerGroup.id}
                                         className="border-none "
                                     >
-                                        {selecteds_row && (
+                                        {selecteds_row && !!data?.length && (
                                             <TableHead key={index} className="">
                                                 <Checkbox
                                                     checked={
@@ -414,11 +414,13 @@ export function DataTable<TData>({
                                     }),
                                 )
 
-                                const allRows = [...actualRows, ...emptyRows]
+                                const allRows = hasFixedRowCount
+                                    ? [...actualRows, ...emptyRows]
+                                    : actualRows
 
                                 return allRows.map(
                                     (row: any, index: number) => {
-                                        if (row.isEmpty) {
+                                        if (row.isEmpty && hasFixedRowCount) {
                                             return (
                                                 <TableRow
                                                     key={row.id}
@@ -430,8 +432,7 @@ export function DataTable<TData>({
                                                     )}
                                                 >
                                                     {selecteds_row && (
-                                                        <TableCell className="w-8">
-                                                        </TableCell>
+                                                        <TableCell className="w-8"></TableCell>
                                                     )}
                                                     {numeration && (
                                                         <TableCell className="w-8">
@@ -457,9 +458,7 @@ export function DataTable<TData>({
                                                             className={cn(
                                                                 "border-r last:text-center dark:border-secondary/50 border-secondary last:border-none text-muted-foreground",
                                                             )}
-                                                        >
-                                                            
-                                                        </TableCell>
+                                                        ></TableCell>
                                                     ))}
                                                 </TableRow>
                                             )
@@ -487,7 +486,7 @@ export function DataTable<TData>({
                                                         "!h-12 text-sm",
                                                     )}
                                                 >
-                                                    {selecteds_row && (
+                                                    {selecteds_row  && (
                                                         <TableCell className="w-8">
                                                             <Checkbox
                                                                 checked={row.getIsSelected()}
