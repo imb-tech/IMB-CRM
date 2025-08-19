@@ -122,7 +122,6 @@ const StudentCreate = ({ item }: Props) => {
         }
     }, [isPending])
 
-    console.log(form.formState.errors)
 
     return (
         <form
@@ -208,7 +207,7 @@ const StudentCreate = ({ item }: Props) => {
                                 control={form.control}
                                 name="group_data.group"
                                 options={dataGroups?.map((item) => ({
-                                    name: `${item.name} - ${item.start_date} - ${item.end_date}`,
+                                    name: `${item.name} - ${item.teacher_name}`,
                                     id: item.id,
                                 }))}
                                 labelKey="name"
