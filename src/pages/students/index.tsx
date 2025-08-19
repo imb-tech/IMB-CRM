@@ -102,6 +102,7 @@ const StudentsMain = () => {
                         onDelete={(row) => handleItemDelete(row.original)}
                         selecteds_row
                         numeration
+                        hasFixedRowCount={false}
                     />
                 </CardContent>
             </Card>

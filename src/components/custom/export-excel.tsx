@@ -88,7 +88,6 @@ const ExportAsExcel = ({
                     icon={<Download width={16} />}
                     loading={isFetching}
                     onClick={trigger}
-                    className="bg-blue-500/15 text-blue-500 hover:bg-blue-500/20"
                 >
                     <span className="hidden sm:block">{label}</span>
                 </Button>

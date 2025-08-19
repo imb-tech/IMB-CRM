@@ -97,7 +97,7 @@ export default function DashboardCard() {
                                 to="/students"
                                 search={{ page_tabs: label }}
                                 className={cn(
-                                    "px-2 hover:scale-105 transition-all cursor-pointer hover:shadow-lg",
+                                    "px-2  transition-all cursor-pointer ",
                                     index === 3 || index == 6
                                         ? "xl:border-r"
                                         : "",
@@ -105,12 +105,12 @@ export default function DashboardCard() {
                             >
                                 <div
                                     key={index}
-                                    className={`flex flex-col items-center justify-center p-3 rounded-lg ${bgColor}`}
+                                    className={`flex flex-col hover:scale-105 items-center justify-center p-3 rounded-lg ${bgColor}`}
                                 >
                                     <Icon
                                         className={`h-6 w-6 mb-1 ${iconColor}`}
                                     />
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    <p className="text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">
                                         {label}
                                     </p>
                                     <p className="text-lg font-semibold">
