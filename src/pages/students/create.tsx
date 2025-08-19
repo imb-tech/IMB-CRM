@@ -122,6 +122,9 @@ const StudentCreate = ({ item }: Props) => {
         }
     }, [isPending])
 
+     console.log(form.formState.errors);
+     
+
 
     return (
         <form
