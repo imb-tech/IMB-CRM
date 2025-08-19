@@ -10,10 +10,12 @@ export default function MobileHeaderLinks({
     defaultLinks,
     navOnHeader,
     classNameLink,
+    activeClassname
 }: {
     defaultLinks?: SubMenuItem[]
     navOnHeader?: boolean
     classNameLink?: ClassNameValue
+    activeClassname?: ClassNameValue
 }) {
     const { pathname } = useLocation()
     const items =
@@ -61,7 +63,7 @@ export default function MobileHeaderLinks({
                                 ref={(el) => (tabsRef.current[index] = el)}
                                 value={link.to}
                                 className={`${
-                                    isActive(link, pathname) && "!bg-primary/10"
+                                    isActive(link, pathname) && `!bg-primary/10 ${activeClassname}`
                                 } font-medium flex items-center gap-1.5 whitespace-nowrap`}
                             >
                                 {(link as any).icon && (link as any).icon}{" "}

@@ -81,7 +81,7 @@ export default function ParamDatePicker({
                 <X
                     onClick={reset}
                     size={16}
-                    className="text-destructive absolute right-2 cursor-pointer"
+                    className="text-red-600 absolute right-2 cursor-pointer"
                 />
             )}
         </div>

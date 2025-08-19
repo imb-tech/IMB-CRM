@@ -11,9 +11,14 @@ import {
 import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 import StudentAttendance from "./stats"
+import { SheetDemo } from "./attendance-personal"
+import { useModal } from "@/hooks/useModal"
+import { useStore } from "@/hooks/use-store"
 
 export default function StudentsAttendanceMain() {
     const [openRows, setOpenRows] = React.useState<AttendanceStudent | null>()
+    const { openModal } = useModal()
+    const { setStore } = useStore("personal")
 
     return (
         <div className="w-full flex flex-col gap-3">
@@ -145,6 +150,12 @@ export default function StudentsAttendanceMain() {
                                                                                     0 &&
                                                                                     "bg-secondary/70",
                                                                             )}
+                                                                            onClick={() => {
+                                                                                openModal()
+                                                                                setStore(
+                                                                                    student,
+                                                                                )
+                                                                            }}
                                                                         >
                                                                             <TableCell className="font-medium">
                                                                                 {
@@ -187,6 +198,10 @@ export default function StudentsAttendanceMain() {
                     </div>
                 </CardContent>
             </Card>
+
+            <div>
+                <SheetDemo />
+            </div>
         </div>
     )
 }

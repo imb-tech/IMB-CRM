@@ -23,10 +23,11 @@ export function FormSelect<
     renderOption,
     placeholder,
     className,
+    wrapperClassName,
 }: thisProps<TForm, T>) {
     const error = getNestedValue(control._formState.errors, name)
     return (
-        <fieldset className="flex flex-col w-full">
+        <fieldset className={cn("flex flex-col w-full", wrapperClassName)}>
             {label && (
                 <FieldLabel
                     htmlFor={name}
@@ -88,4 +89,5 @@ type thisProps<TForm extends FieldValues, T extends Record<string, any>> = {
     renderOption?: (item: T) => ReactNode
     placeholder?: string
     className?: string
+    wrapperClassName?: string
 }

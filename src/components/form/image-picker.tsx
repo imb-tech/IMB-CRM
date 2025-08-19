@@ -13,6 +13,8 @@ import SeeInView from "../ui/see-in-view"
 import FieldError from "./form-error"
 import { ImagePlus, Upload } from "lucide-react"
 
+const MAX_SIZE = 5 * 1024 * 1024
+
 export default function FormImagePicker<IForm extends FieldValues>({
     name,
     label,
@@ -34,6 +36,15 @@ export default function FormImagePicker<IForm extends FieldValues>({
                 value: required,
                 message: `${label}ni tanlang`,
             },
+            validate: {
+                fileSize: (file?: File) => {
+                    if (!file) return true
+                    return (
+                        file.size <= MAX_SIZE ||
+                        `Rasm hajmi ${MAX_SIZE} MB dan oshmasligi kerak`
+                    )
+                },
+            },
         },
     })
 
@@ -43,31 +54,30 @@ export default function FormImagePicker<IForm extends FieldValues>({
                 name={name}
                 control={methods.control}
                 render={() => (
-                    <div className="relative">
-                        {avatar ?
+                    <Label htmlFor={name} className="relative">
+                        {avatar ? (
                             <Avatar
                                 className={`scale-150 mb-4 h-16 w-16 ${className}`}
                             >
                                 {field.value && (
                                     <SeeInView
                                         url={
-                                            typeof field.value === "string" ?
-                                                field.value
-                                            :   field.value &&
-                                                URL.createObjectURL(field.value)
+                                            typeof field.value === "string"
+                                                ? field.value
+                                                : field.value &&
+                                                  URL.createObjectURL(
+                                                      field.value,
+                                                  )
                                         }
                                     >
                                         <AvatarImage
                                             src={
-                                                (
-                                                    typeof field.value ===
-                                                    "string"
-                                                ) ?
-                                                    field.value
-                                                :   field.value &&
-                                                    URL.createObjectURL(
-                                                        field.value,
-                                                    )
+                                                typeof field.value === "string"
+                                                    ? field.value
+                                                    : field.value &&
+                                                      URL.createObjectURL(
+                                                          field.value,
+                                                      )
                                             }
                                             alt="Selected Image"
                                             className="object-cover"
@@ -78,38 +88,39 @@ export default function FormImagePicker<IForm extends FieldValues>({
                                     <ImagePlus className="text-gray-500" />
                                 </AvatarFallback>
                             </Avatar>
-                        :   <>
-                                {field.value ?
+                        ) : (
+                            <>
+                                {field.value ? (
                                     <SeeInView
                                         url={
-                                            typeof field.value === "string" ?
-                                                field.value
-                                            :   field.value &&
-                                                URL.createObjectURL(field.value)
+                                            typeof field.value === "string"
+                                                ? field.value
+                                                : field.value &&
+                                                  URL.createObjectURL(
+                                                      field.value,
+                                                  )
                                         }
                                     >
                                         <img
                                             src={
-                                                (
-                                                    typeof field.value ===
-                                                    "string"
-                                                ) ?
-                                                    field.value
-                                                :   field.value &&
-                                                    URL.createObjectURL(
-                                                        field.value,
-                                                    )
+                                                typeof field.value === "string"
+                                                    ? field.value
+                                                    : field.value &&
+                                                      URL.createObjectURL(
+                                                          field.value,
+                                                      )
                                             }
                                             alt="Selected Image"
                                             className={`${className}` || ""}
                                         />
                                     </SeeInView>
-                                :   <div
+                                ) : (
+                                    <div
                                         className={`${className} bg-secondary`}
                                     />
-                                }
+                                )}
                             </>
-                        }
+                        )}
                         <input
                             type="file"
                             id={name}
@@ -123,18 +134,18 @@ export default function FormImagePicker<IForm extends FieldValues>({
                             }}
                             hidden
                         />
-                    </div>
+                    </Label>
                 )}
             />
             {label && (
                 <Label
                     htmlFor={name}
                     className={cn(
-                        !!error && "text-destructive",
+                        !!error && "text-red-600",
                         "cursor-pointer pt-2 flex items-center gap-2 justify-center",
                     )}
                 >
-                    {label} <Upload size={18} />
+                    {label} <Upload size={16} />
                 </Label>
             )}
             {!hideError && !!error && <FieldError>{error.message}</FieldError>}

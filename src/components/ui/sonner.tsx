@@ -28,7 +28,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
             icons={{
                 loading: <Spinner size="sm" />,
                 success: <CircleCheck size={20} className="text-primary" />,
-                error: <CircleX size={20} className="text-destructive" />,
+                error: <CircleX size={20} className="text-red-600" />,
             }}
         />
     )

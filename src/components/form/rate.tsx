@@ -89,7 +89,7 @@ export default function Rate<IForm extends FieldValues>({
                         className={cn(
                             "text-foreground hover:text-primary hover:fill-foreground transition-colors",
                             rating >= star ? "text-primary" : "",
-                            isError ? "text-destructive" : "",
+                            isError ? "text-red-600" : "",
                         )}
                     >
                         <StarIcon className="w-6 h-6" />
