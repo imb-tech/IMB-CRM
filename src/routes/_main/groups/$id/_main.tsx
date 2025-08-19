@@ -18,6 +18,7 @@ export const Route = createFileRoute("/_main/groups/$id/_main")({
                         <div className="bg-card p-3 rounded-md h-full">
                             <MobileHeaderLinks
                                 defaultLinks={items}
+                                activeClassname="!text-primary"
                                 // navOnHeader={navOnHeader}
                             />
                             <div className="pt-2 px-1 h-full">

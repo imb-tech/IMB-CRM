@@ -8,7 +8,7 @@ import { useModal } from "@/hooks/useModal"
 import { usePost } from "@/hooks/usePost"
 import { useParams } from "@tanstack/react-router"
 import { format } from "date-fns"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { studentStatusKeys } from "../students/student-status"
 import showFormErrors from "@/lib/show-form-errors"
@@ -61,6 +61,12 @@ export default function AppendStudent({
         })
     }
 
+    useEffect(() => {
+        if (data?.results && data?.count == 1) {
+            form.setValue("student", data.results[0].id)
+        }
+    }, [data])
+
     return (
         <form
             className="flex flex-col gap-3 p-3"
@@ -100,7 +106,7 @@ export default function AppendStudent({
                 fullWidth
             />
 
-            <Button className="w-full" loading={isPending}>
+            <Button className="w-full" loading={isPending} autoFocus>
                 Yaratish
             </Button>
         </form>

@@ -141,3 +141,11 @@ export const optionYears = (
 
     return years;
 };
+
+export function formatDateToUz(dateString: string): string {
+    const date = new Date(dateString)
+    const month = months[date.getMonth()].name
+    const year = date.getFullYear()
+
+    return `${month} ${year}`
+}

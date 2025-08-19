@@ -104,8 +104,6 @@ const GroupCreate = ({ item }: Props) => {
         }
     }
 
-    console.log(form.formState.errors.start_date?.message)
-
     return (
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="grid md:grid-cols-2 gap-2">
