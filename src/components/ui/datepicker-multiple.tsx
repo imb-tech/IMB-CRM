@@ -60,7 +60,7 @@ export function DatePickerMultiple({
                             onClick={() => {
                                 setDate([])
                             }}
-                            className="text-destructive absolute right-3"
+                            className="text-red-600 absolute right-3"
                             size={16}
                         />
                     )}

@@ -49,8 +49,8 @@ export const useStudentsCols = () =>
             {
                 header: "Guruhlar",
                 cell: ({ row }) => {
-                    return row.original.groups.length < 1 ? (
-                        row.original.groups?.[0].name
+                    return row.original.groups.length < 2 ? (
+                        row.original.groups?.[0]?.name || "-"
                     ) : (
                         <Popover>
                             <PopoverTrigger asChild>

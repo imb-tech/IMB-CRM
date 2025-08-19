@@ -25,7 +25,7 @@ export default function FormImagePicker<IForm extends FieldValues>({
                     htmlFor={name}
                     className={cn(
                         "bg-secondary w-full text-center p-3 rounded-md",
-                        !!errors?.[name] && "text-destructive",
+                        !!errors?.[name] && "text-red-600",
                         "cursor-pointer",
                     )}
                 >

@@ -45,6 +45,7 @@ const StudentsMain = () => {
         }
     }
 
+    
     const columns = useStudentsCols()
 
     return (
@@ -54,9 +55,7 @@ const StudentsMain = () => {
                     <div className="flex  justify-between items-center gap-3 ">
                         <div className="flex items-center gap-3">
                             <h1 className="text-xl">O'quvchilar</h1>
-                            <Badge className="text-sm">
-                                {data?.count}
-                            </Badge>
+                            <Badge className="text-sm">{data?.count}</Badge>
                             {Number(data?.total_debts) < 0 && (
                                 <Badge
                                     className="text-sm text-red-600 bg-red-600/10  border-[0.7px] border-destructive font-normal"
@@ -77,7 +76,7 @@ const StudentsMain = () => {
                                 paramName="is_active"
                                 reverse
                             />
-                            <Button >
+                            <Button className="bg-orange-500/10 hover:bg-orange-500/15 text-orange-500">
                                 <Plus className="h-4 w-4" />
                                 SMS YUBORISH
                             </Button>
@@ -111,7 +110,9 @@ const StudentsMain = () => {
                 modalKey={`${STUDENT}-add`}
                 title={`O'quvchi ${current?.id ? "tahrirlash" : "yaratish"}`}
             >
-                <StudentCreate item={current} />
+                <div className="max-h-[75vh] overflow-y-auto no-scrollbar-x">
+                    <StudentCreate item={current} />
+                </div>
             </Modal>
             <DeleteModal
                 modalKey={`${STUDENT}-delete`}

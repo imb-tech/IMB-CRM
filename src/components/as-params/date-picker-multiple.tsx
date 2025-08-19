@@ -109,7 +109,7 @@ export function ParamDatePickerMultiple({
                     {parsedDates.length > 0 && !disabled && (
                         <X
                             onClick={reset}
-                            className="text-destructive absolute right-3 cursor-pointer"
+                            className="text-red-600 absolute right-3 cursor-pointer"
                             size={16}
                         />
                     )}

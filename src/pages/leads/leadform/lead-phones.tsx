@@ -74,7 +74,7 @@ export function LeadPhones() {
                 </div>
             </div>
             {form.formState.errors.contacts_list && (
-                <p className="text-destructive text-xs mt-2">
+                <p className="text-red-600 text-xs mt-2">
                     {form.formState.errors.contacts_list.message}
                 </p>
             )}

@@ -64,7 +64,7 @@ export default function TableActions({
                     {onDelete && (
                         <DropdownMenuItem
                             onClick={onDelete}
-                            className="!text-destructive"
+                            className="!text-red-600"
                         >
                             <Trash2 width={16} className="mr-1.5" /> O'chirish
                         </DropdownMenuItem>
@@ -72,7 +72,7 @@ export default function TableActions({
                     {onUndo && (
                         <DropdownMenuItem
                             onClick={onUndo}
-                            className="!text-destructive"
+                            className="!text-red-600"
                         >
                             <Undo width={16} className="mr-1.5" /> Qaytarish
                         </DropdownMenuItem>
@@ -114,7 +114,7 @@ export default function TableActions({
                 )}
                 {onUndo && (
                     <Button
-                        icon={<Undo className="text-destructive" size={16} />}
+                        icon={<Undo className="text-red-600" size={16} />}
                         size="sm"
                         className="p-0 h-3"
                         variant="ghost"

@@ -204,7 +204,7 @@ export default function FileUpload<TForm extends FieldValues>({
                                 <Button
                                     type="button"
                                     variant="ghost"
-                                    className="!text-destructive"
+                                    className="!text-red-600"
                                     icon={<X width={18} />}
                                     onClick={() =>
                                         onChange(
