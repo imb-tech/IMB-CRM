@@ -6,7 +6,6 @@ import { Plus } from "lucide-react"
 import { useGet } from "@/hooks/useGet"
 import { GROUP_STUDENTS } from "@/constants/api-endpoints"
 import { useParams, useSearch } from "@tanstack/react-router"
-import AppendStudent from "./append-student"
 import Modal from "@/components/custom/modal"
 import { useModal } from "@/hooks/useModal"
 import ParamInput from "@/components/as-params/input"
@@ -15,6 +14,7 @@ import { studentStatusKeys } from "../students/student-status"
 import UpdateStudent from "./update-student"
 import DeleteModal from "@/components/custom/delete-modal"
 import { useStore } from "@/hooks/use-store"
+import AppendStudentModal from "./append-student-modal"
 
 export default function GroupStudents() {
     const { id: group } = useParams({
@@ -72,10 +72,7 @@ export default function GroupStudents() {
                 <UpdateStudent />
             </Modal>
 
-            <Modal modalKey="append-student" title="O'quvchi qo'shish">
-                <AppendStudent onSuccess={refetch} />
-            </Modal>
-
+            <AppendStudentModal refetch={refetch} />
             <DeleteModal
                 id={store?.id}
                 onSuccessAction={remove}
