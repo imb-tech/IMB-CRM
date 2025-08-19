@@ -432,7 +432,9 @@ export function DataTable<TData>({
                                                     )}
                                                 >
                                                     {selecteds_row && (
-                                                        <TableCell className="w-8"></TableCell>
+                                                        <TableCell className="w-8">
+                                                            <Checkbox disabled />
+                                                        </TableCell>
                                                     )}
                                                     {numeration && (
                                                         <TableCell className="w-8">
