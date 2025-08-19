@@ -50,7 +50,6 @@ export default function StudentsFilter() {
             <ParamInput fullWidth />
             <ParamCombobox
                 label="Kurslar"
-                className="w-full"
                 options={dataCourse || []}
                 labelKey="name"
                 valueKey="id"
@@ -60,7 +59,6 @@ export default function StudentsFilter() {
             />
             <ParamCombobox
                 isSearch={false}
-                className="w-full"
                 label="Guruhdagi holati"
                 options={Object.entries(studentStatusKeys)?.map(
                     ([id, name]) => ({
@@ -73,7 +71,6 @@ export default function StudentsFilter() {
                 paramName="group_status"
             />
             <ParamCombobox
-                className="w-full"
                 isSearch={false}
                 label="To'lov holati"
                 options={[
@@ -93,12 +90,12 @@ export default function StudentsFilter() {
                 paramName="payment_status"
             />
             <ParamCombobox
+                className="w-full"
                 onSearchChange={(e) => handleSearchValue("group", e)}
                 label="Guruh"
-                className="w-full"
                 options={
                     dataGroup?.map((item) => ({
-                        name: `${item.name} - ${item.start_date} - ${item.end_date}`,
+                        name: `${item.name} - ${item.teacher_name}`,
                         id: item.id,
                     })) || []
                 }
@@ -110,7 +107,6 @@ export default function StudentsFilter() {
             <ParamCombobox
                 onSearchChange={(e) => handleSearchValue("teacher", e)}
                 label="Ustoz"
-                className="w-full"
                 options={dataTeacher || []}
                 labelKey="full_name"
                 valueKey="id"
