@@ -110,7 +110,7 @@ export const useStudentsCols = () =>
                                                 <p
                                                     key={gr.id}
                                                     className={cn(
-                                                        "px-4 py-2 text-sm rounded flex items-center justify-between bg-green-500/30",
+                                                        "px-4 py-2 text-sm rounded flex items-center justify-between",
                                                     )}
                                                 >
                                                     <span>{gr.name}</span>
