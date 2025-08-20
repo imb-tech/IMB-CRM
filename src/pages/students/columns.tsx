@@ -90,9 +90,36 @@ export const useStudentsCols = () =>
             },
             {
                 header: "Filial",
-                accessorKey: "branches_data",
                 cell: ({ row }) => {
-                    return row.original.branches_data.map(e => e.name).join(', ')
+                    return row.original.branches_data.length < 2 ?
+                            row.original.branches_data?.[0]?.name || "-"
+                        :   <Popover>
+                                <PopoverTrigger asChild>
+                                    <Button
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                        }}
+                                    >
+                                        {`Filiallar (${row.original.branches_data.length})`}
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-2">
+                                    <div className="flex flex-col gap-1 text-sm ">
+                                        {row.original.branches_data?.map(
+                                            (gr) => (
+                                                <p
+                                                    key={gr.id}
+                                                    className={cn(
+                                                        "px-4 py-2 text-sm rounded flex items-center justify-between",
+                                                    )}
+                                                >
+                                                    <span>{gr.name}</span>
+                                                </p>
+                                            ),
+                                        )}
+                                    </div>
+                                </PopoverContent>
+                            </Popover>
                 },
             },
             {

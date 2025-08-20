@@ -4,6 +4,10 @@ type LoginResp = {
         refresh_token: string
         access_token: string
     }
+    branches: {
+        id: number
+        name: string
+    }[]
 }
 
 type Profile = {

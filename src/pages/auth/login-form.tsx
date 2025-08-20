@@ -6,6 +6,7 @@ import { toast } from "sonner"
 import { usePost } from "@/hooks/usePost"
 import Spinner from "@/components/ui/spinner"
 import { encryptMessage } from "@/lib/data-encrypt"
+import { setActiveBranch } from "@/lib/utils"
 
 type Form = {
     username: string
@@ -17,22 +18,31 @@ export default function LoginForm() {
         onSuccess: (data: LoginResp) => {
             const access = data?.token?.access_token
             const refresh = data?.token?.refresh_token
+            console.log(data)
 
-            if (access) {
-                setAccessToken(access)
-                toast.success("Muvaffaqiyatli tizimga kirdingiz!")
+            if (data.branches.length) {
+                setActiveBranch(data.branches[0].id)
+                if (access) {
+                    setAccessToken(access)
+                    toast.success("Muvaffaqiyatli tizimga kirdingiz!")
+                }
+                if (refresh) {
+                    setRefreshToken(refresh)
+                }
+                window?.location?.replace?.("/")
+            } else {
+                methods.setError("username", {
+                    type: "validate",
+                    message: "Filialga biriktirilmagansiz",
+                })
             }
-            if (refresh) {
-                setRefreshToken(refresh)
-            }
-            window?.location?.replace?.("/")
         },
     })
     const methods = useForm<Form>({
         disabled: isPending,
         defaultValues: {
-            username: "admin",
-            password: "admin",
+            username: "director",
+            password: "director",
         },
     })
 
@@ -41,7 +51,7 @@ export default function LoginForm() {
 
         const encryptData = {
             encrypted_data: encryptMessage(newVals),
-            ...vals
+            ...vals,
         }
 
         mutate(LOGIN, encryptData, {

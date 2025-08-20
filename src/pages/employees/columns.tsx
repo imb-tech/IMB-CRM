@@ -1,5 +1,12 @@
+import { Button } from "@/components/ui/button"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
 import SeeInView from "@/components/ui/see-in-view"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
+import { cn } from "@/lib/utils"
 import { ColumnDef } from "@tanstack/react-table"
 import { useMemo } from "react"
 
@@ -38,18 +45,35 @@ export const useEmployeeCols = () =>
                 accessorKey: "username",
             },
             {
-                header: "Filiallar",
+                header: "Filial",
                 cell: ({ row }) => {
-                    return (
-                        <div className="flex flex-wrap gap-2">
-                            {row?.original.branches?.map((br, i) => (
-                                <p key={br.id}>
-                                    {i > 0 ? "," : ""}
-                                    {br.name}
-                                </p>
-                            ))}
-                        </div>
-                    )
+                    return row.original.branches.length < 2 ?
+                            row.original.branches?.[0]?.name || "-"
+                        :   <Popover>
+                                <PopoverTrigger asChild>
+                                    <Button
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                        }}
+                                    >
+                                        {`Filiallar (${row.original.branches.length})`}
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-2">
+                                    <div className="flex flex-col gap-1 text-sm ">
+                                        {row.original.branches?.map((gr) => (
+                                            <p
+                                                key={gr.id}
+                                                className={cn(
+                                                    "px-4 py-2 text-sm rounded flex items-center justify-between",
+                                                )}
+                                            >
+                                                <span>{gr.name}</span>
+                                            </p>
+                                        ))}
+                                    </div>
+                                </PopoverContent>
+                            </Popover>
                 },
             },
         ],
