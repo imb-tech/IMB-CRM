@@ -13,10 +13,14 @@ type Student = {
     username: string
     photo: string
     password: string
-    bith_date: string
+    birth_date: string
     phone: string
     balance: string
+    is_active: boolean
+    deleted_at:string
     gpa: string
+    avg_exam_score: number
+    avg_score: number
     branches: number[]
     branches_data: Branch[]
     groups: StudentGroup[]

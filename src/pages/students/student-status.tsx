@@ -9,6 +9,12 @@ export const studentStatusKeys: Record<string, string> = {
     "2": "Muzlatilgan",
 }
 
+export const newStudentStatusKeys: Record<string, string> = {
+    "0": "Yangi",
+    "1": "Aktiv",
+}
+
+
 export default function StudentStatus({
     status,
     className,

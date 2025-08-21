@@ -40,4 +40,3 @@ function StudentGroupMain({}: Props) {
 }
 
 export default StudentGroupMain
-

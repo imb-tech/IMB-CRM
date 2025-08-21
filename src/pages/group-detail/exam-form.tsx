@@ -10,21 +10,40 @@ import { useEffect } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import { studentStatusKeys } from "../students/student-status"
 
-export default function ExamForm() {
-    const form = useForm<
-        GroupExam & {
-            students: {
-                id: number
-                full_name: string
-                is_selected: boolean
-                status: string
-            }[]
-            select_all: boolean
-        }
-    >()
+import { usePost } from "@/hooks/usePost"
+import { useParams } from "@tanstack/react-router"
+import { useStore } from "@/hooks/use-store"
+import { GROUP } from "@/constants/api-endpoints"
+import { FormDateTimePicker } from "@/components/form/form-datetime-picker"
+import { FormDatePicker } from "@/components/form/date-picker"
+import FormTimeInput from "@/components/form/time-input"
+
+type Fields = GroupModule & {
+    select_all: boolean
+}
+
+export default function ExamForm({ onSuccess }: { onSuccess: () => void }) {
+    const { id: group } = useParams({ from: "/_main/groups/$id/_main/tasks/" })
+    const { store } = useStore<GroupModule>("item")
+    const { data } = useGet<Group>(GROUP + "/" + group)
+
+    const form = useForm<Fields>({
+        defaultValues: {
+            type: "exam",
+        },
+    })
+
+    const { mutate, isPending } = usePost(
+        { onSuccess },
+        {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        },
+    )
+
     const { data: students } = useGet<GroupStudent[]>(GROUP_STUDENTS, {
-        params: { group: 5 },
-        options: { queryKey: [GROUP_STUDENTS] },
+        params: { group },
     })
 
     const wst = form.watch("students")
@@ -35,8 +54,20 @@ export default function ExamForm() {
         keyName: "key",
     })
 
-    function handleSubmit(vals: GroupExam) {
-        console.log(vals)
+    function handleSubmit(vals: Fields) {
+        const conf = {
+            ...vals,
+            file_datas: vals.uploaded_files,
+            uploaded_files: undefined,
+            group,
+            date: store?.date,
+            controller: data?.teacher,
+            students: vals.students
+                .filter((st) => st.is_selected)
+                .map((st) => st.id)
+                .join(","),
+        }
+        mutate("platform/groups/modules", conf)
     }
 
     useEffect(() => {
@@ -59,11 +90,21 @@ export default function ExamForm() {
                 <div className="mb-3 flex flex-col gap-2">
                     <FormInput
                         methods={form}
-                        name="name"
+                        name="title"
                         label="Imtixon nomi"
                         placeholder="Misol: 1-oy bitiruv"
                         required
                     />
+
+                    <FormDateTimePicker
+                        control={form.control}
+                        name="deadline"
+                        label="Imtixon sanasi"
+                        addButtonProps={{
+                            className: "bg-secondary",
+                        }}
+                    />
+
                     <FormNumberInput
                         control={form.control}
                         name="min_score"
@@ -78,8 +119,9 @@ export default function ExamForm() {
                     />
                     <FileInput
                         control={form.control}
-                        name="files"
-                        maxFiles={3}
+                        name="uploaded_files"
+                        maxFiles={5}
+                        acceptedTypes={[".pdf"]}
                         label="Qo'shimcha fayllar"
                     />
                 </div>
@@ -107,7 +149,7 @@ export default function ExamForm() {
                                 key={st.key}
                             >
                                 <FormCheckbox
-                                    label={st.full_name}
+                                    label={st?.full_name ?? ""}
                                     control={form.control}
                                     name={`students.${i}.is_selected`}
                                 />
@@ -121,7 +163,9 @@ export default function ExamForm() {
                 }
             </div>
 
-            <Button className="ml-auto block">Yaratish</Button>
+            <Button className="ml-auto block" loading={isPending}>
+                Yaratish
+            </Button>
         </form>
     )
 }

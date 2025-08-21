@@ -148,20 +148,19 @@ export const useGroupSalesCols = () =>
     )
 
 export const useGroupExamsCols = () =>
-    useMemo<ColumnDef<GroupStudent>[]>(
+    useMemo<ColumnDef<GroupModuleStudent>[]>(
         () => [
             {
                 header: "FISH",
-                accessorKey: "student_name",
+                accessorKey: "full_name",
             },
             {
                 header: "Natija",
-                accessorKey: "max_score",
-                cell() {
-                    return (
-                        <Input type="number" className="h-8" placeholder="0" />
-                    )
-                },
+                accessorKey: "answer",
+            },
+            {
+                header: "Yuborgan fayl",
+                accessorKey: "file",
             },
         ],
         [],
