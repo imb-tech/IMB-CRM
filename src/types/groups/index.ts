@@ -18,7 +18,7 @@ type Group = {
 
 type GroupExam = {
     id: number
-    name: string
+    title: string
     take_date: string
     min_score: number
     max_score: number

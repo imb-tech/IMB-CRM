@@ -5,8 +5,10 @@ import {
 } from "@/constants/localstorage-keys"
 import { getAccessToken, getRefreshToken } from "@/lib/get-token"
 import { setAccessToken } from "@/lib/set-token"
+import { setActiveBranch } from "@/lib/utils"
 import { QueryClient } from "@tanstack/react-query"
 import axios, { AxiosError } from "axios"
+import { toast } from "sonner"
 
 export const baseURL = import.meta.env.VITE_DEFAULT_URL
 // const baseURL = localStorage.getItem('api')! + '/api/v1'
@@ -35,6 +37,19 @@ export function setupAxiosInterceptors(queryClient: QueryClient) {
 
     axiosInstance.interceptors.response.use(
         function (response) {
+            if (response.config.url === "/auth/profile/") {
+                const branches = response.data.branches
+                if (!branches?.length) {
+                    localStorage.removeItem('token')
+                    toast.error("Sizda filial mavjud emas")
+                    setTimeout(() => {
+                        window.location.replace("/login")
+                    }, 1000);
+                } else {
+                    setActiveBranch(branches[0].id)
+                }
+
+            }
             return response
         },
         async function (error) {
@@ -80,6 +95,8 @@ export function setupAxiosInterceptors(queryClient: QueryClient) {
             //  403 bo‘lsa GET_ME ni yangilab qayta urinish
             if (status === 403 && !originalRequest._403retry) {
                 originalRequest._403retry = true
+                localStorage.removeItem('token')
+                window.location.replace('/login')
                 // await queryClient.invalidateQueries({ queryKey: [GET_ME] });
                 await new Promise((resolve) => setTimeout(resolve, 100))
                 return axiosInstance(originalRequest)

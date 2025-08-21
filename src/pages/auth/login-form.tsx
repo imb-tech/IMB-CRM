@@ -41,7 +41,7 @@ export default function LoginForm() {
 
         const encryptData = {
             encrypted_data: encryptMessage(newVals),
-            ...vals
+            ...vals,
         }
 
         mutate(LOGIN, encryptData, {

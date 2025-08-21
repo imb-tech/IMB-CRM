@@ -21,7 +21,7 @@ const EmployeesMain = () => {
             <Card className="rounded-lg">
                 <CardContent>
                     {/* <Button onClick={openModal}>Yaratish</Button> */}
-                    <HrAccordion loading={isFetching} users={data?.results} />
+                    <HrAccordion loading={isFetching} users={data?.results} setCurrent={setCurrent} />
                 </CardContent>
             </Card>
             <Modal

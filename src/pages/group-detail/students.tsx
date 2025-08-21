@@ -49,7 +49,6 @@ export default function GroupStudents() {
                             labelKey="name"
                             valueKey="id"
                             paramName="status"
-                            hideSeach
                         />
                         <ParamInput />
                         <Button onClick={openModal}>

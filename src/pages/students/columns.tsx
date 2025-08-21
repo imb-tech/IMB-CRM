@@ -49,45 +49,77 @@ export const useStudentsCols = () =>
             {
                 header: "Guruhlar",
                 cell: ({ row }) => {
-                    return row.original.groups.length < 2 ? (
-                        row.original.groups?.[0]?.name || "-"
-                    ) : (
-                        <Popover>
-                            <PopoverTrigger asChild>
-                                <Button
-                                    onClick={(e) => {
-                                        e.stopPropagation()
-                                    }}
-                                >
-                                    {`Guruhlar (${row.original.groups.length})`}
-                                </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-2">
-                                <div className="flex flex-col gap-1 text-sm ">
-                                    {row.original.groups?.map((gr) => (
-                                        <p
-                                            key={gr.id}
-                                            className={cn(
-                                                "px-4 py-2 text-sm rounded flex items-center justify-between",
-                                                gr.status == -1
-                                                    ? "bg-red-500/20 "
-                                                    : gr.status == 0
-                                                    ? "bg-orange-500/20 "
-                                                    : gr.status == 2
-                                                    ? "bg-gray-500/20 "
-                                                    : "bg-green-500/30 ",
-                                            )}
-                                        >
-                                            <span>{gr.name}</span>
-                                            <span>
-                                                {formatMoney(gr.balance)}
-                                            </span>
-                                        </p>
-                                    ))}
-                                </div>
-                            </PopoverContent>
-                        </Popover>
-                    )
+                    return row.original.groups.length < 2 ?
+                            row.original.groups?.[0]?.name || "-"
+                        :   <Popover>
+                                <PopoverTrigger asChild>
+                                    <Button
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                        }}
+                                    >
+                                        {`Guruhlar (${row.original.groups.length})`}
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-2">
+                                    <div className="flex flex-col gap-1 text-sm ">
+                                        {row.original.groups?.map((gr) => (
+                                            <p
+                                                key={gr.id}
+                                                className={cn(
+                                                    "px-4 py-2 text-sm rounded flex items-center justify-between",
+                                                    gr.status == -1 ?
+                                                        "bg-red-500/20 "
+                                                    : gr.status == 0 ?
+                                                        "bg-orange-500/20 "
+                                                    : gr.status == 2 ?
+                                                        "bg-gray-500/20 "
+                                                    :   "bg-green-500/30 ",
+                                                )}
+                                            >
+                                                <span>{gr.name}</span>
+                                                <span>
+                                                    {formatMoney(gr.balance)}
+                                                </span>
+                                            </p>
+                                        ))}
+                                    </div>
+                                </PopoverContent>
+                            </Popover>
+                },
+            },
+            {
+                header: "Filial",
+                cell: ({ row }) => {
+                    return row.original.branches_data.length < 2 ?
+                            row.original.branches_data?.[0]?.name || "-"
+                        :   <Popover>
+                                <PopoverTrigger asChild>
+                                    <Button
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                        }}
+                                    >
+                                        {`Filiallar (${row.original.branches_data.length})`}
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-2">
+                                    <div className="flex flex-col gap-1 text-sm ">
+                                        {row.original.branches_data?.map(
+                                            (gr) => (
+                                                <p
+                                                    key={gr.id}
+                                                    className={cn(
+                                                        "px-4 py-2 text-sm rounded flex items-center justify-between",
+                                                    )}
+                                                >
+                                                    <span>{gr.name}</span>
+                                                </p>
+                                            ),
+                                        )}
+                                    </div>
+                                </PopoverContent>
+                            </Popover>
                 },
             },
             {
@@ -97,7 +129,11 @@ export const useStudentsCols = () =>
                 cell: ({ row }) => {
                     const { balance } = row.original
                     return (
-                        <span className={Number(balance) < 0 ? "text-red-500" : ""}>
+                        <span
+                            className={
+                                Number(balance) < 0 ? "text-red-500" : ""
+                            }
+                        >
                             {formatMoney(balance)}
                         </span>
                     )

@@ -20,10 +20,6 @@ export default function GroupAttendance() {
         "platform/groups/months-to-teach/" + id,
     )
 
-    const { data: days } = useGet<string[]>(
-        "platform/groups/days-to-teach/" + id,
-    )
-
     const months = useMemo(
         () =>
             options?.map((d) => ({
@@ -35,6 +31,24 @@ export default function GroupAttendance() {
 
     const { data } = useGet<StudentAttandence[]>(
         "platform/group-students/attendances/" + id + "/" + date,
+        {
+            options: {
+                enabled: !!date,
+            },
+        },
+    )
+    const currDate = formatDate(new Date().setDate(1), "yyyy-MM-dd")
+
+    const defaultOpt = useMemo(
+        () =>
+            months?.length ?
+                (months?.find((usr) => usr.value === currDate) ?? months[0])
+            :   null,
+        [months],
+    )
+
+    const { data: days } = useGet<string[]>(
+        "platform/groups/days-to-teach/" + id + "/" + date,
         {
             options: {
                 enabled: !!date,
@@ -54,15 +68,6 @@ export default function GroupAttendance() {
                 }
             }) ?? [],
         [days],
-    )
-    const currDate = formatDate(new Date().setDate(1), "yyyy-MM-dd")
-
-    const defaultOpt = useMemo(
-        () =>
-            months?.length ?
-                (months?.find((usr) => usr.value === currDate) ?? months[0])
-            :   null,
-        [months],
     )
 
     return (

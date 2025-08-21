@@ -205,7 +205,7 @@ export function FileInput<TForm extends FieldValues>({
 
             {files.length > 0 && (
                 <div className="space-y-1">
-                    <p className="text-xs text-slate-600">
+                    <p className="text-xs text-muted-foreground">
                         {files.length} ta fayl tanlandi
                     </p>
 
@@ -213,14 +213,14 @@ export function FileInput<TForm extends FieldValues>({
                         {files.map((file, index) => (
                             <div
                                 key={`${file.name}-${index}`}
-                                className="flex items-center justify-between px-2 py-1 bg-white rounded border border-slate-200"
+                                className="flex items-center justify-between px-2 py-1 bg-secondary rounded border "
                             >
                                 <div className="flex items-center space-x-1 flex-1 min-w-0">
-                                    <File className="w-3 h-3 text-slate-400 flex-shrink-0" />
-                                    <p className="text-xs text-slate-700 truncate">
+                                    <File className="w-3 h-3 text-muted-foreground flex-shrink-0" />
+                                    <p className="text-xs text-muted-foreground truncate">
                                         {file.name}
                                     </p>
-                                    <span className="text-xs text-slate-500">
+                                    <span className="text-xs text-muted-foreground">
                                         ({(file.size / 1024 / 1024).toFixed(1)}{" "}
                                         MB)
                                     </span>
@@ -232,7 +232,7 @@ export function FileInput<TForm extends FieldValues>({
                                         e.stopPropagation()
                                         removeFile(index)
                                     }}
-                                    className="p-0.5 hover:bg-red-50 rounded transition-colors flex-shrink-0"
+                                    className="p-0.5 hover:bg-red-500/20 rounded transition-colors flex-shrink-0"
                                 >
                                     <X className="w-3 h-3 text-red-500" />
                                 </button>

@@ -2,11 +2,7 @@ import { FormCombobox } from "@/components/form/combobox"
 import { FormDatePicker } from "@/components/form/date-picker"
 import { FormSelect } from "@/components/form/select"
 import { Button } from "@/components/ui/button"
-import {
-    GROUP_STUDENTS,
-    OPTION_STUDENT,
-    STUDENT,
-} from "@/constants/api-endpoints"
+import { GROUP_STUDENTS, OPTION_STUDENT } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import { useModal } from "@/hooks/useModal"
 import { usePost } from "@/hooks/usePost"
@@ -14,7 +10,10 @@ import { useParams } from "@tanstack/react-router"
 import { format } from "date-fns"
 import { useEffect, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
-import { studentStatusKeys } from "../students/student-status"
+import {
+    newStudentStatusKeys,
+    studentStatusKeys,
+} from "../students/student-status"
 import StudentSelector from "@/components/form/student-selector"
 import { Trash } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -224,7 +223,7 @@ export default function AppendStudent({
                     />
 
                     <FormSelect
-                        options={Object.entries(studentStatusKeys)?.map(
+                        options={Object.entries(newStudentStatusKeys)?.map(
                             ([id, name]) => ({ id, name }),
                         )}
                         control={form.control}
