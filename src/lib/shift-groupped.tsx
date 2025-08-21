@@ -1,13 +1,13 @@
 import { formatTime } from "./utils"
 
 export const daysMap: Record<number, string> = {
-    1: "Du",
-    2: "Se",
-    3: "Cho",
-    4: "Pa",
-    5: "Ju",
-    6: "Sha",
-    7: "Ya",
+    0: "Du",
+    1: "Se",
+    2: "Cho",
+    3: "Pa",
+    4: "Ju",
+    5: "Sha",
+    6: "Ya",
 }
 
 export function shiftGroupped(shifts: GroupShift[]) {

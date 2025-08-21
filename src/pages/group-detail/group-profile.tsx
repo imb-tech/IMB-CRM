@@ -147,7 +147,7 @@ export default function GroupProfile() {
                                         Dars vaqti
                                     </span>
                                     <div className="text-sm flex items-center mt-0.5">
-                                        {(data?.shifts ?? [])?.map((sh, i) => (
+                                        {(data?.shifts_data ?? [])?.map((sh, i) => (
                                             <div
                                                 key={sh.day_of_week}
                                                 className="flex"
@@ -278,7 +278,7 @@ export default function GroupProfile() {
                         <div className="flex items-center gap-2">
                             <Calendar className="w-3 h-3 text-gray-400" />
                             <span className="text-gray-600 text-xs">
-                                {shiftGroupped(data?.shifts ?? [])?.map(
+                                {shiftGroupped(data?.shifts_data ?? [])?.map(
                                     (sh) => (
                                         <div
                                             key={sh.days}
