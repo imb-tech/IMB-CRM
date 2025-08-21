@@ -44,7 +44,7 @@ function StudentProfile({}: Props) {
                             </Badge>
                         </li>
                         {data?.deleted_at && (
-                            <li className="flex flex-wrap sm:flex-nowrap gap-3 text-red-500 sm:flex-row gap-2 sm:items-center">
+                            <li className="flex flex-wrap sm:flex-nowrap  text-red-500 sm:flex-row gap-2 sm:items-center">
                                 <div className="flex gap-2 items-center md:min-w-52 text-foreground-500">
                                     <CalendarDays size={16} />{" "}
                                     <span>{"O'chirilgan sanasi"}:</span>
@@ -55,7 +55,7 @@ function StudentProfile({}: Props) {
                             </li>
                         )}
 
-                        <li className="flex flex-wrap sm:flex-nowrap gap-3 sm:flex-row gap-2 sm:items-center">
+                        <li className="flex flex-wrap sm:flex-nowrap  sm:flex-row gap-2 sm:items-center">
                             <div className="flex gap-2 items-center md:min-w-52 text-foreground-500">
                                 <PhoneCall size={16} />{" "}
                                 <span>{"Telefon raqami"}:</span>
@@ -64,7 +64,7 @@ function StudentProfile({}: Props) {
                                 {formatPhoneNumber(String(data?.phone))}
                             </span>
                         </li>
-                        <li className="flex flex-wrap sm:flex-nowrap gap-3 sm:flex-row gap-2 sm:items-center">
+                        <li className="flex flex-wrap sm:flex-nowrap  sm:flex-row gap-2 sm:items-center">
                             <div className="flex gap-2 items-center md:min-w-52 text-foreground-500">
                                 <School size={16} />{" "}
                                 <span>{"Filliallari"}:</span>
@@ -75,14 +75,14 @@ function StudentProfile({}: Props) {
                                 )}
                             </span>
                         </li>
-                        <li className="flex flex-wrap sm:flex-nowrap gap-3 sm:flex-row gap-2 sm:items-center">
+                        <li className="flex flex-wrap sm:flex-nowrap  sm:flex-row gap-2 sm:items-center">
                             <div className="flex gap-2 items-center md:min-w-52 text-foreground-500">
                                 <CalendarDays size={16} />{" "}
                                 <span>{"Tug'ilgan sana"}:</span>
                             </div>
                             <span>{data?.birth_date}</span>
                         </li>
-                        <li className="flex flex-wrap sm:flex-nowrap gap-3 sm:flex-row gap-2 sm:items-center">
+                        <li className="flex flex-wrap sm:flex-nowrap  sm:flex-row gap-2 sm:items-center">
                             <div className="flex gap-2 items-center md:min-w-52 text-foreground-500">
                                 <KeyRound size={16} /> <span>{"Login"}:</span>
                             </div>
