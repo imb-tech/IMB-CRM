@@ -4,7 +4,7 @@ type Group = {
     course_name: "Test uchun kurs"
     branch_name: "test Filliali"
     room_name: "1 xona"
-    shifts: GroupShift[]
+    shifts_data: GroupShift[]
     name: "frontend 1"
     start_date: "2025-08-01"
     end_date: "2025-08-31"

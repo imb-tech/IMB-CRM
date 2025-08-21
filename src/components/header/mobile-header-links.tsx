@@ -63,7 +63,7 @@ export default function MobileHeaderLinks({
                                 ref={(el) => (tabsRef.current[index] = el)}
                                 value={link.to}
                                 className={`${
-                                    isActive(link, pathname) && `!bg-primary/10 ${activeClassname}`
+                                    isActive(link, pathname) && `!bg-primary/10 text-primary ${activeClassname}`
                                 } font-medium flex items-center gap-1.5 whitespace-nowrap`}
                             >
                                 {(link as any).icon && (link as any).icon}{" "}

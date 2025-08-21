@@ -2,7 +2,7 @@ import { format } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { Button, ButtonProps } from "@/components/ui/button"
 import { Calendar, CalendarProps } from "@/components/ui/calendar"
 import {
     Popover,
@@ -22,6 +22,7 @@ export function DatePicker({
     isError,
     size = "lg",
     className,
+    addButtonProps,
 }: {
     date: Date | any
     setDate: any
@@ -33,6 +34,7 @@ export function DatePicker({
     isError?: boolean
     size?: "default" | "lg" | "sm" | "icon"
     className?: ClassNameValue
+    addButtonProps?: ButtonProps
 }) {
     return (
         <Popover>
@@ -48,15 +50,17 @@ export function DatePicker({
                         className,
                     )}
                     disabled={disabled}
+                    {...addButtonProps}
                 >
                     <CalendarIcon className="mr-1 text-gray-400 h-4 w-4" />
                     <span className="hidden md:block">
-                        {date ?
-                            format(date, "dd/MM/yyyy")
-                        :   <span className="text-gray-400">
+                        {date ? (
+                            format(date, "yyyy-MM-dd")
+                        ) : (
+                            <span className="text-gray-400">
                                 {placeholder || "Kunni tanlang"}
                             </span>
-                        }
+                        )}
                     </span>
                 </Button>
             </PopoverTrigger>

@@ -1,4 +1,3 @@
-import { format } from "date-fns"
 import { Calendar as CalendarIcon, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -19,7 +18,7 @@ type Props = {
     fullWidth?: boolean
     disabled?: boolean
     defaultMonth?: Date
-}
+} 
 
 export function DatePickerMultiple({
     date,

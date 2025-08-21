@@ -106,6 +106,7 @@ const StudentsMain = () => {
             </Card>
 
             <Modal
+            size="max-w-xl"
                 modalKey={`${STUDENT}-add`}
                 title={`O'quvchi ${current?.id ? "tahrirlash" : "yaratish"}`}
             >

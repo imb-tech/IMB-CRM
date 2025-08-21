@@ -38,25 +38,25 @@ const GroupCreate = ({ item }: Props) => {
     const form = useForm<GroupFields>({
         defaultValues: {
             ...item,
-            shifts: Array(7)
+            shifts: Array(6)
                 .fill(0)
                 ?.map((_, i) => {
                     if (!item?.id) {
                         return {
                             start_time: "09:00",
                             end_time: "11:30",
-                            day_of_week: i + 1,
+                            day_of_week: i,
                             enable: i < 5 && i % 2 == 0,
                         }
                     }
-                    const day = item?.shifts?.find(
-                        (el) => el.day_of_week - 1 == i,
+                    const day = item?.shifts_data?.find(
+                        (el) => el.day_of_week == i,
                     )
                     return {
                         id: day?.id ?? undefined,
                         start_time: day?.start_time?.slice(0, 5) ?? undefined,
                         end_time: day?.end_time?.slice(0, 5) ?? undefined,
-                        day_of_week: i + 1,
+                        day_of_week: i,
                         enable: !!day?.id,
                     }
                 }),
@@ -103,6 +103,8 @@ const GroupCreate = ({ item }: Props) => {
             })
         }
     }
+
+
 
     return (
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

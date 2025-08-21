@@ -1,5 +1,4 @@
 import { daysMap } from "@/lib/shift-groupped"
-import { weekdays } from "@/lib/utils"
 import { ColumnDef } from "@tanstack/react-table"
 import { useMemo } from "react"
 
@@ -14,13 +13,13 @@ export const useGroupCols = () =>
             {
                 header: "Kurs",
                 accessorKey: "course_name",
-            },
+            }, 
             {
                 header: "Dars Kunlari",
                 cell({ row: { original } }) {
                     return (
                         <div>
-                            {original.shifts
+                            {original.shifts_data
                                 ?.map((d) => daysMap[d.day_of_week])
                                 ?.join(", ")}
                         </div>

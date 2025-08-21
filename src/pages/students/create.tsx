@@ -24,6 +24,7 @@ import { toast } from "sonner"
 import { FormCombobox } from "@/components/form/combobox"
 import { useEffect, useState } from "react"
 import { useGet } from "@/hooks/useGet"
+import { format } from "date-fns"
 
 type Props = {
     item: Student | null
@@ -46,8 +47,9 @@ const StudentCreate = ({ item }: Props) => {
             ? {
                   full_name: item.full_name,
                   phone: item.phone,
-                  username: item.username,
+                  birth_date: item.birth_date,
                   branches: item?.branches_data?.map((b) => b.id),
+                  username: item.username,
               }
             : {
                   branches: [active_branch!],
@@ -82,10 +84,15 @@ const StudentCreate = ({ item }: Props) => {
     const disabled = isPending || isPatching || isPendingImage
 
     const onSubmit = (values: Student) => {
+        const { group_data, branches, parents, ...rest } = values
         const body = {
-            ...values,
-            branches: values.branches.join(","),
+            ...rest,
+            branches: branches.join(","),
             photo: undefined,
+            ...(group_data?.group ? { group_data } : {}),
+            ...(parents?.full_name && parents?.phone && parents?.username
+                ? { parents }
+                : {}),
         }
         const file = isFile ? photo : undefined
 
@@ -106,7 +113,8 @@ const StudentCreate = ({ item }: Props) => {
         if (openedAccordion === "1") {
             const current = form.getValues("group_data") || {}
             form.setValue("group_data", {
-                start_date: current.start_date || String(new Date()),
+                start_date:
+                    current.start_date || format(new Date(), "yyyy-MM-dd"),
                 status: current.status ?? 1,
                 group: current.group || null,
             })
@@ -121,10 +129,6 @@ const StudentCreate = ({ item }: Props) => {
             mutateImage("students/change-photo", formData)
         }
     }, [isPending])
-
-     console.log(form.formState.errors);
-     
-
 
     return (
         <form
@@ -154,18 +158,28 @@ const StudentCreate = ({ item }: Props) => {
                     }
                 }}
             />
-            <PhoneField
-                required
-                methods={form}
-                name="phone"
-                label="Telefon raqam"
-                onChange={(v) => {
-                    form.setValue("phone", v)
-                    if (!item?.username) {
-                        form.setValue("password", v?.replace("+998", ""))
-                    }
-                }}
-            />
+            <div className="grid grid-cols-2 items-end gap-3">
+                <PhoneField
+                    required
+                    methods={form}
+                    name="phone"
+                    label="Telefon raqam"
+                    onChange={(v) => {
+                        form.setValue("phone", v)
+                        if (!item?.username) {
+                            form.setValue("password", v?.replace("+998", ""))
+                        }
+                    }}
+                />
+
+                <FormDatePicker
+                    control={form.control}
+                    name="birth_date"
+                    label="Tug'ilgan sanasi"
+                    className="!w-full"
+                    fullWidth
+                />
+            </div>
 
             <FormMultiCombobox
                 required
@@ -219,33 +233,35 @@ const StudentCreate = ({ item }: Props) => {
                                 label="Guruh tanlang"
                                 required={openedAccordion === "1"}
                             />
-                            <FormSelect
-                                options={[
-                                    {
-                                        name: "Aktiv",
-                                        id: 1,
-                                    },
-                                    {
-                                        name: "Yangi",
-                                        id: 0,
-                                    },
-                                ]}
-                                control={form.control}
-                                name="group_data.status"
-                                labelKey="name"
-                                valueKey="id"
-                                label="Holati"
-                                required={openedAccordion === "1"}
-                            />
+                            <div className="grid grid-cols-2 items-end gap-3">
+                                <FormSelect
+                                    options={[
+                                        {
+                                            name: "Aktiv",
+                                            id: 1,
+                                        },
+                                        {
+                                            name: "Yangi",
+                                            id: 0,
+                                        },
+                                    ]}
+                                    control={form.control}
+                                    name="group_data.status"
+                                    labelKey="name"
+                                    valueKey="id"
+                                    label="Holati"
+                                    required={openedAccordion === "1"}
+                                />
 
-                            <FormDatePicker
-                                control={form.control}
-                                name="group_data.start_date"
-                                label="Qo'shilish sanasi"
-                                className="!w-full"
-                                required={openedAccordion === "1"}
-                                fullWidth
-                            />
+                                <FormDatePicker
+                                    control={form.control}
+                                    name="group_data.start_date"
+                                    label="Qo'shilish sanasi"
+                                    className="!w-full"
+                                    required={openedAccordion === "1"}
+                                    fullWidth
+                                />
+                            </div>
                         </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value={"2"}>
