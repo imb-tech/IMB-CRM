@@ -47,7 +47,7 @@ const StudentCreate = ({ item }: Props) => {
             ? {
                   full_name: item.full_name,
                   phone: item.phone,
-                  bith_date: item.bith_date,
+                  birth_date: item.birth_date,
                   branches: item?.branches_data?.map((b) => b.id),
                   username: item.username,
               }
@@ -174,7 +174,7 @@ const StudentCreate = ({ item }: Props) => {
 
                 <FormDatePicker
                     control={form.control}
-                    name="bith_date"
+                    name="birth_date"
                     label="Tug'ilgan sanasi"
                     className="!w-full"
                     fullWidth
