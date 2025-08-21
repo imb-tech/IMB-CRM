@@ -13,6 +13,7 @@ type Student = {
     username: string
     photo: string
     password: string
+    bith_date: string
     phone: string
     balance: string
     gpa: string

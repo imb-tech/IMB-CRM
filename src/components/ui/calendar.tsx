@@ -15,7 +15,7 @@ import { uz } from "date-fns/locale"
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
-const generatedYears = Array(new Date().getFullYear() - 2020 + 1).fill(0)
+const generatedYears = Array(new Date().getFullYear() - 1960 + 1).fill(0)
 
 function Calendar({
     className,
@@ -37,6 +37,7 @@ function Calendar({
         const newMonth = new Date(year, month.getMonth(), 1)
         setMonth(newMonth)
     }
+
 
     return (
         <DayPicker
@@ -123,7 +124,7 @@ function Calendar({
                                 </SelectTrigger>
                                 <SelectContent>
                                     {generatedYears.map((_, i) => {
-                                        const year = 2020 + i
+                                        const year = 1960 + i
                                         return (
                                             <SelectItem
                                                 key={year}

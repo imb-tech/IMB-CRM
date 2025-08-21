@@ -6,6 +6,7 @@ import { CalendarDays, Edit, KeyRound, PhoneCall, School } from "lucide-react"
 type Props = {}
 
 function StudentProfile({}: Props) {
+    
     return (
         <div className="bg-card border-divider border relative rounded-lg  p-4 flex lg:flex-row flex-col gap-5 lg:gap-0 lg:justify-between lg:items-end">
             <div className="flex flex-col sm:flex-row items-start gap-6 h-full">

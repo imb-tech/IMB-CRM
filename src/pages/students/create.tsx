@@ -47,8 +47,9 @@ const StudentCreate = ({ item }: Props) => {
             ? {
                   full_name: item.full_name,
                   phone: item.phone,
-                  username: item.username,
+                  bith_date: item.bith_date,
                   branches: item?.branches_data?.map((b) => b.id),
+                  username: item.username,
               }
             : {
                   branches: [active_branch!],
@@ -84,13 +85,14 @@ const StudentCreate = ({ item }: Props) => {
 
     const onSubmit = (values: Student) => {
         const { group_data, branches, parents, ...rest } = values
-        const { full_name, phone, username } = parents
         const body = {
             ...rest,
             branches: branches.join(","),
             photo: undefined,
             ...(group_data?.group ? { group_data } : {}),
-            ...(full_name && phone && username ? { parents } : {}),
+            ...(parents?.full_name && parents?.phone && parents?.username
+                ? { parents }
+                : {}),
         }
         const file = isFile ? photo : undefined
 
@@ -156,18 +158,28 @@ const StudentCreate = ({ item }: Props) => {
                     }
                 }}
             />
-            <PhoneField
-                required
-                methods={form}
-                name="phone"
-                label="Telefon raqam"
-                onChange={(v) => {
-                    form.setValue("phone", v)
-                    if (!item?.username) {
-                        form.setValue("password", v?.replace("+998", ""))
-                    }
-                }}
-            />
+            <div className="grid grid-cols-2 items-end gap-3">
+                <PhoneField
+                    required
+                    methods={form}
+                    name="phone"
+                    label="Telefon raqam"
+                    onChange={(v) => {
+                        form.setValue("phone", v)
+                        if (!item?.username) {
+                            form.setValue("password", v?.replace("+998", ""))
+                        }
+                    }}
+                />
+
+                <FormDatePicker
+                    control={form.control}
+                    name="bith_date"
+                    label="Tug'ilgan sanasi"
+                    className="!w-full"
+                    fullWidth
+                />
+            </div>
 
             <FormMultiCombobox
                 required
@@ -221,33 +233,35 @@ const StudentCreate = ({ item }: Props) => {
                                 label="Guruh tanlang"
                                 required={openedAccordion === "1"}
                             />
-                            <FormSelect
-                                options={[
-                                    {
-                                        name: "Aktiv",
-                                        id: 1,
-                                    },
-                                    {
-                                        name: "Yangi",
-                                        id: 0,
-                                    },
-                                ]}
-                                control={form.control}
-                                name="group_data.status"
-                                labelKey="name"
-                                valueKey="id"
-                                label="Holati"
-                                required={openedAccordion === "1"}
-                            />
+                            <div className="grid grid-cols-2 items-end gap-3">
+                                <FormSelect
+                                    options={[
+                                        {
+                                            name: "Aktiv",
+                                            id: 1,
+                                        },
+                                        {
+                                            name: "Yangi",
+                                            id: 0,
+                                        },
+                                    ]}
+                                    control={form.control}
+                                    name="group_data.status"
+                                    labelKey="name"
+                                    valueKey="id"
+                                    label="Holati"
+                                    required={openedAccordion === "1"}
+                                />
 
-                            <FormDatePicker
-                                control={form.control}
-                                name="group_data.start_date"
-                                label="Qo'shilish sanasi"
-                                className="!w-full"
-                                required={openedAccordion === "1"}
-                                fullWidth
-                            />
+                                <FormDatePicker
+                                    control={form.control}
+                                    name="group_data.start_date"
+                                    label="Qo'shilish sanasi"
+                                    className="!w-full"
+                                    required={openedAccordion === "1"}
+                                    fullWidth
+                                />
+                            </div>
                         </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value={"2"}>
