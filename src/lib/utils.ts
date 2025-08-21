@@ -149,3 +149,59 @@ export function formatDateToUz(dateString: string): string {
 
     return `${month} ${year}`
 }
+
+export function moduleGroupper(modules?: GroupModule[], days?: string[]): GroupModule[] {
+    if (!days?.length) {
+        return []
+    }
+    const orderedDate = days.sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
+
+
+    const groupped: Record<string, GroupModule[]> = {}
+
+    for (const item of (modules ?? [])) {
+        const index = item.date.slice(0, 10)
+        if (!groupped[index]) {
+            groupped[index] = [{
+                ...item,
+                last: true
+            }]
+        } else groupped[index].push({ ...item, last: false })
+    }
+
+    const assigned: Record<string, GroupModule[]> = {}
+
+    for (const item of orderedDate) {
+        const itm = groupped[item]
+        if (itm) {
+            assigned[item] = itm.map((g, i) => ({ ...g, last: i === (itm.length - 1), first: i === 0 }))
+        } else assigned[item] = [{ is_empty: true, date: item, last: true, first: true } as GroupModule]
+    }
+
+    return Object.values(assigned).flatMap(e => e)
+}
+
+export function findWeekday(orgDate: string) {
+    const date = new Date(orgDate);
+    const wk = date.getDay();
+    return weekdays[wk - 1];
+}
+
+
+export function truncateFileName(url: string) {
+    const baseName = url.split('/media/module_files/').pop()!
+    const maxLength = 15;
+
+    // Extensionni ajratish
+    const lastDot = baseName.lastIndexOf('.');
+    let name = lastDot !== -1 ? baseName.slice(0, lastDot) : baseName;
+    const ext = lastDot !== -1 ? baseName.slice(lastDot) : '.pdf';
+
+    // Truncate qilish
+    if (name.length > maxLength) {
+        name = name.slice(0, maxLength) + '...';
+    }
+
+    return name + ext;
+}
+
