@@ -20,7 +20,7 @@ export const CopyButton = (
 
     return (
         <Button
-            variant="ghost"
+            variant="link"
             className={`font-light ${size === "md" ? "" : ""}`}
             onClick={(e) => {
                 e.stopPropagation()
