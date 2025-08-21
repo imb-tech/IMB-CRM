@@ -50,8 +50,8 @@ const GroupsMain = () => {
                 <CardContent className="space-y-4">
                     <div className="flex  justify-between items-center gap-3 ">
                         <div className="flex items-center gap-3">
-                            <h1 className="text-xl">Guruhlar</h1>
-                            <Badge variant={"outline"} className="text-sm">
+                            <h1 className="text-xl">Guruhlar ro'yxati</h1>
+                            <Badge  className="text-sm">
                                 {data?.count}
                             </Badge>
                         </div>
