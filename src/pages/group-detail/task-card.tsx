@@ -96,9 +96,9 @@ export default function TaskCard({ item }: Props) {
                                         onClick={(e) => {
                                             e.stopPropagation()
                                             e.preventDefault()
-                                            setStore("task")
-                                            openModal()
+                                            setStore(item.type)
                                             setItem(item)
+                                            openModal()
                                         }}
                                     />
                                     <Trash
