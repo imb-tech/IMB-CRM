@@ -24,6 +24,7 @@ import { toast } from "sonner"
 import { FormCombobox } from "@/components/form/combobox"
 import { useEffect, useState } from "react"
 import { useGet } from "@/hooks/useGet"
+import { format } from "date-fns"
 
 type Props = {
     item: Student | null
@@ -82,10 +83,14 @@ const StudentCreate = ({ item }: Props) => {
     const disabled = isPending || isPatching || isPendingImage
 
     const onSubmit = (values: Student) => {
+        const { group_data, branches, parents, ...rest } = values
+        const { full_name, phone, username } = parents
         const body = {
-            ...values,
-            branches: values.branches.join(","),
+            ...rest,
+            branches: branches.join(","),
             photo: undefined,
+            ...(group_data?.group ? { group_data } : {}),
+            ...(full_name && phone && username ? { parents } : {}),
         }
         const file = isFile ? photo : undefined
 
@@ -106,7 +111,8 @@ const StudentCreate = ({ item }: Props) => {
         if (openedAccordion === "1") {
             const current = form.getValues("group_data") || {}
             form.setValue("group_data", {
-                start_date: current.start_date || String(new Date()),
+                start_date:
+                    current.start_date || format(new Date(), "yyyy-MM-dd"),
                 status: current.status ?? 1,
                 group: current.group || null,
             })
@@ -121,10 +127,6 @@ const StudentCreate = ({ item }: Props) => {
             mutateImage("students/change-photo", formData)
         }
     }, [isPending])
-
-     console.log(form.formState.errors);
-     
-
 
     return (
         <form

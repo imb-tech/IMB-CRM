@@ -13,13 +13,7 @@ import {
 } from "./select2"
 import { uz } from "date-fns/locale"
 
-export type CalendarProps = Omit<
-    React.ComponentProps<typeof DayPicker>,
-    "month" | "onMonthChange" | "components"
-> & {
-    defaultMonth?: Date
-    onSelect?: (date: Date[]) => void
-}
+export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
 const generatedYears = Array(new Date().getFullYear() - 2020 + 1).fill(0)
 
@@ -28,7 +22,6 @@ function Calendar({
     classNames,
     showOutsideDays = true,
     defaultMonth,
-    onSelect,
     ...props
 }: CalendarProps) {
     const [month, setMonth] = React.useState<Date>(defaultMonth || new Date())
@@ -47,13 +40,11 @@ function Calendar({
 
     return (
         <DayPicker
-            onSelect={onSelect}
             month={month}
             onMonthChange={setMonth}
             showOutsideDays={showOutsideDays}
             className={cn("p-3", className)}
             locale={uz}
-            {...(props as any)}
             classNames={{
                 months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
                 month: "space-y-4",
@@ -85,10 +76,10 @@ function Calendar({
                     "bg-primary/10 text-primary hover:bg-primary hover:text-primary focus:bg-primary/15 focus:text-primary",
                 day_today: "bg-primary/10 text-primary",
                 day_outside:
-                    "day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
+                    "day-outside text-muted-foreground opacity-50 aria-selected:bg-primary/5 aria-selected:text-primary aria-selected:opacity-30",
                 day_disabled: "text-muted-foreground opacity-50",
                 day_range_middle:
-                    "aria-selected:bg-accent aria-selected:text-accent-foreground",
+                    "aria-selected:bg-primary/5 aria-selected:text-primary",
                 day_hidden: "invisible",
                 ...classNames,
             }}
@@ -189,6 +180,7 @@ function Calendar({
                     )
                 },
             }}
+            {...props}
         />
     )
 }
