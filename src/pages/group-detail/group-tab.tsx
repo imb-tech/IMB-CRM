@@ -1,16 +1,23 @@
 import Modal from "@/components/custom/modal"
 import ExamForm from "./exam-form"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import TaskForm from "./task-form"
 import ThemeForm from "./theme-form"
 import Select from "@/components/ui/select"
 import { useStore } from "@/hooks/use-store"
 import { useModal } from "@/hooks/useModal"
+import { useGet } from "@/hooks/useGet"
 
 export default function GroupTabs({ refetch }: { refetch: () => void }) {
     const { store, remove } = useStore<string>("day")
-    const [tab, setTab] = useState(store ? store : "theme")
+    const { store: item } = useStore<GroupModule>("item")
+    const [tab, setTab] = useState(
+        item?.type ? item.type
+        : store ? store
+        : "topic",
+    )
+
     const { closeModal } = useModal("day")
 
     function onSuccess() {
@@ -18,8 +25,24 @@ export default function GroupTabs({ refetch }: { refetch: () => void }) {
         closeModal()
         refetch()
     }
+
+    const { data: detail } = useGet<GroupModule>(
+        `platform/groups/modules/${item?.id}`,
+        {
+            options: {
+                enabled: !!item?.id,
+            },
+        },
+    )
+
+    useEffect(() => {
+        if (store) {
+            setTab(store)
+        }
+    }, [store])
+
     return (
-        <Modal modalKey="day" size={tab == "theme" ? "max-w-4xl" : "max-w-4xl"}>
+        <Modal modalKey="day" size={tab == "topic" ? "max-w-4xl" : "max-w-4xl"}>
             <Tabs value={tab} onValueChange={(v) => setTab(v)}>
                 {store ?
                     ""
@@ -27,7 +50,7 @@ export default function GroupTabs({ refetch }: { refetch: () => void }) {
                         className="w-40 h-8 sm:h-10"
                         label=""
                         options={[
-                            { value: "theme", label: "Mavzu" },
+                            { value: "topic", label: "Mavzu" },
                             { value: "task", label: "Vazifa" },
                             { value: "exam", label: "Imtixon" },
                         ]}
@@ -45,7 +68,7 @@ export default function GroupTabs({ refetch }: { refetch: () => void }) {
                     <TaskForm onSuccess={onSuccess} />
                 </TabsContent>
 
-                <TabsContent value="theme">
+                <TabsContent value="topic">
                     <ThemeForm onSuccess={onSuccess} />
                 </TabsContent>
             </Tabs>

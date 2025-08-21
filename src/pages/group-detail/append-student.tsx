@@ -222,29 +222,35 @@ export default function AppendStudent({
                         )}
                     />
 
-                    <FormSelect
-                        options={Object.entries(newStudentStatusKeys)?.map(
-                            ([id, name]) => ({ id, name }),
-                        )}
-                        control={form.control}
-                        name="status"
-                        labelKey="name"
-                        valueKey="id"
-                        className="bg-secondary h-10"
-                        label="Holati"
-                        required
-                    />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
+                        <FormSelect
+                            options={Object.entries(newStudentStatusKeys)?.map(
+                                ([id, name]) => ({ id, name }),
+                            )}
+                            control={form.control}
+                            name="status"
+                            labelKey="name"
+                            valueKey="id"
+                            className="bg-secondary h-10"
+                            label="Holati"
+                            required
+                        />
 
-                    <FormDatePicker
-                        control={form.control}
-                        name="start_date"
-                        label="Qo'shilish sanasi"
-                        className="!w-full"
-                        required
-                        fullWidth
-                    />
+                        <FormDatePicker
+                            control={form.control}
+                            name="start_date"
+                            label="Qo'shilish sanasi"
+                            className="!w-full"
+                            required
+                            fullWidth
+                        />
+                    </div>
 
-                    <Accordion type="single" collapsible className="my-2">
+                    <Accordion
+                        type="single"
+                        collapsible
+                        className="my-2 bg-secondary rounded-md"
+                    >
                         <AccordionItem value="item-1">
                             <AccordionTrigger className="px-4 py-3 bg-transparent">
                                 Chegirma belgilash

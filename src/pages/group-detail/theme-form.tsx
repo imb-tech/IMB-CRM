@@ -7,26 +7,29 @@ import { useParams } from "@tanstack/react-router"
 import { useStore } from "@/hooks/use-store"
 import { useGet } from "@/hooks/useGet"
 import { GROUP } from "@/constants/api-endpoints"
+import { usePatch } from "@/hooks/usePatch"
 
 export default function ThemeForm({ onSuccess }: { onSuccess: () => void }) {
     const { id: group } = useParams({ from: "/_main/groups/$id/_main/tasks/" })
     const { store } = useStore<GroupModule>("item")
     const { data } = useGet<Group>(GROUP + "/" + group)
 
+    const headers = {
+        "Content-Type": "multipart/form-data",
+    }
+
     const form = useForm<GroupModule>({
         defaultValues: {
             type: "topic",
+            // uploaded_files: store?.files?.map(f => f.file) ?? [],
             ...store,
         },
     })
 
-    const { mutate, isPending } = usePost(
+    const { mutate, isPending } = usePost({ onSuccess }, { headers })
+    const { mutate: patch, isPending: isPatching } = usePatch(
         { onSuccess },
-        {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        },
+        { headers },
     )
 
     function handleSubmit(vals: GroupModule) {
@@ -37,6 +40,9 @@ export default function ThemeForm({ onSuccess }: { onSuccess: () => void }) {
             group,
             date: store?.date,
             controller: data?.teacher,
+        }
+        if (store?.id) {
+            mutate("platform/groups/modules", conf)
         }
         mutate("platform/groups/modules", conf)
     }
@@ -69,7 +75,7 @@ export default function ThemeForm({ onSuccess }: { onSuccess: () => void }) {
                 />
             </div>
 
-            <Button className="ml-auto block" loading={isPending}>
+            <Button className="ml-auto block" loading={isPending || isPatching}>
                 Yaratish
             </Button>
         </form>
