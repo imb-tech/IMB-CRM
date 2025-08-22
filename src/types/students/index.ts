@@ -17,18 +17,26 @@ type Student = {
     phone: string
     balance: string
     is_active: boolean
-    deleted_at:string
+    deleted_at: string
     gpa: string
     avg_exam_score: number
     avg_score: number
     branches: number[]
     branches_data: Branch[]
     groups: StudentGroup[]
+    status: string
     group_data: {
         status: number
-        start_date: string
         group: number | null
+        name?: string
+        start_date: string
+        end_date?: string
+        teacher?: number
+        course?: number
+        branch?: number
+        room?: number
     }
+    shifts_data: GroupShift[]
     parents: {
         full_name: string
         username: string

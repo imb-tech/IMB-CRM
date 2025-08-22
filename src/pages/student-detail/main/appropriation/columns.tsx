@@ -1,14 +1,29 @@
+import { useNavigate } from "@tanstack/react-router"
 import { ColumnDef } from "@tanstack/react-table"
 import { useMemo } from "react"
 
-export const useColumns = () =>
-    useMemo<ColumnDef<AllPaymentStudent>[]>(
+export const useColumns = () => {
+    const navigate = useNavigate()
+
+    return useMemo<ColumnDef<Student>[]>(
         () => [
             {
                 header: "Sana",
                 accessorKey: "price",
                 enableSorting: true,
-                cell: ({ row }) => "2025-08-21",
+                cell: ({ row }) => (
+                    <span
+                        onClick={() =>
+                            navigate({
+                                to: "/groups/$id",
+                                params: { id: "5" },
+                            })
+                        }
+                        className="hover:text-primary cursor-pointer"
+                    >
+                        {row.original?.group_data?.name}
+                    </span>
+                ),
             },
             {
                 header: "Nomi",
@@ -31,3 +46,4 @@ export const useColumns = () =>
         ],
         [],
     )
+}

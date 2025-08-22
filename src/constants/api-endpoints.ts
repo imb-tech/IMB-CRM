@@ -22,6 +22,7 @@ export const OPTION_STUDENT = OPTION + "students"
 export const EMPLOYEE = "employees"
 export const SALARIES = "salary-types/attach"
 export const STUDENT = "students"
+export const STUDENT_GROUP = "students/groups"
 export const GROUP = "platform/groups"
 export const GROUP_STUDENTS = "platform/group-students"
 

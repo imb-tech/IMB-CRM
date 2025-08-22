@@ -24,7 +24,7 @@ type GroupExam = {
     max_score: number
     files: string
 }
-
+ 
 type GroupFields = {
     name: string
     start_date: string

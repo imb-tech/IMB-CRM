@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/ui/datatable"
 import { useColumns } from "./columns"
 import { useGet } from "@/hooks/useGet"
-import { COURSE } from "@/constants/api-endpoints"
+import { STUDENT_GROUP } from "@/constants/api-endpoints"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
@@ -9,7 +9,8 @@ import { Plus } from "lucide-react"
 type Props = {}
 
 function StudentGroupMain({}: Props) {
-    const { data, isFetching } = useGet<ListResp<Course>>(COURSE)
+    const { data, isLoading } = useGet<ListResp<Student>>(STUDENT_GROUP)
+
 
     const columns = useColumns()
     return (
@@ -31,7 +32,7 @@ function StudentGroupMain({}: Props) {
             <DataTable
                 columns={columns}
                 data={data?.results}
-                loading={isFetching}
+                loading={isLoading}
                 numeration
                 viewAll
             />
