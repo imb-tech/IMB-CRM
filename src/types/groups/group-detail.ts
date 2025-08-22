@@ -14,6 +14,7 @@ type GroupModule = {
     last: boolean
     first: boolean
     is_empty: boolean
+    is_homework_required: boolean
     controller_data?: {
         id: number
         full_name: string
@@ -22,7 +23,7 @@ type GroupModule = {
         id: number
         file: string
     }[]
-    uploaded_files: File[]
+    uploaded_files: (File | string)[]
     students: GroupModuleStudent[]
 }
 
@@ -35,4 +36,16 @@ type GroupModuleStudent = {
     status?: string
     answer?: string | null
     file?: string | null
+    score?: number
+}
+
+type GroupModuleForm = GroupModule & {
+    students: {
+        id: number
+        full_name: string
+        is_selected: boolean
+        status: string
+    }[]
+    is_homework_required: boolean
+    select_all: boolean
 }

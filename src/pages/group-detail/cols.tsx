@@ -8,6 +8,7 @@ import { useModal } from "@/hooks/useModal"
 import { useStore } from "@/hooks/use-store"
 import { MessageSquareMore, Pencil, Trash2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
+import { Button, buttonVariants } from "@/components/ui/button"
 
 export const useGroupStudentCols = () => {
     const { openModal } = useModal("update")
@@ -147,7 +148,7 @@ export const useGroupSalesCols = () =>
         [],
     )
 
-export const useGroupExamsCols = () =>
+export const useGroupExamsCols = (clickAnswer: (t: string) => void) =>
     useMemo<ColumnDef<GroupModuleStudent>[]>(
         () => [
             {
@@ -155,12 +156,56 @@ export const useGroupExamsCols = () =>
                 accessorKey: "full_name",
             },
             {
-                header: "Natija",
-                accessorKey: "answer",
+                header: "Javob",
+                cell({ row: { original } }) {
+                    return (
+                        <div>
+                            {original.answer ?
+                                <Button
+                                    className="text-primary"
+                                    size="sm"
+                                    onClick={() =>
+                                        clickAnswer(original.answer as string)
+                                    }
+                                >
+                                    Ko'rish
+                                </Button>
+                            :   "—"}
+                        </div>
+                    )
+                },
             },
             {
                 header: "Yuborgan fayl",
-                accessorKey: "file",
+                cell({ row: { original } }) {
+                    return (
+                        <div>
+                            {original.file ?
+                                <a
+                                    href={original.file}
+                                    target="_blank"
+                                    className={buttonVariants({
+                                        variant: "link",
+                                    })}
+                                >
+                                    Ko'rish
+                                </a>
+                            :   "—"}
+                        </div>
+                    )
+                },
+            },
+            {
+                header: "Ball",
+                cell({ row }) {
+                    return (
+                        <Input
+                            defaultValue={row.original.score}
+                            className="rounded-sm h-10 max-w-28"
+                            placeholder="—"
+                        />
+                    )
+                },
             },
         ],
         [],

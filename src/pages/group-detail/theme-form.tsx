@@ -1,54 +1,13 @@
 import { FileInput } from "@/components/form/file-input"
 import { Button } from "@/components/ui/button"
-import { useForm } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import FormTextarea from "@/components/form/textarea"
-import { usePost } from "@/hooks/usePost"
-import { useParams } from "@tanstack/react-router"
-import { useStore } from "@/hooks/use-store"
-import { useGet } from "@/hooks/useGet"
-import { GROUP } from "@/constants/api-endpoints"
-import { usePatch } from "@/hooks/usePatch"
 
-export default function ThemeForm({ onSuccess }: { onSuccess: () => void }) {
-    const { id: group } = useParams({ from: "/_main/groups/$id/_main/tasks/" })
-    const { store } = useStore<GroupModule>("item")
-    const { data } = useGet<Group>(GROUP + "/" + group)
-
-    const headers = {
-        "Content-Type": "multipart/form-data",
-    }
-
-    const form = useForm<GroupModule>({
-        defaultValues: {
-            type: "topic",
-            // uploaded_files: store?.files?.map(f => f.file) ?? [],
-            ...store,
-        },
-    })
-
-    const { mutate, isPending } = usePost({ onSuccess }, { headers })
-    const { mutate: patch, isPending: isPatching } = usePatch(
-        { onSuccess },
-        { headers },
-    )
-
-    function handleSubmit(vals: GroupModule) {
-        const conf = {
-            ...vals,
-            file_datas: vals.uploaded_files,
-            uploaded_files: undefined,
-            group,
-            date: store?.date,
-            controller: data?.teacher,
-        }
-        if (store?.id) {
-            mutate("platform/groups/modules", conf)
-        }
-        mutate("platform/groups/modules", conf)
-    }
+export default function ThemeForm({ loading }: { loading: boolean }) {
+    const form = useFormContext<GroupModule>()
 
     return (
-        <form onSubmit={form.handleSubmit(handleSubmit)}>
+        <div>
             <div className="mb-3 flex flex-col gap-4 min-h-[320px]">
                 <FormTextarea
                     methods={form}
@@ -75,9 +34,9 @@ export default function ThemeForm({ onSuccess }: { onSuccess: () => void }) {
                 />
             </div>
 
-            <Button className="ml-auto block" loading={isPending || isPatching}>
+            <Button className="ml-auto block" loading={loading}>
                 Yaratish
             </Button>
-        </form>
+        </div>
     )
 }
