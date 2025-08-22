@@ -114,7 +114,6 @@ export function ParamMultiCombobox<T extends Record<string, any>>({
                         "w-full justify-between text-muted-foreground font-normal",
                         currentValues.length && "text-foreground font-medium",
                         isError && "!text-destructive",
-                        className,
                     )}
                     {...addButtonProps}
                 >
@@ -126,7 +125,7 @@ export function ParamMultiCombobox<T extends Record<string, any>>({
                     <ChevronDown className="ml-auto h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="p-0">
+            <PopoverContent className={cn("p-0", className)}>
                 <Command shouldFilter={onSearchChange ? false : true}>
                     {!hideSearch && (
                         <div className="relative">

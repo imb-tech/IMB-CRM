@@ -26,29 +26,32 @@ export default function EmployeesHeader({
         return [
             ...(data ?? [])?.map((usr) => ({
                 id: usr.id,
-                name: `${usr.name} ${usr.employees_count > 0 ? "(" + usr.employees_count + ")" : ""}`,
+                name: `${usr.name} ${
+                    usr.employees_count > 0
+                        ? "(" + usr.employees_count + ")"
+                        : ""
+                }`,
                 count: usr.employees_count,
             })),
         ]
     }, [data])
 
     return (
-        <div className="flex items-center flex-col md:justify-between md:flex-row gap-2 mb-2">
+        <div className="flex items-center flex-col mt-1 md:justify-between md:flex-row gap-2 mb-2">
             <div className="flex items-center gap-3">
                 <h1 className="text-xl font-medium ">{"Hodimlar ro'yxati"}</h1>
                 <Badge className="text-sm">
-                    {role ?
-                        data?.find((r) => r.id === role)?.employees_count
-                    :   allEmployes}
+                    {role
+                        ? data?.find((r) => r.id === role)?.employees_count
+                        : allEmployes}
                 </Badge>
             </div>
-            <div className="flex items-center gap-2 justify-end">
-                <div className="w-full md:w-[240px]">
-                    <ParamInput
-                        className="h-10 shadow-none border-none px-3"
-                        fullWidth
-                    />
-                </div>
+            <div className="flex items-center gap-2 justify-end md:w-1/2 w-full">
+                <ParamInput
+                    className="h-10  shadow-none border-none px-3"
+                    fullWidth
+                />
+
                 <ParamCombobox
                     options={options}
                     labelKey="name"
@@ -56,7 +59,9 @@ export default function EmployeesHeader({
                     paramName="role"
                     label="Rol"
                     isSearch={false}
-                    className="!h-10 min-w-[140px]"
+                    addButtonProps={{
+                        className:"sm:w-1/2 w-full"
+                    }}
                 />
                 <Button className="!h-10" onClick={openModal}>
                     <Plus className="h-4 w-4" />

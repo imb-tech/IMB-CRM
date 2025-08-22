@@ -105,7 +105,6 @@ export default function GroupTasks() {
                                 options={months}
                                 isSearch={false}
                                 label="Oy bo'yicha"
-                                className="w-[160px]"
                             />
                         )
                     }

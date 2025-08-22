@@ -47,7 +47,7 @@ export default function StudentsFilter() {
 
     return (
         <div className="grid lg:grid-cols-6 md:grid-cols-2 gap-2 items-center">
-            <ParamInput fullWidth />
+            <ParamInput fullWidth /> 
             <ParamCombobox
                 label="Kurslar"
                 options={dataCourse || []}

@@ -20,16 +20,14 @@ export default function GroupFilter() {
             <ParamCombobox
                 isSearch={false}
                 label="Kurslar"
-                className="w-full"
                 options={courses ?? []}
                 paramName="course"
                 labelKey="name"
                 valueKey="id"
             />
             <ParamMultiCombobox
-                hideSeach
+                hideSearch
                 label="Kunlar"
-                className="w-full"
                 options={weekdays.map((d, i) => ({
                     value: `${i + 1}`,
                     name: d,
@@ -41,7 +39,6 @@ export default function GroupFilter() {
             <ParamCombobox
                 isSearch={false}
                 label="O'qituvchi"
-                className="w-full"
                 options={teachers ?? []}
                 labelKey="full_name"
                 valueKey="id"
@@ -50,7 +47,6 @@ export default function GroupFilter() {
             <ParamCombobox
                 isSearch={false}
                 label="Holat"
-                className="w-full"
                 options={[
                     {
                         label: "Barchasi",

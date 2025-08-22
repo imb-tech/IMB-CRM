@@ -18,14 +18,14 @@ export default function FinanceFilter() {
                 })}
                 placeholder="Sana bo'yicha"
                 className="p-0"
-            />
+            /> 
             <ParamCombobox
                 dontAllowClear
                 paramName="year"
                 options={optionYears()}
                 isSearch={false}
                 label="Yil"
-                className="!bg-background dark:!bg-secondary"
+                className="w-full"
             />
             <ParamCombobox
                 dontAllowClear
@@ -35,7 +35,7 @@ export default function FinanceFilter() {
                 valueKey="key"
                 labelKey="name"
                 label="Oy"
-                className="!bg-background dark:!bg-secondary"
+                className="w-full"
             />
             <ParamCombobox
                 dontAllowClear
@@ -50,7 +50,6 @@ export default function FinanceFilter() {
                 valueKey="id"
                 isSearch={false}
                 label="Filial"
-                className="w-[160px] rounded-sm !bg-background dark:!bg-secondary"
             />
             <ExportAsExcel url="url" name="finance" />
         </aside>
