@@ -2,53 +2,18 @@ import { FormCheckbox } from "@/components/form/checkbox"
 import { FileInput } from "@/components/form/file-input"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { GROUP_STUDENTS } from "@/constants/api-endpoints"
-import { useGet } from "@/hooks/useGet"
-import { useEffect } from "react"
-import { useFieldArray, useForm } from "react-hook-form"
-import { studentStatusKeys } from "../students/student-status"
+import { useFieldArray, useFormContext } from "react-hook-form"
 import FormTextarea from "@/components/form/textarea"
 
-import { usePost } from "@/hooks/usePost"
-import { useParams } from "@tanstack/react-router"
-import { useStore } from "@/hooks/use-store"
-import { GROUP } from "@/constants/api-endpoints"
 import { FormSwitch } from "@/components/form/switch"
 import { FormDateTimePicker } from "@/components/form/form-datetime-picker"
+import { useStore } from "@/hooks/use-store"
+import { cn } from "@/lib/utils"
+import { useMemo } from "react"
 
-type Fields = GroupModule & {
-    students: {
-        id: number
-        full_name: string
-        is_selected: boolean
-        status: string
-    }[]
-    is_homework_required: boolean
-}
-
-export default function TaskForm({ onSuccess }: { onSuccess: () => void }) {
-    const { id: group } = useParams({ from: "/_main/groups/$id/_main/tasks/" })
+export default function TaskForm({ loading }: { loading?: boolean }) {
+    const form = useFormContext<GroupModuleForm>()
     const { store } = useStore<GroupModule>("item")
-    const { data } = useGet<Group>(GROUP + "/" + group)
-
-    const form = useForm<Fields>({
-        defaultValues: {
-            type: "task",
-        },
-    })
-
-    const { mutate, isPending } = usePost(
-        { onSuccess },
-        {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        },
-    )
-
-    const { data: students } = useGet<GroupStudent[]>(GROUP_STUDENTS, {
-        params: { group },
-    })
 
     const wst = form.watch("students") as GroupModuleStudent[]
 
@@ -58,39 +23,16 @@ export default function TaskForm({ onSuccess }: { onSuccess: () => void }) {
         keyName: "key",
     })
 
-    function handleSubmit(vals: Fields) {
-        const conf = {
-            ...vals,
-            file_datas: vals.uploaded_files,
-            uploaded_files: undefined,
-            group,
-            date: store?.date,
-            controller: data?.teacher,
-            students: vals.students
-                .filter((st) => st.is_selected)
-                .map((st) => st.id)
-                .join(","),
-        }
-        mutate("platform/groups/modules", conf)
-    }
-
-    useEffect(() => {
-        if (students?.length) {
-            form.setValue(
-                "students",
-                students.map((st) => ({
-                    id: st.id,
-                    full_name: st.student_name,
-                    is_selected: true,
-                    status: studentStatusKeys[st.status],
-                })),
-            )
-        }
-    }, [students])
+    const isEdit = useMemo(() => typeof store?.id === "number", [store])
 
     return (
-        <form onSubmit={form.handleSubmit(handleSubmit)}>
-            <div className="mb-3 grid grid-cols-2 gap-2 bg-secondary dark:bg-card p-3 rounded-md min-h-[320px]">
+        <div>
+            <div
+                className={cn(
+                    "mb-3 grid grid-cols-2 gap-2 bg-secondary dark:bg-card p-3 rounded-md min-h-[320px]",
+                    isEdit && "grid-cols-1",
+                )}
+            >
                 <div className="mb-3 flex flex-col gap-4">
                     <FormTextarea
                         methods={form}
@@ -136,7 +78,7 @@ export default function TaskForm({ onSuccess }: { onSuccess: () => void }) {
                     />
                 </div>
 
-                {
+                {!isEdit && (
                     <div className="flex flex-col gap-2 select-none mt-3 max-h-[340px] overflow-y-auto">
                         <label className="flex gap-2 items-center px-2 cursor-pointer">
                             <Checkbox
@@ -170,12 +112,12 @@ export default function TaskForm({ onSuccess }: { onSuccess: () => void }) {
                             </div>
                         ))}
                     </div>
-                }
+                )}
             </div>
 
-            <Button className="ml-auto block" loading={isPending}>
+            <Button className="ml-auto block" loading={loading}>
                 Yaratish
             </Button>
-        </form>
+        </div>
     )
 }

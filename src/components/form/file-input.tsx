@@ -6,7 +6,7 @@ import {
 } from "react-hook-form"
 import { useState, useRef, type DragEvent, type ChangeEvent } from "react"
 import { Upload, X, File } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { cn, truncateFileName } from "@/lib/utils"
 
 interface FileInputProps<TForm extends FieldValues> {
     control: Control<TForm>
@@ -212,30 +212,40 @@ export function FileInput<TForm extends FieldValues>({
                     <div className="space-y-1">
                         {files.map((file, index) => (
                             <div
-                                key={`${file.name}-${index}`}
-                                className="flex items-center justify-between px-2 py-1 bg-secondary rounded border "
+                                key={`${index}`}
+                                className="flex items-center justify-between px-2 py-1 bg-secondary rounded border"
                             >
-                                <div className="flex items-center space-x-1 flex-1 min-w-0">
+                                <div className="flex items-center space-x-1 flex-1 min-w-0 p-1">
                                     <File className="w-3 h-3 text-muted-foreground flex-shrink-0" />
-                                    <p className="text-xs text-muted-foreground truncate">
-                                        {file.name}
+                                    <p className="text-sm text-muted-foreground truncate">
+                                        {typeof file === "string" ?
+                                            truncateFileName(file)
+                                        :   file.name}
                                     </p>
-                                    <span className="text-xs text-muted-foreground">
-                                        ({(file.size / 1024 / 1024).toFixed(1)}{" "}
-                                        MB)
-                                    </span>
+                                    {typeof file === "string" ?
+                                        ""
+                                    :   <span className="text-xs text-muted-foreground">
+                                            (
+                                            {(file.size / 1024 / 1024).toFixed(
+                                                1,
+                                            )}{" "}
+                                            MB)
+                                        </span>
+                                    }
                                 </div>
 
-                                <button
-                                    type="button"
-                                    onClick={(e) => {
-                                        e.stopPropagation()
-                                        removeFile(index)
-                                    }}
-                                    className="p-0.5 hover:bg-red-500/20 rounded transition-colors flex-shrink-0"
-                                >
-                                    <X className="w-3 h-3 text-red-500" />
-                                </button>
+                                {typeof file !== "string" && (
+                                    <button
+                                        type="button"
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            removeFile(index)
+                                        }}
+                                        className="p-0.5 hover:bg-red-500/20 rounded transition-colors flex-shrink-0"
+                                    >
+                                        <X className="w-3 h-3 text-red-500" />
+                                    </button>
+                                )}
                             </div>
                         ))}
                     </div>
