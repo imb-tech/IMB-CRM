@@ -107,11 +107,7 @@ export function ParamCombobox<T extends Record<string, any>>({
     const sortedOptions = options?.sort((a, b) => {
         const isASelected = a[valueKey] == currentValue
         const isBSelected = b[valueKey] == currentValue
-        return (
-            isASelected === isBSelected ? 0
-            : isASelected ? -1
-            : 1
-        )
+        return isASelected === isBSelected ? 0 : isASelected ? -1 : 1
     })
 
     return (
@@ -122,10 +118,9 @@ export function ParamCombobox<T extends Record<string, any>>({
                     role="combobox"
                     aria-expanded={open}
                     className={cn(
-                        "w-full font-normal justify-between",
-                        currentValue && "font-medium",
+                        "w-full  justify-between font-normal ",
+                        currentValue && "font-medium !text-white",
                         isError && "!text-destructive",
-                        className,
                     )}
                     {...addButtonProps}
                 >
@@ -147,7 +142,7 @@ export function ParamCombobox<T extends Record<string, any>>({
                     />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="p-0 !min-w-full">
+            <PopoverContent className={cn("p-0 !min-w-full ", className)}>
                 <Command shouldFilter={onSearchChange ? false : true}>
                     <div className="relative">
                         {isSearch && (
@@ -185,19 +180,17 @@ export function ParamCombobox<T extends Record<string, any>>({
                                         <CheckIcon
                                             className={cn(
                                                 "ml-auto h-4 w-4",
-                                                (
-                                                    String(currentValue) ===
-                                                        String(optionValue)
-                                                ) ?
-                                                    "opacity-100"
-                                                :   "opacity-0",
+                                                String(currentValue) ===
+                                                    String(optionValue)
+                                                    ? "opacity-100"
+                                                    : "opacity-0",
                                             )}
                                         />
                                     </CommandItem>
                                 )
                             })}
 
-                            {isLoading ?
+                            {isLoading ? (
                                 <div className="space-y-1">
                                     {Array.from({ length: skeletonCount }).map(
                                         (_, index) => (
@@ -210,7 +203,7 @@ export function ParamCombobox<T extends Record<string, any>>({
                                         ),
                                     )}
                                 </div>
-                            :   null}
+                            ) : null}
                         </CommandGroup>
                     </CommandList>
                 </Command>

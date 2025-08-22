@@ -69,7 +69,7 @@ export default function GroupAttendance() {
             }) ?? [],
         [days],
     )
-
+ 
     return (
         <div>
             <SectionHeader
@@ -83,7 +83,6 @@ export default function GroupAttendance() {
                             options={months}
                             isSearch={false}
                             label="Oy bo'yicha"
-                            className="w-[160px]"
                         />
                     )
                 }

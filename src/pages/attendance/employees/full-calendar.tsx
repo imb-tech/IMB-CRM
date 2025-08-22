@@ -46,6 +46,7 @@ export default function FullCalendarEmployees({ data }: Props) {
         [currentDate],
     )
 
+    
     return (
         <Card>
             <CardContent className="space-y-2 rounded-md p-3">
