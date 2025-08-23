@@ -48,7 +48,6 @@ export function setupAxiosInterceptors(queryClient: QueryClient) {
                 } else {
                     setActiveBranch(branches[0].id)
                 }
-
             }
             return response
         },
@@ -99,7 +98,7 @@ export function setupAxiosInterceptors(queryClient: QueryClient) {
                 window.location.replace('/login')
                 // await queryClient.invalidateQueries({ queryKey: [GET_ME] });
                 await new Promise((resolve) => setTimeout(resolve, 100))
-                return axiosInstance(originalRequest)
+                // return axiosInstance(originalRequest)
             }
 
             if (status === 500 || status === 502) {

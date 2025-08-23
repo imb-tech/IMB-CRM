@@ -49,6 +49,8 @@ type SearchParams = {
     schedule?: string
     pipeline?: number
     region?: string
+
+    is_active?: boolean
 }
 
 type PaginationProps = {

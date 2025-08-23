@@ -9,6 +9,7 @@ import { useStore } from "@/hooks/use-store"
 import { MessageSquareMore, Pencil, Trash2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button, buttonVariants } from "@/components/ui/button"
+import { formatDate } from "@/lib/utils"
 
 export const useGroupStudentCols = () => {
     const { openModal } = useModal("update")
@@ -127,21 +128,23 @@ export const useGroupSalesCols = () =>
                 header: "Izoh",
                 accessorKey: "reason",
                 cell({ row: { original } }) {
-                    return original.count ?? "-"
+                    return original.reason ?? "-"
                 },
             },
             {
                 header: "Xodim",
                 accessorKey: "author_name",
                 cell({ row: { original } }) {
-                    return original.count ?? "-"
+                    return original.author_name ?? "-"
                 },
             },
             {
                 header: "Berilgan sana",
                 accessorKey: "date",
                 cell({ row: { original } }) {
-                    return original.count ?? "-"
+                    return original.created_at ?
+                            formatDate(original.created_at)
+                        :   "-"
                 },
             },
         ],

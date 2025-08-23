@@ -7,12 +7,13 @@ import { GROUP_STUDENTS } from "@/constants/api-endpoints"
 import { useMemo } from "react"
 import Modal from "@/components/custom/modal"
 import { useModal } from "@/hooks/useModal"
-import { useForm } from "react-hook-form"
+import { Path, useForm } from "react-hook-form"
 import { FormNumberInput } from "@/components/form/number-input"
 import { Button } from "@/components/ui/button"
 import FormTextarea from "@/components/form/textarea"
 import { usePost } from "@/hooks/usePost"
 import DeleteModal from "@/components/custom/delete-modal"
+import { AxiosError } from "axios"
 
 export default function GroupSale() {
     const columns = useGroupSalesCols()
@@ -31,7 +32,7 @@ export default function GroupSale() {
     )
 
     const { data: students } = useGet<GroupStudent[]>(GROUP_STUDENTS, {
-        params: { group, ...search, status: 1 },
+        params: { group, ...search},
     })
 
     const mergedData = useMemo<StudentMergeDiscount[]>(() => {
@@ -53,6 +54,14 @@ export default function GroupSale() {
             refetch()
             closeModal()
             form.reset({})
+        },
+        onError(errors: AxiosError) {
+            for (const [k, v] of Object.entries(errors.response?.data ?? {})) {
+                form.setError(k as Path<StudentDiscount>, {
+                    type: "validate",
+                    message: v,
+                })
+            }
         },
     })
 
@@ -107,6 +116,7 @@ export default function GroupSale() {
                         name="amount"
                         label="Chegirmadagi krus narxi"
                         placeholder="Misol: 799 000"
+                        required
                     />
 
                     <FormNumberInput
@@ -114,6 +124,7 @@ export default function GroupSale() {
                         name="count"
                         label="Chegirmalar soni"
                         placeholder="Amal qilish soni"
+                        required
                     />
 
                     <FormTextarea
@@ -121,6 +132,7 @@ export default function GroupSale() {
                         name="reason"
                         label="Izoh"
                         placeholder="Izoh yoki chegirma sababini kiritishingiz mumkin"
+                        required
                     />
 
                     <Button loading={isPending}>Saqlash</Button>
