@@ -6,6 +6,7 @@ import FormTimeInput from "@/components/form/time-input"
 import { Button } from "@/components/ui/button"
 import {
     GROUP,
+    GROUP_STUDENTS,
     OPTION_COURSES,
     OPTION_ROOMS,
     OPTION_TEACHERS,
@@ -18,6 +19,7 @@ import { usePost } from "@/hooks/usePost"
 import showFormErrors from "@/lib/show-form-errors"
 import { cn, weekdays } from "@/lib/utils"
 import { useQueryClient } from "@tanstack/react-query"
+import { useSearch } from "@tanstack/react-router"
 import { useFieldArray, useForm } from "react-hook-form"
 import { toast } from "sonner"
 
@@ -34,6 +36,7 @@ const GroupCreate = ({ item }: Props) => {
     const { data: courses } = useGet<Options[]>(OPTION_COURSES)
     const { data: teachers } = useGet<Options[]>(OPTION_TEACHERS)
     const { data: rooms } = useGet<Options[]>(OPTION_ROOMS)
+    const search = useSearch({ strict: false })
 
     const form = useForm<GroupFields>({
         defaultValues: {
@@ -71,10 +74,22 @@ const GroupCreate = ({ item }: Props) => {
 
     const watchedShifts = form.watch("shifts")
 
-    function onSuccess() {
+    function onSuccess(conf: Group) {
         toast.success("Muvaffaqiyatli yangilandi")
         closeModal()
         form.reset()
+        queryClient.invalidateQueries({
+            queryKey: [
+                "platform/group-students/attendances/" +
+                    conf.id +
+                    "/" +
+                    search.date,
+                true,
+            ],
+        })
+        queryClient.invalidateQueries({
+            queryKey: [GROUP_STUDENTS, search],
+        })
         queryClient.invalidateQueries({ queryKey: [GROUP] })
     }
 

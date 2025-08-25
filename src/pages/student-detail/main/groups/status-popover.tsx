@@ -4,25 +4,23 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import StudentStatus, { studentStatusKeys } from "../students/student-status"
 import { PopoverClose } from "@radix-ui/react-popover"
 import { cn } from "@/lib/utils"
 import { ChevronDown } from "lucide-react"
 import { useQueryClient } from "@tanstack/react-query"
-import { GROUP_STUDENTS } from "@/constants/api-endpoints"
+import { STUDENT_GROUP } from "@/constants/api-endpoints"
 import { usePost } from "@/hooks/usePost"
+import StudentStatus, {
+    studentStatusKeys,
+} from "@/pages/students/student-status"
 
 type Props = {
     allowed_statuses: number[]
     status: number
-    student: number
+    group: number
 }
 
-export function StatusPopover({
-    status,
-    allowed_statuses = [],
-    student,
-}: Props) {
+export function StatusPopoverStudent({ status, allowed_statuses = [], group }: Props) {
     const qC = useQueryClient()
     const { mutate } = usePost()
 
@@ -31,11 +29,11 @@ export function StatusPopover({
             "platform/group-students/change-status",
             {
                 status: d,
-                group_student: student,
+                group_student: group,
             },
             {
                 onSuccess() {
-                    qC.refetchQueries({ queryKey: [GROUP_STUDENTS] })
+                    qC.refetchQueries({ queryKey: [STUDENT_GROUP] })
                 },
             },
         )

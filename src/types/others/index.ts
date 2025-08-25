@@ -18,40 +18,7 @@ type FormField = {
     type?: FormType
 }
 
-type SearchParams = {
-    money_type?: string
-    status?: string
-    page_size?: string
-    search?: string
-    page?: number
-    filter?: number
-    start?: string
-    end?: string
-    end_date?: string
-    start_date?: string
-    role?: number | string
 
-    year?: string
-    id?: string
-    position?: string | number
-    role_id?: string | number
-    date?: string
-    employee?: number
-    office?: number
-    route_id?: number
-    plan_id?: string
-    month?: string
-    last_company_id?: number
-    tabs?: string
-    day?: string
-    task?: string
-    page_tabs?: string
-    schedule?: string
-    pipeline?: number
-    region?: string
-
-    is_active?: boolean
-}
 
 type PaginationProps = {
     totalPages?: number | undefined

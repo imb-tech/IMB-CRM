@@ -14,6 +14,7 @@ import DeleteModal from "@/components/custom/delete-modal"
 import { useStore } from "@/hooks/use-store"
 import AppendStudentModal from "./append-student-modal"
 import ParamSwtich from "@/components/as-params/switch"
+import { useQueryClient } from "@tanstack/react-query"
 
 export default function GroupStudents() {
     const { id: group } = useParams({
@@ -23,10 +24,32 @@ export default function GroupStudents() {
     const { openModal } = useModal("append-student")
     const { store, remove } = useStore<GroupStudent>("student-data")
 
-    const { data, refetch } = useGet<GroupStudent[]>(GROUP_STUDENTS, {
-        params: { group, ...search },
-        options: { queryKey: [GROUP_STUDENTS, search] },
-    })
+    const queryClient = useQueryClient()
+
+    const { data, refetch: refetchOrg } = useGet<GroupStudent[]>(
+        GROUP_STUDENTS,
+        {
+            params: { group, ...search },
+            options: { queryKey: [GROUP_STUDENTS, search] },
+        },
+    )
+
+    function invalidateQueries() {
+        queryClient.invalidateQueries({
+            queryKey: [
+                "platform/group-students/attendances/" +
+                    group +
+                    "/" +
+                    search.date,
+                true,
+            ],
+        })
+    }
+
+    function refetch() {
+        refetchOrg()
+        invalidateQueries()
+    }
 
     const columns = useGroupStudentCols()
 
@@ -65,9 +88,12 @@ export default function GroupStudents() {
             <AppendStudentModal refetch={refetch} />
             <DeleteModal
                 id={store?.id}
-                onSuccessAction={remove}
+                onSuccessAction={() => {
+                    remove()
+                    invalidateQueries()
+                }}
                 modalKey="delete-student"
-                path="platform/group-students"
+                path={GROUP_STUDENTS}
             />
         </div>
     )

@@ -4,73 +4,74 @@ import { Button } from "@/components/ui/button"
 import { Clock, User, Edit2, Trash2, Check, X, Plus } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
 import SectionHeader from "@/components/elements/section-header"
+import Modal from "@/components/custom/modal"
+import { useGet } from "@/hooks/useGet"
+import { useParams } from "@tanstack/react-router"
+import { useForm } from "react-hook-form"
+import FormTextarea from "@/components/form/textarea"
+import { useModal } from "@/hooks/useModal"
+import { usePost } from "@/hooks/usePost"
+import { formatDate } from "@/lib/utils"
+import { usePatch } from "@/hooks/usePatch"
+import DeleteModal from "@/components/custom/delete-modal"
 
 interface Reminder {
-    id: string
-    text: string
-    createdAt: Date
-    createdBy: string
+    id: number
+    author_name: string
+    created_at: string
+    updated_at: string
+    content: string
+    is_active: boolean
+    group: number
 }
 
-const initialReminders: Reminder[] = [
-    {
-        id: "1",
-        text: "oftob chiqdi olamga yugurib bordim xolamga xola xola kulcha ber xolam dedi toshing ter",
-        createdAt: new Date("2024-01-15T09:30:00"),
-        createdBy: "Aziz Karimov",
-    },
-    {
-        id: "2",
-        text: "Hisobotni tayyorlash",
-        createdAt: new Date("2024-01-14T14:20:00"),
-        createdBy: "Malika Tosheva",
-    },
-    {
-        id: "4",
-        text: "Darslik sotib olish lorem ipsum dolor sit.",
-        createdAt: new Date("2024-01-12T11:15:00"),
-        createdBy: "Nigora Rahimova",
-    },
-    {
-        id: "5",
-        text: "Dam olish joyini band qilish lorem ipsum dolor sit. lorem ipsum dolor sit.",
-        createdAt: new Date("2024-01-11T19:30:00"),
-        createdBy: "Sardor Umarov",
-    },
-]
-
-function formatDate(date: Date): string {
-    return new Intl.DateTimeFormat("uz-UZ", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-    }).format(date)
-}
+const url = "platform/groups/crud/notes"
 
 export default function GroupNotes() {
-    const [reminders, setReminders] = useState<Reminder[]>(initialReminders)
-    const [editingId, setEditingId] = useState<string | null>(null)
+    const [editingId, setEditingId] = useState<number | null>(null)
     const [editText, setEditText] = useState("")
+    const { openModal, closeModal } = useModal()
+    const { openModal: openDelete } = useModal("delete")
+
+    const { id: group } = useParams({ from: "/_main/groups/$id/_main/notes" })
+
+    const { data, refetch } = useGet<ListResp<Reminder>>(url, {
+        params: { group },
+    })
 
     const handleEdit = (reminder: Reminder) => {
-        setEditingId(reminder.id)
-        setEditText(reminder.text)
+        form.setValue("id", reminder.id)
+        form.setValue("content", reminder.content)
+        openModal()
     }
 
-    const handleSaveEdit = (id: string) => {
-        if (editText.trim()) {
-            setReminders(
-                reminders.map((reminder) =>
-                    reminder.id === id ?
-                        { ...reminder, text: editText.trim() }
-                    :   reminder,
-                ),
-            )
-        }
+    const handleSaveEdit = (id: number) => {
         setEditingId(null)
         setEditText("")
+    }
+
+    function onSuccess() {
+        closeModal()
+        refetch()
+        form.reset()
+    }
+
+    const { mutate, isPending } = usePost({ onSuccess })
+    const { mutate: patch, isPending: patching } = usePatch({ onSuccess })
+
+    const form = useForm<Reminder>()
+
+    function handleSubmit(vals: Reminder) {
+        if (vals.id) {
+            patch(url + "/" + vals.id, {
+                ...vals,
+                group,
+            })
+        } else
+            mutate(url, {
+                ...vals,
+                group,
+            })
     }
 
     const handleCancelEdit = () => {
@@ -78,10 +79,9 @@ export default function GroupNotes() {
         setEditText("")
     }
 
-    const handleDelete = (id: string) => {
-        if (confirm("Bu eslatmani o'chirishni xohlaysizmi?")) {
-            setReminders(reminders.filter((reminder) => reminder.id !== id))
-        }
+    const handleDelete = (id: number) => {
+        form.setValue("id", id)
+        openDelete()
     }
 
     return (
@@ -89,7 +89,7 @@ export default function GroupNotes() {
             <SectionHeader
                 title="Eslatmalar"
                 rightComponent={
-                    <Button >
+                    <Button onClick={openModal}>
                         <Plus />
                         Yangi
                     </Button>
@@ -97,7 +97,7 @@ export default function GroupNotes() {
             />
 
             <div className="space-y-4">
-                {reminders.map((reminder) => (
+                {data?.results.map((reminder) => (
                     <div
                         key={reminder.id}
                         className="border-0 shadow-sm bg-secondary backdrop-blur-sm transition-all duration-200 hover:bg-secondary/50 border-l-4 border-l-emerald-400 rounded-md"
@@ -105,17 +105,15 @@ export default function GroupNotes() {
                         <div className="p-6">
                             <div className="space-y-4">
                                 <div className="flex flex-col sm:flex-row sm:items-center  gap-3">
-                                    <Badge
-                                        className="bg-green-200  hover:bg-green-300 w-fit py-1"
-                                    >
+                                    <Badge className="bg-green-200  hover:bg-green-300 w-fit py-1">
                                         <User className="w-3 h-3 mr-1" />
-                                        {reminder.createdBy}
+                                        {reminder.author_name}
                                     </Badge>
 
                                     <div className="flex items-center gap-2 text-emerald-700">
                                         <Clock className="w-4 h-4" />
                                         <span className="text-sm">
-                                            {formatDate(reminder.createdAt)}
+                                            {formatDate(reminder.created_at)}
                                         </span>
                                     </div>
                                 </div>
@@ -162,8 +160,8 @@ export default function GroupNotes() {
                                             </Button>
                                         </div>
                                     :   <>
-                                            <p className="light:text-emerald-900 text-base leading-relaxed font-medium flex-1">
-                                                {reminder.text}
+                                            <p className="light:text-emerald-900 text-base leading-relaxed font-light flex-1">
+                                                {reminder.content}
                                             </p>
                                             <div className="flex items-center gap-2">
                                                 <Button
@@ -198,13 +196,36 @@ export default function GroupNotes() {
                 ))}
             </div>
 
-            {reminders.length === 0 && (
+            {data?.results.length === 0 && (
                 <div className="text-center py-12">
                     <div className="text-emerald-600 text-lg">
                         Hozircha eslatmalar yo'q
                     </div>
                 </div>
             )}
+
+            <Modal title="Eslatma qo'shish">
+                <form onSubmit={form.handleSubmit(handleSubmit)}>
+                    <FormTextarea
+                        required
+                        methods={form}
+                        name="content"
+                        label="Eslatma matni"
+                    />
+                    <Button
+                        loading={isPending || patching}
+                        className="mt-3 w-full"
+                    >
+                        Yaratish
+                    </Button>
+                </form>
+            </Modal>
+
+            <DeleteModal
+                id={form.watch("id")}
+                path={url}
+                onSuccessAction={() => form.reset()}
+            />
         </div>
     )
 }

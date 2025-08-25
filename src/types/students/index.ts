@@ -10,25 +10,36 @@ type StudentGroup = {
 type Student = {
     id: number
     full_name: string
+    payment_date?: string
     username: string
     photo: string
+    allowed_statuses: number[]
     password: string
     birth_date: string
     phone: string
     balance: string
     is_active: boolean
-    deleted_at:string
+    deleted_at: string
     gpa: string
     avg_exam_score: number
     avg_score: number
+    start_date: string
     branches: number[]
     branches_data: Branch[]
     groups: StudentGroup[]
+    status: string
     group_data: {
         status: number
-        start_date: string
         group: number | null
+        name?: string
+        start_date: string
+        end_date?: string
+        teacher?: number
+        course?: number
+        branch?: number
+        room?: number
     }
+    shifts_data: GroupShift[]
     parents: {
         full_name: string
         username: string
@@ -48,6 +59,69 @@ type GroupStudent = {
     balance: string
     allowed_statuses: number[]
 }
+
+type GroupStudentPayments = {
+    id: number
+    author: string
+    condition: number
+    start_date: string
+    date: string
+    description: string
+    payment_type: string
+    payment_type_name: string
+    amount: number
+    student_data: {
+        full_name: string
+        id: number
+        phone: number
+    }
+    author_data: {
+        full_name: string
+        id: number
+        phone: number
+    }
+    created_at: string
+    group_data: {
+        id: number
+        name: string
+    }
+
+}
+
+
+type GroupStudentCreate = {
+    group: number
+    student: number
+    start_date: string
+    status: number
+    discount: {
+        amount: string
+        reason: string
+    }
+
+}
+
+
+type Appropriation = {
+    id: number
+    date: string
+    score: number
+    answer: string | null
+    file: string | null
+    is_scored: boolean
+    group_student: number
+    module_data: {
+        id: number
+        title: string
+        description: string
+        controller: string
+    }
+    group_data: {
+        id: number
+        name: string
+    }
+}
+
 
 
 type ParentStudent = {

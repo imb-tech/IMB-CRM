@@ -12,6 +12,7 @@ type Group = {
     status: number
     teacher: number
     course: number
+    is_active:boolean
     room: number
     branch: number
     students_count: {
@@ -29,7 +30,7 @@ type GroupExam = {
     max_score: number
     files: string
 }
-
+ 
 type GroupFields = {
     name: string
     start_date: string

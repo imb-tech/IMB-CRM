@@ -15,8 +15,8 @@ import { useStore } from "@/hooks/use-store"
 
 export default function GroupTasks() {
     const { id: group } = useParams({ strict: false })
-    const { date, id } = useSearch({ strict: false })
-    const { store } = useStore<GroupModule>("item")
+    const { date } = useSearch({ strict: false })
+    const { store, remove } = useStore<GroupModule>("item")
     const [isScroll, setIsScroll] = useState(0)
 
     const refMap = useRef<Record<string, HTMLDivElement | null>>({})
@@ -135,7 +135,11 @@ export default function GroupTasks() {
                     </CardContent>
                 </Card>
 
-                <DeleteModal id={store?.id} path="platform/groups/modules" />
+                <DeleteModal
+                    id={store?.id}
+                    path="platform/groups/modules"
+                    onSuccessAction={remove}
+                />
             </div>
 
             <GroupTabs refetch={refetch} />
