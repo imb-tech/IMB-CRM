@@ -5,6 +5,7 @@ import { useStore } from "@/hooks/use-store"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
 import { useQueryClient } from "@tanstack/react-query"
+import { TriangleAlert } from "lucide-react"
 import { useForm } from "react-hook-form"
 
 export default function UpdateStudent() {
@@ -35,6 +36,14 @@ export default function UpdateStudent() {
 
     return (
         <form onSubmit={form.handleSubmit(handleSubmit)}>
+            <div className="bg-rose-500/10 p-3 mb-3 rounded text-rose-500 flex gap-2">
+                <p>
+                    <TriangleAlert className="inline mr-2 mb-1" size={16} />
+                    Qo‘shilish sanasini o‘zgartirsangiz, o‘quvchi balansi ham
+                    o‘zgarishi mumkin. Ogoh bo‘ling.
+                </p>
+            </div>
+
             <FormDatePicker
                 label="Guruhga qo'shilgan sana"
                 control={form.control}

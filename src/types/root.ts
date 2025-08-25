@@ -26,4 +26,5 @@ type SearchParams2 = {
     end_date?: string
     pipeline?: number
     region?: string
+    is_active?: boolean
 }

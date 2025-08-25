@@ -9,12 +9,15 @@ import { ParamCombobox } from "@/components/as-params/combobox"
 import AttendanceFooter from "./attendance-footer"
 import { formatDate } from "date-fns"
 import { formatDateToUz } from "@/lib/utils"
+import ParamSwtich from "@/components/as-params/switch"
 
 export default function GroupAttendance() {
     const { id } = useParams({
         from: "/_main/groups/$id/_main/attendance",
     })
-    const { date } = useSearch({ from: "/_main/groups/$id/_main/attendance" })
+    const { date, is_active } = useSearch({
+        strict: false,
+    })
 
     const { data: options } = useGet<string[]>(
         "platform/groups/months-to-teach/" + id,
@@ -34,6 +37,9 @@ export default function GroupAttendance() {
         {
             options: {
                 enabled: !!date,
+            },
+            params: {
+                is_active: typeof is_active == "boolean" ? is_active : true,
             },
         },
     )
@@ -69,22 +75,29 @@ export default function GroupAttendance() {
             }) ?? [],
         [days],
     )
- 
+
     return (
         <div>
             <SectionHeader
                 title="Oylik yo'qlama jadvali"
                 rightComponent={
-                    defaultOpt && (
-                        <ParamCombobox
-                            dontAllowClear
-                            paramName="date"
-                            defaultOpt={defaultOpt}
-                            options={months}
-                            isSearch={false}
-                            label="Oy bo'yicha"
+                    <div>
+                        <ParamSwtich
+                            label="Arxiv"
+                            paramName="is_active"
+                            reverse
                         />
-                    )
+                        {defaultOpt && (
+                            <ParamCombobox
+                                dontAllowClear
+                                paramName="date"
+                                defaultOpt={defaultOpt}
+                                options={months}
+                                isSearch={false}
+                                label="Oy bo'yicha"
+                            />
+                        )}
+                    </div>
                 }
             />
             <Card>

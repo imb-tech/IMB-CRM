@@ -5,7 +5,7 @@ import FieldError from "./form-error"
 import FieldLabel from "./form-label"
 import { getNestedValue } from "./input"
 import { ClassNameValue } from "tailwind-merge"
- 
+
 export function FormDatePicker<TForm extends FieldValues>({
     name,
     label,
@@ -37,28 +37,34 @@ export function FormDatePicker<TForm extends FieldValues>({
                 rules={
                     required ? { required: `${label || name}ni kiriting` } : {}
                 }
-                render={({ field }) => (
-                    <DatePicker
-                        calendarProps={{
-                            ...calendarProps,
-                            defaultMonth:
-                                field.value ? new Date(field.value) : undefined,
-                        }}
-                        date={field.value ? new Date(field.value) : undefined}
-                        setDate={field.onChange}
-                        placeholder={placeholder || label}
-                        disabled={field.disabled || disabled}
-                        fullWidth={fullWidth}
-                        className={className}
-                        isError={!!error}
-                    />
+                render={({ field, fieldState }) => (
+                    <>
+                        <DatePicker
+                            calendarProps={{
+                                ...calendarProps,
+                                defaultMonth:
+                                    field.value ?
+                                        new Date(field.value)
+                                    :   undefined,
+                            }}
+                            date={
+                                field.value ? new Date(field.value) : undefined
+                            }
+                            setDate={field.onChange}
+                            placeholder={placeholder || label}
+                            disabled={field.disabled || disabled}
+                            fullWidth={fullWidth}
+                            className={className}
+                            isError={!!fieldState.error}
+                        />
+                        {!hideError && fieldState.error && (
+                            <FieldError className="text-xs">
+                                {fieldState.error.message as string}
+                            </FieldError>
+                        )}
+                    </>
                 )}
             />
-            {!hideError && control._formState?.errors?.[name] && (
-                <FieldError>
-                    {control._formState.errors[name]?.message as string}
-                </FieldError>
-            )}
         </fieldset>
     )
 }

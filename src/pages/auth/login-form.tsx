@@ -6,6 +6,7 @@ import { toast } from "sonner"
 import { usePost } from "@/hooks/usePost"
 import Spinner from "@/components/ui/spinner"
 import { encryptMessage } from "@/lib/data-encrypt"
+import { useNavigate } from "@tanstack/react-router"
 
 type Form = {
     username: string
@@ -13,6 +14,7 @@ type Form = {
 }
 
 export default function LoginForm() {
+    const navigate = useNavigate()
     const { mutate, isPending } = usePost({
         onSuccess: (data: LoginResp) => {
             const access = data?.token?.access_token
@@ -25,14 +27,15 @@ export default function LoginForm() {
             if (refresh) {
                 setRefreshToken(refresh)
             }
-            window?.location?.replace?.("/")
+            // window?.location?.replace?.("/")
+            navigate({ to: "/" })
         },
     })
     const methods = useForm<Form>({
         disabled: isPending,
         defaultValues: {
-            username: "admin",
-            password: "admin",
+            username: "admin1",
+            password: "admin1",
         },
     })
 

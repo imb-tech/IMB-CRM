@@ -72,11 +72,13 @@ export default function GroupTabs({ refetch }: { refetch: () => void }) {
         const conf = {
             ...vals,
             type: tab,
-            file_datas: vals.uploaded_files.filter(f => typeof f !== "string"),
+            file_datas: vals.uploaded_files.filter(
+                (f) => typeof f !== "string",
+            ),
             uploaded_files: undefined,
             group,
             date: item?.date,
-            students: undefined
+            students: vals.students.map((st) => st.id).join(","),
         }
         if (item?.id) {
             patch(`platform/groups/modules/${item?.id}`, conf)
