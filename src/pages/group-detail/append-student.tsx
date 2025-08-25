@@ -14,6 +14,7 @@ import StudentSelector from "@/components/form/student-selector"
 import { Trash } from "lucide-react"
 import { FormNumberInput } from "@/components/form/number-input"
 import FormInput from "@/components/form/input"
+import { cn } from "@/lib/utils"
 
 type MultiStudent = Student & {
     discount: {
@@ -29,7 +30,7 @@ type Fields = {
     group: number
     start_date: string
     discount: {
-        amount: number
+        amount: number | string
         reason?: string
     }
     status: string
@@ -50,8 +51,12 @@ export default function AppendStudent({
     const { closeModal } = useModal("append-student")
 
     const { data } = useGet<Student[]>(OPTION_STUDENT, {
-        params: { search, exclude_group: id },
+        params: { search },
     })
+
+    const { data: defaultStudents } = useGet<number[]>(
+        `option/active-group-students/${id}`,
+    )
 
     const { mutate, isPending } = usePost({
         onSuccess() {
@@ -80,7 +85,7 @@ export default function AppendStudent({
         for (const [k, v] of Object.entries(state)) {
             if (typeof v === "string" || v.length) {
                 form.setError(`${prefix}${k}` as any, {
-                    type: "server",
+                    type: "manual",
                     message: v,
                 })
             } else if (typeof v === "object" && v !== null) {
@@ -115,7 +120,8 @@ export default function AppendStudent({
     }
 
     function onSubmit(v: Fields) {
-        const payload = buildPayload(v)
+        const nst = v.students.filter((st) => !defaultStudents?.includes(st.id))
+        const payload = buildPayload({ ...v, students: nst })
 
         mutate(GROUP_STUDENTS, payload, {
             onError(err) {
@@ -126,6 +132,8 @@ export default function AppendStudent({
             },
         })
     }
+
+    const errors = form.formState.errors
 
     function handleSelect(id: string) {
         if (fields.every((u) => u.id !== Number(id))) {
@@ -142,10 +150,25 @@ export default function AppendStudent({
     }
 
     useEffect(() => {
-        if (data && data?.length == 1) {
-            // form.setValue("student", data.results[0].id)
+        if (defaultStudents && data) {
+            const md = defaultStudents.map((s) => data.find((c) => c.id == s))
+            for (const el of md) {
+                if (!wStudents.includes(el?.id!)) {
+                    append({
+                        ...el,
+                        discount: {
+                            amount: "",
+                        },
+                        status: "1",
+                        start_date: format(
+                            new Date().toISOString(),
+                            "yyyy-MM-dd",
+                        ),
+                    } as MultiStudent)
+                }
+            }
         }
-    }, [data])
+    }, [defaultStudents, data])
 
     return (
         <form
@@ -161,64 +184,91 @@ export default function AppendStudent({
             />
 
             <div className="flex flex-col gap-2 rounded-md border py-2 max-h-[500px] overflow-y-auto my-2">
-                {fields.map((usr, i) => (
-                    <div
-                        className="flex w-full items-end bg-card px-4 rounded gap-2"
-                        key={usr.key}
-                    >
-                        <div className="grid grid-cols-5 py-2 gap-2 items-start">
-                            <p className="w-full h-full pt-6 text-sm">
-                                {usr.full_name}
-                                <FormNumberInput
-                                    control={form.control}
-                                    name={`students.${i}.id`}
-                                    label="id"
-                                    wrapperClassName="h-0 w-0 overflow-hidden"
-                                />
-                            </p>
-
-                            <FormSelect
-                                options={Object.entries(studentStatusKeys)?.map(
-                                    ([id, name]) => ({ id, name }),
+                {fields.map(
+                    (usr, i) =>
+                        !defaultStudents?.includes(usr.id) && (
+                            <div
+                                className={cn(
+                                    "flex flex-col w-full items-center bg-card px-4 rounded-md",
+                                    (errors.students?.[i] as any)?.student &&
+                                        "border border-rose-500/50",
                                 )}
-                                control={form.control}
-                                name={`students.${i}.status`}
-                                labelKey="name"
-                                valueKey="id"
-                                className="bg-secondary h-10 border-none"
-                                wrapperClassName="!max-w-auto"
-                                label="Holati"
-                                required
-                            />
+                                key={usr.key}
+                            >
+                                <div
+                                    className={cn(
+                                        "flex w-full items-end gap-2",
+                                    )}
+                                >
+                                    <div className="grid grid-cols-5 py-2 gap-2 items-start">
+                                        <p className="w-full h-full pt-6 text-sm">
+                                            <span>{usr.full_name}</span>
+                                            <FormNumberInput
+                                                control={form.control}
+                                                name={`students.${i}.id`}
+                                                label="id"
+                                                wrapperClassName="h-0 w-0 overflow-hidden"
+                                            />
+                                        </p>
 
-                            <FormDatePicker
-                                control={form.control}
-                                name={`students.${i}.start_date`}
-                                label="Qo'shilish sanasi"
-                                className="!max-w-auto !w-auto"
-                                required
-                            />
+                                        <FormSelect
+                                            options={Object.entries(
+                                                studentStatusKeys,
+                                            )?.map(([id, name]) => ({
+                                                id,
+                                                name,
+                                            }))}
+                                            control={form.control}
+                                            name={`students.${i}.status`}
+                                            labelKey="name"
+                                            valueKey="id"
+                                            className="bg-secondary h-10 border-none"
+                                            wrapperClassName="!max-w-auto"
+                                            label="Holati"
+                                            required
+                                        />
 
-                            <FormNumberInput
-                                control={form.control}
-                                name={`students.${i}.discount.amount`}
-                                label="Chegirma (ixtiyoriy)"
-                                placeholder="Kurs narxi"
-                                allowLeadingZeros
-                            />
+                                        <FormDatePicker
+                                            control={form.control}
+                                            name={`students.${i}.start_date`}
+                                            label="Qo'shilish sanasi"
+                                            className="!max-w-auto !w-auto"
+                                            required
+                                        />
 
-                            <FormInput
-                                methods={form}
-                                name={`students.${i}.discount.reason`}
-                                label="Chegirma sababi"
-                            />
-                        </div>
-                        <Trash
-                            className="text-rose-500 size-4 cursor-pointer mb-5"
-                            onClick={() => remove(i)}
-                        />
-                    </div>
-                ))}
+                                        <FormNumberInput
+                                            control={form.control}
+                                            name={`students.${i}.discount.amount`}
+                                            label="Chegirma (ixtiyoriy)"
+                                            placeholder="Kurs narxi"
+                                            allowLeadingZeros
+                                        />
+
+                                        <FormInput
+                                            methods={form}
+                                            name={`students.${i}.discount.reason`}
+                                            label="Chegirma sababi"
+                                        />
+                                    </div>
+                                    <Trash
+                                        className="text-rose-500 size-4 cursor-pointer mb-5"
+                                        onClick={() => {
+                                            remove(i)
+                                            form.clearErrors(`students.${i}`)
+                                        }}
+                                    />
+                                </div>
+                                {(errors.students?.[i] as any)?.student && (
+                                    <span className="text-xs pb-1 text-rose-500">
+                                        {
+                                            (errors.students?.[i] as any)
+                                                ?.student?.message
+                                        }
+                                    </span>
+                                )}
+                            </div>
+                        ),
+                )}
             </div>
 
             <Button className="w-full" loading={isPending} autoFocus>

@@ -78,7 +78,10 @@ export default function GroupTabs({ refetch }: { refetch: () => void }) {
             uploaded_files: undefined,
             group,
             date: item?.date,
-            students: vals.students.map((st) => st.id).join(","),
+            students: vals.students
+                .filter((f) => f.is_selected)
+                .map((st) => st.id)
+                .join(","),
         }
         if (item?.id) {
             patch(`platform/groups/modules/${item?.id}`, conf)
@@ -86,15 +89,6 @@ export default function GroupTabs({ refetch }: { refetch: () => void }) {
             mutate("platform/groups/modules", conf)
         }
     }
-
-    useEffect(() => {
-        if (store) {
-            setTab(store)
-        }
-        if (data) {
-            form.setValue("controller", data.teacher)
-        }
-    }, [store, data])
 
     useEffect(() => {
         if (detail && isEdit) {
@@ -109,8 +103,19 @@ export default function GroupTabs({ refetch }: { refetch: () => void }) {
                 "uploaded_files",
                 detail.files.map((f) => f.file),
             )
+        } else {
+            form.reset()
         }
     }, [detail, isEdit])
+
+    useEffect(() => {
+        if (store) {
+            setTab(store)
+        }
+        if (data) {
+            form.setValue("controller", data.teacher)
+        }
+    }, [store, data, isEdit])
 
     useEffect(() => {
         if (students?.length && !isEdit) {
@@ -124,7 +129,7 @@ export default function GroupTabs({ refetch }: { refetch: () => void }) {
                 })),
             )
         }
-    }, [students, isEdit])
+    }, [students, isEdit, store])
 
     return (
         <Modal
