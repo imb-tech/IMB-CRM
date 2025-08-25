@@ -10,8 +10,10 @@ type StudentGroup = {
 type Student = {
     id: number
     full_name: string
+    payment_date?: string
     username: string
     photo: string
+    allowed_statuses: number[]
     password: string
     birth_date: string
     phone: string
@@ -21,6 +23,7 @@ type Student = {
     gpa: string
     avg_exam_score: number
     avg_score: number
+    start_date: string
     branches: number[]
     branches_data: Branch[]
     groups: StudentGroup[]
@@ -55,6 +58,47 @@ type GroupStudent = {
     student_phone: string
     balance: string
     allowed_statuses: number[]
+}
+
+type GroupStudentPayments = {
+    id: number
+    author: string
+    condition: number
+    start_date: string
+    date: string
+    description: string
+    payment_type: string
+    payment_type_name: string
+    amount: number
+    student_data: {
+        full_name: string
+        id: number
+        phone: number
+    }
+    author_data: {
+        full_name: string
+        id: number
+        phone: number
+    }
+    created_at:string
+    group_data: {
+        id: number
+        name: string
+    }
+
+}
+
+
+type GroupStudentCreate = {
+    group: number
+    student: number
+    start_date: string
+    status: number
+    discount: {
+        amount: string
+        reason: string
+    }
+
 }
 
 

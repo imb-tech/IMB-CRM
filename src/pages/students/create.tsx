@@ -224,7 +224,7 @@ const StudentCreate = ({ item }: Props) => {
                                 control={form.control}
                                 name="group_data.group"
                                 options={dataGroups?.map((item) => ({
-                                    name: `${item.name} - ${item.teacher_name}`,
+                                    name: `${item.name} - ${item.teacher_name} - ${item.is_active ? "Aktiv" : "O'chirilgan"}`,
                                     id: item.id,
                                 }))}
                                 labelKey="name"

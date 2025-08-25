@@ -12,6 +12,7 @@ type Group = {
     status: number
     teacher: number
     course: number
+    is_active:boolean
     room: number
     branch: number
     students_count: {

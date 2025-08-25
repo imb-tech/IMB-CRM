@@ -67,7 +67,7 @@ export default function GroupStudents() {
                 id={store?.id}
                 onSuccessAction={remove}
                 modalKey="delete-student"
-                path="platform/group-students"
+                path={GROUP_STUDENTS}
             />
         </div>
     )

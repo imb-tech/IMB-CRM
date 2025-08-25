@@ -433,7 +433,9 @@ export function DataTable<TData>({
                                                 >
                                                     {selecteds_row && (
                                                         <TableCell className="w-8">
-                                                            <Checkbox disabled />
+                                                            <Checkbox
+                                                                disabled
+                                                            />
                                                         </TableCell>
                                                     )}
                                                     {numeration && (
@@ -486,9 +488,12 @@ export function DataTable<TData>({
                                                         index % 2 !== 0 &&
                                                             "bg-secondary/70 rounded-xl",
                                                         "!h-12 text-sm",
+                                                        setRowClassName?.(
+                                                            row.original,
+                                                        ),
                                                     )}
                                                 >
-                                                    {selecteds_row  && (
+                                                    {selecteds_row && (
                                                         <TableCell className="w-8">
                                                             <Checkbox
                                                                 checked={row.getIsSelected()}
@@ -504,7 +509,9 @@ export function DataTable<TData>({
                                                         </TableCell>
                                                     )}
                                                     {numeration && (
-                                                        <TableCell className="w-8">
+                                                        <TableCell
+                                                            className={"w-8"}
+                                                        >
                                                             {((search[
                                                                 paramName
                                                             ] || 1) -
@@ -544,11 +551,7 @@ export function DataTable<TData>({
                                                                     }}
                                                                     className={cn(
                                                                         ` border-r   dark:border-secondary/50 border-secondary last:border-none `,
-                                                                        setRowClassName?.(
-                                                                            cell
-                                                                                .row
-                                                                                .original,
-                                                                        ),
+
                                                                         onRowClick &&
                                                                             "cursor-pointer",
                                                                     )}

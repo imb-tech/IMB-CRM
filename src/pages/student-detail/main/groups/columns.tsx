@@ -1,11 +1,20 @@
 import { daysMap } from "@/lib/shift-groupped"
-import { studentStatusKeys } from "@/pages/students/student-status"
 import { useNavigate } from "@tanstack/react-router"
 import { ColumnDef } from "@tanstack/react-table"
 import { format } from "date-fns"
 import { useMemo } from "react"
+import { StatusPopover } from "./status-popover"
+import { Pencil } from "lucide-react"
+import { formatMoney } from "@/lib/format-money"
+import { cn } from "@/lib/utils"
 
-export const useColumns = () => {
+export const useColumns = ({
+    openModal,
+    setCurrent,
+}: {
+    setCurrent: (item: Student) => void
+    openModal: () => void
+}) => {
     const navigate = useNavigate()
     return useMemo<ColumnDef<Student>[]>(
         () => [
@@ -25,13 +34,24 @@ export const useColumns = () => {
                         {row.original?.group_data?.name}
                     </span>
                 ),
-            }, 
+            },
             {
-                header: "Holati",
+                header: "Holat",
                 accessorKey: "status",
-                cell: ({ row }) => (
-                    <span>{studentStatusKeys[row.original?.status]}</span>
-                ),
+                enableSorting: true,
+                cell({
+                    row: {
+                        original: { status, id, allowed_statuses },
+                    },
+                }) {
+                    return (
+                        <StatusPopover
+                            group={id}
+                            allowed_statuses={allowed_statuses}
+                            status={Number(status)}
+                        />
+                    )
+                },
             },
             {
                 header: "O'qituvchi",
@@ -40,6 +60,20 @@ export const useColumns = () => {
                     <span>{row.original?.group_data?.teacher}</span>
                 ),
             },
+            {
+                header: "Balans",
+                accessorKey: "balance",
+                cell: ({ row }) => (
+                    <span
+                        className={cn(
+                            Number(row.original?.balance) < 0 && "text-red-500",
+                        )}
+                    >
+                        {formatMoney(row.original?.balance)}
+                    </span>
+                ),
+            },
+
             {
                 header: "Dars kunlari",
                 accessorKey: "shifts_data",
@@ -57,7 +91,7 @@ export const useColumns = () => {
                 header: "Davomiyligi",
                 accessorKey: "group_data",
                 cell: ({ row }) => (
-                    <span>
+                    <span className="whitespace-nowrap">
                         {row.original?.group_data?.start_date} -{" "}
                         {row.original?.group_data?.end_date}
                     </span>
@@ -73,6 +107,20 @@ export const useColumns = () => {
             {
                 header: "O'quvchi qoshilgan sana",
                 accessorKey: "start_date",
+                cell: ({ row }) => {
+                    return (
+                        <div
+                            onClick={() => {
+                                openModal()
+                                setCurrent(row.original)
+                            }}
+                            className="flex items-center gap-3 cursor-pointer hover:text-primary"
+                        >
+                            <p>{row.original.start_date}</p>
+                            <Pencil size={15} className="text-primary" />
+                        </div>
+                    )
+                },
             },
             {
                 header: "O'quvchi o'chirilgan sana",

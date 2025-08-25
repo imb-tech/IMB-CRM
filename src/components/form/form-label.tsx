@@ -19,7 +19,7 @@ export default function FieldLabel({
     return (
         <label
             className={cn(
-                "select-none leading-[1.4] pb-0.5 text-sm cursor-pointer",
+                "select-none leading-[1.4] pb-1 text-sm cursor-pointer",
                 isError && "text-red-600",
                 className,
             )}

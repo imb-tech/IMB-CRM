@@ -14,7 +14,6 @@ export const newStudentStatusKeys: Record<string, string> = {
     "1": "Aktiv",
 }
 
-
 export default function StudentStatus({
     status,
     className,
@@ -28,10 +27,13 @@ export default function StudentStatus({
         <span
             className={cn(
                 "p-1 px-2 text-xs flex items-center justify-center gap-1 rounded-sm cursor-pointer select-none w-[80px]",
-                status == 3 ? "bg-red-500/20 "
-                : status == 0 ? "bg-yellow-500/20 "
-                : status == 2 ? "bg-gray-500/20 "
-                : "bg-green-500/30 ",
+                status == 3
+                    ? "bg-red-500/10 text-red-500"
+                    : status == 0
+                    ? "bg-yellow-500/10 text-yellow-500 "
+                    : status == 2
+                    ? "bg-sky-500/10  text-sky-500"
+                    : "bg-green-500/10 text-green-500",
                 className,
             )}
         >

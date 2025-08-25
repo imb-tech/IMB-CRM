@@ -15,6 +15,7 @@ type SearchParams = {
     is_active?: boolean
 
     year?: string
+    group_student?: string
     id?: string
     group?: string
     student?: string
