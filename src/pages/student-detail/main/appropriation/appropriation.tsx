@@ -1,7 +1,10 @@
 import { DataTable } from "@/components/ui/datatable"
 import { useColumns } from "./columns"
 import { useGet } from "@/hooks/useGet"
-import { STUDENT_GROUP } from "@/constants/api-endpoints"
+import {
+    GROUP_STUDENTS_MODULES,
+    STUDENT_GROUP,
+} from "@/constants/api-endpoints"
 import { Badge } from "@/components/ui/badge"
 import { formatMoney } from "@/lib/format-money"
 import {
@@ -18,10 +21,16 @@ import StudentApproHeader from "./group-header"
 
 const StudentAppropriationMain = () => {
     const { id } = useParams({ strict: false }) as { id: string }
-    const search: any = useSearch({ strict: false })
+    const search = useSearch({ strict: false })
     const navigate = useNavigate()
     const [isAll, setIsAll] = useState<boolean>(false)
     const { data, isLoading } = useGet<ListResp<Student>>(STUDENT_GROUP)
+    const { data: dataStudent } = useGet(GROUP_STUDENTS_MODULES, {
+        params: {
+            group: search?.group,
+            student: id,
+        },
+    })
 
     const clickAccordion = useCallback(
         (key: string) => {
@@ -30,11 +39,11 @@ const StudentAppropriationMain = () => {
                 params: { id },
                 search: (prev) => ({
                     ...prev,
-                    tab: search.tab === key ? undefined : key,
+                    group: search?.group === key ? undefined : key,
                 }),
             })
         },
-        [navigate, id, search.tab],
+        [navigate, id, search.group],
     )
 
 
@@ -71,7 +80,7 @@ const StudentAppropriationMain = () => {
                             type="single"
                             collapsible
                             className="w-full"
-                            value={search?.tab ?? undefined}
+                            value={search?.group ?? undefined}
                             onValueChange={(val) => {
                                 clickAccordion(val)
                             }}
@@ -94,7 +103,10 @@ const StudentAppropriationMain = () => {
                     ))}
                 </div>
             ) : (
-                <StudentTable data={data?.results || []} isLoading={isLoading} />
+                <StudentTable
+                    data={data?.results || []}
+                    isLoading={isLoading}
+                />
             )}
         </div>
     )
