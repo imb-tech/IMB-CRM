@@ -24,27 +24,26 @@ import Modal from "@/components/custom/modal"
 import PaymentUpdate from "./payment-update"
 import { useModal } from "@/hooks/useModal"
 
-type Props = {}
-
-const StudnetPaymentMain = (props: Props) => {
+const StudnetPaymentMain = () => {
     const { id } = useParams({ from: "/_main/students/$id/_main/payments" })
     const search = useSearch({ from: "__root__" })
+    const { group_student, ...updateSearch } = search
     const navigate = useNavigate()
     const [isAll, setIsAll] = useState<boolean>(false)
 
     const { data } = useGet<ListResp<Student>>(STUDENT_GROUP, {
         params: { student: id, size: 50, page: 1 },
-        options: { enabled: !!id },
+        options: { enabled: !!id && isAll },
     })
 
     const { data: dataGroupPayment, isLoading } = useGet<
         ListResp<GroupStudentPayments>
     >(GROUP_STUDENTS_PAYMENT, {
         params: {
-            ...search,
-            ...(isAll ? { group_student: search?.group_student } : {}),
+            ...updateSearch,
+            ...(isAll ? { group_student } : {}),
         },
-        options: { enabled: !isAll || !!search?.group_student },
+        options: { enabled: !isAll || !!group_student },
     })
 
     const clickAccordion = useCallback(
@@ -106,10 +105,11 @@ const StudnetPaymentMain = (props: Props) => {
                     </div>
                     {data?.results?.map((item, index) => (
                         <Accordion
+                            key={index}
                             type="single"
                             collapsible
                             className="w-full"
-                            value={search?.group_student ?? undefined}
+                            value={group_student ?? undefined}
                             onValueChange={(val) => {
                                 clickAccordion(val)
                             }}

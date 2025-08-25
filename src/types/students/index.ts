@@ -80,7 +80,7 @@ type GroupStudentPayments = {
         id: number
         phone: number
     }
-    created_at:string
+    created_at: string
     group_data: {
         id: number
         name: string
@@ -100,6 +100,28 @@ type GroupStudentCreate = {
     }
 
 }
+
+
+type Appropriation = {
+    id: number
+    date: string
+    score: number
+    answer: string | null
+    file: string | null
+    is_scored: boolean
+    group_student: number
+    module_data: {
+        id: number
+        title: string
+        description: string
+        controller: string
+    }
+    group_data: {
+        id: number
+        name: string
+    }
+}
+
 
 
 type ParentStudent = {

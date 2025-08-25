@@ -39,7 +39,7 @@ function StudentGroupMain({}: Props) {
     const { id } = useParams({ from: "/_main/students/$id/_main/groups" })
     const queryClient = useQueryClient()
     const { openModal: openDelete } = useModal("delete-student-group")
-    const { closeModal, openModal } = useModal(`student-groups-add`)
+    const { closeModal, openModal, isOpen } = useModal(`student-groups-add`)
     const { openModal: openModalUpdate } = useModal(`student-groups-update`)
     const [search, setSearch] = useState<string>("")
     const [openedAccordion, setOpenedAccordion] = useState<string | null>(null)
@@ -52,6 +52,7 @@ function StudentGroupMain({}: Props) {
     })
     const { data: dataGroups } = useGet<Group[]>(OPTION_GROUPS, {
         params: { search, branch: active_branch },
+        options: { enabled: !!isOpen },
     })
 
     function onSuccess() {
@@ -122,6 +123,8 @@ function StudentGroupMain({}: Props) {
         openModal: openModalUpdate,
         setCurrent: (student) => setCurrent(student),
     })
+
+
 
     return (
         <div className="mt-1">

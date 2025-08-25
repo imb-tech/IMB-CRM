@@ -9,10 +9,10 @@ export function ThemeColorToggle() {
         <div className="flex items-center gap-2">
             {theme === "light" ?
                 <button className="m-[1px]" onClick={() => setTheme("dark")}>
-                    <Moon width={16} />
+                    <Moon width={20} />
                 </button>
             :   <button className="m-[1px]" onClick={() => setTheme("light")}>
-                    <Sun width={16} />
+                    <Sun width={20} />
                 </button>
             }
         </div>

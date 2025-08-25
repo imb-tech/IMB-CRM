@@ -20,7 +20,7 @@ type Props = {
     group: number
 }
 
-export function StatusPopover({ status, allowed_statuses = [], group }: Props) {
+export function StatusPopoverStudent({ status, allowed_statuses = [], group }: Props) {
     const qC = useQueryClient()
     const { mutate } = usePost()
 

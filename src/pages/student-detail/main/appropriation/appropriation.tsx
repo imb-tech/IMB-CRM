@@ -22,15 +22,25 @@ import StudentApproHeader from "./group-header"
 const StudentAppropriationMain = () => {
     const { id } = useParams({ strict: false }) as { id: string }
     const search = useSearch({ strict: false })
+    const { group_student, ...updateSearch } = search
     const navigate = useNavigate()
     const [isAll, setIsAll] = useState<boolean>(false)
-    const { data, isLoading } = useGet<ListResp<Student>>(STUDENT_GROUP)
-    const { data: dataStudent } = useGet(GROUP_STUDENTS_MODULES, {
-        params: {
-            group: search?.group,
-            student: id,
-        },
+    const { data } = useGet<ListResp<Student>>(STUDENT_GROUP, {
+        params: { student: id, page: 1, size: 50 },
+        options: { enabled: isAll },
     })
+
+    const { data: dataStudent, isLoading } = useGet<ListResp<Appropriation>>(
+        GROUP_STUDENTS_MODULES,
+        {
+            params: {
+                ...updateSearch,
+                student: id,
+                ...(isAll ? { group_student } : {}),
+            },
+            options: { enabled: !isAll || !!group_student },
+        },
+    )
 
     const clickAccordion = useCallback(
         (key: string) => {
@@ -39,14 +49,12 @@ const StudentAppropriationMain = () => {
                 params: { id },
                 search: (prev) => ({
                     ...prev,
-                    group: search?.group === key ? undefined : key,
+                    group_student: group_student === key ? undefined : key,
                 }),
             })
         },
         [navigate, id, search.group],
     )
-
-
 
     return (
         <div className="mt-1">
@@ -62,13 +70,19 @@ const StudentAppropriationMain = () => {
                 <div className=" flex items-center gap-2 ">
                     <Switch
                         checked={isAll}
-                        onCheckedChange={(e) => setIsAll(e)}
+                        onCheckedChange={(e) => {
+                            setIsAll(e)
+                            navigate({
+                                to: "/students/$id/appropriation",
+                                params: { id },
+                            })
+                        }}
                     />
-                    <Label>{"Barchasi"}</Label>
+                    <Label>{"Guruhlar kesmi bo'yicha"}</Label>
                 </div>
             </div>
 
-            {!isAll ? (
+            {isAll ? (
                 <div>
                     <div className="grid grid-cols-3 px-3  border-b py-3 mb-2 bg-muted rounded-md  text-muted-foreground text-sm">
                         <p>Guruh nomi</p>
@@ -77,10 +91,11 @@ const StudentAppropriationMain = () => {
                     </div>
                     {data?.results?.map((item, index) => (
                         <Accordion
+                            key={item.id}
                             type="single"
                             collapsible
                             className="w-full"
-                            value={search?.group ?? undefined}
+                            value={group_student ?? undefined}
                             onValueChange={(val) => {
                                 clickAccordion(val)
                             }}
@@ -94,7 +109,7 @@ const StudentAppropriationMain = () => {
                                 </AccordionTrigger>
                                 <AccordionContent className="flex   flex-col gap-4 text-balance pl-3">
                                     <StudentTable
-                                        data={data?.results}
+                                        data={dataStudent}
                                         isLoading={isLoading}
                                     />
                                 </AccordionContent>
@@ -103,10 +118,7 @@ const StudentAppropriationMain = () => {
                     ))}
                 </div>
             ) : (
-                <StudentTable
-                    data={data?.results || []}
-                    isLoading={isLoading}
-                />
+                <StudentTable data={dataStudent} isLoading={isLoading} />
             )}
         </div>
     )
@@ -116,7 +128,7 @@ export default StudentAppropriationMain
 
 type PropsTable = {
     isLoading: boolean
-    data: Student[]
+    data: ListResp<Appropriation> | undefined
 }
 
 const StudentTable = ({ data, isLoading }: PropsTable) => {
@@ -125,9 +137,15 @@ const StudentTable = ({ data, isLoading }: PropsTable) => {
         <div className="mt-1">
             <DataTable
                 columns={columns}
-                data={data}
+                data={data?.results}
                 loading={isLoading}
                 numeration
+                paginationProps={{
+                    totalPages: data?.total_pages,
+                }}
+                setRowClassName={(row) =>
+                    row.is_scored ? "" : "bg-orange-500/10 text-orange-500 "
+                }
             />
         </div>
     )

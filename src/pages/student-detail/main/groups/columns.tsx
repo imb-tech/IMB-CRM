@@ -3,7 +3,7 @@ import { useNavigate } from "@tanstack/react-router"
 import { ColumnDef } from "@tanstack/react-table"
 import { format } from "date-fns"
 import { useMemo } from "react"
-import { StatusPopover } from "./status-popover"
+import { StatusPopoverStudent } from "./status-popover"
 import { Pencil } from "lucide-react"
 import { formatMoney } from "@/lib/format-money"
 import { cn } from "@/lib/utils"
@@ -45,7 +45,7 @@ export const useColumns = ({
                     },
                 }) {
                     return (
-                        <StatusPopover
+                        <StatusPopoverStudent
                             group={id}
                             allowed_statuses={allowed_statuses}
                             status={Number(status)}

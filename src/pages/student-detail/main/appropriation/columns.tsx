@@ -1,16 +1,16 @@
 import { useNavigate } from "@tanstack/react-router"
 import { ColumnDef } from "@tanstack/react-table"
+import { format } from "date-fns"
 import { useMemo } from "react"
 
 export const useColumns = () => {
     const navigate = useNavigate()
 
-    return useMemo<ColumnDef<Student>[]>(
+    return useMemo<ColumnDef<Appropriation>[]>(
         () => [
             {
-                header: "Sana",
-                accessorKey: "price",
-                enableSorting: true,
+                header: "Nomi",
+                accessorKey: "group_data.name",
                 cell: ({ row }) => (
                     <span
                         onClick={() =>
@@ -25,23 +25,43 @@ export const useColumns = () => {
                     </span>
                 ),
             },
+
+            {
+                header: "Sana",
+                accessorKey: "date",
+                enableSorting: true,
+                cell: ({ row }) => (
+                    <span
+                        onClick={() =>
+                            navigate({
+                                to: "/groups/$id",
+                                params: { id: "5" },
+                            })
+                        }
+                        className="hover:text-primary cursor-pointer"
+                    >
+                        {format(row.original?.date, "yyyy-MM-dd")}
+                    </span>
+                ),
+            },
             {
                 header: "Nomi",
-                accessorKey: "price",
-                enableSorting: true,
-                cell: ({ row }) => "Buglarni to'g'irlash barchasini",
+                accessorKey: "module_data",
+                cell: ({ row }) => (
+                    <span>{row.original.module_data.title}</span>
+                ),
             },
             {
                 header: "Bahosi",
-                accessorKey: "duration",
+                accessorKey: "score",
                 enableSorting: true,
-                cell: ({ row }) => "85",
             },
             {
                 header: "Ma'sul shaxs",
                 accessorKey: "branch",
-                enableSorting: true,
-                cell: ({ row }) => "Abidsamatov Ozodbek",
+                cell: ({ row }) => (
+                    <span>{row.original.module_data.controller}</span>
+                ),
             },
         ],
         [],

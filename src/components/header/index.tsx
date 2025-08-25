@@ -14,6 +14,7 @@ import useMe from "@/hooks/useMe"
 import Select from "../ui/select"
 import { cn, getActiveBranch, setActiveBranch } from "@/lib/utils"
 import HeaderLinks from "./header-links"
+import FullScreenToggle from "../shared/full-screen"
 
 type Props = {
     title?: string
@@ -72,6 +73,8 @@ const Header = ({ rigthChildren, leftChildren, navOnHeader }: Props) => {
                     />
                 )}
                 <ThemeColorToggle />
+                <FullScreenToggle />
+
                 <DropdownMenu>
                     <div className="relative h-10">
                         <DropdownMenuTrigger className="!outline-none">
