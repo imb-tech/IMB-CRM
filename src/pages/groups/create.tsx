@@ -38,7 +38,7 @@ const GroupCreate = ({ item }: Props) => {
     const form = useForm<GroupFields>({
         defaultValues: {
             ...item,
-            shifts: Array(6)
+            shifts: Array(7)
                 .fill(0)
                 ?.map((_, i) => {
                     if (!item?.id) {
@@ -103,8 +103,6 @@ const GroupCreate = ({ item }: Props) => {
             })
         }
     }
-
-
 
     return (
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

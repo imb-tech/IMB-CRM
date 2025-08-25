@@ -12,6 +12,7 @@ import { usePatch } from "@/hooks/usePatch"
 import { usePost } from "@/hooks/usePost"
 import { generateUsername } from "@/lib/utils"
 import { useQueryClient } from "@tanstack/react-query"
+import { AxiosError } from "axios"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
@@ -47,6 +48,16 @@ const EmployeeCreate = ({ item }: Props) => {
         queryClient.invalidateQueries({ queryKey: [EMPLOYEE] })
         queryClient.removeQueries({ queryKey: [OPTION_ROLES] })
     }
+
+    function onError(error: AxiosError<any, any>) {
+        for (const [k, v] of Object.entries(error.response?.data ?? {})) {
+            form.setError(k as any, {
+                type: "custom",
+                message: v as string,
+            })
+        }
+    }
+
     const headers = {
         "Content-Type": "multipart/form-data",
     }
@@ -54,12 +65,14 @@ const EmployeeCreate = ({ item }: Props) => {
     const { mutate: mutateCreate, isPending: isPendingCreate } = usePost(
         {
             onSuccess,
+            onError,
         },
         { headers },
     )
     const { mutate: mutateUpdate, isPending: isPendingUpdate } = usePatch(
         {
             onSuccess,
+            onError,
         },
         { headers },
     )

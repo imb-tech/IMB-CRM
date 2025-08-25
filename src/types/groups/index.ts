@@ -9,11 +9,16 @@ type Group = {
     start_date: "2025-08-01"
     end_date: "2025-08-31"
     price: string
-    status: 1
-    teacher: 13
-    course: 1
-    room: 1
-    branch: 2
+    status: number
+    teacher: number
+    course: number
+    room: number
+    branch: number
+    students_count: {
+        new: number
+        active: number
+        frozen: number
+    },
 }
 
 type GroupExam = {

@@ -10,9 +10,14 @@ type SearchParams = {
     end_date?: string
     start_date?: string
     role?: number | string
+    pipeline?: number
+    region?: string
+    is_active?: boolean
 
     year?: string
     id?: string
     group?: string
     student?: string
 }
+
+

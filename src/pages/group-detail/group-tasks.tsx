@@ -76,7 +76,7 @@ export default function GroupTasks() {
     useEffect(() => {
         if (isScroll === 1 && grouppedModules) {
             const item2 = grouppedModules.findIndex(
-                (s) => s.date.slice(0, 10) == "2025-08-20",
+                (s) => s.date.slice(0, 10) == "2025-08-22",
             )
 
             const target = refMap.current[item2]

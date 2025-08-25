@@ -35,9 +35,9 @@ export function AttendanceSelect({ status, student, id: attId }: Props) {
     const qC = useQueryClient()
     const { mutate } = usePatch()
     const { id } = useParams({ from: "/_main/groups/$id/_main/attendance" })
-    const { date } = useSearch({ from: "/_main/groups/$id/_main/attendance" })
+    const { date, is_active } = useSearch({ from: "/_main/groups/$id/_main/attendance" })
 
-    const queryKey = ["platform/group-students/attendances/" + id + "/" + date]
+    const queryKey = ["platform/group-students/attendances/" + id + "/" + date, typeof is_active == "boolean" ? is_active : true]
 
     function handleChange(d: number) {
         const oldData = qC.getQueryData<StudentAttandence[]>(queryKey)

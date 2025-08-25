@@ -22,7 +22,7 @@ const GroupsMain = () => {
 
     const params = useSearch({ from: "/_main/groups/" })
 
-    const { data, isFetching } = useGet<ListResp<Group>>(GROUP, { params })
+    const { data, isLoading } = useGet<ListResp<Group>>(GROUP, { params })
 
     const { push } = useHistoryNavigate()
 
@@ -51,9 +51,7 @@ const GroupsMain = () => {
                     <div className="flex  justify-between items-center gap-3 ">
                         <div className="flex items-center gap-3">
                             <h1 className="text-xl">Guruhlar ro'yxati</h1>
-                            <Badge  className="text-sm">
-                                {data?.count}
-                            </Badge>
+                            <Badge className="text-sm">{data?.count}</Badge>
                         </div>
                         <Button onClick={handleItemAdd}>
                             <Plus className="h-4 w-4" />
@@ -67,7 +65,7 @@ const GroupsMain = () => {
                         columns={columns}
                         data={data?.results}
                         onRowClick={({ id }) => push(`/groups/${id}/students`)}
-                        loading={isFetching}
+                        loading={isLoading}
                         viewAll
                         selecteds_row
                     />

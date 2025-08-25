@@ -88,7 +88,9 @@ export default function TaskCard({ item }: Props) {
                                 <p className="text-muted-foreground w-[70px]">
                                     {moduleDesc[item.type]}:
                                 </p>
-                                <p className="flex-1">{formatDate(item.deadline ?? item.date)}</p>
+                                <p className="flex-1">
+                                    {formatDate(item.deadline ?? item.date)}
+                                </p>
                                 <div className="flex items-center gap-2">
                                     <Pencil
                                         size={16}
@@ -96,9 +98,9 @@ export default function TaskCard({ item }: Props) {
                                         onClick={(e) => {
                                             e.stopPropagation()
                                             e.preventDefault()
-                                            setStore("task")
-                                            openModal()
+                                            setStore(item.type)
                                             setItem(item)
+                                            openModal()
                                         }}
                                     />
                                     <Trash
@@ -138,7 +140,11 @@ export default function TaskCard({ item }: Props) {
                         size="sm"
                         variant="default"
                         onClick={() => {
-                            setItem(item)
+                            if (!item.last) {
+                                setItem(item)
+                            } else {
+                                setItem({ date: item.date })
+                            }
                             openModal()
                         }}
                     >

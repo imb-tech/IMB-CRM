@@ -9,12 +9,11 @@ import { useParams, useSearch } from "@tanstack/react-router"
 import Modal from "@/components/custom/modal"
 import { useModal } from "@/hooks/useModal"
 import ParamInput from "@/components/as-params/input"
-import { ParamMultiCombobox } from "@/components/as-params/multi-combobox"
-import { studentStatusKeys } from "../students/student-status"
 import UpdateStudent from "./update-student"
 import DeleteModal from "@/components/custom/delete-modal"
 import { useStore } from "@/hooks/use-store"
 import AppendStudentModal from "./append-student-modal"
+import ParamSwtich from "@/components/as-params/switch"
 
 export default function GroupStudents() {
     const { id: group } = useParams({
@@ -37,18 +36,10 @@ export default function GroupStudents() {
                 title="Guruhdagi o'quvchilar"
                 rightComponent={
                     <div className="flex items-center gap-1">
-                        <ParamMultiCombobox
-                            label="Holati"
-                            className="w-36"
-                            options={Object.entries(studentStatusKeys)?.map(
-                                ([k, v]) => ({
-                                    id: k,
-                                    name: v,
-                                }),
-                            )}
-                            labelKey="name"
-                            valueKey="id"
-                            paramName="status"
+                        <ParamSwtich
+                            label="Arxiv"
+                            paramName="is_active"
+                            reverse
                         />
                         <ParamInput />
                         <Button onClick={openModal}>
