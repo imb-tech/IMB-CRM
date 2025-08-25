@@ -81,7 +81,7 @@ export default function GroupAttendance() {
             <SectionHeader
                 title="Oylik yo'qlama jadvali"
                 rightComponent={
-                    <div>
+                    <div className="flex items-center gap-2">
                         <ParamSwtich
                             label="Arxiv"
                             paramName="is_active"

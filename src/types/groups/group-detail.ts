@@ -37,6 +37,7 @@ type GroupModuleStudent = {
     answer?: string | null
     file?: string | null
     score?: number
+    is_scored?: boolean
 }
 
 type GroupModuleForm = GroupModule & {

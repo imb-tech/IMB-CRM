@@ -11,6 +11,8 @@ import { useModal } from "@/hooks/useModal"
 import { Button } from "@/components/ui/button"
 import AssignStudent from "./assign-student"
 import Modal from "@/components/custom/modal"
+import { usePatch } from "@/hooks/usePatch"
+import { useQueryClient } from "@tanstack/react-query"
 
 export default function ExamDetail() {
     const { id } = useSearch({ strict: false })
@@ -18,10 +20,12 @@ export default function ExamDetail() {
     const [item, setItem] = useState<{ id: number; file?: string } | null>(null)
     const { openModal: assign } = useModal("append-student")
     const { openModal: rs } = useModal("remove-student")
+    const qc = useQueryClient()
 
     const [answer, setAnswer] = useState<string>("")
-    const {openModal: openAnwser} = useModal("answer")
+    const { openModal: openAnwser } = useModal("answer")
 
+    const queryKey = [`platform/groups/modules/${id}`]
     const { data: detail, refetch } = useGet<GroupModule>(
         `platform/groups/modules/${id}`,
         {
@@ -30,13 +34,30 @@ export default function ExamDetail() {
             },
         },
     )
+    const { mutate } = usePatch()
 
     function clickAnswer(text: string) {
         openAnwser()
         setAnswer(text)
     }
 
-    const columns = useGroupExamsCols(clickAnswer)
+    function updateScore(id: number, score: string) {
+        const data = qc.getQueryData(queryKey)
+        mutate(
+            `platform/group-students/crud/modules/${id}`,
+            {
+                score: Number(score),
+                is_scored: score !== "",
+            },
+            {
+                onError() {
+                    qc.setQueryData(queryKey, data)
+                },
+            },
+        )
+    }
+
+    const columns = useGroupExamsCols(clickAnswer, updateScore)
 
     return (
         <div>
@@ -73,29 +94,33 @@ export default function ExamDetail() {
                     </div>
                 </div>
             :   ""}
-            <div className="mt-3">
-                <div className="flex items-center justify-between py-2">
-                    <p className="text-muted-foreground text-lg">O'quvchilar</p>
-                    <Button size="sm" onClick={assign}>
-                        Qo'shish
-                    </Button>
+            {detail?.type !== "topic" && (
+                <div className="mt-3">
+                    <div className="flex items-center justify-between py-2">
+                        <p className="text-muted-foreground text-lg">
+                            O'quvchilar
+                        </p>
+                        <Button size="sm" onClick={assign}>
+                            Qo'shish
+                        </Button>
+                    </div>
+                    <DataTable
+                        columns={columns}
+                        data={detail?.students}
+                        viewAll
+                        className="max-w-full"
+                        numeration
+                        minRows={6}
+                        onDelete={({ original }) => {
+                            rs()
+                            setItem({
+                                id: original.id,
+                                file: original.full_name,
+                            })
+                        }}
+                    />
                 </div>
-                <DataTable
-                    columns={columns}
-                    data={detail?.students}
-                    viewAll
-                    className="max-w-full"
-                    numeration
-                    minRows={6}
-                    onDelete={({ original }) => {
-                        rs()
-                        setItem({
-                            id: original.id,
-                            file: original.full_name,
-                        })
-                    }}
-                />
-            </div>
+            )}
 
             <Modal modalKey="append-student" title="O'quvchi qo'shish">
                 {id && <AssignStudent module={id} />}

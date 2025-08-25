@@ -49,6 +49,7 @@ export default function ExamForm({ loading }: { loading?: boolean }) {
                         addButtonProps={{
                             className: "bg-secondary text-start justify-start",
                         }}
+                        required
                     />
 
                     <FormNumberInput
@@ -56,12 +57,14 @@ export default function ExamForm({ loading }: { loading?: boolean }) {
                         name="min_score"
                         label="O'tish bal"
                         placeholder="0"
+                        required
                     />
                     <FormNumberInput
                         control={form.control}
                         name="max_score"
                         label="Yuqori bal"
                         placeholder="100"
+                        required
                     />
                     <FileInput
                         control={form.control}

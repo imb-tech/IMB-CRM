@@ -151,7 +151,10 @@ export const useGroupSalesCols = () =>
         [],
     )
 
-export const useGroupExamsCols = (clickAnswer: (t: string) => void) =>
+export const useGroupExamsCols = (
+    clickAnswer: (t: string) => void,
+    update: (id: number, score: string) => void,
+) =>
     useMemo<ColumnDef<GroupModuleStudent>[]>(
         () => [
             {
@@ -200,12 +203,17 @@ export const useGroupExamsCols = (clickAnswer: (t: string) => void) =>
             },
             {
                 header: "Ball",
-                cell({ row }) {
+                cell({ row: { original } }) {
                     return (
                         <Input
-                            defaultValue={row.original.score}
+                            type="number"
+                            min={0}
+                            defaultValue={
+                                original.is_scored ? original.score : ""
+                            }
                             className="rounded-sm h-10 max-w-28"
                             placeholder="—"
+                            onBlur={(e) => update(original.id, e.target.value)}
                         />
                     )
                 },

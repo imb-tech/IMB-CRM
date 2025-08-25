@@ -135,46 +135,44 @@ export default function GroupProfile() {
                         <div className="ml-auto hidden md:block">
                             <div className="hidden md:flex items-center gap-3 py-2 text-sm">
                                 <div className="bg-card/40 rounded-sm px-3 py-1">
-                                    <span className="text-xs">
-                                        O'qituvchi
-                                    </span>
+                                    <span className="text-xs">O'qituvchi</span>
                                     <div className="text-sm flex items-center gap-2 mt-0.5">
                                         <p>{data?.teacher_name}</p>
                                     </div>
                                 </div>
                                 <div className="bg-card/40 rounded-sm px-3 py-1">
-                                    <span className="text-xs">
-                                        Dars vaqti
-                                    </span>
+                                    <span className="text-xs">Dars vaqti</span>
                                     <div className="text-sm flex items-center mt-0.5">
-                                        {(data?.shifts_data ?? [])?.map((sh, i) => (
-                                            <div
-                                                key={sh.day_of_week}
-                                                className="flex"
-                                            >
-                                                {/* {i > 0 ? "|" : ""} */}
-                                                <p>
-                                                    {i == 0 ? "" : ", "}
-                                                    {daysMap[sh.day_of_week]}
-                                                </p>
-                                                {/* <p>{sh.start_time}</p>
+                                        {(data?.shifts_data ?? [])?.map(
+                                            (sh, i) => (
+                                                <div
+                                                    key={sh.day_of_week}
+                                                    className="flex"
+                                                >
+                                                    {/* {i > 0 ? "|" : ""} */}
+                                                    <p>
+                                                        {i == 0 ? "" : ", "}
+                                                        {
+                                                            daysMap[
+                                                                sh.day_of_week
+                                                            ]
+                                                        }
+                                                    </p>
+                                                    {/* <p>{sh.start_time}</p>
                                                     <p>{sh.end_time}</p> */}
-                                            </div>
-                                        ))}
+                                                </div>
+                                            ),
+                                        )}
                                     </div>
                                 </div>
                                 <div className="bg-card/40 rounded-sm px-3 py-1">
-                                    <span className="text-xs">
-                                        Kurs nomi
-                                    </span>
+                                    <span className="text-xs">Kurs nomi</span>
                                     <div className="text-sm flex items-center gap-2 mt-0.5">
                                         <p>{data?.course_name}</p>
                                     </div>
                                 </div>
                                 <div className="bg-card/40 rounded-sm px-3 py-1">
-                                    <span className="text-xs">
-                                        Kurs narxi
-                                    </span>
+                                    <span className="text-xs">Kurs narxi</span>
                                     <div className="flex items-center gap-2 mt-0.5 ">
                                         {/* <Banknote className="w-3 h-3" /> */}
                                         <p className="text-sm">
@@ -183,9 +181,7 @@ export default function GroupProfile() {
                                     </div>
                                 </div>
                                 <div className="bg-card/40 rounded-sm px-3 py-1">
-                                    <span className="text-xs">
-                                        Davomiyligi
-                                    </span>
+                                    <span className="text-xs">Davomiyligi</span>
                                     <div className="flex items-center gap-2 mt-0.5">
                                         {/* <Calendar className="w-3 h-3" /> */}
                                         <div className="text-sm">
