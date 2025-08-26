@@ -8,6 +8,7 @@ import {
     GROUP_STUDENTS_PAYMENT,
     OPTION_GROUPS_STUDENTS,
     PAYMENT_TYPES_OPTION,
+    STUDENT_GROUP,
 } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import useMe from "@/hooks/useMe"
@@ -58,6 +59,9 @@ function PaymentUpdate({ current }: Props) {
         form.reset()
         queryClient.invalidateQueries({
             queryKey: [GROUP_STUDENTS_PAYMENT],
+        })
+        queryClient.invalidateQueries({
+            queryKey: [STUDENT_GROUP],
         })
     }, [closeModal, form, queryClient])
 
