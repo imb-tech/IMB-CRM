@@ -42,10 +42,19 @@ type Student = {
     shifts_data: GroupShift[]
     parents: {
         full_name: string
-        username: string
         phone: string
-        password: string
+        position: string
     }
+}
+
+type StudentParents = {
+    id: number
+    full_name: string
+    phone: string
+    position: string
+    created_at: string
+    updated_at: string
+    student: string
 }
 
 type GroupStudent = {
@@ -124,13 +133,23 @@ type Appropriation = {
 }
 
 
-
-type ParentStudent = {
+type DiscountStudent = {
     id: number
-    full_name: string
-    username: string
-    phone: string
+    amount: string
+    author_name: string
+    count: number
+    created_at: string
+    group_student: number
+    reason: string
+    group_data: {
+        id: number
+        name: string
+    }
 }
+
+
+
+
 
 
 

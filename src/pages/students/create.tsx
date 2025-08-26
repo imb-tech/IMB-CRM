@@ -90,7 +90,7 @@ const StudentCreate = ({ item }: Props) => {
             branches: branches.join(","),
             photo: undefined,
             ...(group_data?.group ? { group_data } : {}),
-            ...(parents?.full_name && parents?.phone && parents?.username
+            ...(parents?.full_name && parents?.phone && parents?.position
                 ? { parents }
                 : {}),
         }
@@ -224,7 +224,11 @@ const StudentCreate = ({ item }: Props) => {
                                 control={form.control}
                                 name="group_data.group"
                                 options={dataGroups?.map((item) => ({
-                                    name: `${item.name} - ${item.teacher_name} - ${item.is_active ? "Aktiv" : "O'chirilgan"}`,
+                                    name: `${item.name} - ${
+                                        item.teacher_name
+                                    } - ${
+                                        item.is_active ? "Aktiv" : "O'chirilgan"
+                                    }`,
                                     id: item.id,
                                 }))}
                                 labelKey="name"
@@ -272,52 +276,25 @@ const StudentCreate = ({ item }: Props) => {
                             <FormInput
                                 required={openedAccordion === "2"}
                                 methods={form}
+                                name="parents.position"
+                                placeholder="Otasi, Onasi, Akasi, Opasi..."
+                                label="Masul shaxs"
+                            />
+
+                            <FormInput
+                                required={openedAccordion === "2"}
+                                methods={form}
                                 name="parents.full_name"
-                                placeholder="O'quvchining to'liq ismi"
+                                placeholder="Ma'sul shaxs"
                                 autoComplete="off"
                                 label="FIO"
-                                onChange={(v) => {
-                                    const value = v.target.value
-                                    form.setValue("parents.full_name", value)
-                                    if (!item?.username) {
-                                        form.setValue(
-                                            "parents.username",
-                                            generateUsername(value),
-                                        )
-                                    }
-                                }}
                             />
                             <PhoneField
                                 required={openedAccordion === "2"}
                                 methods={form}
                                 name="parents.phone"
                                 label="Telefon raqam"
-                                onChange={(v) => {
-                                    form.setValue("parents.phone", v)
-                                    if (!item?.username) {
-                                        form.setValue(
-                                            "parents.password",
-                                            v?.replace("+998", ""),
-                                        )
-                                    }
-                                }}
                             />
-                            <div className="grid grid-cols-2 items-start gap-3">
-                                <FormInput
-                                    required={openedAccordion === "2"}
-                                    methods={form}
-                                    name="parents.username"
-                                    placeholder="Login"
-                                    label="Login"
-                                />
-
-                                <FormInput
-                                    methods={form}
-                                    name="parents.password"
-                                    placeholder="Parol"
-                                    label="Parol"
-                                />
-                            </div>
                         </AccordionContent>
                     </AccordionItem>
                 </Accordion>

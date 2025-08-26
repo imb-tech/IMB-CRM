@@ -16,10 +16,10 @@ export const useColumns = () => {
                         onClick={() =>
                             navigate({
                                 to: "/groups/$id",
-                                params: { id: "5" },
+                                params: { id: String(row.original.group_data.id) },
                             })
                         }
-                        className="hover:text-primary cursor-pointer"
+                        className="hover:text-primary cursor-pointer hover:underline"
                     >
                         {row.original?.group_data?.name}
                     </span>

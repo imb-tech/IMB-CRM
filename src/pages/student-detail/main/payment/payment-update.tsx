@@ -108,41 +108,42 @@ function PaymentUpdate({ current }: Props) {
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-4 mt-1 px-1"
         >
-            <FormCombobox
-                control={form.control}
-                name="group_student"
-                options={groupSelectOptions}
-                labelKey="name"
-                onSearchChange={setSearch}
-                valueKey="id"
-                label="Guruh tanlang"
-                required
-            />
-
-            {current?.condition !== 2 && (
-                <FormNumberInput
-                    required
+            {!current?.id && (
+                <FormCombobox
                     control={form.control}
-                    name="amount"
-                    label="Summa"
-                    registerOptions={{
-                        min: {
-                            value: 0,
-                            message: "Qiymat 0 dan kichik bo'lmasligi kerak",
-                        },
-                    }}
+                    name="group_student"
+                    options={groupSelectOptions}
+                    labelKey="name"
+                    onSearchChange={setSearch}
+                    valueKey="id"
+                    label="Guruh tanlang"
+                    required
                 />
             )}
-
-            <FormSelect
-                options={paymentTypes}
-                control={form.control}
-                name="payment_type"
-                labelKey="name"
-                valueKey="id"
-                label="To'lov turi"
+            <FormNumberInput
                 required
+                control={form.control}
+                name="amount"
+                label="Summa"
+                registerOptions={{
+                    min: {
+                        value: 0,
+                        message: "Qiymat 0 dan kichik bo'lmasligi kerak",
+                    },
+                }}
             />
+
+            {!current?.id && (
+                <FormSelect
+                    options={paymentTypes}
+                    control={form.control}
+                    name="payment_type"
+                    labelKey="name"
+                    valueKey="id"
+                    label="To'lov turi"
+                    required
+                />
+            )}
 
             <FormDatePicker
                 control={form.control}
