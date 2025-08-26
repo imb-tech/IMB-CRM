@@ -27,7 +27,7 @@ const StudentAppropriationMain = () => {
     const [isAll, setIsAll] = useState<boolean>(false)
     const { data } = useGet<ListResp<Student>>(STUDENT_GROUP, {
         params: { student: id, page: 1, size: 50 },
-        options: { enabled: isAll },
+        options: { enabled: isAll && !!id },
     })
 
     const { data: dataStudent, isLoading } = useGet<ListResp<Appropriation>>(

@@ -16,7 +16,7 @@ import { FormSelect } from "@/components/form/select"
 import { FormDatePicker } from "@/components/form/date-picker"
 import { useQueryClient } from "@tanstack/react-query"
 import { useModal } from "@/hooks/useModal"
-import { useState } from "react"
+import { useState, useCallback, useMemo } from "react"
 import useMe from "@/hooks/useMe"
 import { toast } from "sonner"
 import { usePost } from "@/hooks/usePost"
@@ -33,38 +33,29 @@ import { format } from "date-fns"
 import DeleteModal from "@/components/custom/delete-modal"
 import UpdateStudentDate from "./update-student"
 
-type Props = {}
-
-function StudentGroupMain({}: Props) {
+function StudentGroupMain() {
     const { id } = useParams({ from: "/_main/students/$id/_main/groups" })
     const queryClient = useQueryClient()
     const { openModal: openDelete } = useModal("delete-student-group")
-    const { closeModal, openModal, isOpen } = useModal(`student-groups-add`)
-    const { openModal: openModalUpdate } = useModal(`student-groups-update`)
-    const [search, setSearch] = useState<string>("")
-    const [openedAccordion, setOpenedAccordion] = useState<string | null>(null)
+    const { closeModal, openModal, isOpen } = useModal("student-groups-add")
+    const { openModal: openModalUpdate } = useModal("student-groups-update")
+    const [search, setSearch] = useState("")
     const { active_branch } = useMe()
+    const [openedAccordion, setOpenedAccordion] = useState<string | null>(null)
     const [current, setCurrent] = useState<Student>()
 
-    const { data, isLoading } = useGet<ListResp<Student>>(STUDENT_GROUP, {
-        params: { student: id },
-        options: { enabled: !!id },
-    })
-    const { data: dataGroups } = useGet<Group[]>(OPTION_GROUPS, {
+    const { data: studentGroups, isLoading } = useGet<ListResp<Student>>(
+        STUDENT_GROUP,
+        {
+            params: { student: id },
+            options: { enabled: !!id },
+        },
+    )
+
+    const { data: groupsOptions } = useGet<Group[]>(OPTION_GROUPS, {
         params: { search, branch: active_branch },
         options: { enabled: !!isOpen },
     })
-
-    function onSuccess() {
-        toast.success("Muvaffaqiyatli qo'shildi")
-        closeModal()
-        form.reset()
-        queryClient.invalidateQueries({
-            queryKey: [STUDENT_GROUP],
-        })
-    }
-
-    const { mutate, isPending } = usePost({ onSuccess })
 
     const form = useForm<GroupStudentCreate>({
         defaultValues: {
@@ -73,67 +64,91 @@ function StudentGroupMain({}: Props) {
         },
     })
 
-    const onSubmit = (values: GroupStudentCreate) => {
-        const { discount, ...rest } = values
-        const body = {
-            ...rest,
-            student: id,
-            is_group: true,
-            ...(discount?.amount && discount?.reason ? { discount } : {}),
-        }
+    const onSuccess = useCallback(() => {
+        toast.success("Muvaffaqiyatli qo'shildi")
+        closeModal()
+        form.reset()
+        queryClient.invalidateQueries({ queryKey: [STUDENT_GROUP] })
+    }, [closeModal, form, queryClient])
 
-        mutate(
-            GROUP_STUDENTS,
-            { group_students: [body] },
-            {
-                onError: (err) => {
-                    const errors = err?.response?.data || err?.data
-                    if (
-                        errors?.group_students &&
-                        Array.isArray(errors.group_students)
-                    ) {
-                        errors.group_students.forEach((studentError: any) => {
-                            Object.entries(studentError).forEach(
-                                ([field, messages]) => {
-                                    form.setError(`${field}` as any, {
-                                        type: "manual",
-                                        message: (messages as string[]).join(
-                                            " ",
-                                        ),
-                                    })
+    const { mutate, isPending } = usePost({ onSuccess })
+
+    const onSubmit = useCallback(
+        (values: GroupStudentCreate) => {
+            const { discount, ...rest } = values
+            const body = {
+                ...rest,
+                student: id,
+                is_group: true,
+                ...(discount?.amount && discount?.reason ? { discount } : {}),
+            }
+
+            mutate(
+                GROUP_STUDENTS,
+                { group_students: [body] },
+                {
+                    onError: (err) => {
+                        const errors = err?.response?.data || err?.data
+                        if (
+                            errors?.group_students &&
+                            Array.isArray(errors.group_students)
+                        ) {
+                            errors.group_students.forEach(
+                                (studentError: any) => {
+                                    Object.entries(studentError).forEach(
+                                        ([field, messages]) => {
+                                            form.setError(field as any, {
+                                                type: "manual",
+                                                message: (
+                                                    messages as string[]
+                                                ).join(" "),
+                                            })
+                                        },
+                                    )
                                 },
                             )
-                        })
-                    } else {
-                        toast.error(
-                            "Xatolik yuz berdi qaytadan urinib ko'ring!",
-                        )
-                    }
+                        } else {
+                            toast.error(
+                                "Xatolik yuz berdi qaytadan urinib ko'ring!",
+                            )
+                        }
+                    },
                 },
-            },
-        )
-    }
+            )
+        },
+        [mutate, id, form],
+    )
 
-    const handleDelete = (item: Student) => {
-        openDelete()
-        setCurrent(item)
-    }
+    const handleDelete = useCallback(
+        (item: Student) => {
+            setCurrent(item)
+            openDelete()
+        },
+        [openDelete],
+    )
 
     const columns = useColumns({
         openModal: openModalUpdate,
-        setCurrent: (student) => setCurrent(student),
+        setCurrent,
     })
 
-
+    const groupSelectOptions = useMemo(
+        () =>
+            groupsOptions?.map((item) => ({
+                name: `${item.name} - ${item.teacher_name} - ${
+                    item.is_active ? "Aktiv" : "O'chirilgan"
+                }`,
+                id: item.id,
+            })) || [],
+        [groupsOptions],
+    )
 
     return (
         <div className="mt-1">
-            <div className="flex  mb-3 flex-row items-center gap-3 justify-between">
+            <div className="flex mb-3 flex-row items-center gap-3 justify-between">
                 <div className="flex items-center gap-3">
-                    <h1 className="text-xl font-medium ">
-                        {"Guruhlar ro'yxati"}
-                    </h1>
-                    <Badge className="text-sm">{data?.count}</Badge>
+                    <h1 className="text-xl font-medium">Guruhlar ro'yxati</h1>
+                    <Badge className="text-sm">{studentGroups?.count}</Badge>
                 </div>
                 <Button
                     type="button"
@@ -141,20 +156,21 @@ function StudentGroupMain({}: Props) {
                     className="flex gap-1"
                 >
                     <Plus className="w-5 h-5" />
-                    <span className="sm:block hidden">
-                        {"Guruhga qo'shish"}
-                    </span>
+                    <span className="sm:block hidden">Guruhga qo'shish</span>
                 </Button>
             </div>
+
             <DataTable
                 columns={columns}
-                data={data?.results}
+                data={studentGroups?.results}
                 loading={isLoading}
                 onDelete={(item) => handleDelete(item.original)}
                 numeration
                 viewAll
             />
-            <Modal title={"Guruhga qo'shish"} modalKey={`student-groups-add`}>
+
+            {/* Add Group Modal */}
+            <Modal title="Guruhga qo'shish" modalKey="student-groups-add">
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="space-y-4 mt-1 px-1"
@@ -162,64 +178,51 @@ function StudentGroupMain({}: Props) {
                     <FormCombobox
                         control={form.control}
                         name="group"
-                        options={dataGroups?.map((item) => ({
-                            name: `${item.name} - ${item.teacher_name} - ${
-                                item.is_active ? "Aktiv" : "O'chirilgan"
-                            }`,
-                            id: item.id,
-                        }))}
+                        options={groupSelectOptions}
                         labelKey="name"
-                        onSearchChange={(v) => setSearch(v)}
+                        onSearchChange={setSearch}
                         valueKey="id"
                         label="Guruh tanlang"
                         required
                     />
                     <div className="grid grid-cols-2 items-end gap-3">
                         <FormSelect
-                            options={[
-                                {
-                                    name: "Aktiv",
-                                    id: 1,
-                                },
-                                {
-                                    name: "Yangi",
-                                    id: 0,
-                                },
-                            ]}
                             control={form.control}
                             name="status"
+                            label="Holati"
                             labelKey="name"
                             valueKey="id"
-                            label="Holati"
+                            options={[
+                                { name: "Aktiv", id: 1 },
+                                { name: "Yangi", id: 0 },
+                            ]}
                             required
                         />
-
                         <FormDatePicker
                             control={form.control}
                             name="start_date"
                             label="Qo'shilish sanasi"
                             className="!w-full"
-                            required
                             fullWidth
+                            required
                         />
                     </div>
 
                     <Accordion
                         type="single"
                         collapsible
-                        className="w-full"
-                        onValueChange={(value) => setOpenedAccordion(value)}
+                        onValueChange={setOpenedAccordion}
                     >
-                        <AccordionItem value={"1"}>
+                        <AccordionItem value="1">
                             <AccordionTrigger className="px-3">
                                 Chegirma berish
                             </AccordionTrigger>
-                            <AccordionContent className="flex pl-3 mt-2 flex-col px-1 gap-3 text-balance ">
+                            <AccordionContent className="flex flex-col gap-3 mt-2 pl-3 px-1">
                                 <FormNumberInput
                                     required={openedAccordion === "1"}
                                     control={form.control}
-                                    name={`discount.amount`}
-                                    label={"Chegirma narxi"}
+                                    name="discount.amount"
+                                    label="Chegirma narxi"
                                     registerOptions={{
                                         min: {
                                             value: 0,
@@ -228,7 +231,6 @@ function StudentGroupMain({}: Props) {
                                         },
                                     }}
                                 />
-
                                 <FormTextarea
                                     required={openedAccordion === "1"}
                                     methods={form}
@@ -248,6 +250,7 @@ function StudentGroupMain({}: Props) {
                 </form>
             </Modal>
 
+            {/* Update Group Modal */}
             <Modal
                 modalKey="student-groups-update"
                 title="Tahrirlash"
@@ -256,6 +259,7 @@ function StudentGroupMain({}: Props) {
                 <UpdateStudentDate current={current} />
             </Modal>
 
+            {/* Delete Group Modal */}
             <DeleteModal
                 id={current?.id}
                 modalKey="delete-student-group"

@@ -20,7 +20,7 @@ export const useStudentsCols = () =>
                 accessorKey: "face",
                 cell: ({ row }) => (
                     <SeeInView
-                        url={row.original.photo ?? "/images/user.png"}
+                        url={row.original.photo ?? "/images/studnet.jpeg"}
                         className={
                             "object-cover h-9 min-w-9 max-w-9 rounded-md"
                         }
@@ -61,8 +61,8 @@ export const useStudentsCols = () =>
                                         {`Guruhlar (${row.original.groups.length})`}
                                     </Button>
                                 </PopoverTrigger>
-                                <PopoverContent className="w-auto p-2">
-                                    <div className="flex flex-col gap-1 text-sm ">
+                                <PopoverContent className="w-auto p-2 ">
+                                    <div className="flex flex-col gap-1 text-sm max-h-[55vh] overflow-y-auto no-scrollbar">
                                         {row.original.groups?.map((gr) => (
                                             <p
                                                 key={gr.id}

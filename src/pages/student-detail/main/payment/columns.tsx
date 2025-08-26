@@ -42,7 +42,7 @@ export const useColumns = ({ isGroup }: { isGroup: boolean }) => {
                                   onClick={() =>
                                       navigate({
                                           to: "/groups/$id",
-                                          params: { id: "5" },
+                                          params: { id: String(row.original.group_data.id) },
                                       })
                                   }
                                   className="hover:text-primary cursor-pointer hover:underline"

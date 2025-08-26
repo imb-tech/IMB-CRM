@@ -3,8 +3,13 @@ import { ColumnDef } from "@tanstack/react-table"
 import { useMemo } from "react"
 
 export const useColumns = () =>
-    useMemo<ColumnDef<ParentStudent>[]>(
+    useMemo<ColumnDef<StudentParents>[]>(
         () => [
+            {
+                header: "Ma'sul",
+                accessorKey: "position",
+                enableSorting: true,
+            },
             {
                 header: "FIO",
                 accessorKey: "full_name",
@@ -15,11 +20,6 @@ export const useColumns = () =>
                 accessorKey: "price",
                 enableSorting: true,
                 cell: ({ row }) => formatPhoneNumber(row.original.phone),
-            },
-            {
-                header: "Login",
-                accessorKey: "username",
-                enableSorting: true,
             },
         ],
         [],
