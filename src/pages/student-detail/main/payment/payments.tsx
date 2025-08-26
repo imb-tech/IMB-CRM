@@ -166,6 +166,17 @@ const StudnetPaymentMain = () => {
                     openModal={openModal}
                 />
             )}
+            <Modal
+                modalKey="payment-update"
+                title={current?.id ? "To'lovni tahrirlash" : "To'lov qo'shish"}
+            >
+                <PaymentUpdate current={current} />
+            </Modal>
+            <DeleteModal
+                id={current?.id}
+                modalKey="delete-student-payment"
+                path={GROUP_STUDENTS_PAYMENT}
+            />
         </div>
     )
 }
@@ -228,17 +239,6 @@ const PaymenTable = ({
                 setRowClassName={(row) =>
                     row.condition === 1 ? "" : "bg-red-500/10 text-red-500"
                 }
-            />
-            <Modal
-                modalKey="payment-update"
-                title={current?.id ? "To'lovni tahrirlash" : "To'lov qo'shish"}
-            >
-                <PaymentUpdate current={current} />
-            </Modal>
-            <DeleteModal
-                id={current?.id}
-                modalKey="delete-student-payment"
-                path={GROUP_STUDENTS_PAYMENT}
             />
         </div>
     )
