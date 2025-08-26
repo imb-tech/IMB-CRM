@@ -69,12 +69,12 @@ export const useStudentsCols = () =>
                                                 className={cn(
                                                     "px-4 py-2 text-sm rounded flex items-center justify-between",
                                                     gr.status == -1 ?
-                                                        "bg-red-500/20 "
+                                                        "bg-red-500/10 text-red-500"
                                                     : gr.status == 0 ?
-                                                        "bg-orange-500/20 "
+                                                        "bg-orange-500/10 text-orange-500 "
                                                     : gr.status == 2 ?
-                                                        "bg-gray-500/20 "
-                                                    :   "bg-green-500/30 ",
+                                                        "bg-sky-500/10 text-sky-500 "
+                                                    :   "bg-green-500/10 text-green-500 ",
                                                 )}
                                             >
                                                 <span>{gr.name}</span>
