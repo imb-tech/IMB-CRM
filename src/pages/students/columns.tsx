@@ -20,7 +20,7 @@ export const useStudentsCols = () =>
                 accessorKey: "face",
                 cell: ({ row }) => (
                     <SeeInView
-                        url={row.original.photo ?? "/images/user.png"}
+                        url={row.original.photo ?? "/images/studnet.jpeg"}
                         className={
                             "object-cover h-9 min-w-9 max-w-9 rounded-md"
                         }
