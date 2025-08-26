@@ -24,7 +24,7 @@ export default function StudentNotesMain() {
         options: { enabled: !!id },
     })
 
-    const handleAddDiscount = useCallback(() => {
+    const handleAddNotes = useCallback(() => {
         setCurrent(null)
         openModal()
     }, [openModal])
@@ -58,7 +58,7 @@ export default function StudentNotesMain() {
                 </div>
                 <Button
                     type="button"
-                    onClick={handleAddDiscount}
+                    onClick={handleAddNotes}
                     className="flex gap-1"
                 >
                     <Plus className="w-5 h-5" />

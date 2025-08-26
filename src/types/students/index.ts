@@ -150,10 +150,26 @@ type DiscountStudent = {
 
 type Notes = {
     id: string
-    remind_at: string
+    remind_at: Date
     content: string
     created_at: string
-    author_name:string
+    author_name: string
+    time: string
+}
+
+
+
+type SendMessage = {
+    id: string
+    message: string
+    author_data: {
+        id: number
+        full_name: string
+    }
+    provider: string
+    status: number
+    phone: string
+    created_at: string
 }
 
 

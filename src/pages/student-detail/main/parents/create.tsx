@@ -10,6 +10,8 @@ import { useParams } from "@tanstack/react-router"
 import { useQueryClient } from "@tanstack/react-query"
 import FormInput from "@/components/form/input"
 import PhoneField from "@/components/form/phone-field"
+import { toast } from "sonner"
+import { usePatch } from "@/hooks/usePatch"
 
 export default function StudentParentsCreate({
     current,
@@ -22,24 +24,6 @@ export default function StudentParentsCreate({
 
     const { closeModal } = useModal("parents-add")
 
-    const { mutate, isPending } = usePost({
-        onSuccess() {
-            closeModal()
-            form.reset({})
-            queryClient.invalidateQueries({
-                queryKey: [STUDENT_PARENTS],
-            })
-        },
-        onError(errors: AxiosError) {
-            for (const [k, v] of Object.entries(errors.response?.data ?? {})) {
-                form.setError(k as Path<StudentParents>, {
-                    type: "validate",
-                    message: v,
-                })
-            }
-        },
-    })
-
     const form = useForm<StudentParents>({
         defaultValues: {
             full_name: current?.full_name,
@@ -48,16 +32,53 @@ export default function StudentParentsCreate({
         },
     })
 
+    const onSuccess = useCallback(() => {
+        toast.success("Muvaffaqiyatli qo'shildi")
+        closeModal()
+        form.reset()
+        queryClient.invalidateQueries({ queryKey: [STUDENT_PARENTS] })
+    }, [closeModal, form, queryClient])
+
+    const onError = useCallback(
+        (errors: AxiosError) => {
+            for (const [k, v] of Object.entries(errors.response?.data ?? {})) {
+                form.setError(k as Path<StudentParents>, {
+                    type: "validate",
+                    message: v,
+                })
+            }
+        },
+        [form],
+    )
+
+    const { mutate: mutatePost, isPending: isPendingPost } = usePost({
+        onSuccess,
+        onError,
+    })
+    const { mutate: mutatePatch, isPending: isPendingPatch } = usePatch({
+        onSuccess,
+        onError,
+    })
+
     const handleSubmit = useCallback(
         (v: StudentParents) => {
-            mutate(STUDENT_PARENTS, {
-                full_name: v.full_name,
-                phone: v.phone,
-                position: v.position,
-                student: id,
-            })
+            if (current?.id) {
+                mutatePatch(`${STUDENT_PARENTS}/${current?.id}`, {
+                    full_name: v.full_name,
+                    phone: v.phone,
+                    position: v.position,
+                    student: id,
+                })
+            } else {
+                mutatePost(STUDENT_PARENTS, {
+                    full_name: v.full_name,
+                    phone: v.phone,
+                    position: v.position,
+                    student: id,
+                })
+            }
         },
-        [current, mutate],
+        [current, mutatePost, mutatePatch],
     )
 
     return (
@@ -88,7 +109,12 @@ export default function StudentParentsCreate({
                 label="Telefon raqam"
             />
 
-            <Button loading={isPending}>Saqlash</Button>
+            <Button
+                disabled={isPendingPatch || isPendingPost}
+                loading={isPendingPatch || isPendingPost}
+            >
+                Saqlash
+            </Button>
         </form>
     )
 }

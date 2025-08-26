@@ -1,15 +1,29 @@
 import { DataTable } from "@/components/ui/datatable"
 import { useColumns } from "./columns"
 import { useGet } from "@/hooks/useGet"
-import { COURSE } from "@/constants/api-endpoints"
+import { SMS_LIST } from "@/constants/api-endpoints"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Send } from "lucide-react"
+import { useParams, useSearch } from "@tanstack/react-router"
+import { useCallback } from "react"
+import { useModal } from "@/hooks/useModal"
+import Modal from "@/components/custom/modal"
+import StudentMessageCreate from "./create"
 
-type Props = {}
+const StudentSendMessageMain = () => {
+    const { id } = useParams({ from: "/_main/students/$id/_main/send-message" })
+    const search = useSearch({ from: "/_main/students/$id/_main/send-message" })
+    const { openModal } = useModal("message-add")
 
-const StudentSendMessageMain = (props: Props) => {
-    const { data, isFetching } = useGet<ListResp<Course>>(COURSE)
+    const { data, isLoading } = useGet<ListResp<SendMessage>>(SMS_LIST, {
+        params: { ...search, student: id },
+        options: { enabled: !!id },
+    })
+
+    const handleAddNotes = useCallback(() => {
+        openModal()
+    }, [openModal])
 
     const columns = useColumns()
     return (
@@ -20,9 +34,13 @@ const StudentSendMessageMain = (props: Props) => {
                         {" "}
                         {"SMS xabarlar ro'yxati"}
                     </h1>
-                    <Badge className="text-sm">1</Badge>
+                    <Badge className="text-sm">{data?.count}</Badge>
                 </div>
-                <Button className="flex gap-1">
+                <Button
+                    type="button"
+                    onClick={handleAddNotes}
+                    className="flex gap-1"
+                >
                     <Send className="w-4 h-4" />
                     <span className="sm:block hidden">
                         {"SMS xabar yuborish"}
@@ -32,10 +50,13 @@ const StudentSendMessageMain = (props: Props) => {
             <DataTable
                 columns={columns}
                 data={data?.results}
-                loading={isFetching}
+                loading={isLoading}
                 numeration
                 viewAll
             />
+            <Modal modalKey="message-add" title={`Xabar yuborish`}>
+                <StudentMessageCreate />
+            </Modal>
         </div>
     )
 }

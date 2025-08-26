@@ -7,6 +7,7 @@ export const PROFILE = AUTH + "profile"
 
 export const BRANCH = COMMON + "branches"
 export const ROOM = COMMON + "rooms"
+export const SMS_LIST = COMMON + "send-sms"
 export const COURSE = COMMON + "courses"
 export const PAYMENT_TYPE = COMMON + "payment-types"
 export const PAYMENT_TYPES_OPTION = "option/payment-types"
