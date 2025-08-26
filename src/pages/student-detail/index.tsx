@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { useGet } from "@/hooks/useGet"
+import { formatMoney } from "@/lib/format-money"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
 import { cn } from "@/lib/utils"
 import { useParams } from "@tanstack/react-router"
@@ -108,7 +109,9 @@ function StudentProfile({}: Props) {
 
                 <div className="flex items-center ">
                     <strong className="min-w-28 text-xl">{"Balans"}:</strong>
-                    <span className="text-xl">{data?.balance}</span>
+                    <span className="text-xl">
+                        {formatMoney(data?.balance)}
+                    </span>
                 </div>
             </div>
 
