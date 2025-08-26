@@ -32,6 +32,7 @@ export default function DiscountStudentCreate({
         OPTION_GROUPS_STUDENTS,
         {
             params: { search, branch: active_branch, student: id },
+            options: { enabled: !!id },
         },
     )
 

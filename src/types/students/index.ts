@@ -148,7 +148,13 @@ type DiscountStudent = {
 }
 
 
-
+type Notes = {
+    id: string
+    remind_at: string
+    content: string
+    created_at: string
+    author_name:string
+}
 
 
 

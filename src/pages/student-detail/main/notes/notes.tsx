@@ -1,88 +1,51 @@
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Clock, User, Edit2, Trash2, Check, X, Plus, Pen } from "lucide-react"
+import { Clock, User, Trash2, Check, X, Plus, Pen, AlarmClock } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
-import SectionHeader from "@/components/elements/section-header"
-
-interface Reminder {
-    id: string
-    text: string
-    createdAt: Date
-    createdBy: string
-}
-
-const initialReminders: Reminder[] = [
-    {
-        id: "1",
-        text: "oftob chiqdi olamga yugurib bordim xolamga xola xola kulcha ber xolam dedi toshing ter",
-        createdAt: new Date("2024-01-15T09:30:00"),
-        createdBy: "Aziz Karimov",
-    },
-    {
-        id: "2",
-        text: "Hisobotni tayyorlash",
-        createdAt: new Date("2024-01-14T14:20:00"),
-        createdBy: "Malika Tosheva",
-    },
-    {
-        id: "4",
-        text: "Darslik sotib olish lorem ipsum dolor sit.",
-        createdAt: new Date("2024-01-12T11:15:00"),
-        createdBy: "Nigora Rahimova",
-    },
-    {
-        id: "5",
-        text: "Dam olish joyini band qilish lorem ipsum dolor sit. lorem ipsum dolor sit.",
-        createdAt: new Date("2024-01-11T19:30:00"),
-        createdBy: "Sardor Umarov",
-    },
-]
-
-function formatDate(date: Date): string {
-    return new Intl.DateTimeFormat("uz-UZ", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-    }).format(date)
-}
+import { useGet } from "@/hooks/useGet"
+import { STUDENT_NOTES } from "@/constants/api-endpoints"
+import { format } from "date-fns"
+import { useParams, useSearch } from "@tanstack/react-router"
+import { useModal } from "@/hooks/useModal"
+import DeleteModal from "@/components/custom/delete-modal"
+import StudentNotesCreate from "./create"
+import Modal from "@/components/custom/modal"
 
 export default function StudentNotesMain() {
-    const [reminders, setReminders] = useState<Reminder[]>(initialReminders)
-    const [editingId, setEditingId] = useState<string | null>(null)
-    const [editText, setEditText] = useState("")
+    const { id } = useParams({ from: "/_main/students/$id/_main/notes" })
+    const search = useSearch({ from: "/_main/students/$id/_main/notes" })
+    const [current, setCurrent] = useState<Notes | null>(null)
+    const { openModal } = useModal("notes-add")
+    const { openModal: openDelete } = useModal("notes-delete")
 
-    const handleEdit = (reminder: Reminder) => {
-        setEditingId(reminder.id)
-        setEditText(reminder.text)
-    }
+    const { data } = useGet<ListResp<Notes>>(STUDENT_NOTES, {
+        params: { ...search, student: id },
+        options: { enabled: !!id },
+    })
 
-    const handleSaveEdit = (id: string) => {
-        if (editText.trim()) {
-            setReminders(
-                reminders.map((reminder) =>
-                    reminder.id === id
-                        ? { ...reminder, text: editText.trim() }
-                        : reminder,
-                ),
-            )
-        }
-        setEditingId(null)
-        setEditText("")
-    }
+    const handleAddDiscount = useCallback(() => {
+        setCurrent(null)
+        openModal()
+    }, [openModal])
 
-    const handleCancelEdit = () => {
-        setEditingId(null)
-        setEditText("")
-    }
+    const handleUpdate = useCallback(
+        (item: Notes) => {
+            if (item?.id) {
+                setCurrent(item)
+                openModal()
+            }
+        },
+        [openModal, setCurrent],
+    )
 
-    const handleDelete = (id: string) => {
-        if (confirm("Bu eslatmani o'chirishni xohlaysizmi?")) {
-            setReminders(reminders.filter((reminder) => reminder.id !== id))
-        }
-    }
+    const handleDelete = useCallback(
+        (item: Notes) => {
+            setCurrent(item)
+            openDelete()
+        },
+        [openDelete],
+    )
 
     return (
         <div>
@@ -91,9 +54,13 @@ export default function StudentNotesMain() {
                     <h1 className="text-xl font-medium ">
                         {"Eslatmalar ro'yxati"}
                     </h1>
-                    <Badge className="text-sm">1</Badge>
+                    <Badge className="text-sm">{data?.count}</Badge>
                 </div>
-                <Button className="flex gap-1">
+                <Button
+                    type="button"
+                    onClick={handleAddDiscount}
+                    className="flex gap-1"
+                >
                     <Plus className="w-5 h-5" />
                     <span className="sm:block hidden">
                         {"Eslatma qo'shish"}
@@ -102,92 +69,58 @@ export default function StudentNotesMain() {
             </div>
 
             <div className="space-y-4">
-                {reminders.map((reminder) => (
+                {data?.results?.map((note) => (
                     <div
-                        key={reminder.id}
+                        key={note.id}
                         className="border-0 shadow-sm bg-muted backdrop-blur-sm transition-all duration-200 hover:bg-secondary/70 border-l-4 border-l-primary rounded-md"
                     >
                         <div className="p-4">
                             <div className="space-y-4">
-                                <div className="flex flex-col sm:flex-row sm:items-center  gap-3">
-                                    <Badge className="w-fit  text-sm">
-                                        <User className="w-4 h-4 mr-1" />
-                                        {reminder.createdBy}
-                                    </Badge>
+                                <div className="flex md:flex-row flex-col justify-between gap-2 items-center">
+                                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+                                        <Badge className="w-fit  text-sm">
+                                            <User className="w-4 h-4 mr-1" />
+                                            {note.author_name}
+                                        </Badge>
 
-                                    <div className="flex items-center gap-2 text-orange-600">
-                                        <Clock className="w-4 h-4" />
-                                        <span className="text-sm">
-                                            {formatDate(reminder.createdAt)}
-                                        </span>
+                                        <div className="flex items-center gap-2 text-zinc-300">
+                                            <Clock className="w-4 h-4" />
+                                            <span className="text-sm">
+                                                {format(
+                                                    note.created_at,
+                                                    "yyyy-MM-dd HH:mm",
+                                                )}
+                                            </span>
+                                        </div>
                                     </div>
+                                    <div className="flex items-center gap-2 text-orange-600">
+                                       Eslatish vaqti: <AlarmClock className="w-4 h-4" />
+                                        <span className="text-sm">
+                                            {format(
+                                                note.remind_at,
+                                                "yyyy-MM-dd HH:mm",
+                                            )}
+                                        </span>
+                                    </div>{" "}
                                 </div>
 
-                                <div className="flex items-start justify-between gap-4">
-                                    {editingId === reminder.id ? (
-                                        <div className="flex-1 flex items-start gap-2">
-                                            <Textarea
-                                                value={editText}
-                                                onChange={(e) =>
-                                                    setEditText(e.target.value)
-                                                }
-                                                onKeyDown={(e) => {
-                                                    if (e.key === "Enter") {
-                                                        handleSaveEdit(
-                                                            reminder.id,
-                                                        )
-                                                    } else if (
-                                                        e.key === "Escape"
-                                                    ) {
-                                                        handleCancelEdit()
-                                                    }
-                                                }}
-                                                autoFocus
-                                            />
-                                            <Button
-                                                size="sm"
-                                                onClick={() =>
-                                                    handleSaveEdit(reminder.id)
-                                                }
-                                            >
-                                                <Check className="w-4 h-4" />
-                                            </Button>
-                                            <Button
-                                                size="sm"
-                                                variant="destructive"
-                                                onClick={handleCancelEdit}
-                                            >
-                                                <X className="w-4 h-4" />
-                                            </Button>
-                                        </div>
-                                    ) : (
-                                        <>
-                                            <p className=" flex-1">
-                                                {reminder.text}
-                                            </p>
-                                            <div className="flex items-center gap-2">
-                                                <Button
-                                                    size="sm"
-                                                    onClick={() =>
-                                                        handleEdit(reminder)
-                                                    }
-                                                >
-                                                    <Pen className="w-4 h-4" />
-                                                </Button>
-                                                <Button
-                                                    size="sm"
-                                                    variant="destructive"
-                                                    onClick={() =>
-                                                        handleDelete(
-                                                            reminder.id,
-                                                        )
-                                                    }
-                                                >
-                                                    <Trash2 className="w-4 h-4" />
-                                                </Button>
-                                            </div>
-                                        </>
-                                    )}
+                                <div className="flex items-end justify-between gap-4">
+                                    <p className=" flex-1">{note.content}</p>
+                                    <div className="flex items-center gap-2">
+                                        <Button
+                                            size="sm"
+                                            onClick={() => handleUpdate(note)}
+                                        >
+                                            <Pen className="w-4 h-4" />
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            variant="destructive"
+                                            onClick={() => handleDelete(note)}
+                                        >
+                                            <Trash2 className="w-4 h-4" />
+                                        </Button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -195,13 +128,26 @@ export default function StudentNotesMain() {
                 ))}
             </div>
 
-            {reminders.length === 0 && (
+            {data?.count === 0 && (
                 <div className="text-center py-12">
-                    <div className="text-emerald-600 text-lg">
+                    <div className="text-gray-400 text-lg">
                         Hozircha eslatmalar yo'q
                     </div>
                 </div>
             )}
+
+            <DeleteModal
+                modalKey="notes-delete"
+                id={current?.id}
+                path={STUDENT_NOTES}
+            />
+
+            <Modal
+                modalKey="notes-add"
+                title={`Eslatma  ${current?.id ? "tahrirlash" : "qo'shish"}`}
+            >
+                <StudentNotesCreate current={current} />
+            </Modal>
         </div>
     )
 }

@@ -23,6 +23,7 @@ const StudentParentsMain = () => {
         STUDENT_PARENTS,
         {
             params: { ...search, student: id },
+            options: { enabled: !!id },
         },
     )
 

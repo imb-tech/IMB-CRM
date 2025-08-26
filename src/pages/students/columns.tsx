@@ -61,8 +61,8 @@ export const useStudentsCols = () =>
                                         {`Guruhlar (${row.original.groups.length})`}
                                     </Button>
                                 </PopoverTrigger>
-                                <PopoverContent className="w-auto p-2">
-                                    <div className="flex flex-col gap-1 text-sm ">
+                                <PopoverContent className="w-auto p-2 ">
+                                    <div className="flex flex-col gap-1 text-sm h-[55vh] overflow-y-auto no-scrollbar">
                                         {row.original.groups?.map((gr) => (
                                             <p
                                                 key={gr.id}
