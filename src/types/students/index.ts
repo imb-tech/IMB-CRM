@@ -64,6 +64,7 @@ type GroupStudentPayments = {
     id: number
     author: string
     condition: number
+    group_student: number
     start_date: string
     date: string
     description: string

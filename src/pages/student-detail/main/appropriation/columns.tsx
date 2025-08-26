@@ -55,6 +55,9 @@ export const useColumns = () => {
                 header: "Bahosi",
                 accessorKey: "score",
                 enableSorting: true,
+                cell: ({ row }) => (
+                    <span>{row.original.score || "Baholanmagan"}</span>
+                ),
             },
             {
                 header: "Ma'sul shaxs",

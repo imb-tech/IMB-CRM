@@ -1,3 +1,4 @@
+import { FormCombobox } from "@/components/form/combobox"
 import { FormDatePicker } from "@/components/form/date-picker"
 import { FormNumberInput } from "@/components/form/number-input"
 import { FormSelect } from "@/components/form/select"
@@ -5,36 +6,41 @@ import FormTextarea from "@/components/form/textarea"
 import { Button } from "@/components/ui/button"
 import {
     GROUP_STUDENTS_PAYMENT,
+    OPTION_GROUPS_STUDENTS,
     PAYMENT_TYPES_OPTION,
 } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
+import useMe from "@/hooks/useMe"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
+import { usePost } from "@/hooks/usePost"
 import { useQueryClient } from "@tanstack/react-query"
+import { useParams } from "@tanstack/react-router"
+import { useState, useCallback, useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
 type Props = {
-    current: GroupStudentPayments | undefined
+    current: GroupStudentPayments | null
 }
 
 function PaymentUpdate({ current }: Props) {
     const queryClient = useQueryClient()
-    const { data } =
-        useGet<{ id: number; name: string }[]>(PAYMENT_TYPES_OPTION)
-
+    const { id } = useParams({ strict: false }) as { id: string }
+    const { active_branch } = useMe()
     const { closeModal } = useModal("payment-update")
 
-    function onSuccess() {
-        toast.success("Muvaffaqiyatli yangilandi")
-        closeModal()
-        form.reset()
-        queryClient.invalidateQueries({
-            queryKey: [GROUP_STUDENTS_PAYMENT],
-        })
-    }
+    const [search, setSearch] = useState<string>("")
 
-    const { mutate, isPending } = usePatch({ onSuccess })
+    const { data: paymentTypes = [] } =
+        useGet<{ id: number; name: string }[]>(PAYMENT_TYPES_OPTION)
+
+    const { data: groupOptions = [] } = useGet<Group[]>(
+        OPTION_GROUPS_STUDENTS,
+        {
+            params: { search, branch: active_branch, student: id },
+        },
+    )
 
     const form = useForm<GroupStudentPayments>({
         defaultValues: {
@@ -42,31 +48,83 @@ function PaymentUpdate({ current }: Props) {
             payment_type: current?.payment_type,
             date: current?.date,
             description: current?.description,
+            group_student: current?.group_data.id,
         },
     })
 
-    const onSubmit = (values: GroupStudentPayments) => {
-        const payload = {
-            ...values,
-            amount: current?.condition
-                ? -Math.abs(values.amount)
-                : Math.abs(values.amount),
-        }
+    const onSuccess = useCallback(() => {
+        toast.success("Muvaffaqiyatli yangilandi")
+        closeModal()
+        form.reset()
+        queryClient.invalidateQueries({
+            queryKey: [GROUP_STUDENTS_PAYMENT],
+        })
+    }, [closeModal, form, queryClient])
 
-        mutate(`${GROUP_STUDENTS_PAYMENT}/${current?.id}`, payload)
-    }
+    const { mutate: mutatePatch, isPending: isPendingPatch } = usePatch({
+        onSuccess,
+    })
+
+    const { mutate: mutatePost, isPending: isPendingPost } = usePost({
+        onSuccess,
+    })
+
+    const isSubmitting = isPendingPost || isPendingPatch
+
+    const groupSelectOptions = useMemo(
+        () =>
+            groupOptions.map((item) => ({
+                id: item.id,
+                name: `${item.name} - ${item.teacher_name} - ${
+                    item.is_active ? "Aktiv" : "O'chirilgan"
+                }`,
+            })),
+        [groupOptions],
+    )
+
+    const onSubmit = useCallback(
+        (values: GroupStudentPayments) => {
+            const payload = {
+                ...values,
+                amount: current?.condition
+                    ? -Math.abs(values.amount)
+                    : Math.abs(values.amount),
+            }
+
+            if (current?.id) {
+                mutatePatch(`${GROUP_STUDENTS_PAYMENT}/${current.id}`, payload)
+            } else {
+                mutatePost(GROUP_STUDENTS_PAYMENT, {
+                    ...payload,
+                    condition: 1,
+                })
+            }
+        },
+        [current, mutatePatch, mutatePost],
+    )
 
     return (
         <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-4 mt-1 px-1"
         >
+            <FormCombobox
+                control={form.control}
+                name="group_student"
+                options={groupSelectOptions}
+                labelKey="name"
+                onSearchChange={setSearch}
+                valueKey="id"
+                label="Guruh tanlang"
+                required
+            />
+
             {current?.condition !== 2 && (
                 <FormNumberInput
                     required
                     control={form.control}
-                    name={`amount`}
-                    label={"Summa"}
+                    name="amount"
+                    label="Summa"
                     registerOptions={{
                         min: {
                             value: 0,
@@ -75,8 +133,9 @@ function PaymentUpdate({ current }: Props) {
                     }}
                 />
             )}
+
             <FormSelect
-                options={data || []}
+                options={paymentTypes}
                 control={form.control}
                 name="payment_type"
                 labelKey="name"
@@ -102,7 +161,7 @@ function PaymentUpdate({ current }: Props) {
             />
 
             <div className="flex justify-end">
-                <Button disabled={isPending} loading={isPending}>
+                <Button disabled={isSubmitting} loading={isSubmitting}>
                     Saqlash
                 </Button>
             </div>
