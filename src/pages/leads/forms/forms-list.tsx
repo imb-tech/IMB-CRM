@@ -9,6 +9,9 @@ import { useState } from "react"
 import DeleteModal from "@/components/custom/delete-modal"
 import { useModal } from "@/hooks/useModal"
 import LeadsTab from "../leads-tab"
+import LeadDealSelector from "../lead-deal-selector"
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent } from "@/components/ui/card"
 
 export default function FormsList() {
     const params = useSearch({ strict: false })
@@ -21,45 +24,71 @@ export default function FormsList() {
         {
             params: {
                 [PAGE_SIZE_KEY]: 25,
-                params,
+                pipeline: params?.pipeline,
             },
         },
     )
 
     return (
         <div>
-            <div className="flex justify-between mb-3">
+            <div className="flex sm:flex-row flex-col gap-3 sm:justify-between mb-3">
                 <LeadsTab />
-                <Button onClick={() => navigate({ to: "/leads/forms/create" })}>
-                    <Plus size={18} />
-                    Yangi
-                </Button>
+                <LeadDealSelector />
             </div>
-
-            <DataTable
-                loading={isFetching}
-                data={data?.results}
-                columns={useLeadFormCols()}
-                paginationProps={{
-                    totalPages: data?.total_pages,
-                }}
-                onDelete={({ original }) => {
-                    setItem(original.id)
-                    openModal()
-                }}
-                onEdit={({ original }) => {
-                    navigate({
-                        to: "/leads/forms/edit/$id",
-                        params: { id: original.id.toString() },
-                    })
-                }}
-                onRowClick={({ uuid }) =>
-                    navigate({
-                        to: "/form/$id",
-                        params: { id: uuid },
-                    })
-                }
-            />
+            <Card>
+                <CardContent>
+                    <DataTable
+                        loading={isFetching}
+                        data={data?.results}
+                        columns={useLeadFormCols()}
+                        paginationProps={{
+                            totalPages: data?.total_pages,
+                        }}
+                        onDelete={({ original }) => {
+                            setItem(original.id)
+                            openModal()
+                        }}
+                        onEdit={({ original }) => {
+                            navigate({
+                                to: "/leads/forms/edit/$id",
+                                params: { id: original.id.toString() },
+                            })
+                        }}
+                        onRowClick={({ uuid }) =>
+                            navigate({
+                                to: "/form/$id",
+                                params: { id: uuid },
+                            })
+                        }
+                        head={
+                            <div className="flex mb-3  justify-between items-center gap-3 ">
+                                <div className="flex items-center gap-3">
+                                    <h1 className="text-xl">
+                                        Formalar ro'yxati
+                                    </h1>
+                                    <Badge className="text-sm">
+                                        {data?.count}
+                                    </Badge>
+                                </div>
+                                <Button
+                                    onClick={() =>
+                                        navigate({
+                                            to: "/leads/forms/create",
+                                            search: {
+                                                pipeline: params.pipeline,
+                                            },
+                                        })
+                                    }
+                                    className="sm:w-max w-full"
+                                >
+                                    <Plus size={18} />
+                                    {"Yangi yaratish"}
+                                </Button>
+                            </div>
+                        }
+                    />
+                </CardContent>
+            </Card>
 
             <DeleteModal
                 id={item}

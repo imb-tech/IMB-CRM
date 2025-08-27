@@ -1,17 +1,21 @@
-import { ParamCombobox } from "@/components/as-params/combobox"
 import { Button } from "@/components/ui/button"
 import {
     ChevronDown,
-    ChevronUp,
     Pencil,
     Plus,
     Trash,
     Image,
+    CircleCheck,
 } from "lucide-react"
 import { useMemo, useState } from "react"
 import { cn, getRandomImage, imagePaths } from "@/lib/utils"
 import { useGet } from "@/hooks/useGet"
-import { useNavigate, useParams } from "@tanstack/react-router"
+import {
+    useLocation,
+    useNavigate,
+    useParams,
+    useSearch,
+} from "@tanstack/react-router"
 import Modal from "@/components/custom/modal"
 import { useModal } from "@/hooks/useModal"
 import FormInput from "@/components/form/input"
@@ -20,23 +24,22 @@ import { usePost } from "@/hooks/usePost"
 import DeleteModal from "@/components/custom/delete-modal"
 import { usePatch } from "@/hooks/usePatch"
 import FormImagePicker from "@/components/form/img-picker"
+import { useQueryClient } from "@tanstack/react-query"
 
 export const pipelineUrl = "leads/pipeline/crud"
 
 export default function LeadDealSelector() {
-    const sections = [
-        {
-            id: 1,
-            name: "Kiberxavfsizlik uchun",
-        },
-        {
-            id: 2,
-            name: "Ingiliz tili yangi",
-        },
-    ]
-
+    const params = useParams({ strict: false })
+    const queryClinet = useQueryClient()
+    const { pathname } = useLocation()
+    const search = useSearch({ strict: false })
     const [open, setOpen] = useState<boolean>(false)
     const [item, setItem] = useState<Pipeline | null>(null)
+
+    const [hoveredId, setHoveredId] = useState<number | null>(null)
+
+    const handleMouseEnter = (id: number) => setHoveredId(id)
+    const handleMouseLeave = () => setHoveredId(null)
 
     const { openModal, closeModal } = useModal("create-pip")
     const { openModal: openDelete } = useModal("delete")
@@ -50,8 +53,13 @@ export default function LeadDealSelector() {
 
     function onSuccess(resp: Pipeline) {
         closeModal()
+        setOpen(false)
         refetch()
+        queryClinet.refetchQueries({
+            queryKey: [`${pipelineUrl}/${params?.id}`],
+        })
         navigate({
+            search: search,
             to: "/leads/$id",
             params: {
                 id: resp.id,
@@ -77,8 +85,8 @@ export default function LeadDealSelector() {
     )
 
     const activePip = useMemo(
-        () => data?.find((el) => Number(el.id) === Number(id)),
-        [data, id],
+        () => data?.find((el) => Number(el.id) === Number(search.pipeline)),
+        [data, id, search],
     )
 
     const handleOpen = () => setOpen((prev) => !prev)
@@ -122,25 +130,19 @@ export default function LeadDealSelector() {
     }
 
     return (
-        <div className="flex items-center gap-3">
-            <div className="flex items-center gap-0.5">
-                <Button onClick={handleOpen}>
-                    <span className="pl-1">{activePip?.name}</span>
-                    <ChevronDown size={18} />
-                </Button>
-                <ParamCombobox
-                    options={sections}
-                    labelKey="name"
-                    valueKey="id"
-                    paramName="section"
-                    label={"Bo'limni tanlang"}
-                    className="min-w-60 hidden"
-                />
-            </div>
+        <div className="flex items-center gap-3 relative ">
+            <Button
+                className="min-w-32 "
+                variant={"secondary"}
+                onClick={handleOpen}
+            >
+                <span className="pl-1">{activePip?.name as string}</span>
+                <ChevronDown size={18} />
+            </Button>
 
             <div
                 className={cn(
-                    "fixed top-0 left-0 bottom-0 z-10 opacity-0 transition-opacity duration-200",
+                    "fixed top-0 right-0 bottom-0 z-10 opacity-0 transition-opacity duration-200",
                     open ? "right-0 opacity-100" : "",
                 )}
                 onClick={handleOpen}
@@ -148,75 +150,103 @@ export default function LeadDealSelector() {
 
             <div
                 className={cn(
-                    "absolute bg-background w-0 -left-0 py-[14px] p-0 -top-0 opacity-0 z-20 rounded-xl shadow-sm shadow-primary/40 transition-opacity duration-200 overflow-hidden px-0 flex flex-col",
+                    "absolute bg-card w-0 right-0 py-[14px] p-0 top-11 opacity-0 z-20 rounded-xl shadow-sm shadow-primary/40 transition-opacity duration-200 overflow-hidden px-0 flex flex-col",
                     open ? "w-72 opacity-100 min-h-[300px]" : "",
                 )}
             >
-                <Button onClick={handleOpen} className="w-full justify-between">
-                    <span className="pl-1">{activePip?.name}</span>
-                    <ChevronUp size={18} />
-                </Button>
-
-                <div className="flex flex-col mb-3 mt-1 flex-1">
-                    {Number(data?.length) > 1 ?
-                        data
-                            ?.filter((p) => Number(p.id) !== Number(id))
-                            ?.map((itm) => (
+                <div className="flex flex-col mb-3  flex-1 gap-1 p-2">
+                    {Number(data?.length) > 1 ? (
+                        data?.map((itm) => {
+                            const isActive =
+                                Number(itm?.id) ===
+                                (Number(id) || search?.pipeline)
+                            const isHovered = hoveredId === Number(itm.id)
+                            return (
                                 <div
                                     key={itm.id}
                                     onClick={() => {
                                         navigate({
-                                            to: "/leads/$id",
+                                            to: params.id
+                                                ? "/leads/$id"
+                                                : pathname,
                                             params: { id: itm.id },
+                                            search: {
+                                                pipeline: Number(itm.id),
+                                            },
                                         })
                                         handleOpen()
                                     }}
-                                    className="w-full rounded-md hover:bg-primary/10 py-2 px-3 font-light flex items-center justify-between [&_svg]:opacity-0 [&_svg]:hover:opacity-100 text-[16px]"
+                                    onMouseEnter={() =>
+                                        handleMouseEnter(Number(itm.id))
+                                    }
+                                    onMouseLeave={handleMouseLeave}
+                                    className={cn(
+                                        "w-full rounded-md hover:bg-primary/10 py-2 px-3 font-light flex items-center justify-between  text-[16px]",
+                                        isActive &&
+                                            "bg-primary/10 text-primary",
+                                    )}
                                 >
                                     <span className="pl-1">{itm.name}</span>
+
                                     <div className="flex items-center gap-2">
-                                        <Trash
-                                            size={18}
-                                            className="transition-all duration-200 cursor-pointer text-rose-500"
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                if (itm.id) {
-                                                    setItem(itm)
-                                                    openDelete()
-                                                }
-                                            }}
-                                        />
-                                        <Pencil
-                                            size={18}
-                                            className="transition-all duration-200 cursor-pointer"
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                if (itm.id) {
-                                                    form.setValue("id", itm.id)
-                                                    form.setValue(
-                                                        "name",
-                                                        itm.name,
-                                                    )
-                                                    setItem(itm)
-                                                    form.setValue(
-                                                        "background",
-                                                        itm?.background,
-                                                    )
-                                                    openModal()
-                                                }
-                                            }}
-                                        />
+                                        {isHovered ? (
+                                            <>
+                                                <Trash
+                                                    size={18}
+                                                    className="transition-all duration-200 cursor-pointer text-rose-500"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        if (itm.id) {
+                                                            setItem(itm)
+                                                            openDelete()
+                                                        }
+                                                    }}
+                                                />
+                                                <Pencil
+                                                    size={18}
+                                                    className="transition-all duration-200 cursor-pointer"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        if (itm.id) {
+                                                            form.setValue(
+                                                                "id",
+                                                                itm.id,
+                                                            )
+                                                            form.setValue(
+                                                                "name",
+                                                                itm.name,
+                                                            )
+                                                            setItem(itm)
+                                                            form.setValue(
+                                                                "background",
+                                                                itm?.background,
+                                                            )
+                                                            openModal()
+                                                        }
+                                                    }}
+                                                />
+                                            </>
+                                        ) : (
+                                            isActive && (
+                                                <CircleCheck
+                                                    size={18}
+                                                    className="transition-all duration-200 cursor-pointer text-primary"
+                                                />
+                                            )
+                                        )}
                                     </div>
                                 </div>
-                            ))
-                    :   <p className="text-muted-foreground text-center py-3">
+                            )
+                        })
+                    ) : (
+                        <p className="text-muted-foreground text-center py-3">
                             {"Boshqa bo'limlar yo'q"}
                         </p>
-                    }
+                    )}
                 </div>
 
                 <div
-                    className="flex items-center text-sm px-3 bg-secondary py-2 rounded-md cursor-pointer m-2"
+                    className="flex items-center text-sm px-3 bg-secondary py-1 rounded-md cursor-pointer m-2"
                     onClick={() => {
                         form.setValue("id", "")
                         form.setValue("name", "")
@@ -226,7 +256,7 @@ export default function LeadDealSelector() {
                     }}
                 >
                     <p className="flex-1">{"Yangi yaratish"}</p>
-                    <Button size={"sm"} className="px-2">
+                    <Button size={"sm"} variant="secondary" className="px-2">
                         <Plus />
                     </Button>
                 </div>
@@ -234,11 +264,11 @@ export default function LeadDealSelector() {
 
             <Modal
                 modalKey="create-pip"
-                title={
-                    form.watch("id") ?
-                        "Bo'limni tahrirlash"
-                    :   "Yangi bo'lim yaratish"
-                }
+                title={`${
+                    form.watch("id")
+                        ? "Bo'limni tahrirlash"
+                        : "Yangi bo'lim qo'shish"
+                }`}
             >
                 <div className="w-full overflow-hidden px-1">
                     <form

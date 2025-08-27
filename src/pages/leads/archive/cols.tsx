@@ -38,15 +38,15 @@ export const useLeadArchiveCols = () => {
                     return (
                         <span
                             className={cn(
-                                val === "deleted" ? "text-rose-500/70" : (
-                                    "text-green-500/70"
-                                ),
+                                val === "deleted"
+                                    ? "text-rose-500/70"
+                                    : "text-green-500/70",
                             )}
                         >
                             {
                                 {
                                     deleted: "O'chirilgan",
-                                    success: "Muvaffaqiyarli",
+                                    success: "Muvaffaqiyatli",
                                     connected: "Bog'lanildi",
                                     loosed: "Yo'qotildi",
                                     new: "Yangi",

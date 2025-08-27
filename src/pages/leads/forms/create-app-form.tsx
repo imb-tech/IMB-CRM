@@ -1,16 +1,13 @@
-import { useState } from "react"
 import { FormBuilder } from "./form-builder"
 import { FormPreview } from "./form-preview"
-import { DeviceSelector } from "./device-selector"
 import { Button } from "@/components/ui/button"
 import { usePost } from "@/hooks/usePost"
 import { toast } from "sonner"
 import { FormProvider, useForm } from "react-hook-form"
 import { usePatch } from "@/hooks/usePatch"
-import { useNavigate } from "@tanstack/react-router"
-import { ArrowLeft, Trash } from "lucide-react"
-import DeleteModal from "@/components/custom/delete-modal"
-import { useModal } from "@/hooks/useModal"
+import { useNavigate, useSearch } from "@tanstack/react-router"
+import { ArrowLeft } from "lucide-react"
+import FormBuilderAdd from "./form-builder-add"
 
 export const defaultFormConfig: FormConfig = {
     name: "Yangi Form",
@@ -18,8 +15,8 @@ export const defaultFormConfig: FormConfig = {
     fields: [
         {
             id: "fsdkflhsdfjh",
-            label: "Ism",
-            placeholder: "Ismingiz",
+            label: "FIO",
+            placeholder: "Abdisamatov Ozodbek Murod o'g'li",
             required: true,
             type: "input",
             extra_data: {
@@ -42,7 +39,6 @@ export const defaultFormConfig: FormConfig = {
     successMessage2: "Yangi form to'ldirish",
     extra_data: {
         primary_color: "#6366f1",
-        borderRadius: "12px",
         submit_text: "Yuborish",
     },
 }
@@ -52,8 +48,8 @@ export default function CreateAppForm({
 }: {
     defaultValues?: FormConfig
 }) {
+    const search = useSearch({ strict: false })
     const navigate = useNavigate()
-    const { openModal } = useModal("delete")
 
     function onSuccess() {
         toast.success("Forma saqlandi")
@@ -62,10 +58,6 @@ export default function CreateAppForm({
 
     const { mutate, isPending } = usePost({ onSuccess })
     const { mutate: patch, isPending: isPatching } = usePatch({ onSuccess })
-
-    const [previewDevice, setPreviewDevice] = useState<
-        "mobile" | "tablet" | "desktop"
-    >("desktop")
 
     function handleSubmit(vals: FormConfig) {
         if (!vals.pipeline || !vals.source) {
@@ -112,61 +104,45 @@ export default function CreateAppForm({
     return (
         <FormProvider {...form}>
             <form onSubmit={form.handleSubmit(handleSubmit)}>
-                <div className="pb-4">
-                    <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-3 flex-1">
-                            <Button
-                                onClick={() => navigate({ to: "/leads/forms" })}
-                                size="icon"
-                            >
-                                <ArrowLeft size={18} />
-                            </Button>
-                            <h1 className="text-2xl font-bold bg-gradient-to-r">
-                                {defaultValues?.name ?
-                                    "Formani tahrirlash"
-                                :   "Form yaratish"}
-                            </h1>
-                        </div>
-                        <DeviceSelector
-                            device={previewDevice}
-                            onDeviceChange={setPreviewDevice}
-                        />
-                        <Button
-                            loading={isPending || isPatching}
-                            className="bg-primary/80 hover:bg-primary text-white"
-                        >
-                            {"Saqlash"}
-                        </Button>
-                        <Button
-                            size="icon"
-                            className="text-red-500 bg-red-500/10 hover:bg-red-500/20"
-                            type="button"
-                            onClick={openModal}
-                        >
-                            <Trash />
-                        </Button>
-                    </div>
+                <div className="flex items-center gap-3 flex-1 pb-4">
+                    <Button
+                        onClick={() =>
+                            navigate({
+                                to: "/leads/forms",
+                                search: { pipeline: search?.pipeline },
+                            })
+                        }
+                        size="icon"
+                    >
+                        <ArrowLeft size={18} />
+                    </Button>
+                    <h1 className="text-2xl font-bold bg-gradient-to-r">
+                        {defaultValues?.name
+                            ? "Formani tahrirlash"
+                            : "Form yaratish"}
+                    </h1>
                 </div>
 
-                <div>
-                    <div className="flex gap-4 h-[calc(100vh-140px)]">
-                        <div className="p-6 bg-card rounded-md overflow-y-auto w-[500px]">
+                <div className="flex lg:flex-row flex-col items-start gap-4 w-full">
+                    <div className="lg:w-max w-full">
+                        <FormBuilderAdd />
+                    </div>
+                    <div className="grid lg:grid-cols-2 gap-4 w-full">
+                        <div className="lg:p-6 p-3  bg-card rounded-md overflow-y-auto ">
                             <FormBuilder />
                         </div>
 
-                        <div className="p-6 bg-card rounded-md overflow-y-auto flex-1">
-                            <FormPreview device={previewDevice} />
+                        <div className=" lg:p-6 p-3 bg-card flex flex-col justify-between rounded-md overflow-y-auto flex-1">
+                            <FormPreview />
                         </div>
                     </div>
                 </div>
+                <div className="flex justify-end mt-4">
+                    <Button loading={isPending || isPatching}>
+                        {"Saqlash"}
+                    </Button>
+                </div>
             </form>
-
-            <DeleteModal
-                id={defaultValues?.id}
-                onSuccessAction={() => navigate({ to: "/leads/forms" })}
-                path="leads/forms"
-                refetchKey="leads/forms/list"
-            />
         </FormProvider>
     )
 }

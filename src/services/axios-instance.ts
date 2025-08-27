@@ -7,11 +7,10 @@ import { getAccessToken, getRefreshToken } from "@/lib/get-token"
 import { setAccessToken } from "@/lib/set-token"
 import { setActiveBranch } from "@/lib/utils"
 import { QueryClient } from "@tanstack/react-query"
-import axios, { AxiosError } from "axios"
+import axios from "axios"
 import { toast } from "sonner"
 
 export const baseURL = import.meta.env.VITE_DEFAULT_URL
-// const baseURL = localStorage.getItem('api')! + '/api/v1'
 
 const axiosInstance = axios.create({
     baseURL,

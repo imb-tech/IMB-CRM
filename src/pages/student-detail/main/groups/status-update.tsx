@@ -20,7 +20,11 @@ type Props = {
     group: number
 }
 
-export function StatusPopoverStudent({ status, allowed_statuses = [], group }: Props) {
+export function StatusPopoverStudent({
+    status,
+    allowed_statuses = [],
+    group,
+}: Props) {
     const qC = useQueryClient()
     const { mutate } = usePost()
 
@@ -53,7 +57,7 @@ export function StatusPopoverStudent({ status, allowed_statuses = [], group }: P
                                 : status == 2
                                 ? "bg-sky-500/10  text-sky-500"
                                 : "bg-green-500/10 text-green-500",
-                            "w-[80px]",
+                           
                         )}
                     >
                         {studentStatusKeys[status.toString()]}
@@ -66,8 +70,8 @@ export function StatusPopoverStudent({ status, allowed_statuses = [], group }: P
                 align="center"
             >
                 <div className="flex flex-col gap-1 items-start">
-                    {allowed_statuses?.map((d) => (
-                        <PopoverClose>
+                    {allowed_statuses?.map((d, index) => (
+                        <PopoverClose key={index}>
                             <span
                                 onClick={() => handleChange(d)}
                                 key={d}

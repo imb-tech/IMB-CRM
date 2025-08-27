@@ -69,7 +69,7 @@ export function FormFormatNumberInput<IForm extends FieldValues>({
                         className,
                         control._formState.errors?.[name] &&
                             !label &&
-                            "border-destructive focus:border-border !ring-destructive",
+                            "border-red-600 focus:border-border !ring-red-600",
                     )}
                     onValueChange={(val) => {
                         onChange(val.value)

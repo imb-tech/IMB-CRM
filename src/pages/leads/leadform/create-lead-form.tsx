@@ -2,13 +2,14 @@ import { ArrowLeft, RotateCcw } from "lucide-react"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { FormSelect } from "@/components/form/select"
-import { Link, useParams } from "@tanstack/react-router"
+import { Link, useParams, useSearch } from "@tanstack/react-router"
 import { cn } from "@/lib/utils"
 import { FormProvider, useForm } from "react-hook-form"
 import { LeadPhones } from "./lead-phones"
 import useLeadStatuses from "../use-lead-statuses"
 import { usePatch } from "@/hooks/usePatch"
 import FormInput from "@/components/form/input"
+import { FormNumberInput } from "@/components/form/number-input"
 
 export default function CreateLeadForm({ data }: { data?: Lead }) {
     const form = useForm<Lead>({
@@ -19,6 +20,7 @@ export default function CreateLeadForm({ data }: { data?: Lead }) {
     })
     const { data: statuses } = useLeadStatuses()
     const { id } = useParams({ strict: false })
+    const { pipeline } = useSearch({ strict: false })
 
     const { mutate, isPending } = usePatch()
 
@@ -52,11 +54,12 @@ export default function CreateLeadForm({ data }: { data?: Lead }) {
                     <CardContent>
                         <div className="flex items-center gap-3">
                             <Link
+                                search={{ pipeline }}
                                 to="/leads/$id"
                                 className={cn(
                                     "text-sidebar-foreground",
                                     buttonVariants({
-                                        variant: "ghost",
+                                        variant: "default",
                                         size: "sm",
                                     }),
                                 )}
@@ -77,8 +80,13 @@ export default function CreateLeadForm({ data }: { data?: Lead }) {
 
                         <div className="flex flex-col gap-3 px-2 my-6">
                             <FormSelect
-                                label="Holati"
-                                options={statuses ?? []}
+                                label={"Holati"}
+                                options={
+                                    statuses?.map((st) => ({
+                                        ...st,
+                                        name: st.name,
+                                    })) ?? []
+                                }
                                 valueKey="id"
                                 labelKey="name"
                                 control={form.control}
@@ -88,11 +96,19 @@ export default function CreateLeadForm({ data }: { data?: Lead }) {
                             <FormInput
                                 methods={form}
                                 name="name"
-                                label="Ism"
+                                label={"Ism"}
                                 required
-                                placeholder="Lid ismi yoki nomi"
+                                placeholder={"Lid ismi yoki nomi"}
                             />
 
+                            <FormNumberInput
+                                label={"Kelishuv summasi"}
+                                control={form.control}
+                                name="amount"
+                                placeholder={`${"Ex"}: 1 000 000`}
+                                size={"lg" as any}
+                                thousandSeparator=" "
+                            />
                             <LeadPhones />
 
                             <div
@@ -109,10 +125,10 @@ export default function CreateLeadForm({ data }: { data?: Lead }) {
                                         className="text-rose-500 hover:text-rose-500/80 hover:bg-rose-500/10"
                                     >
                                         <RotateCcw />
-                                        Qaytarish
+                                        {"Qaytarish"}
                                     </Button>
                                 )}
-                                <Button loading={isPending}>Saqlash</Button>
+                                <Button loading={isPending}>{"Saqlash"}</Button>
                             </div>
                         </div>
                     </CardContent>

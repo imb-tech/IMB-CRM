@@ -47,8 +47,8 @@ export default function Sources() {
     }
 
     return (
-        <div className="rounded-sm">
-            <div className="flex items-center justify-between pb-3">
+        <div className="bg-background rounded-sm">
+            <div className="flex gap-3 sm:flex-row flex-col items-center sm:justify-between pb-3">
                 <LeadsTab />
                 <Button
                     onClick={() => {
@@ -57,13 +57,15 @@ export default function Sources() {
                         form.setValue("icon", "website")
                         openModal()
                     }}
+                    className="sm:w-max w-full"
                 >
                     <Plus size={16} />
-                    Yangi
+                    {"Yangi yaratish"}
                 </Button>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 bg-background p-2 rounded-md">
-                {Number(data?.length) > 0 ?
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
+                {Number(data?.length) > 0 ? (
                     data?.map((src) => (
                         <div
                             className="bg-secondary p-4 rounded-md flex items-center gap-2"
@@ -96,12 +98,13 @@ export default function Sources() {
                             </div>
                         </div>
                     ))
-                :   <div className="col-span-full py-10 flex justify-center">
+                ) : (
+                    <div className="col-span-full py-10 flex justify-center">
                         <p className="text-muted-foreground">
-                            Lid manbalari mavjud emas
+                            {"Lid manbalari mavjud emas"}
                         </p>
                     </div>
-                }
+                )}
             </div>
 
             <Modal title="">
@@ -113,19 +116,19 @@ export default function Sources() {
                         methods={form}
                         name="name"
                         required
-                        label="Nomi"
+                        label={"Nomi"}
                     />
 
-                    <p className="mt-5">Belgi tanlang</p>
+                    <p className="mt-5">{"Belgi tanlang"}</p>
                     <div className="flex gap-3 flex-wrap pb-3 pt-1">
                         {leadSources?.map((Ic) => {
                             return (
                                 <button
                                     className={cn(
                                         "bg-secondary cursor-pointer rounded-sm p-2 border border-secondary",
-                                        watchIcon === Ic.key ?
-                                            "border-primary"
-                                        :   "",
+                                        watchIcon === Ic.key
+                                            ? "border-primary"
+                                            : "",
                                     )}
                                     type="button"
                                     onClick={() =>
@@ -142,7 +145,7 @@ export default function Sources() {
                         className="mt-4 w-full"
                         loading={isPending || isPatching}
                     >
-                        Saqlash
+                        {"Saqlash"}
                     </Button>
                 </form>
             </Modal>

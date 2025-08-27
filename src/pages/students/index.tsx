@@ -25,7 +25,7 @@ const StudentsMain = () => {
     const params = useSearch({ from: "/_main/students/" })
 
     const { data, isFetching } = useGet<ListResp<Student>>("students", {
-        params,
+        params: params,
     })
 
     const handleItemAdd = () => {
@@ -45,7 +45,6 @@ const StudentsMain = () => {
         }
     }
 
-
     const columns = useStudentsCols()
 
     return (
@@ -55,7 +54,7 @@ const StudentsMain = () => {
                     <div className="flex  justify-between items-center gap-3 ">
                         <div className="flex items-center gap-3">
                             <h1 className="text-xl">O'quvchilar</h1>
-                            <Badge className="text-sm">{data?.count}</Badge>
+                            <Badge className="text-sm">{formatMoney(data?.count)}</Badge>
                             {Number(data?.total_debts) < 0 && (
                                 <Badge
                                     className="text-sm text-red-600 bg-red-600/10  border-[0.7px] border-destructive font-normal"
@@ -106,7 +105,7 @@ const StudentsMain = () => {
             </Card>
 
             <Modal
-            size="max-w-xl"
+                size="max-w-xl"
                 modalKey={`${STUDENT}-add`}
                 title={`O'quvchi ${current?.id ? "tahrirlash" : "yaratish"}`}
             >
@@ -114,6 +113,7 @@ const StudentsMain = () => {
                     <StudentCreate item={current} />
                 </div>
             </Modal>
+
             <DeleteModal
                 modalKey={`${STUDENT}-delete`}
                 id={current?.id}

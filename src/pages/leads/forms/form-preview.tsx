@@ -19,11 +19,7 @@ import { cn } from "@/lib/utils"
 import { PhoneInput } from "react-international-phone"
 import { useFormContext } from "react-hook-form"
 
-interface FormPreviewProps {
-    device: "mobile" | "tablet" | "desktop"
-}
-
-export function FormPreview({ device }: FormPreviewProps) {
+export function FormPreview() {
     const [submitStatus, setSubmitStatus] = useState<
         "idle" | "success" | "error" | "loading"
     >("idle")
@@ -32,17 +28,12 @@ export function FormPreview({ device }: FormPreviewProps) {
 
     const watchedValues = form.watch()
 
-    const deviceClasses = {
-        mobile: "max-w-sm mx-auto",
-        tablet: "max-w-md mx-auto",
-        desktop: "max-w-lg mx-auto",
-    }
-
     const handleSubmit = async () => {
         setSubmitStatus("loading")
-        await new Promise((resolve) => setTimeout(resolve, 2000))
+
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+
         setSubmitStatus("success")
-        setSubmitStatus("idle")
     }
 
     const renderField = (field: LeadFormField) => {
@@ -61,12 +52,8 @@ export function FormPreview({ device }: FormPreviewProps) {
                         </Label>
                         <Input
                             id={field.id}
-                            placeholder={field.placeholder}
+                            placeholder={`${field.placeholder}`}
                             className="border-slate-200 focus:border-indigo-400 text-slate-700 focus:ring-indigo-400/20 transition-all duration-300 !bg-white"
-                            style={{
-                                borderRadius:
-                                    watchedValues.extra_data.borderRadius,
-                            }}
                             fullWidth
                         />
                     </div>
@@ -86,13 +73,9 @@ export function FormPreview({ device }: FormPreviewProps) {
                         </Label>
                         <Textarea
                             id={field.id}
-                            placeholder={field.placeholder}
+                            placeholder={`${field.placeholder}`}
                             rows={4}
                             className="border-none focus:border-none focus:border-indigo-400 text-slate-700 focus:ring-indigo-400/20 transition-all duration-300 resize-none !bg-white"
-                            style={{
-                                borderRadius:
-                                    watchedValues.extra_data.borderRadius,
-                            }}
                         />
                     </div>
                 )
@@ -110,13 +93,7 @@ export function FormPreview({ device }: FormPreviewProps) {
                             )}
                         </Label>
                         <Select>
-                            <SelectTrigger
-                                className="border-none focus:border-blue-400 focus:ring-blue-400/20 transition-all duration-300 !bg-white !text-black active:text-black data-[state=open]:text-black"
-                                style={{
-                                    borderRadius:
-                                        watchedValues.extra_data.borderRadius,
-                                }}
-                            >
+                            <SelectTrigger className="border-none focus:border-blue-400 focus:ring-blue-400/20 transition-all duration-300 !bg-white !text-black active:text-black data-[state=open]:text-black">
                                 <SelectValue
                                     placeholder="Tanlang..."
                                     className="text-black hover:!text-black data-[state=checked]:!text-black"
@@ -141,13 +118,7 @@ export function FormPreview({ device }: FormPreviewProps) {
 
             case "radio":
                 return (
-                    <div
-                        key={field.id}
-                        className="space-y-4 bg-white p-3"
-                        style={{
-                            borderRadius: watchedValues.extra_data.borderRadius,
-                        }}
-                    >
+                    <div key={field.id} className="space-y-4 bg-white p-3">
                         <Label className="flex items-center gap-2 text-sm font-medium text-slate-700">
                             {field.label}
                             {field.required && (
@@ -180,13 +151,7 @@ export function FormPreview({ device }: FormPreviewProps) {
 
             case "checkbox":
                 return (
-                    <div
-                        key={field.id}
-                        className="bg-white p-3"
-                        style={{
-                            borderRadius: watchedValues.extra_data.borderRadius,
-                        }}
-                    >
+                    <div key={field.id} className="bg-white p-3">
                         <Label className="flex items-center gap-2 text-sm font-medium text-slate-700">
                             {field.label}
                             {field.required && (
@@ -227,7 +192,6 @@ export function FormPreview({ device }: FormPreviewProps) {
                             )}
                         </Label>
                         <PhoneInput
-                            // id={field.id}
                             inputProps={{
                                 id: field.id,
                             }}
@@ -236,14 +200,13 @@ export function FormPreview({ device }: FormPreviewProps) {
                             countrySelectorStyleProps={{
                                 className: "!hidden",
                             }}
+                            value={field.placeholder}
                             inputStyle={{
-                                borderRadius:
-                                    watchedValues.extra_data.borderRadius,
+                                borderRadius: "8px",
                             }}
                             defaultCountry="uz"
                             style={{
-                                borderRadius:
-                                    watchedValues.extra_data.borderRadius,
+                                borderRadius: "8px",
                             }}
                         />
                     </div>
@@ -256,7 +219,7 @@ export function FormPreview({ device }: FormPreviewProps) {
 
     if (submitStatus === "success") {
         return (
-            <div className={cn("space-y-6", deviceClasses[device])}>
+            <div className={cn("space-y-6")}>
                 <Card className="border-0 shadow-xl bg-gradient-to-br from-green-50 to-emerald-50 overflow-hidden">
                     <CardContent className="pt-8 pb-8">
                         <div className="text-center space-y-6">
@@ -281,10 +244,6 @@ export function FormPreview({ device }: FormPreviewProps) {
                                     setSubmitStatus("idle")
                                 }}
                                 className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
-                                style={{
-                                    borderRadius:
-                                        watchedValues.extra_data.borderRadius,
-                                }}
                             >
                                 {watchedValues.successMessage2}
                             </Button>
@@ -296,7 +255,7 @@ export function FormPreview({ device }: FormPreviewProps) {
     }
 
     return (
-        <div className={cn("space-y-6", deviceClasses[device])}>
+        <div className={cn("space-y-6")}>
             <Card className="border-0 shadow-xl bg-card-foreground backdrop-blur-sm overflow-hidden">
                 <CardHeader className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200/50">
                     <CardTitle className="text-2xl font-bold text-slate-800">
@@ -308,7 +267,7 @@ export function FormPreview({ device }: FormPreviewProps) {
                         </p>
                     )}
                 </CardHeader>
-                <CardContent className="p-8">
+                <CardContent className="lg:p-8 p-4">
                     <div className="space-y-6">
                         {watchedValues.fields.map(renderField)}
 
@@ -326,20 +285,20 @@ export function FormPreview({ device }: FormPreviewProps) {
 
                         <Button
                             type="button"
-                            className="w-full h-12 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
+                            className="w-full h-11 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
                             onClick={handleSubmit}
                             style={{
                                 background: `linear-gradient(135deg, ${watchedValues.extra_data.primary_color}, ${watchedValues.extra_data.primary_color}dd)`,
-                                borderRadius:
-                                    watchedValues.extra_data.borderRadius,
                             }}
                         >
-                            {submitStatus === "loading" ?
+                            {submitStatus === "loading" ? (
                                 <>
                                     <Loader2 className="w-5 h-5 mr-3 animate-spin" />
-                                    Yuklanmoqda...
+                                    {"Yuklanmoqda..."}
                                 </>
-                            :   watchedValues.extra_data.submit_text}
+                            ) : (
+                                watchedValues.extra_data.submit_text
+                            )}
                         </Button>
                     </div>
                 </CardContent>

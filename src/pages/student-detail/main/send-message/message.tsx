@@ -10,6 +10,7 @@ import { useCallback } from "react"
 import { useModal } from "@/hooks/useModal"
 import Modal from "@/components/custom/modal"
 import StudentMessageCreate from "./create"
+import { formatMoney } from "@/lib/format-money"
 
 const StudentSendMessageMain = () => {
     const { id } = useParams({ from: "/_main/students/$id/_main/send-message" })
@@ -34,7 +35,7 @@ const StudentSendMessageMain = () => {
                         {" "}
                         {"SMS xabarlar ro'yxati"}
                     </h1>
-                    <Badge className="text-sm">{data?.count}</Badge>
+                    <Badge className="text-sm">{formatMoney(data?.count)}</Badge>
                 </div>
                 <Button
                     type="button"

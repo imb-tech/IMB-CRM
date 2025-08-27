@@ -35,12 +35,12 @@ export function LeadPhones() {
                             <div className="flex flex-col gap-2 flex-1">
                                 <PhoneField
                                     required
-                                    placeholder="Telefon raqam"
+                                    placeholder={"Telefon raqam"}
                                     methods={form}
                                     label={
-                                        phone.is_main ?
-                                            "Asosy telefon raqam"
-                                        :   "Qo'shimcha telefon raqam"
+                                        phone.is_main
+                                            ? "Asosy telefon raqam"
+                                            : "Qo'shimcha telefon raqam"
                                     }
                                     name={`contacts_list.${i}.phone`}
                                     inputProps={{ autoComplete: "off" }}
@@ -69,12 +69,12 @@ export function LeadPhones() {
                         className="text-primary hover:text-primary/80 hover:bg-primary/10"
                     >
                         <Plus className="h-4 w-4 mr-1" />
-                        Qo'shimcha telefon raqam
+                        {"Qo'shimcha telefon raqam"}
                     </Button>
                 </div>
             </div>
             {form.formState.errors.contacts_list && (
-                <p className="text-red-600 text-xs mt-2">
+                <p className="text-destructive text-xs mt-2">
                     {form.formState.errors.contacts_list.message}
                 </p>
             )}

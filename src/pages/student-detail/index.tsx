@@ -107,7 +107,12 @@ function StudentProfile({}: Props) {
                     </span>
                 </div>
 
-                <div className="flex items-center ">
+                <div
+                    className={cn(
+                        "flex items-center",
+                        Number(data?.balance) < 0 && "text-red-500",
+                    )}
+                >
                     <strong className="min-w-28 text-xl">{"Balans"}:</strong>
                     <span className="text-xl">
                         {formatMoney(data?.balance)}

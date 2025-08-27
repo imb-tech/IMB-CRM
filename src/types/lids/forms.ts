@@ -19,13 +19,12 @@ type FormConfig = {
     successMessage2: string
     pipeline?: number
     source?: number
-    name: string
-    desc: string
+    name: string,
+    desc: string,
     extra_data: {
-        submit_text: string
-        borderRadius: string
+        submit_text: string,
         primary_color: string
-    }
+    },
 }
 
 type LeadFormField = {

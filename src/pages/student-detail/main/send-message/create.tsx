@@ -9,6 +9,7 @@ import { useParams } from "@tanstack/react-router"
 import { useQueryClient } from "@tanstack/react-query"
 import FormTextarea from "@/components/form/textarea"
 import { toast } from "sonner"
+import showFormErrors from "@/lib/show-form-errors"
 
 export default function StudentMessageCreate() {
     const queryClient = useQueryClient()
@@ -25,19 +26,9 @@ export default function StudentMessageCreate() {
         queryClient.invalidateQueries({ queryKey: [SMS_LIST] })
     }, [closeModal, form, queryClient])
 
-    const onError = useCallback(
-        (errors: AxiosError) => {
-            for (const [k, v] of Object.entries(errors.response?.data ?? {})) {
-                form.setError(k as Path<SendMessage>, {
-                    type: "validate",
-                    message: v,
-                })
-            }
-        },
-        [form],
-    )
 
-    const { mutate, isPending } = usePost({ onSuccess, onError })
+
+    const { mutate, isPending } = usePost({ onSuccess, onError: (err) => showFormErrors(err, form), })
 
     const handleSubmit = useCallback(
         (values: SendMessage) => {

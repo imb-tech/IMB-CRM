@@ -11,6 +11,7 @@ import { useCallback, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import StudentParentsCreate from "./create"
+import { formatMoney } from "@/lib/format-money"
 
 const StudentParentsMain = () => {
     const { id } = useParams({ from: "/_main/students/$id/_main/parents" })
@@ -57,7 +58,7 @@ const StudentParentsMain = () => {
             <div className="flex  mb-3 flex-row items-center gap-3 justify-between">
                 <div className="flex items-center gap-3">
                     <h1 className="text-xl font-medium ">{"Ota-Ona"}</h1>
-                    <Badge className="text-sm">{data?.count}</Badge>
+                    <Badge className="text-sm">{formatMoney(data?.count)}</Badge>
                 </div>
                 <Button
                     type="button"
