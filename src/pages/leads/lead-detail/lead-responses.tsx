@@ -8,7 +8,7 @@ export default function LeadResponses() {
     const { user } = useParams({ strict: false })
     const { data } = useGet<LeadSubmission[]>(`leads/submissions/${user}`)
 
-    return (
+    return (!!data?.length &&
         <Card className="border-[1px] bg-background">
             <h2></h2>
             <CardContent className="grid grid-cols-2 gap-2">
@@ -21,14 +21,14 @@ export default function LeadResponses() {
                             :   "",
                         )}
                     >
-                        <p className="text-xs">
+                        <p className="text-xs text-muted-foreground">
                             {field.form_field.label}
                         </p>
                         <p>
                             {field.form_field.type === "phone" ?
                                 formatPhoneNumber(field.answer)
                             : Array.isArray(field.answer) ?
-                                field.answer.join(", ")
+                                field.answer.join(', ')
                             :   field.answer}
                         </p>
                     </div>

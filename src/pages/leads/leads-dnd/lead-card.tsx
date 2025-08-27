@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { MoreHorizontal } from "lucide-react"
+import { CircleCheckBig, Edit, MoreHorizontal, Trash } from "lucide-react"
 
 import {
     DropdownMenu,
@@ -11,23 +11,18 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 import { cn } from "@/lib/utils"
-import { Link, useParams } from "@tanstack/react-router"
+import { Link, useParams, useSearch } from "@tanstack/react-router"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
 import GetSourceIcon from "../sources/get-source-icon"
 import { useStore } from "@/hooks/use-store"
 import { useModal } from "@/hooks/useModal"
 import axiosInstance from "@/services/axios-instance"
+import { formatMoney } from "@/lib/format-money"
 
 export default function LeadCard(props: Lead & { index: number }) {
-    const {
-        id,
-        name,
-        source_icon,
-        source_name,
-        worker_name,
-        get_main_contact,
-        index,
-    } = props
+    const { id, name, source_icon, worker_name, get_main_contact, amount } =
+        props
+
     const { id: sourceId } = useParams({ strict: false })
     const { setStore } = useStore<Lead>("lead-data")
 
@@ -37,6 +32,7 @@ export default function LeadCard(props: Lead & { index: number }) {
         name: string
     }>("conf-lead")
 
+    const { pipeline } = useSearch({ strict: false })
     const { openModal } = useModal()
     const { openModal: openDelete } = useModal("confirm-delete")
 
@@ -56,21 +52,26 @@ export default function LeadCard(props: Lead & { index: number }) {
 
     return (
         <Link
+            search={{ pipeline }}
             to="/leads/$id/user/$user"
             params={{ id: sourceId as string, user: id.toString() }}
         >
             <Card className="group border rounded-lg overflow-hidden transition-all duration-300 bg-secondary dark:hover:shadow-slate-800/30">
-                <CardContent className="p-4 relative flex items-start gap-2">
-                    <span className="text-muted-foreground text-lg font-extralight">
-                        {index + 1}
-                    </span>
-                    <div className="flex-1">
+                <CardContent className="p-4">
+                    <div className="w-full">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
                                 <div>
-                                    <h3 className="font-medium text-lg text-slate-900 dark:text-slate-100">
-                                        {name}
-                                    </h3>
+                                    <div className="flex items-center gap-2">
+                                        <GetSourceIcon
+                                            icon={source_icon}
+                                            size={16}
+                                            className="bg-transparent"
+                                        />
+                                        <h3 className="font-medium text-lg text-slate-900 dark:text-slate-100">
+                                            {name}
+                                        </h3>
+                                    </div>
                                     <p className="text-slate-500 dark:text-slate-400 text-sm">
                                         {formatPhoneNumber(get_main_contact)}
                                     </p>
@@ -95,12 +96,32 @@ export default function LeadCard(props: Lead & { index: number }) {
                                         <DropdownMenuItem
                                             onClick={(e) => {
                                                 e.stopPropagation()
+                                                setDelete({
+                                                    id,
+                                                    type: "success",
+                                                    name: props.name,
+                                                })
+                                                openDelete()
+                                            }}
+                                        >
+                                            <CircleCheckBig
+                                                size={16}
+                                                className="mr-2"
+                                            />{" "}
+                                            {"Muvaffaqiyatli"}
+                                        </DropdownMenuItem>
+
+                                        <DropdownMenuItem
+                                            onClick={(e) => {
+                                                e.stopPropagation()
                                                 handleEdit()
                                             }}
                                         >
-                                            Tahrirlash
+                                            <Edit size={16} className="mr-2" />{" "}
+                                            {"Tahrirlash"}
                                         </DropdownMenuItem>
                                         <DropdownMenuItem
+                                            className="text-red-500"
                                             onClick={(e) => {
                                                 e.stopPropagation()
                                                 setDelete({
@@ -111,26 +132,18 @@ export default function LeadCard(props: Lead & { index: number }) {
                                                 openDelete()
                                             }}
                                         >
-                                            O'chirish
+                                            <Trash size={16} className="mr-2" />{" "}
+                                            {"O'chirish"}
                                         </DropdownMenuItem>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-4 mt-4 pt-3 text-xs">
-                            {/* <div className="flex items-center gap-1 text-slate-500 dark:text-slate-400">
-                            <Calendar className="h-3 w-3" />
-                            <span>{date}</span>
-                        </div> */}
-                            <div className="flex items-center gap-1 text-slate-500 dark:text-slate-400">
-                                <GetSourceIcon
-                                    icon={source_icon}
-                                    size={16}
-                                    className="bg-transparent"
-                                />
-                                <span className="text-xs">{source_name}</span>
-                            </div>
+                        <div className="flex items-center gap-4 mt-4 pt-3 text-xs ">
+                            <p className=" dark:text-slate-300 text-sm">
+                                {formatMoney(amount)} {"so'm"}
+                            </p>
                             <Badge
                                 className={cn(
                                     "ml-auto cursor-pointer transition-colors duration-200 text-xs font-normal bg-emerald-500/10 text-emerald-500 dark:bg-emerald-500/20 dark:text-emerald-400 hover:bg-emerald-500/20",

@@ -7,6 +7,7 @@ import { useGet } from "@/hooks/useGet"
 import { useParams } from "@tanstack/react-router"
 import { UserPlus } from "lucide-react"
 import { useStore } from "@/hooks/use-store"
+import { formatMoney } from "@/lib/format-money"
 
 type Props = {
     index: number
@@ -52,9 +53,10 @@ const LeadsColumn = ({ index, item }: Props) => {
                         {...provided.dragHandleProps}
                         className="px-3 dark:bg-card bg-white rounded-md"
                     >
-                        <div className="mb-2 w-full">
-                            <div className="flex items-center justify-between py-2">
-                                <h3 className="text-xl">{item?.name}</h3>
+                        <div className="w-full">
+                            <div className="flex items-center justify-between pt-2">
+                                <h3 className="text-xl">{item?.name ?? ""} </h3>
+
                                 <div className="flex items-center">
                                     <div
                                         className="rounded-sm p-1.5 mr-2 bg-background flex items-en justify-center hover:border-primary cursor-pointer transition-all duration-200"
@@ -77,6 +79,14 @@ const LeadsColumn = ({ index, item }: Props) => {
                                         />
                                     )}
                                 </div>
+                            </div>
+                            <div className="flex justify-start text-gray-400 items-center gap-3">
+                                <p className="mb-2 text-xs">
+                                    {formatMoney(item?.total_count)} {"lidlar"}
+                                </p>
+                                <p className="mb-2 text-xs">
+                                    {formatMoney(item?.total_amount)} {"so'm"}
+                                </p>
                             </div>
                         </div>
                         <Droppable droppableId={`col-${item?.id}`} type="card">

@@ -38,7 +38,7 @@ export default function LeadNotes() {
 
     const { data: projects } = useGet<FormValues[]>(TASKLY_PROJECT_CRM)
 
-    const { data: employees, isFetching } = useGet<ListResp<Employee>>(HR_API, {
+    const { data: employees, isFetching } = useGet<ListResp<any>>(HR_API, {
         params: { search },
     })
 
@@ -155,7 +155,7 @@ export default function LeadNotes() {
                 <div className="flex items-center space-x-3 w-full">
                     <ParamInput
                         className="border-none min-w-full rounded-b-none"
-                        placeholder="Eslatmalar orasidan qidirish"
+                        placeholder={"Eslatmalar orasidan qidirish"}
                         fullWidth
                     />
                 </div>
@@ -167,7 +167,7 @@ export default function LeadNotes() {
                     ref={scrollAreaRef}
                 >
                     <div className="space-y-4 h-full">
-                        {sortedDates?.length ?
+                        {sortedDates?.length ? (
                             sortedDates?.map((date) => (
                                 <div key={date}>
                                     <div className="hidden items-center justify-center my-4">
@@ -184,7 +184,7 @@ export default function LeadNotes() {
 
                                     <div className="space-y-2 pt-3 px-5">
                                         {groupedMessages[date].map((message) =>
-                                            message?.note ?
+                                            message?.note ? (
                                                 <div
                                                     key={message.id + date}
                                                     className={`flex justify-start [&_button]:hover:opacity-100`}
@@ -218,9 +218,7 @@ export default function LeadNotes() {
                                                                             line,
                                                                             i,
                                                                         ) =>
-                                                                            (
-                                                                                line
-                                                                            ) ?
+                                                                            line ? (
                                                                                 <span
                                                                                     key={
                                                                                         i
@@ -231,7 +229,7 @@ export default function LeadNotes() {
                                                                                     }
                                                                                     <br />
                                                                                 </span>
-                                                                            :   null,
+                                                                            ) : null,
                                                                     )}
                                                             </p>
                                                         </div>
@@ -249,7 +247,7 @@ export default function LeadNotes() {
                                                         </button>
                                                     </div>
                                                 </div>
-                                            : message?.title ?
+                                            ) : message?.title ? (
                                                 <div
                                                     key={message.id + date}
                                                     className={`flex justify-start [&_button]:hover:opacity-100`}
@@ -260,20 +258,18 @@ export default function LeadNotes() {
                                                         <span
                                                             className={cn(
                                                                 "flex items-center justify-center w-9 h-9 border border-orange-500/50 text-orange-500/50 rounded-full",
-                                                                (
-                                                                    message.status__name ===
-                                                                        "Finished"
-                                                                ) ?
-                                                                    "border-green-500/50 text-green-500/50"
-                                                                :   "",
+                                                                message.status__name ===
+                                                                    "Finished"
+                                                                    ? "border-green-500/50 text-green-500/50"
+                                                                    : "",
                                                             )}
                                                         >
-                                                            {(
-                                                                message.status__name ===
-                                                                "Finished"
-                                                            ) ?
+                                                            {message.status__name ===
+                                                            "Finished" ? (
                                                                 <CheckCheck />
-                                                            :   <Clock9 />}
+                                                            ) : (
+                                                                <Clock9 />
+                                                            )}
                                                         </span>
                                                         <div className="flex-1">
                                                             <p
@@ -292,12 +288,10 @@ export default function LeadNotes() {
                                                                 <p
                                                                     className={cn(
                                                                         "text-sm max-w-[80%]",
-                                                                        (
-                                                                            message.status__name ===
-                                                                                "Finished"
-                                                                        ) ?
-                                                                            "line-through text-green-500"
-                                                                        :   "",
+                                                                        message.status__name ===
+                                                                            "Finished"
+                                                                            ? "line-through text-green-500"
+                                                                            : "",
                                                                     )}
                                                                 >
                                                                     {
@@ -319,12 +313,12 @@ export default function LeadNotes() {
                                                         </div>
                                                     </div>
                                                 </div>
-                                            : message?.body ?
+                                            ) : message?.body ? (
                                                 <div
                                                     key={message.id}
                                                     className={`flex text-xs gap-2 font-extralight py-1`}
                                                 >
-                                                    {message?.old_status ?
+                                                    {message?.old_status ? (
                                                         <div className="flex items-center">
                                                             <div className="hidden md:block min-w-[160px]"></div>
                                                             <span>
@@ -352,25 +346,27 @@ export default function LeadNotes() {
                                                                     ""}
                                                             </span>
                                                         </div>
-                                                    :   <div className="flex items-center">
+                                                    ) : (
+                                                        <div className="flex items-center">
                                                             <div className="hidden md:block min-w-[160px]"></div>
                                                             <span className="rounded-[2px]">
                                                                 {message?.body}
                                                             </span>
                                                         </div>
-                                                    }
+                                                    )}
                                                 </div>
-                                            :   null,
+                                            ) : null,
                                         )}
                                     </div>
                                 </div>
                             ))
-                        :   <div className="flex items-center justify-center h-full">
+                        ) : (
+                            <div className="flex items-center justify-center h-full">
                                 <p className="text-muted-foreground">
-                                    Eslatmalar yo'q
+                                    {"Eslatmalar yo'q"}
                                 </p>
                             </div>
-                        }
+                        )}
                         <div ref={messagesEndRef} />
                     </div>
                 </div>
@@ -402,9 +398,9 @@ export default function LeadNotes() {
                             methods={form}
                             name="note"
                             placeholder={
-                                values.type === "note" ?
-                                    "Eslatma yozing"
-                                :   "Vazifa haqida batafsil yozing"
+                                values.type === "note"
+                                    ? "Eslatma yozing"
+                                    : "Vazifa haqida batafsil yozing"
                             }
                             className="flex-1"
                         />
@@ -431,7 +427,7 @@ export default function LeadNotes() {
                                     name="project"
                                     valueKey="id"
                                     labelKey="name"
-                                    placeholder="Loyixa"
+                                    placeholder={"Loyixa"}
                                     options={projects}
                                 />
                             )}
@@ -451,7 +447,7 @@ export default function LeadNotes() {
                                     valueKey="id"
                                     labelKey="full_name"
                                     isLoading={isFetching}
-                                    placeholder="Kim uchun"
+                                    placeholder={"Kim uchun"}
                                     options={employees?.results ?? []}
                                     addButtonProps={{
                                         disabled: !values.project,
@@ -468,7 +464,7 @@ export default function LeadNotes() {
                                         control={form.control}
                                         name="created_at"
                                         disabled={!values.users?.length}
-                                        placeholder="Muddat"
+                                        placeholder={"Muddat"}
                                         addButtonProps={{
                                             className: "!h-10",
                                             variant: "secondary",
@@ -482,7 +478,7 @@ export default function LeadNotes() {
                                     size="lg"
                                     loading={isPending}
                                 >
-                                    Yaratish
+                                    {"Qo'shish"}
                                 </Button>
                             </div>
                         </div>

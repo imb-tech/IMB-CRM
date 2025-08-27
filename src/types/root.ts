@@ -13,7 +13,8 @@ type SearchParams = {
     pipeline?: number
     region?: string
     is_active?: boolean
-
+    worker?: string
+    month?: string
     year?: string
     group_student?: string
     id?: string
