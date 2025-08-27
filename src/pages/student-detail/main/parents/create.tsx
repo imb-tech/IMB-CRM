@@ -12,6 +12,7 @@ import FormInput from "@/components/form/input"
 import PhoneField from "@/components/form/phone-field"
 import { toast } from "sonner"
 import { usePatch } from "@/hooks/usePatch"
+import showFormErrors from "@/lib/show-form-errors"
 
 export default function StudentParentsCreate({
     current,
@@ -39,25 +40,13 @@ export default function StudentParentsCreate({
         queryClient.invalidateQueries({ queryKey: [STUDENT_PARENTS] })
     }, [closeModal, form, queryClient])
 
-    const onError = useCallback(
-        (errors: AxiosError) => {
-            for (const [k, v] of Object.entries(errors.response?.data ?? {})) {
-                form.setError(k as Path<StudentParents>, {
-                    type: "validate",
-                    message: v,
-                })
-            }
-        },
-        [form],
-    )
-
     const { mutate: mutatePost, isPending: isPendingPost } = usePost({
         onSuccess,
-        onError,
+        onError: (err) => showFormErrors(err, form),
     })
     const { mutate: mutatePatch, isPending: isPendingPatch } = usePatch({
         onSuccess,
-        onError,
+        onError: (err) => showFormErrors(err, form),
     })
 
     const handleSubmit = useCallback(

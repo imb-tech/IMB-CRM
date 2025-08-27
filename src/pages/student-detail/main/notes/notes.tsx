@@ -11,6 +11,7 @@ import { useModal } from "@/hooks/useModal"
 import DeleteModal from "@/components/custom/delete-modal"
 import StudentNotesCreate from "./create"
 import Modal from "@/components/custom/modal"
+import { formatMoney } from "@/lib/format-money"
 
 export default function StudentNotesMain() {
     const { id } = useParams({ from: "/_main/students/$id/_main/notes" })
@@ -54,7 +55,7 @@ export default function StudentNotesMain() {
                     <h1 className="text-xl font-medium ">
                         {"Eslatmalar ro'yxati"}
                     </h1>
-                    <Badge className="text-sm">{data?.count}</Badge>
+                    <Badge className="text-sm">{formatMoney(data?.count)}</Badge>
                 </div>
                 <Button
                     type="button"

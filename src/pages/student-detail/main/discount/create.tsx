@@ -1,10 +1,9 @@
 import { useModal } from "@/hooks/useModal"
-import { Path, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { FormNumberInput } from "@/components/form/number-input"
 import { Button } from "@/components/ui/button"
 import FormTextarea from "@/components/form/textarea"
 import { usePost } from "@/hooks/usePost"
-import { AxiosError } from "axios"
 import { FormCombobox } from "@/components/form/combobox"
 import {
     GROUP_STUDENTS_DISCOUNTS,
@@ -15,6 +14,7 @@ import useMe from "@/hooks/useMe"
 import { useCallback, useMemo, useState } from "react"
 import { useParams } from "@tanstack/react-router"
 import { useQueryClient } from "@tanstack/react-query"
+import showFormErrors from "@/lib/show-form-errors"
 
 export default function DiscountStudentCreate({
     current,
@@ -44,14 +44,7 @@ export default function DiscountStudentCreate({
                 queryKey: [GROUP_STUDENTS_DISCOUNTS],
             })
         },
-        onError(errors: AxiosError) {
-            for (const [k, v] of Object.entries(errors.response?.data ?? {})) {
-                form.setError(k as Path<DiscountStudent>, {
-                    type: "validate",
-                    message: v,
-                })
-            }
-        },
+        onError: (err) => showFormErrors(err, form),
     })
 
     const form = useForm<DiscountStudent>({
@@ -104,7 +97,7 @@ export default function DiscountStudentCreate({
             <FormNumberInput
                 control={form.control}
                 name="amount"
-                label="Chegirmadagi krus narxi"
+                label="Chegirmadagi kurs narxi"
                 placeholder="Misol: 799 000"
                 required
             />

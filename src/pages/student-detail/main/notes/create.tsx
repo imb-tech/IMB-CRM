@@ -98,7 +98,7 @@ export default function StudentNotesCreate({
             className="flex flex-col gap-3"
             onSubmit={form.handleSubmit(handleSubmit)}
         >
-            <div className="flex items-center justify-between gap-2">
+            <div className="flex items-start justify-between gap-2">
                 <FormDatePicker
                     control={form.control}
                     name="remind_at"
@@ -118,6 +118,7 @@ export default function StudentNotesCreate({
                     placeholder="Soat"
                     label="Aniq vaqti"
                     wrapperClassName="w-28"
+                    hideError
                 />
             </div>
 

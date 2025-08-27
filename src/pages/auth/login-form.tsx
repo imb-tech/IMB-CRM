@@ -1,12 +1,13 @@
 import FormInput from "@/components/form/input"
 import { LOGIN } from "@/constants/api-endpoints"
 import { setAccessToken, setRefreshToken } from "@/lib/set-token"
-import { Path, useForm } from "react-hook-form"
+import {  useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { usePost } from "@/hooks/usePost"
 import Spinner from "@/components/ui/spinner"
 import { encryptMessage } from "@/lib/data-encrypt"
 import { useNavigate } from "@tanstack/react-router"
+import showFormErrors from "@/lib/show-form-errors"
 
 type Form = {
     username: string
@@ -27,7 +28,6 @@ export default function LoginForm() {
             if (refresh) {
                 setRefreshToken(refresh)
             }
-            // window?.location?.replace?.("/")
             navigate({ to: "/" })
         },
     })
@@ -48,16 +48,7 @@ export default function LoginForm() {
         }
 
         mutate(LOGIN, encryptData, {
-            onError(err) {
-                for (const [k, v] of Object.entries(err?.response?.data)) {
-                    if (["username", "password"].includes(k)) {
-                        methods.setError(k as Path<Form>, {
-                            type: "manual",
-                            message: v as string,
-                        })
-                    }
-                }
-            },
+            onError: (err) => showFormErrors(err, methods),
         })
     })
 

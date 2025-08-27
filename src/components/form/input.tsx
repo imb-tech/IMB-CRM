@@ -80,7 +80,7 @@ export function FormInput<IForm extends FieldValues>({
                 fullWidth
                 className={cn(
                     error && label ?
-                        "border-destructive focus:border-border !ring-destructive"
+                        "border-red-600 focus:border-border !ring-red-600"
                     :   "",
                     uppercase && "uppercase placeholder:capitalize", // Add uppercase class for visual feedback
                     className,

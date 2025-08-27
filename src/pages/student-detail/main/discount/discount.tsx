@@ -11,6 +11,7 @@ import { useCallback, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import DiscountStudentCreate from "./create"
+import { formatMoney } from "@/lib/format-money"
 
 const StudentDiscountMain = () => {
     const { id } = useParams({ from: "/_main/students/$id/_main/discount" })
@@ -57,7 +58,7 @@ const StudentDiscountMain = () => {
                     <h1 className="text-xl font-medium ">
                         {"Chegirmalar ro'yxati"}
                     </h1>
-                    <Badge className="text-sm">{data?.count}</Badge>
+                    <Badge className="text-sm">{formatMoney(data?.count)}</Badge>
                 </div>
                 <Button
                     type="button"
