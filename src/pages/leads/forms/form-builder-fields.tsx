@@ -10,56 +10,28 @@ import { Label } from "@/components/ui/label"
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import {
-    Plus,
-    Trash2,
-    GripVertical,
-    Type,
-    FileText,
-    ChevronDown,
-    CheckSquare,
-    Circle,
-    Copy,
-    Phone,
-} from "lucide-react"
+import { Plus, Trash2, GripVertical, Type, Copy } from "lucide-react"
 import { useFieldArray, useFormContext } from "react-hook-form"
 import FormInput from "@/components/form/input"
-import { FormSwitch } from "@/components/form/switch"
 import { moveItem } from "../utils"
+import { fieldTypes } from "./form-builder-add"
+import { cn } from "@/lib/utils"
+import PhoneField from "@/components/form/phone-field"
+import { FormBuilderStyling } from "./form-builder-styling"
+import InputText from "@/components/custom/input-text"
+import { FormSwitch } from "@/components/form/switch"
 
 export function FormBuilderFields() {
     const [isDragging, setIsDragging] = useState(false)
 
     const form = useFormContext<FormConfig>()
 
-    const { fields, append, remove, update } = useFieldArray({
+    const { append, remove, update } = useFieldArray({
         control: form.control,
         name: "fields",
         keyName: "key",
     })
-    const watchedFields = form.watch("fields")
-
-    const addField = (type: LeadFormField["type"]) => {
-        const newField: LeadFormField = {
-            id: `field_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-            type,
-            label: `Yangi ${type}`,
-            placeholder: type === "select" ? undefined : "Yordamchi matn",
-            required: false,
-            extra_data: {
-                options:
-                    (
-                        type === "select" ||
-                        type === "radio" ||
-                        type === "checkbox"
-                    ) ?
-                        ["Variant" + " 1", "Variant" + " 2"]
-                    :   undefined,
-            },
-        }
-
-        append(newField)
-    }
+    const fields = form.watch("fields")
 
     const onDragStart = () => {
         setIsDragging(true)
@@ -93,16 +65,17 @@ export function FormBuilderFields() {
                             {...provided.droppableProps}
                             ref={provided.innerRef}
                             className={`relative py-1 flex flex-col gap-2 ${
-                                fields.length === 0 ?
-                                    "border-2 border-dashed border-secondary rounded-xl"
-                                :   ""
+                                fields.length === 0
+                                    ? "border-2 border-dashed border-secondary rounded-xl"
+                                    : ""
                             }`}
                         >
-                            {fields.length === 0 ?
+                            {fields.length === 0 ? (
                                 <div className="text-center"></div>
-                            :   fields.map((field, index) => (
+                            ) : (
+                                fields.map((field, index) => (
                                     <Draggable
-                                        key={field.key}
+                                        key={field.id}
                                         draggableId={field.id.toString()}
                                         index={index}
                                     >
@@ -116,14 +89,20 @@ export function FormBuilderFields() {
                                                         .style
                                                 }
                                                 className={` ${
-                                                    snapshot.isDragging ? "z-50"
-                                                    : isDragging ? "opacity-80"
-                                                    : ""
+                                                    snapshot.isDragging
+                                                        ? "z-50"
+                                                        : isDragging
+                                                        ? "opacity-80"
+                                                        : ""
                                                 }`}
                                             >
                                                 <Card className="border-0 shadow-sm hover:shadow-md bg-secondary dark:bg-background">
                                                     <CardHeader className="pb-3">
-                                                        <div className="flex items-center gap-3">
+                                                        <div
+                                                            className={cn(
+                                                                "flex items-center gap-3",
+                                                            )}
+                                                        >
                                                             {/* Drag Handle */}
                                                             <div
                                                                 className="rounded-lg flex items-center justify-center cursor-grab active:cursor-grabbing transition-colors duration-200"
@@ -131,10 +110,14 @@ export function FormBuilderFields() {
                                                             >
                                                                 <GripVertical className="w-4 h-4 text-slate-500" />
                                                             </div>
-
                                                             {/* Field Info */}
                                                             <div
-                                                                className={`w-8 h-8 bg-gradient-to-br ${getFieldColor(field.type)} rounded-lg flex items-center justify-center flex-shrink-0`}
+                                                                className={cn(
+                                                                    `w-8 h-8  rounded-lg flex items-center justify-center flex-shrink-0`,
+                                                                    getFieldColor(
+                                                                        field.type,
+                                                                    ),
+                                                                )}
                                                             >
                                                                 {(() => {
                                                                     const Icon =
@@ -159,20 +142,24 @@ export function FormBuilderFields() {
                                                                 >
                                                                     {field.type}
                                                                 </Badge>
-                                                                {watchedFields[
-                                                                    index
-                                                                ].required && (
+                                                                {fields[index]
+                                                                    .required && (
                                                                     <Badge
                                                                         variant="destructive"
                                                                         className="text-xs"
                                                                     >
-                                                                        Majburiy
+                                                                        {
+                                                                            "Majburiy"
+                                                                        }
                                                                     </Badge>
                                                                 )}
                                                             </div>
-
                                                             {/* Actions */}
-                                                            <div className="flex items-center gap-1 flex-shrink-0">
+                                                            <div
+                                                                className={
+                                                                    "flex items-center gap-1 flex-shrink-0"
+                                                                }
+                                                            >
                                                                 <Button
                                                                     variant="ghost"
                                                                     size="sm"
@@ -180,7 +167,14 @@ export function FormBuilderFields() {
                                                                     onClick={() =>
                                                                         append({
                                                                             ...field,
-                                                                            id: `field_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                                                                            id: `field_${Date.now()}_${Math.random()
+                                                                                .toString(
+                                                                                    36,
+                                                                                )
+                                                                                .substr(
+                                                                                    2,
+                                                                                    9,
+                                                                                )}`,
                                                                             label: `${field.label} nusxa`,
                                                                             extra_data:
                                                                                 {
@@ -222,28 +216,38 @@ export function FormBuilderFields() {
                                                         </div>
                                                     </CardHeader>
 
-                                                    <CardContent className="space-y-4">
-                                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                                            <FormInput
-                                                                label={
-                                                                    "Input nomi"
-                                                                }
-                                                                placeholder={
-                                                                    "Nima yozilishi haqida"
-                                                                }
+                                                    <CardContent className="space-y-4 pt-0">
+                                                        <div className="flex flex-col">
+                                                            <InputText
                                                                 methods={form}
                                                                 name={`fields.${index}.label`}
-                                                                required
+                                                                label={
+                                                                    field.label
+                                                                }
                                                             />
+
                                                             {isPlaceholder(
                                                                 field.type,
                                                             ) && (
                                                                 <FormInput
-                                                                    label="Yordamchi matn"
-                                                                    placeholder="Ixtiyoriy"
+                                                                    placeholder={
+                                                                        "Ixtiyoriy"
+                                                                    }
                                                                     methods={
                                                                         form
                                                                     }
+                                                                    name={`fields.${index}.placeholder`}
+                                                                />
+                                                            )}
+
+                                                            {isPlaceholderPhone(
+                                                                field.type,
+                                                            ) && (
+                                                                <PhoneField
+                                                                    methods={
+                                                                        form
+                                                                    }
+                                                                    label=""
                                                                     name={`fields.${index}.placeholder`}
                                                                 />
                                                             )}
@@ -254,7 +258,9 @@ export function FormBuilderFields() {
                                                         ) && (
                                                             <div className="space-y-3">
                                                                 <Label className="text-xs font-medium text-slate-600">
-                                                                    Variantlar
+                                                                    {
+                                                                        "Variantlar"
+                                                                    }
                                                                 </Label>
                                                                 <div className="space-y-2">
                                                                     {field.extra_data?.options?.map(
@@ -319,7 +325,14 @@ export function FormBuilderFields() {
                                                                                         ?.extra_data
                                                                                         .options ||
                                                                                         []),
-                                                                                    `Variant ${(field?.extra_data.options?.length || 0) + 1}`,
+                                                                                    `${"Variant"} ${
+                                                                                        (field
+                                                                                            ?.extra_data
+                                                                                            .options
+                                                                                            ?.length ||
+                                                                                            0) +
+                                                                                        1
+                                                                                    }`,
                                                                                 ]
                                                                             update(
                                                                                 index,
@@ -337,8 +350,9 @@ export function FormBuilderFields() {
                                                                         className="w-full"
                                                                     >
                                                                         <Plus className="w-4 h-4 mr-2" />
-                                                                        Variant
-                                                                        qo'shish
+                                                                        {
+                                                                            "Variant qo'shish"
+                                                                        }
                                                                     </Button>
                                                                 </div>
                                                             </div>
@@ -347,7 +361,9 @@ export function FormBuilderFields() {
                                                         {!field.extra_data
                                                             .is_fixed && (
                                                             <FormSwitch
-                                                                label="Majburiy maydon"
+                                                                label={
+                                                                    "Majburiy maydon"
+                                                                }
                                                                 control={
                                                                     form.control
                                                                 }
@@ -360,36 +376,13 @@ export function FormBuilderFields() {
                                         )}
                                     </Draggable>
                                 ))
-                            }
+                            )}
                             {provided.placeholder}
+                            <FormBuilderStyling />
                         </div>
                     )}
                 </Droppable>
             </DragDropContext>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {fieldTypes.map(({ type, icon: Icon, label, color }) => (
-                    <Button
-                        key={type}
-                        type="button"
-                        variant="outline"
-                        onClick={() => addField(type)}
-                        className="justify-start p-4 h-auto border-0 bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-lg transition-all duration-300 group"
-                    >
-                        <div
-                            className={`w-8 h-8 bg-gradient-to-br ${color} rounded-lg flex items-center justify-center mr-3 transition-transform duration-300`}
-                        >
-                            <Icon className="w-4 h-4 text-white" />
-                        </div>
-                        <div className="text-left">
-                            <div className="font-medium">{label}</div>
-                            <div className="text-xs text-slate-500">
-                                Qo'shish
-                            </div>
-                        </div>
-                    </Button>
-                ))}
-            </div>
         </div>
     )
 }
@@ -400,50 +393,17 @@ function isPlaceholder(type: LeadFormField["type"]) {
     } else return false
 }
 
+function isPlaceholderPhone(type: LeadFormField["type"]) {
+    if (type === "phone") {
+        return true
+    } else return false
+}
+
 function isVariant(type: LeadFormField["type"]) {
     if (type === "checkbox" || type === "select" || type == "radio") {
         return true
     } else return false
 }
-
-const fieldTypes = [
-    {
-        type: "input" as const,
-        icon: Type,
-        label: "Matn kiritish",
-        color: "from-blue-500 to-cyan-500",
-    },
-    {
-        type: "textarea" as const,
-        icon: FileText,
-        label: "Katta matn kiritish",
-        color: "from-green-500 to-emerald-500",
-    },
-    {
-        type: "select" as const,
-        icon: ChevronDown,
-        label: "Ro‘yxatdan tanlash",
-        color: "from-purple-500 to-violet-500",
-    },
-    {
-        type: "radio" as const,
-        icon: Circle,
-        label: "Variantni tanlash",
-        color: "from-orange-500 to-red-500",
-    },
-    {
-        type: "checkbox" as const,
-        icon: CheckSquare,
-        label: "Belgilash (✓)",
-        color: "from-pink-500 to-rose-500",
-    },
-    {
-        type: "phone" as const,
-        icon: Phone,
-        label: "Telefon raqam",
-        color: "from-green-500 to-green-500",
-    },
-]
 
 const getFieldIcon = (type: LeadFormField["type"]) => {
     const fieldType = fieldTypes.find((f) => f.type === type)
@@ -452,5 +412,5 @@ const getFieldIcon = (type: LeadFormField["type"]) => {
 
 const getFieldColor = (type: LeadFormField["type"]) => {
     const fieldType = fieldTypes.find((f) => f.type === type)
-    return fieldType?.color || "from-gray-500 to-slate-500"
+    return fieldType?.color
 }

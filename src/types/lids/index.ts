@@ -31,6 +31,9 @@ type Lead = {
     get_main_contact: string
     condition: LeadCondition
     pipeline_id: number
+    amount: number
+    total_amount: number
+    total_count: number
 }
 
 type Task = {
@@ -71,6 +74,8 @@ type LeadStatus = {
     is_active: boolean
     pipeline: number
     editable?: boolean
+    total_amount: number
+    total_count: number
 }
 
 type LeadFields = {
@@ -158,10 +163,15 @@ type LeadStatSource = {
     icon: string
 }
 
+
+
 type LeadStatEmploye = {
     worker: number
     full_name: string
-    count: number
+    total: number
+    success: number
+    loosed: number
+    progress: number
 }
 
 type LeadMainStat = {
@@ -181,4 +191,27 @@ type MainLeadStats = {
 type LeadMonthly = {
     month: string
     count: number
+}
+
+type LeadsStatus = {
+    id: number
+    loose_amount: number
+    loosed: number
+    name: string
+    progress: number
+    progress_amount: number
+}
+
+
+
+type MainLeadStatus = {
+    main: {
+        loosed_amount: number
+        success_amount: number
+        total_count: number
+        total_loosed: number
+        total_success: number
+    }
+    statuses: LeadsStatus[]
+
 }

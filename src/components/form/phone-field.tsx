@@ -99,7 +99,7 @@ export default function PhoneField<IForm extends FieldValues>({
                 </FieldLabel>
             )}
             <PhoneInput
-                // hideDropdown
+                hideDropdown
                 // forceDialCode
                 inputProps={{ autoComplete: "off" }}
                 className={cn(

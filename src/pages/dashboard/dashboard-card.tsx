@@ -95,7 +95,7 @@ export default function DashboardCard() {
                         ) => (
                             <Link
                                 to="/students"
-                                search={{ page_tabs: label }}
+                                search={{ id: label }}
                                 className={cn(
                                     "px-2  transition-all cursor-pointer ",
                                     index === 3 || index == 6

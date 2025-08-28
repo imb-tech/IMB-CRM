@@ -1,15 +1,55 @@
 import { DataTable } from "@/components/ui/datatable"
 import { useColumns } from "./columns"
 import { useGet } from "@/hooks/useGet"
-import { COURSE } from "@/constants/api-endpoints"
+import { STUDENT_PARENTS } from "@/constants/api-endpoints"
 import { Badge } from "@/components/ui/badge"
+import { useParams, useSearch } from "@tanstack/react-router"
+import DeleteModal from "@/components/custom/delete-modal"
+import Modal from "@/components/custom/modal"
+import { useModal } from "@/hooks/useModal"
+import { useCallback, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
+import StudentParentsCreate from "./create"
+import { formatMoney } from "@/lib/format-money"
 
-type Props = {}
+const StudentParentsMain = () => {
+    const { id } = useParams({ from: "/_main/students/$id/_main/parents" })
+    const search = useSearch({ from: "/_main/students/$id/_main/parents" })
+    const [current, setCurrent] = useState<StudentParents | null>(null)
+    const { openModal } = useModal("parents-add")
+    const { openModal: openDelete } = useModal("parents-delete")
 
-function StudentParentsMain({}: Props) {
-    const { data, isFetching } = useGet<ListResp<ParentStudent>>(COURSE)
+    const { data, isFetching } = useGet<ListResp<StudentParents>>(
+        STUDENT_PARENTS,
+        {
+            params: { ...search, student: id },
+            options: { enabled: !!id },
+        },
+    )
+
+    const handleAddDiscount = useCallback(() => {
+        setCurrent(null)
+        openModal()
+    }, [openModal])
+
+    const handleUpdate = useCallback(
+        (item: StudentParents) => {
+            if (item?.id) {
+                setCurrent(item)
+                openModal()
+            }
+        },
+        [openModal, setCurrent],
+    )
+
+    const handleDelete = useCallback(
+        (item: StudentParents) => {
+            setCurrent(item)
+            openDelete()
+        },
+        [openDelete],
+    )
 
     const columns = useColumns()
 
@@ -18,88 +58,42 @@ function StudentParentsMain({}: Props) {
             <div className="flex  mb-3 flex-row items-center gap-3 justify-between">
                 <div className="flex items-center gap-3">
                     <h1 className="text-xl font-medium ">{"Ota-Ona"}</h1>
-                    <Badge className="text-sm">1</Badge>
+                    <Badge className="text-sm">{formatMoney(data?.count)}</Badge>
                 </div>
-                <Button className="flex gap-1">
+                <Button
+                    type="button"
+                    onClick={handleAddDiscount}
+                    className="flex gap-1"
+                >
                     <Plus className="w-5 h-5" />
-                    <span className="sm:block hidden">{"Qo'shish"}</span>
+                    <span className="sm:block hidden">Qo'shish</span>
                 </Button>
             </div>
-
             <DataTable
                 columns={columns}
-                data={parents}
+                data={data?.results}
                 loading={isFetching}
-                onEdit={() => {}}
-                onDelete={() => {}}
+                onEdit={(item) => handleUpdate(item.original)}
+                onDelete={(item) => handleDelete(item.original)}
                 numeration
-                viewAll
+                paginationProps={{ totalPages: data?.total_pages }}
             />
+            <DeleteModal
+                modalKey="parents-delete"
+                id={current?.id}
+                path={STUDENT_PARENTS}
+            />
+
+            <Modal
+                modalKey="parents-add"
+                title={`Ma'sul shaxs ${
+                    current?.id ? "tahrirlash" : "qo'shish"
+                }`}
+            >
+                <StudentParentsCreate current={current} />
+            </Modal>
         </div>
     )
 }
 
 export default StudentParentsMain
-
-const parents: ParentStudent[] = [
-    {
-        id: 1,
-        full_name: "Ali Karimov (Ota)",
-        phone: "+998 90 123 45 67",
-        username: "ota",
-    },
-    {
-        id: 2,
-        full_name: "Dilnoza Karimova (Ona)",
-        phone: "+998 91 234 56 78",
-        username: "ona",
-    },
-    {
-        id: 3,
-        full_name: "Bekzod Tursunov (Ota)",
-        phone: "+998 93 345 67 89",
-        username: "ota",
-    },
-    {
-        id: 4,
-        full_name: "Malika Tursunova (Ona)",
-        phone: "+998 94 456 78 90",
-        username: "ona",
-    },
-    {
-        id: 5,
-        full_name: "Javlon Qodirov (Ota)",
-        phone: "+998 95 567 89 01",
-        username: "ota",
-    },
-    {
-        id: 6,
-        full_name: "Nigora Qodirova (Ona)",
-        phone: "+998 97 678 90 12",
-        username: "ona",
-    },
-    {
-        id: 7,
-        full_name: "Sherzod Abdurahmonov (Ota)",
-        phone: "+998 88 789 01 23",
-        username: "ota",
-    },
-    {
-        id: 8,
-        full_name: "Gulbahor Abdurahmonova (Ona)",
-        phone: "+998 99 890 12 34",
-        username: "ona",
-    },
-    {
-        id: 9,
-        full_name: "Rustam Xolmatov (Ota)",
-        phone: "+998 33 901 23 45",
-        username: "ota",
-    },
-    {
-        id: 10,
-        full_name: "Saida Xolmatova (Ona)",
-        phone: "+998 77 012 34 56",
-        username: "ona",
-    },
-]

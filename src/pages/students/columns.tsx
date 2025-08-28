@@ -20,7 +20,7 @@ export const useStudentsCols = () =>
                 accessorKey: "face",
                 cell: ({ row }) => (
                     <SeeInView
-                        url={row.original.photo ?? "/images/user.png"}
+                        url={row.original.photo ?? "/images/studnet.jpeg"}
                         className={
                             "object-cover h-9 min-w-9 max-w-9 rounded-md"
                         }
@@ -61,20 +61,20 @@ export const useStudentsCols = () =>
                                         {`Guruhlar (${row.original.groups.length})`}
                                     </Button>
                                 </PopoverTrigger>
-                                <PopoverContent className="w-auto p-2">
-                                    <div className="flex flex-col gap-1 text-sm ">
+                                <PopoverContent className="w-auto p-2 ">
+                                    <div className="flex flex-col gap-1 text-sm max-h-[55vh] overflow-y-auto no-scrollbar">
                                         {row.original.groups?.map((gr) => (
                                             <p
                                                 key={gr.id}
                                                 className={cn(
                                                     "px-4 py-2 text-sm rounded flex items-center justify-between",
                                                     gr.status == -1 ?
-                                                        "bg-red-500/20 "
+                                                        "bg-red-500/10 text-red-500"
                                                     : gr.status == 0 ?
-                                                        "bg-orange-500/20 "
+                                                        "bg-orange-500/10 text-orange-500 "
                                                     : gr.status == 2 ?
-                                                        "bg-gray-500/20 "
-                                                    :   "bg-green-500/30 ",
+                                                        "bg-sky-500/10 text-sky-500 "
+                                                    :   "bg-green-500/10 text-green-500 ",
                                                 )}
                                             >
                                                 <span>{gr.name}</span>

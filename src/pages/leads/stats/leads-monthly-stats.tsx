@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
-    AreaChart,
-    Area,
+    BarChart,
+    Bar,
     ResponsiveContainer,
     XAxis,
     YAxis,
@@ -9,41 +9,90 @@ import {
     Tooltip,
     Legend,
 } from "recharts"
-
-import { useGet } from "@/hooks/useGet"
 import { useSearch } from "@tanstack/react-router"
+import { useGet } from "@/hooks/useGet"
 import { ParamCombobox } from "@/components/as-params/combobox"
-import { months } from "@/lib/utils"
+import { months } from "@/constants/utils"
 
 export default function LeadsMonthlyStats() {
-    const { pipeline, year, month } = useSearch({
+    const { pipeline, year, month, worker } = useSearch({
         from: "__root__",
     })
     const yr = new Date().getFullYear()
-    const { data } = useGet<LeadMonthly[]>("leads/common/trend-statistic", {
-        params: {
-            year: year ?? yr,
-            month,
-            pipeline,
+
+    const { data: dataChart, isSuccess } = useGet<LeadMonthly[]>(
+        "leads/common/trend-statistic",
+        {
+            params: {
+                year: year ?? yr,
+                month,
+                pipeline,
+                worker,
+            },
         },
-    })
+    )
+
+    const { data: dataSeller, isSuccess: isSuccessSeller } = useGet<any[]>(
+        "leads/common/agents",
+    )
+
+    const isStacked = isSuccess && dataChart?.length > 12
+
+    const bars = [
+        {
+            key: "total",
+            name: "Lidlar",
+            color: "#3b82f6",
+        },
+        {
+            key: "success",
+            name: "Erishildi",
+            color: "#10b981",
+        },
+        {
+            key: "loosed",
+            name: "Yo'qotildi",
+            color: "#ef4444",
+        },
+    ]
 
     return (
-        <Card className="hover:shadow-lg border-none">
-            <CardHeader className="flex flex-row items-center gap-2">
+        <Card className="mt-4">
+            <CardHeader className="flex md:flex-row items-center gap-2">
                 <CardTitle className="font-extralight flex-1">
-                    Lidlar soni bo‘yicha trend
+                    {"Lidlar soni bo‘yicha trend"}
                 </CardTitle>
+                <ParamCombobox
+                    // isSearch={false}
+                    label={"Sotuvchilar"}
+                    labelKey="name"
+                    valueKey="key"
+                    options={
+                        (isSuccessSeller &&
+                            dataSeller?.map((item) => ({
+                                key: item.id,
+                                name: `${item.first_name} ${item.last_name} ${
+                                    item.middle_name || ""
+                                }`,
+                            }))) ||
+                        []
+                    }
+                    paramName="worker"
+                    className="w-full"
+                    addButtonProps={{
+                        className: "min-w-[200px] md:w-max w-full",
+                    }}
+                />
 
                 <ParamCombobox
                     // isSearch={false}
-                    label="Oy"
+                    label={"Oy"}
                     labelKey="name"
                     valueKey="key"
                     options={months}
                     paramName="month"
                     addButtonProps={{
-                        className: "min-w-[120px]",
+                        className: "min-w-[120px] md:w-max w-full",
                     }}
                 />
 
@@ -53,7 +102,7 @@ export default function LeadsMonthlyStats() {
                     labelKey="name"
                     valueKey="key"
                     addButtonProps={{
-                        className: "min-w-[120px]",
+                        className: "min-w-[120px] md:w-max w-full",
                     }}
                     options={Array(10)
                         .fill(0)
@@ -64,64 +113,73 @@ export default function LeadsMonthlyStats() {
                     paramName="year"
                 />
             </CardHeader>
-            <CardContent className="p-0">
+
+            <CardContent>
                 <ResponsiveContainer width="100%" height={350}>
-                    <AreaChart
-                        data={data}
-                        margin={{
-                            top: 20,
-                            right: 20,
-                            left: 0,
-                            bottom: 10,
-                        }}
+                    <BarChart
+                        data={dataChart}
+                        margin={{ top: 0, right: 0, left: -20, bottom: 0 }}
                     >
                         <CartesianGrid
+                            vertical={false}
                             strokeDasharray="3 3"
-                            stroke="gray"
-                            className="stroke-gray-400/30"
+                            strokeOpacity={0.2}
                         />
                         <XAxis
                             dataKey="key"
-                            tickFormatter={(v) => v.toString().slice(0, 3)}
-                            tick={{ fontSize: 12 }}
+                            tick={{ fontSize: 12, fill: "currentColor" }}
                         />
-                        <YAxis tick={{ fontSize: 12 }} />
+                        <YAxis tick={{ fontSize: 12, fill: "currentColor" }} />
                         <Tooltip
+                            cursor={{ fill: "rgba(100, 100, 100, 0.2)" }}
                             formatter={(value, name) => [
                                 value,
                                 name.toString(),
                             ]}
+                            contentStyle={{
+                                backgroundColor: "hsl(var(--background) / 0.9)",
+                                borderRadius: "8px",
+                                borderColor: "hsl(var(--border))",
+                                backdropFilter: "blur(4px)",
+                            }}
                             labelStyle={{
                                 color: "hsl(var(--text-muted-foreground))",
                             }}
-                            contentStyle={{
-                                backgroundColor: "hsl(var(--background))",
-                                borderRadius: "8px",
-                                borderColor: "gray",
-                            }}
                         />
-                        <Legend />
-                        <Area
-                            type="monotone"
-                            dataKey="count"
-                            stackId="1"
-                            stroke="#3b82f6"
-                            fill="#3b82f6"
-                            fillOpacity={0.6}
-                            name="Lidlar"
-                        />
-                        <Area
-                            type="monotone"
-                            dataKey="success_count"
-                            stackId="2"
-                            stroke="#10b981"
-                            fill="#10b981"
-                            fillOpacity={0.6}
-                            name="Muvaffaqiyatli yakunlandi"
-                        />
-                    </AreaChart>
+                        <Legend content={<CustomLegendContent />} />
+                        {bars.map((bar) => (
+                            <Bar
+                                key={bar.key}
+                                dataKey={bar.key}
+                                fill={bar.color}
+                                name={bar.name}
+                                barSize={17}
+                                {...(isStacked ? { stackId: "a" } : {})}
+                            />
+                        ))}
+                    </BarChart>
                 </ResponsiveContainer>
             </CardContent>
         </Card>
+    )
+}
+
+type CustomLegendContentProps = {
+    payload?: any[]
+}
+
+const CustomLegendContent = ({ payload }: CustomLegendContentProps) => {
+    return (
+        <ul className="flex gap-4 justify-center mt-4">
+            {payload?.map((entry, index) => (
+                <li key={`item-${index}`} className="flex items-center gap-2">
+                    <span
+                        className="w-4 h-4 rounded-lg"
+                        style={{ backgroundColor: entry.color }}
+                    ></span>
+                    <span className="text-sm">{entry.value}</span>
+                </li>
+            ))}
+        </ul>
     )
 }

@@ -1,6 +1,8 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { STUDENT } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
+import { formatMoney } from "@/lib/format-money"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
 import { cn } from "@/lib/utils"
 import { useParams } from "@tanstack/react-router"
@@ -11,7 +13,7 @@ type Props = {}
 
 function StudentProfile({}: Props) {
     const { id } = useParams({ from: "/_main/students/$id" })
-    const { data } = useGet<Student>(`students/${id}`, {
+    const { data } = useGet<Student>(`${STUDENT}/${id}`, {
         options: { enabled: !!id },
     })
 
@@ -106,9 +108,16 @@ function StudentProfile({}: Props) {
                     </span>
                 </div>
 
-                <div className="flex items-center ">
+                <div
+                    className={cn(
+                        "flex items-center",
+                        Number(data?.balance) < 0 && "text-red-500",
+                    )}
+                >
                     <strong className="min-w-28 text-xl">{"Balans"}:</strong>
-                    <span className="text-xl">{data?.balance}</span>
+                    <span className="text-xl">
+                        {formatMoney(data?.balance)}
+                    </span>
                 </div>
             </div>
 

@@ -2,7 +2,7 @@ import { DragDropContext, DragStart, Droppable } from "react-beautiful-dnd"
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import LeadsColumn from "./leads-column"
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 import { DropResult } from "react-beautiful-dnd"
 import { useGet } from "@/hooks/useGet"
 import { useModal } from "@/hooks/useModal"
@@ -12,10 +12,9 @@ import { usePatch } from "@/hooks/usePatch"
 import Modal from "@/components/custom/modal"
 import CreateStatusFrom from "../leadform/create-status-form"
 import DeleteModal from "@/components/custom/delete-modal"
-import { CheckCheck, Grid2x2Plus, Trash } from "lucide-react"
+import {  Grid2x2Plus } from "lucide-react"
 import { useStore } from "@/hooks/use-store"
 import { usePost } from "@/hooks/usePost"
-import { cn } from "@/lib/utils"
 import { generateIndexedData, moveBetweenArrays, moveItem } from "../utils"
 import useLeadStatuses from "../use-lead-statuses"
 import DeleteLeadModal from "./delete-lead-modal"
@@ -31,8 +30,6 @@ const LeadsDnd = () => {
         type: "delete" | "success"
         name: string
     }>("conf-lead")
-
-    const [isDragging, setIsDragging] = useState<boolean>(false)
 
     const queryClient = useQueryClient()
 
@@ -56,7 +53,6 @@ const LeadsDnd = () => {
     const { mutate: orderMutation } = usePost()
 
     const onDragEnd = (result: DropResult) => {
-        setIsDragging(false)
         const originUsers =
             queryClient.getQueryData<LeadFields[]>(queryKeyUsers)
 
@@ -89,6 +85,7 @@ const LeadsDnd = () => {
             let newData: typeof users = []
 
             if (cfg.from === cfg.to) {
+                // Bitta column ichida move qilamiz
                 updatedToUsers = moveItem(
                     toUsers,
                     result.source.index,
@@ -98,6 +95,7 @@ const LeadsDnd = () => {
                 const otherUsers = users.filter((u) => u.status !== cfg.to)
                 newData = [...otherUsers, ...updatedToUsers]
             } else {
+                // Boshqa column’ga move qilamiz
                 const moved = moveBetweenArrays(
                     fromUsers,
                     toUsers,
@@ -167,15 +165,11 @@ const LeadsDnd = () => {
         return ord ? ord + 1 : 0
     }, [data])
 
-    const onDragStart = (result: DragStart) => {
-        if (result.type === "card") {
-            setIsDragging(true)
-        }
-    }
+
 
     return (
         <div className="py-3 flex items-start gap-3 w-full h-full relative">
-            <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
+            <DragDropContext onDragEnd={onDragEnd}>
                 <Droppable
                     droppableId="all-columns"
                     direction="horizontal"
@@ -227,58 +221,14 @@ const LeadsDnd = () => {
                     )}
                 </Droppable>
 
-                <div
-                    className={cn(
-                        "fixed opacity-0 bottom-0 right-0 left-0 m-auto w-full hidden sm:flex justify-center items-end gap-2 transition-opacity duration-150",
-                        isDragging ? "opacity-100" : "",
-                    )}
-                >
-                    <Droppable droppableId="delete-zone" type="card">
-                        {(provided, snapshot) => (
-                            <div
-                                ref={provided.innerRef}
-                                {...provided.droppableProps}
-                                className={`w-80 h-16 overflow-hidden flex items-start relative justify-start transition-all duration-300 rounded-md border border-dashed border-rose-500/40 text-rose-500/70 ${
-                                    snapshot.isDraggingOver ?
-                                        "bg-rose-600/20 text-rose-600"
-                                    :   ""
-                                }`}
-                            >
-                                {provided.placeholder}
-                                <p className="absolute flex items-center gap-1 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                                    <Trash />
-                                    <span>O'chirish</span>
-                                </p>
-                            </div>
-                        )}
-                    </Droppable>
-
-                    <Droppable droppableId="success-zone" type="card">
-                        {(provided, snapshot) => (
-                            <div
-                                ref={provided.innerRef}
-                                {...provided.droppableProps}
-                                className={`w-80 h-16 overflow-hidden flex items-start relative justify-start transition-all duration-300 rounded-md border border-dashed border-emerald-500/40 text-emerald-500/70 ${
-                                    snapshot.isDraggingOver ?
-                                        "bg-emerald-600/20 text-emerald-600"
-                                    :   ""
-                                }`}
-                            >
-                                {provided.placeholder}
-                                <div className="absolute flex items-center justify-center gap-1 w-full h-full">
-                                    <CheckCheck />
-                                    Muvaffaqiyatli yakunlandi
-                                </div>
-                            </div>
-                        )}
-                    </Droppable>
-                </div>
             </DragDropContext>
 
             <Modal
                 modalKey="create-status"
                 title={
-                    store?.id ? "Bo'limni tahrirlash" : "Yangi bo'lim yaratish"
+                    store?.id ?
+                        ("Bo'limni tahrirlash")
+                    :   ("Yangi bo'lim yaratish")
                 }
                 onClose={remove}
             >

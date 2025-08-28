@@ -29,7 +29,7 @@ export function FormTextarea<IForm extends FieldValues>({
     registerOptions,
     wrapperClassName,
     className,
-    hideError = true,
+    hideError = false,
     ...props
 }: IProps<IForm> & React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
     const {
@@ -53,7 +53,7 @@ export function FormTextarea<IForm extends FieldValues>({
                     htmlFor={name}
                     required={required}
                     isError={!!error}
-                    className="text-xs text-muted-foreground"
+                    className="text-xs "
                 >
                     {label}
                 </FieldLabel>
@@ -67,7 +67,7 @@ export function FormTextarea<IForm extends FieldValues>({
                 className={cn(
                     className,
                     !!error && label
-                        ? "border-destructive focus:border-border !ring-destructive"
+                        ? "border-red-600 focus:border-border !ring-red-600"
                         : "",
                 )}
             />

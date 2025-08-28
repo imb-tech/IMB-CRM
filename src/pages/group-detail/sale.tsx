@@ -14,6 +14,7 @@ import FormTextarea from "@/components/form/textarea"
 import { usePost } from "@/hooks/usePost"
 import DeleteModal from "@/components/custom/delete-modal"
 import { AxiosError } from "axios"
+import showFormErrors from "@/lib/show-form-errors"
 
 export default function GroupSale() {
     const columns = useGroupSalesCols()
@@ -32,7 +33,7 @@ export default function GroupSale() {
     )
 
     const { data: students } = useGet<GroupStudent[]>(GROUP_STUDENTS, {
-        params: { group, ...search},
+        params: { group, ...search },
     })
 
     const mergedData = useMemo<StudentMergeDiscount[]>(() => {
@@ -55,14 +56,7 @@ export default function GroupSale() {
             closeModal()
             form.reset({})
         },
-        onError(errors: AxiosError) {
-            for (const [k, v] of Object.entries(errors.response?.data ?? {})) {
-                form.setError(k as Path<StudentDiscount>, {
-                    type: "validate",
-                    message: v,
-                })
-            }
-        },
+        onError: (err) => showFormErrors(err, form),
     })
 
     const form = useForm<StudentDiscount>()

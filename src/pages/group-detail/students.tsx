@@ -93,7 +93,7 @@ export default function GroupStudents() {
                     invalidateQueries()
                 }}
                 modalKey="delete-student"
-                path="platform/group-students"
+                path={GROUP_STUDENTS}
             />
         </div>
     )

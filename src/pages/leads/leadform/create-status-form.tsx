@@ -45,9 +45,9 @@ export default function CreateStatusFrom({
 
     return (
         <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FormInput methods={form} name="name" label="Nomi" />
+            <FormInput methods={form} name="name" label={"Nomi"} />
             <Button className="w-full mt-4" loading={isPending || isPatching}>
-                Saqlash
+                {"Saqlash"}
             </Button>
         </form>
     )

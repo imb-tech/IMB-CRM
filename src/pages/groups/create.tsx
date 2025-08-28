@@ -8,6 +8,7 @@ import {
     GROUP,
     GROUP_STUDENTS,
     OPTION_COURSES,
+    OPTION_GROUPS,
     OPTION_ROOMS,
     OPTION_TEACHERS,
 } from "@/constants/api-endpoints"
@@ -91,6 +92,7 @@ const GroupCreate = ({ item }: Props) => {
             queryKey: [GROUP_STUDENTS, search],
         })
         queryClient.invalidateQueries({ queryKey: [GROUP] })
+        queryClient.invalidateQueries({ queryKey: [OPTION_GROUPS] })
     }
 
     const { mutate, isPending } = usePost({ onSuccess })

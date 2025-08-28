@@ -1,40 +1,62 @@
 import { formatMoney } from "@/lib/format-money"
+import { useNavigate } from "@tanstack/react-router"
 import { ColumnDef } from "@tanstack/react-table"
+import { format } from "date-fns"
 import { useMemo } from "react"
 
-export const useColumns = () =>
-    useMemo<ColumnDef<Course>[]>(
+export const useColumns = () => {
+    const navigate = useNavigate()
+
+    return useMemo<ColumnDef<DiscountStudent>[]>(
         () => [
             {
+                header: "Guruh",
+                accessorKey: "group_data",
+                cell: ({ row }) => (
+                    <span
+                        onClick={() =>
+                            navigate({
+                                to: "/groups/$id/sale",
+                                params: {
+                                    id: String(row.original.group_data.id),
+                                },
+                            })
+                        }
+                        className="hover:text-primary cursor-pointer hover:underline"
+                    >
+                        {row.original?.group_data?.name}
+                    </span>
+                ),
+            },
+            {
                 header: "FIO",
-                accessorKey: "name",
+                accessorKey: "author_name",
                 enableSorting: true,
-                cell: ({ row }) => "Dilnoza Ismoilova",
             },
             {
                 header: "Chegirma soni",
-                accessorKey: "price",
+                accessorKey: "count",
                 enableSorting: true,
-                cell: ({ row }) => "13",
             },
             {
                 header: "Berilgan sana",
-                accessorKey: "duration",
+                accessorKey: "created_at",
                 enableSorting: true,
-                cell: ({ row }) => "2025-08-21",
+                cell: ({ row }) =>
+                    format(row.original.created_at, "yyyy-MM-dd"),
             },
             {
                 header: "Izoh",
-                accessorKey: "branch",
+                accessorKey: "reason",
                 enableSorting: true,
-                cell: ({ row }) => "Imtihonda 100% lik yechgani uchun berilgan",
             },
             {
                 header: "To'lov summasi",
                 accessorKey: "branch",
                 enableSorting: true,
-                cell: ({ row }) => "450 000",
+                cell: ({ row }) => formatMoney(row.original.amount),
             },
         ],
-        [],
+        [navigate],
     )
+}

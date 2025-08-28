@@ -7,6 +7,7 @@ import Modal from "@/components/custom/modal"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { cn } from "@/lib/utils"
+import { useDelete } from "@/hooks/useDelete"
 
 export default function DeleteLeadModal() {
     const { id } = useParams({ strict: false })
@@ -24,7 +25,13 @@ export default function DeleteLeadModal() {
         ...Object.values({ condition: "active", status__pipeline: id }),
     ]
 
-    const { mutate, isPending } = usePatch()
+    const queryKeyStatus = [
+        "leads/pipeline/status",
+        ...Object.values({ is_active: true, pipeline: id }),
+    ]
+
+    const { mutate: mutateDelete, isPending: isPendingDelete } = useDelete()
+    const { mutate: mutatePatch, isPending: isPendingPatch } = usePatch()
 
     function handleConfirm() {
         const drpId = Number(store?.id)
@@ -37,20 +44,34 @@ export default function DeleteLeadModal() {
             originUsers?.filter((usr) => usr.id !== drpId),
         )
 
-        mutate(
-            `leads/update/${drpId}`,
-            {
-                condition: store?.type === "delete" ? "deleted" : "success",
-            },
-            {
+        if (store?.type === "delete") {
+            mutateDelete(`leads/crud/${drpId}`, {
                 onError() {
                     queryClient.setQueryData(queryKeyUsers, originUsers)
                 },
                 onSuccess() {
                     closeModal()
+                    queryClient.refetchQueries({ queryKey: queryKeyStatus })
                 },
-            },
-        )
+            })
+        } else {
+            mutatePatch(
+                `leads/update/${drpId}`,
+                {
+                    condition: "success",
+                    is_active: false,
+                },
+                {
+                    onError() {
+                        queryClient.setQueryData(queryKeyUsers, originUsers)
+                    },
+                    onSuccess() {
+                        queryClient.refetchQueries({ queryKey: queryKeyStatus })
+                        closeModal()
+                    },
+                },
+            )
+        }
     }
 
     return (
@@ -62,14 +83,14 @@ export default function DeleteLeadModal() {
                         color="emerald"
                         className={cn(
                             "text-lg rounded-md mx-2 font-light",
-                            store?.type == "delete" ?
-                                "text-rose-500 bg-rose-500/10 hover:bg-rose-500/10"
-                            :   "text-emerald-500 bg-emerald-500/10 hover:bg-emerald-500/10",
+                            store?.type == "delete"
+                                ? "text-rose-500 bg-rose-500/10 hover:bg-rose-500/10"
+                                : "text-emerald-500 bg-emerald-500/10 hover:bg-emerald-500/10",
                         )}
                     >
-                        {store?.type == "delete" ?
-                            "o'chirilgan"
-                        :   "muvaffaqiyatli mijoz"}
+                        {store?.type == "delete"
+                            ? "o'chirilgan"
+                            : "muvaffaqiyatli mijoz"}
                     </Badge>
                     holatiga o'zgartirmoqchimisiz?
                 </h1>
@@ -77,7 +98,7 @@ export default function DeleteLeadModal() {
                 <Button
                     className="mt-5 w-full"
                     onClick={handleConfirm}
-                    loading={isPending}
+                    loading={isPendingDelete || isPendingPatch}
                 >
                     Tasdiqlash
                 </Button>

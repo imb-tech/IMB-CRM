@@ -44,14 +44,17 @@ export function StatusPopover({
     return (
         <Popover>
             <PopoverTrigger asChild>
-                <Button variant="outline" className="p-0 !h-auto border-none">
+                <Button className="p-0 !h-auto border-none !hover:bg-transparent !bg-transparent">
                     <span
                         className={cn(
-                            "p-1 px-2 text-xs flex items-center justify-center gap-1 rounded-sm cursor-pointer select-none",
-                            status == 3 ? "bg-red-500/20 "
-                            : status == 0 ? "bg-yellow-500/20 "
-                            : status == 2 ? "bg-gray-500/20 "
-                            : "bg-green-500/30 ",
+                            "p-1 px-2 text-xs flex items-center justify-center gap-1  rounded-sm cursor-pointer select-none",
+                            status == 3
+                                ? "bg-red-500/10 text-red-500"
+                                : status == 0
+                                ? "bg-yellow-500/10 text-yellow-500 "
+                                : status == 2
+                                ? "bg-sky-500/10  text-sky-500"
+                                : "bg-green-500/10 text-green-500",
                             "w-[80px]",
                         )}
                     >

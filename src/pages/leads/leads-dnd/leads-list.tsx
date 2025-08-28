@@ -6,6 +6,7 @@ type Props = {
 }
 
 const LeadsList = ({ users }: Props) => {
+
     return users?.map((item, index) => (
         <Draggable
             key={`user-${item.id}`}

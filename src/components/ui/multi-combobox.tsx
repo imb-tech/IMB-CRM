@@ -102,7 +102,7 @@ export function MultiCombobox<T extends Record<string, any>>({
                     className={cn(
                         "w-full relative justify-between  overflow-hidden px-2 hover:bg-card font-normal text-gray-400 hover:text-gray-400 items-center",
                         values && "font-medium text-foreground",
-                        isError && "!border-destructive border",
+                        isError && "!border-red-600 border",
                         className,
                     )}
                     {...addButtonProps}

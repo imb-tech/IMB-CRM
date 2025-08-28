@@ -7,8 +7,10 @@ export const PROFILE = AUTH + "profile"
 
 export const BRANCH = COMMON + "branches"
 export const ROOM = COMMON + "rooms"
+export const SMS_LIST = COMMON + "send-sms"
 export const COURSE = COMMON + "courses"
 export const PAYMENT_TYPE = COMMON + "payment-types"
+export const PAYMENT_TYPES_OPTION = "option/payment-types"
 export const HOLIDAY = COMMON + "weekends"
 export const ROLE = COMMON + "roles"
 export const TASKLY_PROJECT_CRM = "taskly/list-projects"
@@ -18,12 +20,19 @@ export const OPTION_COURSES = OPTION + "courses"
 export const OPTION_TEACHERS = OPTION + "teachers"
 export const OPTION_ROOMS = OPTION + "rooms"
 export const OPTION_GROUPS = OPTION + "groups"
+export const OPTION_GROUPS_STUDENTS = OPTION + "group_students"
 export const OPTION_STUDENT = OPTION + "students"
 export const EMPLOYEE = "employees"
 export const SALARIES = "salary-types/attach"
 export const STUDENT = "students"
+export const STUDENT_NOTES = "students/notes"
+export const STUDENT_PARENTS = "students/parents"
+export const STUDENT_GROUP = "students/groups"
 export const GROUP = "platform/groups"
 export const GROUP_STUDENTS = "platform/group-students"
+export const GROUP_STUDENTS_DISCOUNTS = "platform/group-students/discounts"
+export const GROUP_STUDENTS_PAYMENT = "platform/group-students/payments"
+export const GROUP_STUDENTS_MODULES = "platform/group-students/crud/modules"
 
 export const REFRESH_TOKEN = "token/refresh"
 export const INVENTORY_CAR = `/car`
@@ -40,3 +49,18 @@ export const REGION = `region`
 export const STATION = `station`
 export const TRANSPORT = `transport`
 export const USERS = `users`
+
+
+// Tasks Endpoints
+export const TASKLY_PROJECT = 'taskly/projects'
+export const TASKLY_PROJECT_USERS = 'taskly/projects-users'
+export const PROJECTS_TASKS = 'taskly/project-tasks'
+export const STATUSES = 'taskly/statuses'
+export const STATUSES_MOVE = 'taskly/move-status'
+export const MOVE_TASK = 'taskly/move-task'
+export const OPTION_EMPLOYEES = 'option/employees'
+export const TASKLY_FILES = 'taskly/files'
+export const TASKLY_COMMENT= 'taskly/comments'
+export const TASKS = 'taskly/tasks'
+export const TASKS_EXCEL = 'taskly/project-excel-report'
+export const FILTER_TASKLY_USERS =  'task-users'

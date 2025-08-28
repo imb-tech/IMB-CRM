@@ -1,10 +1,12 @@
 import { formatMoney } from "@/lib/format-money"
+import { useNavigate } from "@tanstack/react-router"
 import { ColumnDef } from "@tanstack/react-table"
 import { format } from "date-fns"
 import { useMemo } from "react"
 
-export const useColumns = ({ isGroup }: { isGroup: boolean }) =>
-    useMemo<ColumnDef<AllPaymentStudent>[]>(
+export const useColumns = ({ isGroup }: { isGroup: boolean }) => {
+    const navigate = useNavigate()
+    return useMemo<ColumnDef<GroupStudentPayments>[]>(
         () => [
             {
                 header: "Sana",
@@ -13,14 +15,14 @@ export const useColumns = ({ isGroup }: { isGroup: boolean }) =>
                 cell({ row }) {
                     return (
                         <p className="whitespace-nowrap">
-                            {format(row.original.created_at, "yyyy-MM-dd")}
+                            {format(row.original.date, "yyyy-MM-dd")}
                         </p>
                     )
                 },
             },
             {
                 header: "To'lov turi",
-                accessorKey: "payment_type",
+                accessorKey: "payment_type_name",
                 enableSorting: true,
             },
             {
@@ -33,14 +35,27 @@ export const useColumns = ({ isGroup }: { isGroup: boolean }) =>
                 ? [
                       {
                           header: "Guruh",
-                          accessorKey: "group",
+                          accessorKey: "group_data",
                           enableSorting: true,
+                          cell: ({ row }: any) => (
+                              <span
+                                  onClick={() =>
+                                      navigate({
+                                          to: "/groups/$id",
+                                          params: { id: String(row.original.group_data.id) },
+                                      })
+                                  }
+                                  className="hover:text-primary cursor-pointer hover:underline"
+                              >
+                                  {row.original?.group_data?.name}
+                              </span>
+                          ),
                       },
                   ]
                 : []),
             {
                 header: "Izoh",
-                accessorKey: "comment",
+                accessorKey: "description",
                 enableSorting: true,
             },
             {
@@ -60,9 +75,20 @@ export const useColumns = ({ isGroup }: { isGroup: boolean }) =>
             },
             {
                 header: "Qabul qildi",
-                accessorKey: "received_by",
+                accessorKey: "author_data",
                 enableSorting: true,
+                cell({ row }) {
+                    const { author_data } = row.original
+                    return author_data ? (
+                        <p className="whitespace-nowrap">
+                            {author_data?.full_name}
+                        </p>
+                    ) : (
+                        "-"
+                    )
+                },
             },
         ],
         [isGroup],
     )
+}

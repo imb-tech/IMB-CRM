@@ -63,3 +63,10 @@ type FormValues = {
     }[]
     employees: number[]
 }
+
+
+type OptionEmployees = {
+    id: string
+    full_name: string
+    phone: string
+}

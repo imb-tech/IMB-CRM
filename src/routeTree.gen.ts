@@ -20,10 +20,12 @@ import { Route as V1PathImport } from './routes/v1/$path'
 import { Route as FormIdImport } from './routes/form/$id'
 import { Route as MainReportsImport } from './routes/_main/reports'
 import { Route as MainStudentsIndexImport } from './routes/_main/students/index'
+import { Route as MainProjectIndexImport } from './routes/_main/project/index'
 import { Route as MainLeadsIndexImport } from './routes/_main/leads/index'
 import { Route as MainGroupsIndexImport } from './routes/_main/groups/index'
 import { Route as MainFinanceIndexImport } from './routes/_main/finance/index'
 import { Route as MainSettingsMainImport } from './routes/_main/settings/_main'
+import { Route as MainProjectIdImport } from './routes/_main/project/$id'
 import { Route as MainLeadsSourcesImport } from './routes/_main/leads/sources'
 import { Route as MainLeadsArchiveImport } from './routes/_main/leads/archive'
 import { Route as MainFinanceIncomeImport } from './routes/_main/finance/income'
@@ -158,6 +160,12 @@ const MainStudentsIndexRoute = MainStudentsIndexImport.update({
   getParentRoute: () => MainRoute,
 } as any)
 
+const MainProjectIndexRoute = MainProjectIndexImport.update({
+  id: '/project/',
+  path: '/project/',
+  getParentRoute: () => MainRoute,
+} as any)
+
 const MainLeadsIndexRoute = MainLeadsIndexImport.update({
   id: '/leads/',
   path: '/leads/',
@@ -179,6 +187,12 @@ const MainFinanceIndexRoute = MainFinanceIndexImport.update({
 const MainSettingsMainRoute = MainSettingsMainImport.update({
   id: '/_main',
   getParentRoute: () => MainSettingsRoute,
+} as any)
+
+const MainProjectIdRoute = MainProjectIdImport.update({
+  id: '/project/$id',
+  path: '/project/$id',
+  getParentRoute: () => MainRoute,
 } as any)
 
 const MainLeadsSourcesRoute = MainLeadsSourcesImport.update({
@@ -569,6 +583,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainLeadsSourcesImport
       parentRoute: typeof MainImport
     }
+    '/_main/project/$id': {
+      id: '/_main/project/$id'
+      path: '/project/$id'
+      fullPath: '/project/$id'
+      preLoaderRoute: typeof MainProjectIdImport
+      parentRoute: typeof MainImport
+    }
     '/_main/settings': {
       id: '/_main/settings'
       path: '/settings'
@@ -602,6 +623,13 @@ declare module '@tanstack/react-router' {
       path: '/leads'
       fullPath: '/leads'
       preLoaderRoute: typeof MainLeadsIndexImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/project/': {
+      id: '/_main/project/'
+      path: '/project'
+      fullPath: '/project'
+      preLoaderRoute: typeof MainProjectIndexImport
       parentRoute: typeof MainImport
     }
     '/_main/students/': {
@@ -1078,10 +1106,12 @@ interface MainRouteChildren {
   MainFinanceIncomeRoute: typeof MainFinanceIncomeRoute
   MainLeadsArchiveRoute: typeof MainLeadsArchiveRoute
   MainLeadsSourcesRoute: typeof MainLeadsSourcesRoute
+  MainProjectIdRoute: typeof MainProjectIdRoute
   MainSettingsRoute: typeof MainSettingsRouteWithChildren
   MainFinanceIndexRoute: typeof MainFinanceIndexRoute
   MainGroupsIndexRoute: typeof MainGroupsIndexRoute
   MainLeadsIndexRoute: typeof MainLeadsIndexRoute
+  MainProjectIndexRoute: typeof MainProjectIndexRoute
   MainStudentsIndexRoute: typeof MainStudentsIndexRoute
   MainGroupsIdRoute: typeof MainGroupsIdRouteWithChildren
   MainLeadsFormsIdRoute: typeof MainLeadsFormsIdRoute
@@ -1103,10 +1133,12 @@ const MainRouteChildren: MainRouteChildren = {
   MainFinanceIncomeRoute: MainFinanceIncomeRoute,
   MainLeadsArchiveRoute: MainLeadsArchiveRoute,
   MainLeadsSourcesRoute: MainLeadsSourcesRoute,
+  MainProjectIdRoute: MainProjectIdRoute,
   MainSettingsRoute: MainSettingsRouteWithChildren,
   MainFinanceIndexRoute: MainFinanceIndexRoute,
   MainGroupsIndexRoute: MainGroupsIndexRoute,
   MainLeadsIndexRoute: MainLeadsIndexRoute,
+  MainProjectIndexRoute: MainProjectIndexRoute,
   MainStudentsIndexRoute: MainStudentsIndexRoute,
   MainGroupsIdRoute: MainGroupsIdRouteWithChildren,
   MainLeadsFormsIdRoute: MainLeadsFormsIdRoute,
@@ -1134,10 +1166,12 @@ export interface FileRoutesByFullPath {
   '/finance/income': typeof MainFinanceIncomeRoute
   '/leads/archive': typeof MainLeadsArchiveRoute
   '/leads/sources': typeof MainLeadsSourcesRoute
+  '/project/$id': typeof MainProjectIdRoute
   '/settings': typeof MainSettingsMainRouteWithChildren
   '/finance': typeof MainFinanceIndexRoute
   '/groups': typeof MainGroupsIndexRoute
   '/leads': typeof MainLeadsIndexRoute
+  '/project': typeof MainProjectIndexRoute
   '/students': typeof MainStudentsIndexRoute
   '/attendance/employees': typeof MainAttendanceMainEmployeesRoute
   '/attendance/students': typeof MainAttendanceMainStudentsRoute
@@ -1192,10 +1226,12 @@ export interface FileRoutesByTo {
   '/finance/income': typeof MainFinanceIncomeRoute
   '/leads/archive': typeof MainLeadsArchiveRoute
   '/leads/sources': typeof MainLeadsSourcesRoute
+  '/project/$id': typeof MainProjectIdRoute
   '/settings': typeof MainSettingsMainIndexRoute
   '/finance': typeof MainFinanceIndexRoute
   '/groups': typeof MainGroupsIndexRoute
   '/leads': typeof MainLeadsIndexRoute
+  '/project': typeof MainProjectIndexRoute
   '/students': typeof MainStudentsIndexRoute
   '/attendance/employees': typeof MainAttendanceMainEmployeesRoute
   '/attendance/students': typeof MainAttendanceMainStudentsRoute
@@ -1250,11 +1286,13 @@ export interface FileRoutesById {
   '/_main/finance/income': typeof MainFinanceIncomeRoute
   '/_main/leads/archive': typeof MainLeadsArchiveRoute
   '/_main/leads/sources': typeof MainLeadsSourcesRoute
+  '/_main/project/$id': typeof MainProjectIdRoute
   '/_main/settings': typeof MainSettingsRouteWithChildren
   '/_main/settings/_main': typeof MainSettingsMainRouteWithChildren
   '/_main/finance/': typeof MainFinanceIndexRoute
   '/_main/groups/': typeof MainGroupsIndexRoute
   '/_main/leads/': typeof MainLeadsIndexRoute
+  '/_main/project/': typeof MainProjectIndexRoute
   '/_main/students/': typeof MainStudentsIndexRoute
   '/_main/attendance/_main/employees': typeof MainAttendanceMainEmployeesRoute
   '/_main/attendance/_main/students': typeof MainAttendanceMainStudentsRoute
@@ -1313,10 +1351,12 @@ export interface FileRouteTypes {
     | '/finance/income'
     | '/leads/archive'
     | '/leads/sources'
+    | '/project/$id'
     | '/settings'
     | '/finance'
     | '/groups'
     | '/leads'
+    | '/project'
     | '/students'
     | '/attendance/employees'
     | '/attendance/students'
@@ -1370,10 +1410,12 @@ export interface FileRouteTypes {
     | '/finance/income'
     | '/leads/archive'
     | '/leads/sources'
+    | '/project/$id'
     | '/settings'
     | '/finance'
     | '/groups'
     | '/leads'
+    | '/project'
     | '/students'
     | '/attendance/employees'
     | '/attendance/students'
@@ -1426,11 +1468,13 @@ export interface FileRouteTypes {
     | '/_main/finance/income'
     | '/_main/leads/archive'
     | '/_main/leads/sources'
+    | '/_main/project/$id'
     | '/_main/settings'
     | '/_main/settings/_main'
     | '/_main/finance/'
     | '/_main/groups/'
     | '/_main/leads/'
+    | '/_main/project/'
     | '/_main/students/'
     | '/_main/attendance/_main/employees'
     | '/_main/attendance/_main/students'
@@ -1524,10 +1568,12 @@ export const routeTree = rootRoute
         "/_main/finance/income",
         "/_main/leads/archive",
         "/_main/leads/sources",
+        "/_main/project/$id",
         "/_main/settings",
         "/_main/finance/",
         "/_main/groups/",
         "/_main/leads/",
+        "/_main/project/",
         "/_main/students/",
         "/_main/groups/$id",
         "/_main/leads/forms/$id",
@@ -1607,6 +1653,10 @@ export const routeTree = rootRoute
       "filePath": "_main/leads/sources.tsx",
       "parent": "/_main"
     },
+    "/_main/project/$id": {
+      "filePath": "_main/project/$id.tsx",
+      "parent": "/_main"
+    },
     "/_main/settings": {
       "filePath": "_main/settings",
       "parent": "/_main",
@@ -1637,6 +1687,10 @@ export const routeTree = rootRoute
     },
     "/_main/leads/": {
       "filePath": "_main/leads/index.tsx",
+      "parent": "/_main"
+    },
+    "/_main/project/": {
+      "filePath": "_main/project/index.tsx",
       "parent": "/_main"
     },
     "/_main/students/": {
