@@ -1,6 +1,9 @@
 import { menuItems } from "@/constants/menu"
 import { useLocation, useNavigate, useRouter } from "@tanstack/react-router"
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
+import { useMemo } from "react"
+import { cn } from "@/lib/utils"
+import { findChildPaths, getCurrentKey, getLinkKey, useIsActiveEx } from "@/constants/util.menu"
 
 export default function HeaderLinks({
     defaultLinks,
@@ -9,32 +12,50 @@ export default function HeaderLinks({
     defaultLinks?: SubMenuItem[]
     navOnHeader?: boolean
 }) {
-    if (!navOnHeader) {
-        return null
-    }
+    if (!navOnHeader) return null
 
-    const { pathname } = useLocation()
-    const items =
-        defaultLinks ? defaultLinks : findChildPaths(menuItems, pathname)
+    const location = useLocation()
+    const router = useRouter()
+    const items = useMemo(
+        () => (defaultLinks ? defaultLinks : findChildPaths(menuItems, location.pathname)),
+        [defaultLinks, location.pathname]
+    )
     const navigate = useNavigate()
-    const { isActive } = useIsActive()
+    const { isActive } = useIsActiveEx()
+
+    const currentKey = getCurrentKey(location)
+
+    const computed = useMemo(
+        () =>
+            items.map((link) => {
+                const key = getLinkKey(router, link as any)
+                const active = isActive(link as any, location) // ❗ faqat tabs-aware
+                return { link, key, active }
+            }),
+        [items, router, location, isActive]
+    )
+
+
+    const handleChange = (val: string) => {
+        const found = computed.find((x) => x.key === val)
+        if (!found) return
+        const { to, search } = found.link as any
+        navigate({ to, search })
+    }
 
     return (
         <div>
             {!!items.length && (
-                <Tabs
-                    value={pathname}
-                    onValueChange={(path) => navigate({ to: path })}
-                >
-                    <TabsList>
-                        {items.map((link) => (
+                <Tabs value={currentKey} onValueChange={handleChange}>
+                    <TabsList className="bg-transparent">
+                        {computed.map(({ link, key, active }) => (
                             <TabsTrigger
-                                key={link.title}
-                                value={link.to}
-                                className={`${
-                                    isActive(link, pathname) &&
-                                    "!bg-primary !text-primary-foreground"
-                                } font-medium flex items-center gap-2`}
+                                key={key}
+                                value={key}
+                                className={cn(
+                                    "font-medium flex items-center gap-2 hover:bg-primary/10",
+                                    active && "!bg-primary/20 !text-primary"
+                                )}
                             >
                                 {link.title}
                             </TabsTrigger>
@@ -44,34 +65,4 @@ export default function HeaderLinks({
             )}
         </div>
     )
-}
-
-export const findChildPaths = (
-    filteredItems: typeof menuItems,
-    pathname: string,
-) => {
-    const currentSection = pathname?.split("/")?.[1]
-
-    return (
-        filteredItems?.find(
-            (item) =>
-                item.items?.find(
-                    (subItem) => subItem.to?.slice(1) === currentSection,
-                ) || item.to?.slice(1) === currentSection,
-        )?.items || []
-    )
-}
-
-export function useIsActive() {
-    const router = useRouter()
-
-    const isActive = (link: any, currentPathname: string) => {
-        const built = router.buildLocation(link).pathname
-
-        return (
-            currentPathname === built || currentPathname.startsWith(built + "/")
-        )
-    }
-
-    return { isActive }
 }
