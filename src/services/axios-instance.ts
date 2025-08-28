@@ -6,7 +6,6 @@ import {
 import { getAccessToken, getRefreshToken } from "@/lib/get-token"
 import { setAccessToken } from "@/lib/set-token"
 import { setActiveBranch } from "@/lib/utils"
-import { QueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { toast } from "sonner"
 
