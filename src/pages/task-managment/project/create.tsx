@@ -2,7 +2,7 @@ import FormImagePicker from "@/components/form/img-picker"
 import FormInput from "@/components/form/input"
 import { FormMultiCombobox } from "@/components/form/multi-combobox"
 import { Button } from "@/components/ui/button"
-import { FILTER, TASKLY_PROJECT } from "@/constants/api-endpoints"
+import { OPTION_EMPLOYEES, TASKLY_PROJECT } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
@@ -24,11 +24,12 @@ function ProjectCreate({ item }: Props) {
     const form = useForm<FormValues>()
     const [search, setSearch] = useState("")
 
-    const { data: hrData, isLoading } = useGet<
-        { first_name?: string; last_name: string; id: number }[]
-    >(`${FILTER}user`, {
-        params: { search, page_size: 5 },
-    })
+    const { data: hrData, isLoading } = useGet<OptionEmployees[]>(
+        OPTION_EMPLOYEES,
+        {
+            params: { search, page_size: 5 },
+        },
+    )
 
     const { mutate: mutateCreate, isPending: isPendingCreate } = usePost(
         {
@@ -128,10 +129,7 @@ function ProjectCreate({ item }: Props) {
                     labelKey="full_name"
                     onSearchChange={setSearch}
                     valueKey="id"
-                    options={hrData?.map((item) => ({
-                        full_name: `${item.first_name}  ${item.last_name}`,
-                        id: item.id,
-                    }))}
+                    options={hrData}
                     isLoading={isLoading}
                 />
             </div>

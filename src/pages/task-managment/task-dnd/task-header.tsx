@@ -2,7 +2,10 @@ import { ParamCombobox } from "@/components/as-params/combobox"
 import ParamInput from "@/components/as-params/input"
 import { ParamMultiCombobox } from "@/components/as-params/multi-combobox"
 import { Button } from "@/components/ui/button"
-import { FILTER, TASKLY_PROJECT_USERS } from "@/constants/api-endpoints"
+import {
+    OPTION_EMPLOYEES,
+    OPTION_ROLES,
+} from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import { useNavigate, useParams } from "@tanstack/react-router"
 import { ArrowLeft, Flame, ListCheck } from "lucide-react"
@@ -12,23 +15,16 @@ import { cn } from "@/lib/utils"
 export default function TaskHeader() {
     const navigate = useNavigate()
     const params = useParams({ from: "/_main/project/$id" })
-    const { data: dataPosition } = useGet<any[]>(`${FILTER}role`, {
-        params: {
-            users__user_tasks__status__project_id: params?.id,
-        },
-        options: {
-            enabled: !!params?.id,
-        },
-    })
+    const { data: dataPosition } =
+        useGet<{ id: number; employees_count: number; name: string }[]>(
+            OPTION_ROLES,
+        )
 
-    const { data: dataCustomer } = useGet<
-        {
-            full_name: string
-            face: string
-            id: number
-        }[]
-    >(`${TASKLY_PROJECT_USERS}/${params?.id}`, {
+    const { data: dataCustomer } = useGet<OptionEmployees[]>(OPTION_EMPLOYEES, {
         enabled: !!params?.id,
+        params: {
+            project: params?.id,
+        },
     })
 
     const options = [
@@ -125,7 +121,6 @@ export default function TaskHeader() {
                     <ArrowLeft className="w-5 h-5" />
                 </Button>
                 <ParamMultiCombobox
-                    className="w-full "
                     labelKey="name"
                     valueKey="id"
                     options={dataPosition || []}
@@ -141,7 +136,6 @@ export default function TaskHeader() {
                 valueKey="id"
                 options={dataCustomer || []}
                 paramName={"user_id"}
-                className="w-full"
                 label={"Xodim"}
                 addButtonProps={{
                     className: "min-w-[230px] w-full",

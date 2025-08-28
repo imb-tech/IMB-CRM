@@ -21,6 +21,7 @@ type SearchParams = {
     group?: string
     student?: string
     task?:string
+    project?:string
 }
 
 

@@ -1,15 +1,14 @@
-import {
-    Avatar,
-    AvatarFallback,
-    AvatarImage,
-} from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { TASKLY_PROJECT, TASKLY_PROJECT_USERS } from "@/constants/api-endpoints"
+import {
+    OPTION_EMPLOYEES,
+    TASKLY_PROJECT,
+} from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import PageLayout from "@/layouts/page-layout"
 import { cn } from "@/lib/utils"
@@ -30,13 +29,15 @@ function RouteComponent() {
     const { data: dataUsers, isSuccess } = useGet<
         {
             full_name: string
-            face: string
+            photo: string
             id: number
         }[]
-    >(`${TASKLY_PROJECT_USERS}/${params?.id}`, {
+    >(OPTION_EMPLOYEES, {
         enabled: !!params?.id,
+        params: {
+            project: params?.id,
+        },
     })
-
 
     return (
         <PageLayout
@@ -56,9 +57,12 @@ function RouteComponent() {
                         <TooltipProvider delayDuration={1}>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <Avatar className="h-10 w-10 hover:scale-110 hover:border hover:border-blue-500 cursor-pointer" key={index}>
+                                    <Avatar
+                                        className="h-10 w-10 hover:scale-110 hover:border hover:border-blue-500 cursor-pointer"
+                                        key={index}
+                                    >
                                         <AvatarImage
-                                            src={item.face || undefined}
+                                            src={item.photo || undefined}
                                             alt={item.full_name}
                                         />
                                         <AvatarFallback
@@ -81,12 +85,12 @@ function RouteComponent() {
                                     >
                                         <Avatar className="h-10 w-10">
                                             <AvatarImage
-                                                src={item.face || undefined}
+                                                src={item.photo || undefined}
                                                 alt={item.full_name}
                                             />
                                             <AvatarFallback
                                                 className={
-                                                    "uppercase !bg-secondary !text-primary"
+                                                    "uppercase !bg-secondary "
                                                 }
                                             >
                                                 {item.full_name?.slice(0, 2)}

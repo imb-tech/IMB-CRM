@@ -6,7 +6,7 @@ import FormTextarea from "@/components/form/textarea"
 import { Button } from "@/components/ui/button"
 import SeeInView from "@/components/ui/see-in-view"
 import {
-    FILTER,
+    OPTION_EMPLOYEES,
     FILTER_TASKLY_USERS,
     PROJECTS_TASKS,
     TASKLY_PROJECT_USERS,
@@ -101,11 +101,15 @@ export default function CompleteTaskManager({
     ]
 
     const search = useSearch({ from: "/_main/project/$id" })
-    const { data: hrData, isLoading } = useGet<
-        { first_name?: string; last_name: string; id: number }[]
-    >(`${FILTER_TASKLY_USERS}/${params?.id}`, {
-        enabled: !!params.id,
-    })
+    const { data: hrData, isLoading } = useGet<OptionEmployees[]>(
+        OPTION_EMPLOYEES,
+        {
+            enabled: !!params.id,
+            params: {
+                project: params?.id,
+            },
+        },
+    )
 
     const { data: task } = useGet<QuoteCard>(`${TASKS}/${search?.task}`, {
         options: {
@@ -150,14 +154,14 @@ export default function CompleteTaskManager({
                 })
                 queryClient.invalidateQueries({
                     queryKey: [
-                        `${FILTER}role`,
+                        OPTION_EMPLOYEES,
                         ...Object.values({
                             users__user_tasks__status__project_id: params?.id,
                         }),
                     ],
                 })
                 queryClient.invalidateQueries({
-                    queryKey: [`${TASKLY_PROJECT_USERS}/${params?.id}`],
+                    queryKey: [OPTION_EMPLOYEES],
                 })
 
                 toast.success("Muvaffaqiyatli qo'shildi")
@@ -181,14 +185,14 @@ export default function CompleteTaskManager({
 
                 queryClient.invalidateQueries({
                     queryKey: [
-                        `${FILTER}role`,
+                        OPTION_EMPLOYEES,
                         ...Object.values({
                             users__user_tasks__status__project_id: params?.id,
                         }),
                     ],
                 })
                 queryClient.invalidateQueries({
-                    queryKey: [`${TASKLY_PROJECT_USERS}/${params?.id}`],
+                    queryKey: [OPTION_EMPLOYEES],
                 })
 
                 toast.success("Muvaffaqiyatli yangilandi")
@@ -488,10 +492,7 @@ export default function CompleteTaskManager({
                     name="users"
                     labelKey="full_name"
                     valueKey="id"
-                    options={hrData?.map((item) => ({
-                        full_name: `${item.first_name} ${item.last_name}`,
-                        id: item.id,
-                    }))}
+                    options={hrData}
                     isLoading={isLoading}
                     addButtonProps={{
                         disabled: task?.is_action,

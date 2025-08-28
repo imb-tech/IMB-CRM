@@ -13,7 +13,7 @@ import {
     rectSortingStrategy,
 } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
-import { FILTER, TASKLY_PROJECT } from "@/constants/api-endpoints"
+import { OPTION_EMPLOYEES, TASKLY_PROJECT } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import ProjectCard from "./project-card"
 import { Card, CardContent } from "@/components/ui/card"
@@ -76,12 +76,11 @@ export default function TaskBoard() {
     const [projects, setProjects] = useState<FormValues[]>([])
     const [isDragging, setIsDragging] = useState(false)
 
-    const { data: dataCustomer, isLoading: isLoadingCustomer } = useGet<any[]>(
-        `${FILTER}user`,
-        {
-            params: { search: searchCustomer },
-        },
-    )
+    const { data: dataCustomer, isLoading: isLoadingCustomer } = useGet<
+        OptionEmployees[]
+    >(OPTION_EMPLOYEES, {
+        params: { search: searchCustomer, task_users: true },
+    })
 
     const { data: dataStatus } = useGet<{ todo: number; finished: number }>(
         `taskly/tasks-stats`,
@@ -164,16 +163,8 @@ export default function TaskBoard() {
                 <ParamMultiCombobox
                     labelKey="full_name"
                     valueKey="id"
-                    options={
-                        dataCustomer?.map((item) => ({
-                            id: item.id,
-                            full_name: `${item.first_name} ${item.last_name} ${
-                                item.middle_name || ""
-                            }`,
-                        })) || []
-                    }
+                    options={dataCustomer || []}
                     paramName={"user_id"}
-                    className="min-w-[300px] max-w-[300px]"
                     label={"Xodim"}
                     onSearchChange={(val) => setCustomerSearch(val)}
                     isLoading={isLoadingCustomer}
