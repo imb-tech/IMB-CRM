@@ -65,6 +65,7 @@ const StudentCreate = ({ item }: Props) => {
         closeModal()
         form.reset()
         queryClient.invalidateQueries({ queryKey: [STUDENT] })
+        queryClient.invalidateQueries({ queryKey: [`${STUDENT}/${item?.id}`] })
     }
 
     const { mutate, isPending, isSuccess } = usePost({
@@ -158,7 +159,7 @@ const StudentCreate = ({ item }: Props) => {
                     }
                 }}
             />
-            <div className="grid grid-cols-2 items-end gap-3">
+            <div className="grid grid-cols-2 items-start gap-3">
                 <PhoneField
                     required
                     methods={form}
@@ -237,7 +238,7 @@ const StudentCreate = ({ item }: Props) => {
                                 label="Guruh tanlang"
                                 required={openedAccordion === "1"}
                             />
-                            <div className="grid grid-cols-2 items-end gap-3">
+                            <div className="grid grid-cols-2 items-start gap-3">
                                 <FormSelect
                                     options={[
                                         {

@@ -63,7 +63,7 @@ export default function DeleteModal({
             className={"rounded-2xl"}
             classNameIcon={"hidden"}
         >
-            <div className="px-3">
+            <div className="px-3 py-2">
                 <div className="flex flex-col items-center text-center">
                     <div
                         className={

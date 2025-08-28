@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { STUDENT } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import { formatMoney } from "@/lib/format-money"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
@@ -12,7 +13,7 @@ type Props = {}
 
 function StudentProfile({}: Props) {
     const { id } = useParams({ from: "/_main/students/$id" })
-    const { data } = useGet<Student>(`students/${id}`, {
+    const { data } = useGet<Student>(`${STUDENT}/${id}`, {
         options: { enabled: !!id },
     })
 

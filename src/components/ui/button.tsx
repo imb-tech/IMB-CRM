@@ -76,12 +76,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             >
                 {loading && (
                     <Spinner
-                        color={
-                            variant === "destructive" ? "secondary"
-                            : variant === "secondary" ?
-                                "primary"
-                            :   "primary-foreground"
-                        }
+                        color={"primary"}
                         size="sm"
                     />
                 )}{" "}

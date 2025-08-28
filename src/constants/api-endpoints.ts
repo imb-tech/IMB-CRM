@@ -49,3 +49,18 @@ export const REGION = `region`
 export const STATION = `station`
 export const TRANSPORT = `transport`
 export const USERS = `users`
+
+
+// Tasks Endpoints
+export const TASKLY_PROJECT = 'taskly/projects'
+export const TASKLY_PROJECT_USERS = 'taskly/projects-users'
+export const PROJECTS_TASKS = 'taskly/project-tasks'
+export const STATUSES = 'taskly/statuses'
+export const STATUSES_MOVE = 'taskly/move-status'
+export const MOVE_TASK = 'taskly/move-task'
+export const FILTER = 'filter/'
+export const TASKLY_FILES = 'taskly/files'
+export const TASKLY_COMMENT= 'taskly/comments'
+export const TASKS = 'taskly/tasks'
+export const TASKS_EXCEL = 'taskly/project-excel-report'
+export const FILTER_TASKLY_USERS =  'task-users'
