@@ -1,12 +1,12 @@
 import FormInput from "@/components/form/input"
 import { LOGIN } from "@/constants/api-endpoints"
 import { setAccessToken, setRefreshToken } from "@/lib/set-token"
-import {  useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { usePost } from "@/hooks/usePost"
 import Spinner from "@/components/ui/spinner"
 import { encryptMessage } from "@/lib/data-encrypt"
-import { useNavigate } from "@tanstack/react-router"
+import { useNavigate, useSearch } from "@tanstack/react-router"
 import showFormErrors from "@/lib/show-form-errors"
 
 type Form = {
@@ -16,6 +16,8 @@ type Form = {
 
 export default function LoginForm() {
     const navigate = useNavigate()
+    const search = useSearch({ strict: false })
+
     const { mutate, isPending } = usePost({
         onSuccess: (data: LoginResp) => {
             const access = data?.token?.access_token
@@ -28,7 +30,13 @@ export default function LoginForm() {
             if (refresh) {
                 setRefreshToken(refresh)
             }
-            navigate({ to: "/" })
+            if (search?.task && search?.project) {
+                window.location.replace(
+                    `${window.location.origin}/project/${search?.project}?task=${search?.task}`,
+                )
+            } else {
+                navigate({ to: "/" })
+            }
         },
     })
     const methods = useForm<Form>({

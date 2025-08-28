@@ -12,7 +12,7 @@ import { usePatch } from "@/hooks/usePatch"
 import Modal from "@/components/custom/modal"
 import CreateStatusFrom from "../leadform/create-status-form"
 import DeleteModal from "@/components/custom/delete-modal"
-import {  Grid2x2Plus } from "lucide-react"
+import { Grid2x2Plus } from "lucide-react"
 import { useStore } from "@/hooks/use-store"
 import { usePost } from "@/hooks/usePost"
 import { generateIndexedData, moveBetweenArrays, moveItem } from "../utils"
@@ -43,7 +43,7 @@ const LeadsDnd = () => {
         ...Object.values({ is_active: true, pipeline: id }),
     ]
 
-    const { data, isLoading } = useLeadStatuses()
+    const { data, isLoading, refetch } = useLeadStatuses()
 
     const { data: users } = useGet<LeadFields[]>("leads/crud", {
         params: { condition: "active", status__pipeline: id },
@@ -125,6 +125,7 @@ const LeadsDnd = () => {
                 { status: cfg.to },
                 {
                     onSuccess() {
+                        refetch()
                         orderMutation(
                             "leads/common/lead-order",
                             generateIndexedData(updatedToUsers, "lead"),
@@ -165,7 +166,7 @@ const LeadsDnd = () => {
         return ord ? ord + 1 : 0
     }, [data])
 
-
+    console.log(data)
 
     return (
         <div className="py-3 flex items-start gap-3 w-full h-full relative">
@@ -220,15 +221,12 @@ const LeadsDnd = () => {
                         </div>
                     )}
                 </Droppable>
-
             </DragDropContext>
 
             <Modal
                 modalKey="create-status"
                 title={
-                    store?.id ?
-                        ("Bo'limni tahrirlash")
-                    :   ("Yangi bo'lim yaratish")
+                    store?.id ? "Bo'limni tahrirlash" : "Yangi bo'lim yaratish"
                 }
                 onClose={remove}
             >

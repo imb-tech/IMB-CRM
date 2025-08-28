@@ -11,7 +11,7 @@ import { formatMoney } from "@/lib/format-money"
 
 type Props = {
     index: number
-    item?: LeadStatus
+    item?: LeadStatus 
 }
 
 const LeadsColumn = ({ index, item }: Props) => {

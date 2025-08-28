@@ -61,12 +61,13 @@ export default function TaskCard({ item, onDelete }: Props) {
         navigator.clipboard
             .writeText(url)
             .then(() => {
-                toast.success(("Nusxa olindi ✅"))
+                toast.success("Nusxa olindi ✅")
             })
             .catch(() => {
-                toast.error(("Nusxa qilishda xatolik ❌"))
+                toast.error("Nusxa qilishda xatolik ❌")
             })
     }
+
     return (
         <Card
             onClick={() => handleItem(item.id)}
@@ -91,10 +92,10 @@ export default function TaskCard({ item, onDelete }: Props) {
                         <TooltipProvider delayDuration={0} key={index}>
                             <Tooltip>
                                 <TooltipTrigger asChild>
-                                    <Avatar className="h-7 w-7">
+                                    <Avatar className="h-8 w-8">
                                         <AvatarImage
-                                            src={user.face || undefined}
-                                            alt={user.first_name}
+                                            src={user.photo || undefined}
+                                            alt={user?.full_name}
                                         />
                                         <AvatarFallback
                                             className={cn(
@@ -102,14 +103,12 @@ export default function TaskCard({ item, onDelete }: Props) {
                                                 getPriorityColor(item.priority),
                                             )}
                                         >
-                                            {user?.first_name?.slice(0, 1)}
-                                            {user?.last_name?.slice(0, 1)}
+                                            {user?.full_name?.slice(0, 2)}
                                         </AvatarFallback>
                                     </Avatar>
                                 </TooltipTrigger>
                                 <TooltipContent>
-                                    {user.first_name} {user.last_name}{" "}
-                                    {user?.middle_name || ""}
+                                    {user?.full_name}
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>

@@ -81,9 +81,9 @@ function ProjectCard({ handleItem, handleDelete, item, index }: Props) {
                                             >
                                                 <AvatarImage
                                                     src={
-                                                        item?.face || undefined
+                                                        item?.photo || undefined
                                                     }
-                                                    alt={item.first_name}
+                                                    alt={item.full_name}
                                                 />
                                                 <AvatarFallback
                                                     className={cn(
@@ -91,13 +91,9 @@ function ProjectCard({ handleItem, handleDelete, item, index }: Props) {
                                                         getPriorityColor(2),
                                                     )}
                                                 >
-                                                    {item?.first_name?.slice(
+                                                    {item?.full_name?.slice(
                                                         0,
-                                                        1,
-                                                    )}
-                                                    {item?.last_name?.slice(
-                                                        0,
-                                                        1,
+                                                        2,
                                                     )}
                                                 </AvatarFallback>
                                             </Avatar>
@@ -107,9 +103,9 @@ function ProjectCard({ handleItem, handleDelete, item, index }: Props) {
                                 <TooltipContent
                                     side="bottom"
                                     align="end"
-                                    className="bg-background transition-all duration-200"
+                                    className="bg-card transition-all duration-200"
                                 >
-                                    <div className="flex flex-col gap-2 py-2 max-h-[400px] overflow-y-auto">
+                                    <div className="flex flex-col gap-2  max-h-[400px] overflow-y-auto">
                                         {item?.users.map((item, index) => (
                                             <div
                                                 key={index}
@@ -118,10 +114,10 @@ function ProjectCard({ handleItem, handleDelete, item, index }: Props) {
                                                 <Avatar className="h-10 w-10">
                                                     <AvatarImage
                                                         src={
-                                                            item?.face ||
+                                                            item?.photo ||
                                                             undefined
                                                         }
-                                                        alt={item.first_name}
+                                                        alt={item.full_name}
                                                     />
                                                     <AvatarFallback
                                                         className={cn(
@@ -129,19 +125,14 @@ function ProjectCard({ handleItem, handleDelete, item, index }: Props) {
                                                             getPriorityColor(2),
                                                         )}
                                                     >
-                                                        {item?.first_name?.slice(
+                                                        {item?.full_name?.slice(
                                                             0,
-                                                            1,
-                                                        )}
-                                                        {item?.last_name?.slice(
-                                                            0,
-                                                            1,
+                                                            2,
                                                         )}
                                                     </AvatarFallback>
                                                 </Avatar>
                                                 <p>
-                                                    {item?.first_name}{" "}
-                                                    {item?.last_name}
+                                                    {item?.full_name}
                                                 </p>
                                             </div>
                                         ))}
@@ -151,8 +142,11 @@ function ProjectCard({ handleItem, handleDelete, item, index }: Props) {
                         </TooltipProvider>
                     </div>
                     <ul className="flex flex-col  gap-2 mb-3">
-                        {item?.statuses?.map((item) => (
-                            <li className="flex items-center justify-between">
+                        {item?.statuses?.map((item, index) => (
+                            <li
+                                key={index}
+                                className="flex items-center justify-between"
+                            >
                                 <span>{item?.name}:</span>
                                 <span>
                                     {item?.count} {"vazifalar"}
