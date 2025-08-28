@@ -154,7 +154,7 @@ export function moduleGroupper(modules?: GroupModule[], days?: string[]): GroupM
     if (!days?.length) {
         return []
     }
-    const orderedDate = days.sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
+    const orderedDate = [...days].sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
 
 
     const groupped: Record<string, GroupModule[]> = {}

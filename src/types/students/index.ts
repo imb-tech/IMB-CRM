@@ -66,6 +66,7 @@ type GroupStudent = {
     student_name: string
     student_phone: string
     balance: string
+    activated_date: string
     allowed_statuses: number[]
 }
 

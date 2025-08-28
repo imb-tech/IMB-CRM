@@ -10,6 +10,7 @@ export type UseGetArgs<TData = any, TQueryFnData = unknown, TError = any> = {
     options?: Partial<UseQueryOptions<TQueryFnData, TError, TData>>
     config?: Omit<AxiosRequestConfig, "params">
     params?: Record<string, unknown>
+    enabled?: boolean;
 }
 
 export const getRequest = (url: string, config?: AxiosRequestConfig) =>
@@ -19,7 +20,7 @@ export const useGet = <TData = any, TQueryFnData = unknown, TError = any>(
     url: string,
     args?: UseGetArgs<TData, TQueryFnData, TError>,
 ) => {
-    const { deps, config, options, params } = args || {}
+    const { deps, config, options, params, enabled = true, } = args || {}
     const branch = getActiveBranch()
 
     const prms = { branch, is_active: true, ...params }
@@ -38,6 +39,8 @@ export const useGet = <TData = any, TQueryFnData = unknown, TError = any>(
             return hasParams ? [url, ...paramValues] : [url]
         })(),
         queryFn: () => getRequest(url, { ...config, params: prms }),
-        ...(options || { staleTime: DEFAULT_STALE_TIME }),
+        staleTime: options?.staleTime ?? DEFAULT_STALE_TIME,
+        enabled,
+        ...options,
     })
 }

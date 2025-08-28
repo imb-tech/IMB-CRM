@@ -1,7 +1,7 @@
 import Header from "@/components/header"
-import HeaderLinks, { findChildPaths } from "@/components/header/header-links"
 import MobileHeaderLinks from "@/components/header/mobile-header-links"
 import { menuItems } from "@/constants/menu"
+import { findChildPaths } from "@/constants/util.menu"
 import { cn } from "@/lib/utils"
 import { ReactNode, useLocation } from "@tanstack/react-router"
 import { CSSProperties, useMemo } from "react"
@@ -46,27 +46,19 @@ const PageLayout = ({
                 />
             </div>
 
-            <div
-                className={cn(
-                    "pt-20 px-4",
-                    len ? "pb-2" : "",
-                    navOnHeader ? "pb-0" : "",
-                )}
-            >
-                {len ? (
-                    <MobileHeaderLinks
-                        defaultLinks={items}
-                        navOnHeader={navOnHeader}
-                        classNameLink={classNameLink}
-                    />
-                ) : null}
-            </div>
+            {!len ? (
+                <MobileHeaderLinks
+                    defaultLinks={items}
+                    navOnHeader={navOnHeader}
+                    classNameLink={classNameLink}
+                />
+            ) : null}
 
             <main
                 style={style}
                 className={cn(
-                    "flex flex-col xl:gap-2 px-3 md:px-4 pb-4  relative",
-                    // len ? "pt-32 md:pt-20" : "pt-12 md:pt-16",
+                    "mx-auto px-4 h-full overflow-y-auto  pt-20",
+
                     className,
                 )}
             >

@@ -16,7 +16,7 @@ import { DEBOUNCETIME } from "@/constants/default"
 import { cn } from "@/lib/utils"
 import { useNavigate, useSearch } from "@tanstack/react-router"
 import { CheckIcon, ChevronDown, X } from "lucide-react"
-import { useEffect, useState } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import { Skeleton } from "../ui/skeleton"
 
 type ParamComboboxProps<T extends Record<string, any>> = {
@@ -35,6 +35,7 @@ type ParamComboboxProps<T extends Record<string, any>> = {
     onSearchChange?: (val: string) => void
     addButtonProps?: ButtonProps
     dontAllowClear?: boolean
+    renderOption?: (item: T) => ReactNode
 }
 
 export function ParamCombobox<T extends Record<string, any>>({
@@ -53,6 +54,7 @@ export function ParamCombobox<T extends Record<string, any>>({
     isLoading,
     addButtonProps,
     dontAllowClear = false,
+    renderOption,
 }: ParamComboboxProps<T>) {
     const navigate = useNavigate()
     const search: any = useSearch({ from: "/_main" }) as Record<
@@ -143,7 +145,7 @@ export function ParamCombobox<T extends Record<string, any>>({
                 </Button>
             </PopoverTrigger>
             <PopoverContent className={cn("p-0 !min-w-full ", className)}>
-                <Command shouldFilter={onSearchChange ? false : true}>
+                <Command shouldFilter={onSearchChange ? false : true} >
                     <div className="relative">
                         {isSearch && (
                             <>
@@ -176,7 +178,9 @@ export function ParamCombobox<T extends Record<string, any>>({
                                         onSelect={() => handleSelect(d)}
                                         className="break-all"
                                     >
-                                        {d[labelKey]}
+                                        {!!renderOption
+                                            ? renderOption(d)
+                                            : d[labelKey as keyof T]}
                                         <CheckIcon
                                             className={cn(
                                                 "ml-auto h-4 w-4",

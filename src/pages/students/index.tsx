@@ -24,7 +24,7 @@ const StudentsMain = () => {
 
     const params = useSearch({ from: "/_main/students/" })
 
-    const { data, isFetching } = useGet<ListResp<Student>>("students", {
+    const { data, isFetching } = useGet<ListResp<Student>>(STUDENT, {
         params: params,
     })
 
@@ -54,7 +54,9 @@ const StudentsMain = () => {
                     <div className="flex  justify-between items-center gap-3 ">
                         <div className="flex items-center gap-3">
                             <h1 className="text-xl">O'quvchilar</h1>
-                            <Badge className="text-sm">{formatMoney(data?.count)}</Badge>
+                            <Badge className="text-sm">
+                                {formatMoney(data?.count)}
+                            </Badge>
                             {Number(data?.total_debts) < 0 && (
                                 <Badge
                                     className="text-sm text-red-600 bg-red-600/10  border-[0.7px] border-destructive font-normal"

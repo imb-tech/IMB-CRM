@@ -37,7 +37,7 @@ export default function AssignStudent({ module }: { module?: string }) {
             group_student: v.student,
         }
 
-        mutate("platform/group-students/crud/modules", payload)
+        mutate("platform/group-students/modules", payload)
     }
 
     return (

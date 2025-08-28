@@ -9,6 +9,7 @@ import {
     GraduationCap,
     House,
     Layers,
+    ListTodo,
     MessageCircleMore,
     NotebookText,
     NotepadText,
@@ -41,11 +42,40 @@ export const menuItems = [
         items: [],
     }),
     linkOptions({
+        title: "Vazifalar",
+        icon: <ListTodo width={20} />,
+        to: "/project",
+        enabled: true,
+        items: [],
+    }),
+    linkOptions({
         title: "Guruhlar",
         icon: <Layers width={20} />,
         to: "/groups",
         enabled: true,
-        items: [],
+        items: [
+            linkOptions({
+                title: "O'quvchilar to'lovi",
+                to: "/groups",
+                search: {
+                    tabs: "groups"
+                },
+            }),
+            linkOptions({
+                title: "O'quvchilar davomati",
+                to: "/groups",
+                search: {
+                    tabs: "rooms"
+                },
+            }),
+            linkOptions({
+                title: "Hodimlar davomati",
+                to: "/groups",
+                search: {
+                    tabs: "courses"
+                },
+            })
+        ],
     }),
     linkOptions({
         title: "Hodimlar",
@@ -112,7 +142,29 @@ export const menuItems = [
         icon: <NotebookText width={20} />,
         to: "/reports",
         enabled: true,
-        items: [],
+        items: [
+            linkOptions({
+                title: "O'quvchilar to'lovi",
+                to: "/reports",
+                search: {
+                    tabs: "student_payments"
+                },
+            }),
+            linkOptions({
+                title: "O'quvchilar davomati",
+                to: "/reports",
+                search: {
+                    tabs: "attendance"
+                },
+            }),
+            linkOptions({
+                title: "Hodimlar davomati",
+                to: "/reports",
+                search: {
+                    tabs: "attendance_emp"
+                },
+            })
+        ],
     }),
     linkOptions({
         title: "Sozlamalar",

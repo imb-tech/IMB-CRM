@@ -44,7 +44,7 @@ export default function ExamDetail() {
     function updateScore(id: number, score: string) {
         const data = qc.getQueryData(queryKey)
         mutate(
-            `platform/group-students/crud/modules/${id}`,
+            `platform/group-students/modules/${id}`,
             {
                 score: Number(score),
                 is_scored: score !== "",
@@ -143,7 +143,7 @@ export default function ExamDetail() {
                 modalKey="remove-student"
                 id={item?.id}
                 name={item?.file}
-                path="platform/group-students/crud/modules"
+                path="platform/group-students/modules"
                 disableRefetch
                 onSuccessAction={refetch}
             />

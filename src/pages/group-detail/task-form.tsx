@@ -39,6 +39,7 @@ export default function TaskForm({ loading }: { loading?: boolean }) {
                         name="title"
                         label="Vazifa"
                         placeholder="Vazifani yozing"
+                        className="bg-background border-none"
                         required
                     />
 
@@ -50,7 +51,7 @@ export default function TaskForm({ loading }: { loading?: boolean }) {
                         placeholder="Sana tanlash ixtiyoriy"
                         addButtonProps={{
                             className:
-                                "!w-full !h-12 bg-secondary !flex hover:bg-secondary !justify-start",
+                                "!w-full !h-12 bg-secondary !flex hover:bg-background !justify-start bg-background border-none",
                         }}
                     />
 
@@ -59,6 +60,7 @@ export default function TaskForm({ loading }: { loading?: boolean }) {
                         name="description"
                         label="Qo'shimcha izoh"
                         placeholder="Ixtiyoriy"
+                        className="bg-background border-none"
                     />
 
                     <div className="mt-3 bg-background p-3 pt-4 rounded-md">
@@ -107,7 +109,7 @@ export default function TaskForm({ loading }: { loading?: boolean }) {
                                 />
                                 {st.status == "Aktiv" ?
                                     ""
-                                :   <p className="lowercase text-muted-foreground text-sm">{`( ${st.status} )`}</p>
+                                    : <p className="lowercase text-muted-foreground text-sm">{`( ${st.status} )`}</p>
                                 }
                             </div>
                         ))}

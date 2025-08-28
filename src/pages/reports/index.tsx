@@ -27,11 +27,11 @@ const ReportsMain = () => {
         <div>
             <ParamTabProvider defaultValue="student_payments">
                 <div className="flex items-center justify-between">
-                    <ParamTabList
+                    {/* <ParamTabList
                         options={options}
                         listClassName="dark:bg-secondary"
-                    />
-                    <ReportsFilter />
+                    /> */}
+                    {/* <ReportsFilter /> */}
                 </div>
                 <div className="mt-2">
                     <TabsContent value="student_payments" className="mt-0">

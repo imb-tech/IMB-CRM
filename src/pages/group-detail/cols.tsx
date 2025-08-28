@@ -2,14 +2,15 @@ import Money from "@/components/elements/money"
 import { formatMoney } from "@/lib/format-money"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
 import { ColumnDef } from "@tanstack/react-table"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { StatusPopover } from "./status-popover"
 import { useModal } from "@/hooks/useModal"
 import { useStore } from "@/hooks/use-store"
-import { MessageSquareMore, Pencil, Trash2 } from "lucide-react"
+import { Check, MessageSquareMore, Pencil, Trash2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { formatDate } from "@/lib/utils"
+import ActionDropdown from "@/components/elements/action-dropdown"
 
 export const useGroupStudentCols = () => {
     const { openModal } = useModal("update")
@@ -22,24 +23,6 @@ export const useGroupStudentCols = () => {
                 header: "FIO",
                 accessorKey: "student_name",
                 enableSorting: true,
-            },
-            {
-                header: "Qo'shilgan",
-                cell: ({ row }) => {
-                    return (
-                        <div className="flex items-center gap-3">
-                            <p>{row.original.start_date}</p>
-                            <Pencil
-                                size={16}
-                                onClick={() => {
-                                    openModal()
-                                    setStore(row.original)
-                                }}
-                                className="text-primary"
-                            />
-                        </div>
-                    )
-                },
             },
             {
                 header: "Telefon",
@@ -67,6 +50,46 @@ export const useGroupStudentCols = () => {
                 },
             },
             {
+                header: "Qo'shilgan sana",
+                cell: ({ row }) => {
+                    return (
+                        <div className="flex items-center gap-3">
+                            <p>{row.original.start_date}</p>
+                            <Pencil
+                                size={16}
+                                onClick={() => {
+                                    openModal()
+                                    setStore(row.original)
+                                }}
+                                className="text-primary"
+                            />
+                        </div>
+                    )
+                },
+            },
+            {
+                header: "Aktivlashgan sana",
+                cell: ({ row: { original } }) => {
+                    return (
+                        <div>
+                            {original.status == 0 ? <p className="bg-yellow-500/20 py-1 px-2 rounded-sm font-light inline text-xs">Kutilmoqda</p> : (
+                                <div className="flex items-center gap-3">
+                                    <p>{original.activated_date}</p>
+                                    <Pencil
+                                        size={16}
+                                        onClick={() => {
+                                            openModal()
+                                            setStore(original)
+                                        }}
+                                        className="text-primary"
+                                    />
+                                </div>
+                            )}
+                        </div>
+                    )
+                },
+            },
+            {
                 header: "Balans",
                 accessorKey: "balance",
                 enableSorting: true,
@@ -78,20 +101,43 @@ export const useGroupStudentCols = () => {
                 header: " ",
                 cell({ row: { original } }) {
                     return (
-                        <div className="flex items-center justify-center gap-3 text-sm">
-                            <MessageSquareMore
-                                className="text-orange-300 cursor-pointer"
-                                size={18}
-                            />
-                            <Trash2
-                                className="text-rose-500 cursor-pointer"
-                                size={18}
-                                onClick={() => {
+                        <ActionDropdown options={[
+                            {
+                                key: "delete",
+                                onClick() {
                                     setStore(original)
                                     openDelete()
-                                }}
-                            />
-                        </div>
+                                },
+                            },
+                            {
+                                key: "payment",
+                                onClick() {
+                                    setStore(original)
+                                    openDelete()
+                                },
+                            },
+                            {
+                                key: "transfer",
+                                onClick() {
+                                    setStore(original)
+                                    openDelete()
+                                },
+                            },
+                            {
+                                key: "note",
+                                onClick() {
+                                    setStore(original)
+                                    openDelete()
+                                },
+                            },
+                            {
+                                key: "sms",
+                                onClick() {
+                                    setStore(original)
+                                    openDelete()
+                                },
+                            }
+                        ]} />
                     )
                 },
             },
@@ -143,8 +189,8 @@ export const useGroupSalesCols = () =>
                 accessorKey: "date",
                 cell({ row: { original } }) {
                     return original.created_at ?
-                            formatDate(original.created_at)
-                        :   "-"
+                        formatDate(original.created_at)
+                        : "-"
                 },
             },
         ],
@@ -154,8 +200,8 @@ export const useGroupSalesCols = () =>
 export const useGroupExamsCols = (
     clickAnswer: (t: string) => void,
     update: (id: number, score: string) => void,
-) =>
-    useMemo<ColumnDef<GroupModuleStudent>[]>(
+) => {
+    return useMemo<ColumnDef<GroupModuleStudent>[]>(
         () => [
             {
                 header: "FISH",
@@ -176,7 +222,7 @@ export const useGroupExamsCols = (
                                 >
                                     Ko'rish
                                 </Button>
-                            :   "—"}
+                                : "—"}
                         </div>
                     )
                 },
@@ -196,7 +242,7 @@ export const useGroupExamsCols = (
                                 >
                                     Ko'rish
                                 </a>
-                            :   "—"}
+                                : "—"}
                         </div>
                     )
                 },
@@ -204,23 +250,47 @@ export const useGroupExamsCols = (
             {
                 header: "Ball",
                 cell({ row: { original } }) {
+                    const [value, setValue] = useState(original.is_scored ? original.score : "")
+                    const [dirty, setDirty] = useState(false) // qiymat o'zgarganini belgilash
+
                     return (
-                        <Input
-                            type="number"
-                            min={0}
-                            defaultValue={
-                                original.is_scored ? original.score : ""
-                            }
-                            className="rounded-sm h-10 max-w-28"
-                            placeholder="—"
-                            onBlur={(e) => update(original.id, e.target.value)}
-                        />
+                        <div className="relative w-auto inline-block">
+                            <Input
+                                type="number"
+                                min={0}
+                                value={value}
+                                onChange={(e) => {
+                                    const v = e.target.value
+                                    if (original.score !== Number(v)) {
+                                        setDirty(true)
+                                    } else if (v == "") {
+                                        update(original.id, v)
+                                        setDirty(false)
+                                    }
+                                    setValue(v)
+                                }}
+                                className="rounded-sm h-10 max-w-28"
+                                placeholder="—"
+                            />
+                            {dirty && (
+                                <span className="absolute bg-background p-1 top-1/2 -translate-y-1/2 right-1 rounded-sm">
+                                    <Check
+                                        className="text-green-500 cursor-pointer"
+                                        onClick={() => {
+                                            update(original.id, value as string)
+                                            setDirty(false) // check bosilganda ikonani yashirish
+                                        }}
+                                    />
+                                </span>
+                            )}
+                        </div>
                     )
                 },
             },
         ],
         [],
     )
+}
 
 export const useGroupScoreCols = () =>
     useMemo<ColumnDef<GroupStudent>[]>(
