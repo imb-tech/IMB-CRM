@@ -35,6 +35,7 @@ import Modal from "@/components/custom/modal"
 import GroupCreate from "../groups/create"
 import { useModal } from "@/hooks/useModal"
 import useHistoryNavigate from "@/hooks/use-history-navigate"
+import ActionDropdown, { ACTIONS } from "@/components/elements/action-dropdown"
 
 function MiniStatCard({ label, value, icon: Icon, color }: any) {
     const colors = colorClasses[color as string]
@@ -108,7 +109,7 @@ export default function GroupProfile() {
                         "transition-all duration-200",
                         open ?
                             "fixed top-[60px] bottom-0 left-0 right-0 backdrop-blur-[5px]"
-                        :   "",
+                            : "",
                     )}
                 ></span>
             )}
@@ -154,7 +155,7 @@ export default function GroupProfile() {
                                                         {i == 0 ? "" : ", "}
                                                         {
                                                             daysMap[
-                                                                sh.day_of_week
+                                                            sh.day_of_week
                                                             ]
                                                         }
                                                     </p>
@@ -190,7 +191,14 @@ export default function GroupProfile() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="rounded-sm px-3 py-3 h-full cursor-pointer">
+                                <ActionDropdown
+                                    options={[
+                                        { key: "edit", onClick: openModal },
+                                        { key: "delete", onClick: openModal },
+                                        { key: "share", onClick: openModal },
+                                    ]}
+                                />
+                                {/* <div className="rounded-sm px-3 py-3 h-full cursor-pointer">
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <EllipsisVertical />
@@ -235,7 +243,7 @@ export default function GroupProfile() {
                                             </div>
                                         </PopoverContent>
                                     </Popover>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
 

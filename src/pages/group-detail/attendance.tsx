@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { useParams, useSearch } from "@tanstack/react-router"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import SectionHeader from "@/components/elements/section-header"
 import { useGet } from "@/hooks/useGet"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
@@ -10,11 +10,16 @@ import AttendanceFooter from "./attendance-footer"
 import { formatDate } from "date-fns"
 import { formatDateToUz } from "@/lib/utils"
 import ParamSwtich from "@/components/as-params/switch"
+import { Button } from "@/components/ui/button"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import useQueryParams from "@/hooks/use-query-params"
+import Select from "@/components/ui/select"
 
 export default function GroupAttendance() {
     const { id } = useParams({
         from: "/_main/groups/$id/_main/attendance",
     })
+    const { updateParams } = useQueryParams()
     const { date, is_active } = useSearch({
         strict: false,
     })
@@ -37,6 +42,7 @@ export default function GroupAttendance() {
         {
             options: {
                 enabled: !!date,
+                refetchOnMount: true
             },
             params: {
                 is_active: typeof is_active == "boolean" ? is_active : true,
@@ -49,7 +55,7 @@ export default function GroupAttendance() {
         () =>
             months?.length ?
                 (months?.find((usr) => usr.value === currDate) ?? months[0])
-            :   null,
+                : null,
         [months],
     )
 
@@ -76,6 +82,36 @@ export default function GroupAttendance() {
         [days],
     )
 
+    const currentIndex = useMemo(() => {
+        return months.findIndex((m) => m.value === date)
+    }, [months, date])
+
+    // Prev bosilganda
+    const handlePrev = () => {
+        if (currentIndex > 0) {
+            updateParams({
+                date: months[currentIndex - 1].value,
+            })
+        }
+    }
+
+    // Next bosilganda
+    const handleNext = () => {
+        if (currentIndex < months.length - 1) {
+            updateParams({
+                date: months[currentIndex + 1].value,
+            })
+        }
+    }
+
+    useEffect(() => {
+        if (defaultOpt?.value || !!date) {
+            updateParams({
+                date: date ?? defaultOpt?.value
+            })
+        }
+    }, [defaultOpt, date])
+
     return (
         <div>
             <SectionHeader
@@ -87,15 +123,34 @@ export default function GroupAttendance() {
                             paramName="is_active"
                             reverse
                         />
-                        {defaultOpt && (
-                            <ParamCombobox
-                                dontAllowClear
-                                paramName="date"
-                                defaultOpt={defaultOpt}
-                                options={months}
-                                isSearch={false}
-                                label="Oy bo'yicha"
-                            />
+                        {date && (
+                            <div className="flex items-center gap-1">
+                                <Button
+                                    variant={currentIndex <= 0 ? "secondary" : undefined}
+                                    className="min-w-10 h-10 p-0 select-none"
+                                    disabled={currentIndex <= 0}
+                                    onClick={handlePrev}
+                                >
+                                    <ChevronLeft size={24} />
+                                </Button>
+                                <Select
+                                    label="Oy bo'yicha"
+                                    options={months}
+                                    value={date}
+                                    setValue={(v) => updateParams({
+                                        date: v.toString()
+                                    })}
+                                    className="min-w-[130px] text-center"
+                                />
+                                <Button
+                                    variant={currentIndex === months.length - 1 ? "secondary" : undefined}
+                                    className="min-w-10 h-10 p-0 select-none"
+                                    disabled={currentIndex === months.length - 1}
+                                    onClick={handleNext}
+                                >
+                                    <ChevronRight size={24} />
+                                </Button>
+                            </div>
                         )}
                     </div>
                 }
@@ -167,7 +222,7 @@ export default function GroupAttendance() {
                                                                 status={
                                                                     at ?
                                                                         at.status
-                                                                    :   3
+                                                                        : 3
                                                                 }
                                                                 student={
                                                                     student.id

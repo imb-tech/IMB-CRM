@@ -1,8 +1,8 @@
 import ParamSwtich from "@/components/as-params/switch"
-import { findChildPaths } from "@/components/header/header-links"
 import { Badge } from "@/components/ui/badge"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { menuItems } from "@/constants/menu"
+import { findChildPaths } from "@/constants/util.menu"
 import { Plus } from "lucide-react"
 import { useMemo } from "react"
 

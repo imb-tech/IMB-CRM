@@ -40,7 +40,7 @@ export default function GroupTasks() {
         () =>
             months?.length ?
                 (months?.find((usr) => usr.value === currDate) ?? months[0])
-            :   null,
+                : null,
         [months],
     )
 
@@ -56,6 +56,7 @@ export default function GroupTasks() {
             },
         },
     )
+
 
     const { data: days } = useGet<string[]>(
         "platform/groups/days-to-teach/" + group + "/" + date,

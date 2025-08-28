@@ -16,6 +16,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as MainImport } from './routes/_main'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as MainIndexImport } from './routes/_main/index'
+import { Route as V1PathImport } from './routes/v1/$path'
 import { Route as FormIdImport } from './routes/form/$id'
 import { Route as MainReportsImport } from './routes/_main/reports'
 import { Route as MainStudentsIndexImport } from './routes/_main/students/index'
@@ -120,6 +121,12 @@ const AuthLoginLazyRoute = AuthLoginLazyImport.update({
   path: '/login',
   getParentRoute: () => AuthRoute,
 } as any).lazy(() => import('./routes/_auth/login.lazy').then((d) => d.Route))
+
+const V1PathRoute = V1PathImport.update({
+  id: '/v1/$path',
+  path: '/v1/$path',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const FormIdRoute = FormIdImport.update({
   id: '/form/$id',
@@ -483,6 +490,13 @@ declare module '@tanstack/react-router' {
       path: '/form/$id'
       fullPath: '/form/$id'
       preLoaderRoute: typeof FormIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/v1/$path': {
+      id: '/v1/$path'
+      path: '/v1/$path'
+      fullPath: '/v1/$path'
+      preLoaderRoute: typeof V1PathImport
       parentRoute: typeof rootRoute
     }
     '/_auth/login': {
@@ -1111,6 +1125,7 @@ export interface FileRoutesByFullPath {
   '': typeof MainRouteWithChildren
   '/reports': typeof MainReportsRoute
   '/form/$id': typeof FormIdRoute
+  '/v1/$path': typeof V1PathRoute
   '/login': typeof AuthLoginLazyRoute
   '/': typeof MainIndexRoute
   '/attendance': typeof MainAttendanceMainRouteWithChildren
@@ -1168,6 +1183,7 @@ export interface FileRoutesByTo {
   '': typeof AuthRouteWithChildren
   '/reports': typeof MainReportsRoute
   '/form/$id': typeof FormIdRoute
+  '/v1/$path': typeof V1PathRoute
   '/login': typeof AuthLoginLazyRoute
   '/': typeof MainIndexRoute
   '/attendance': typeof MainAttendanceMainIndexRoute
@@ -1223,6 +1239,7 @@ export interface FileRoutesById {
   '/_main': typeof MainRouteWithChildren
   '/_main/reports': typeof MainReportsRoute
   '/form/$id': typeof FormIdRoute
+  '/v1/$path': typeof V1PathRoute
   '/_auth/login': typeof AuthLoginLazyRoute
   '/_main/': typeof MainIndexRoute
   '/_main/attendance': typeof MainAttendanceRouteWithChildren
@@ -1287,6 +1304,7 @@ export interface FileRouteTypes {
     | ''
     | '/reports'
     | '/form/$id'
+    | '/v1/$path'
     | '/login'
     | '/'
     | '/attendance'
@@ -1343,6 +1361,7 @@ export interface FileRouteTypes {
     | ''
     | '/reports'
     | '/form/$id'
+    | '/v1/$path'
     | '/login'
     | '/'
     | '/attendance'
@@ -1396,6 +1415,7 @@ export interface FileRouteTypes {
     | '/_main'
     | '/_main/reports'
     | '/form/$id'
+    | '/v1/$path'
     | '/_auth/login'
     | '/_main/'
     | '/_main/attendance'
@@ -1459,12 +1479,14 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   MainRoute: typeof MainRouteWithChildren
   FormIdRoute: typeof FormIdRoute
+  V1PathRoute: typeof V1PathRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   MainRoute: MainRouteWithChildren,
   FormIdRoute: FormIdRoute,
+  V1PathRoute: V1PathRoute,
 }
 
 export const routeTree = rootRoute
@@ -1481,7 +1503,8 @@ export const routeTree = rootRoute
       "children": [
         "/_auth",
         "/_main",
-        "/form/$id"
+        "/form/$id",
+        "/v1/$path"
       ]
     },
     "/_auth": {
@@ -1523,6 +1546,9 @@ export const routeTree = rootRoute
     },
     "/form/$id": {
       "filePath": "form/$id.tsx"
+    },
+    "/v1/$path": {
+      "filePath": "v1/$path.tsx"
     },
     "/_auth/login": {
       "filePath": "_auth/login.lazy.tsx",

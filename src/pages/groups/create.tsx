@@ -80,12 +80,12 @@ const GroupCreate = ({ item }: Props) => {
         form.reset()
         queryClient.invalidateQueries({
             queryKey: [
-                "platform/group-students/attendances/" +
-                    conf.id +
-                    "/" +
-                    search.date,
-                true,
+                "platform/groups/months-to-teach/" + conf.id,
             ],
+        })
+        queryClient.invalidateQueries({
+            queryKey: [
+                "platform/groups/days-to-teach/" + conf.id + "/" + search.date],
         })
         queryClient.invalidateQueries({
             queryKey: [GROUP_STUDENTS, search],

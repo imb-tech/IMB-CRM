@@ -1,7 +1,7 @@
 import Header from "@/components/header"
-import HeaderLinks, { findChildPaths } from "@/components/header/header-links"
 import MobileHeaderLinks from "@/components/header/mobile-header-links"
 import { menuItems } from "@/constants/menu"
+import { findChildPaths } from "@/constants/util.menu"
 import { cn } from "@/lib/utils"
 import { ReactNode, useLocation } from "@tanstack/react-router"
 import { CSSProperties, useMemo } from "react"

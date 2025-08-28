@@ -38,9 +38,9 @@ export default function GroupStudents() {
         queryClient.invalidateQueries({
             queryKey: [
                 "platform/group-students/attendances/" +
-                    group +
-                    "/" +
-                    search.date,
+                group +
+                "/" +
+                search.date,
                 true,
             ],
         })
@@ -76,7 +76,7 @@ export default function GroupStudents() {
                 columns={columns}
                 data={data}
                 viewAll
-                className="max-w-full"
+                className="min-w-[700px] md:min-w-0 max-w-full"
                 numeration
                 selecteds_row
             />

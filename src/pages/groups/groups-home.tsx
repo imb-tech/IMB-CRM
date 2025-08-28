@@ -26,10 +26,10 @@ const GroupsMain = () => {
         <div>
             {/* <ParamTabs options={options} /> */}
             <ParamTabProvider defaultValue="groups">
-                <ParamTabList
+                {/* <ParamTabList
                     options={options}
                     listClassName="dark:bg-secondary"
-                />
+                /> */}
                 <div className="mt-2">
                     <TabsContent value="groups" className="mt-0">
                         <Groups />

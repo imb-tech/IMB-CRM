@@ -5,16 +5,18 @@ import { GROUP_STUDENTS, OPTION_STUDENT } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import { useModal } from "@/hooks/useModal"
 import { usePost } from "@/hooks/usePost"
-import { useParams } from "@tanstack/react-router"
+import { useParams, useSearch } from "@tanstack/react-router"
 import { format } from "date-fns"
 import { useEffect, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
-import { studentStatusKeys } from "../students/student-status"
+import { newStudentStatusKeys, studentStatusKeys } from "../students/student-status"
 import StudentSelector from "@/components/form/student-selector"
 import { Trash } from "lucide-react"
 import { FormNumberInput } from "@/components/form/number-input"
 import FormInput from "@/components/form/input"
 import { cn } from "@/lib/utils"
+import { formatPhoneNumber } from "@/lib/format-phone-number"
+import { useQueryClient } from "@tanstack/react-query"
 
 type MultiStudent = Student & {
     discount: {
@@ -47,8 +49,11 @@ export default function AppendStudent({
     onSuccess: () => void
 }) {
     const { id } = useParams({ strict: false })
+    const { date } = useSearch({ strict: false })
     const [search, setSearch] = useState<string>("")
     const { closeModal } = useModal("append-student")
+
+    const qc = useQueryClient()
 
     const { data } = useGet<Student[]>(OPTION_STUDENT, {
         params: { search },
@@ -79,7 +84,8 @@ export default function AppendStudent({
         keyName: "key",
     })
 
-    const wStudents = form.watch("students")?.map((f) => f.id)
+    const stds = form.watch("students")
+    const wStudents = stds?.map((f) => f.id)
 
     function showError(state: Record<string, any>, prefix: string) {
         for (const [k, v] of Object.entries(state)) {
@@ -123,6 +129,7 @@ export default function AppendStudent({
         const nst = v.students.filter((st) => !defaultStudents?.includes(st.id))
         const payload = buildPayload({ ...v, students: nst })
 
+
         mutate(GROUP_STUDENTS, payload, {
             onError(err) {
                 const errors = err.response.data as ErrorType
@@ -142,6 +149,7 @@ export default function AppendStudent({
                 ...s,
                 discount: {
                     amount: "",
+                    reason: "Guruhga qo'shishda chegirma berildi"
                 },
                 status: "1",
                 start_date: format(new Date().toISOString(), "yyyy-MM-dd"),
@@ -183,15 +191,15 @@ export default function AppendStudent({
                 selectedValues={wStudents}
             />
 
-            <div className="flex flex-col gap-2 rounded-md border py-2 max-h-[500px] overflow-y-auto my-2">
+            <div className="flex flex-col gap-2 max-h-[500px] overflow-y-auto my-2">
                 {fields.map(
                     (usr, i) =>
                         !defaultStudents?.includes(usr.id) && (
                             <div
                                 className={cn(
-                                    "flex flex-col w-full items-center bg-card px-4 rounded-md",
+                                    "flex flex-col w-full items-center bg-card px-4 rounded-md border py-2",
                                     (errors.students?.[i] as any)?.student &&
-                                        "border border-rose-500/50",
+                                    "border border-rose-500/50",
                                 )}
                                 key={usr.key}
                             >
@@ -200,20 +208,25 @@ export default function AppendStudent({
                                         "flex w-full items-end gap-2",
                                     )}
                                 >
-                                    <div className="grid grid-cols-5 py-2 gap-2 items-start">
-                                        <p className="w-full h-full pt-6 text-sm">
-                                            <span>{usr.full_name}</span>
+                                    <div className="grid grid-cols-4 py-2 gap-2 items-start w-full">
+                                        <div className="w-full h-full flex flex-col pt-4">
+                                            <p className="text-sm">
+                                                <span>{usr.full_name}</span>
+                                            </p>
+                                            <p className="text-sm text-muted-foreground">
+                                                {formatPhoneNumber(usr.phone)}
+                                            </p>
                                             <FormNumberInput
                                                 control={form.control}
                                                 name={`students.${i}.id`}
                                                 label="id"
                                                 wrapperClassName="h-0 w-0 overflow-hidden"
                                             />
-                                        </p>
+                                        </div>
 
                                         <FormSelect
                                             options={Object.entries(
-                                                studentStatusKeys,
+                                                newStudentStatusKeys,
                                             )?.map(([id, name]) => ({
                                                 id,
                                                 name,
@@ -231,7 +244,7 @@ export default function AppendStudent({
                                         <FormDatePicker
                                             control={form.control}
                                             name={`students.${i}.start_date`}
-                                            label="Qo'shilish sanasi"
+                                            label={stds[i].status === "0" ? "Qo'shilish sanasi" : "Aktivlashtirish sanasi"}
                                             className="!max-w-auto !w-auto"
                                             required
                                         />
@@ -239,15 +252,9 @@ export default function AppendStudent({
                                         <FormNumberInput
                                             control={form.control}
                                             name={`students.${i}.discount.amount`}
-                                            label="Chegirma (ixtiyoriy)"
-                                            placeholder="Kurs narxi"
+                                            label="Individual narx"
+                                            placeholder="Ixtiyoriy"
                                             allowLeadingZeros
-                                        />
-
-                                        <FormInput
-                                            methods={form}
-                                            name={`students.${i}.discount.reason`}
-                                            label="Chegirma sababi"
                                         />
                                     </div>
                                     <Trash
