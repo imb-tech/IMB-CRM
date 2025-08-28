@@ -3,7 +3,7 @@ import { useGet } from "@/hooks/useGet"
 import { usePost } from "@/hooks/usePost"
 import { useQueryClient } from "@tanstack/react-query"
 import { useModal } from "@/hooks/useModal"
-import { MOVE_TASK, PROJECTS_TASKS, STATUSES_MOVE } from "@/constants/api-endpoints"
+import { MOVE_TASK, PROJECTS_TASKS, STATUSES_MOVE, TASKLY_PROJECT } from "@/constants/api-endpoints"
 import { useState } from "react"
 import { DropResult } from "react-beautiful-dnd"
 
@@ -42,7 +42,6 @@ export const useTaskDndHandlers = () => {
 
         if (type === "column") {
             const newColumns = [...prevColumns]
-
             const [removed] = newColumns.splice(source.index, 1)
             newColumns.splice(destination.index, 0, removed);
             queryClient.setQueryData(cacheKey, newColumns)
@@ -53,7 +52,7 @@ export const useTaskDndHandlers = () => {
                     return acc
                 }, {} as Record<string, number>)
 
-                mutateColumn(STATUSES_MOVE, { items, project: params?.id })
+                mutateColumn(STATUSES_MOVE, { items, project: params?.id },)
             }
             return
         }
@@ -65,6 +64,7 @@ export const useTaskDndHandlers = () => {
 
 
         if (fromColId !== toColId) {
+
 
             const newColumns = [...prevColumns]
             const fromIndex = newColumns.findIndex((col) => col.id.toString() === fromColId)
@@ -103,7 +103,16 @@ export const useTaskDndHandlers = () => {
             mutateCard(MOVE_TASK, {
                 status: toColId,
                 items
-            })
+            },
+                {
+                    onError: () => {
+                        queryClient.setQueryData(cacheKey, prevColumns)
+                    },
+                    onSettled: () => {
+                        queryClient.removeQueries({ queryKey: [TASKLY_PROJECT] })
+                    }
+                }
+            )
         } else {
 
             const newColumns = [...prevColumns]
@@ -133,6 +142,10 @@ export const useTaskDndHandlers = () => {
             mutateCard(MOVE_TASK, {
                 status: toColId,
                 items
+            }, {
+                onError: () => {
+                    queryClient.setQueryData(cacheKey, prevColumns)
+                },
             })
 
         }
