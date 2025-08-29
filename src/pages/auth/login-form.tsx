@@ -7,7 +7,7 @@ import { usePost } from "@/hooks/usePost"
 import Spinner from "@/components/ui/spinner"
 import { encryptMessage } from "@/lib/data-encrypt"
 import { useNavigate, useSearch } from "@tanstack/react-router"
-import showFormErrors from "@/lib/show-form-errors"
+import { handleFormError } from "@/lib/show-form-errors"
 
 type Form = {
     username: string
@@ -56,7 +56,7 @@ export default function LoginForm() {
         }
 
         mutate(LOGIN, encryptData, {
-            onError: (err) => showFormErrors(err, methods),
+            onError: (err) => handleFormError(err, methods),
         })
     })
 

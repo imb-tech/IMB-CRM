@@ -22,6 +22,7 @@ type SearchParams = {
     student?: string
     task?:string
     project?:string
+    tabs?:string
 }
 
 

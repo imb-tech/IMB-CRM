@@ -1,4 +1,4 @@
-import { onError } from "@/lib/onError"
+import { handleFormError } from "@/lib/show-form-errors"
 import axiosInstance from "@/services/axios-instance"
 import { useMutation, UseMutationOptions } from "@tanstack/react-query"
 import { AxiosRequestConfig } from "axios"
@@ -12,7 +12,7 @@ export const useDelete = (
 ) => {
     return useMutation<any, any, string>({
         mutationFn: (url) => deleteRequest(url, config),
-        onError,
+        onError: (error) => handleFormError(error),
         ...(options || {}),
     })
 }

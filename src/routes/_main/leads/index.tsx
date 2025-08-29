@@ -66,7 +66,7 @@ function RouteComponent() {
                     </div>
                 </div>
             )}
-            <Modal modalKey="create-pip" title={`${"Yangi bo'lim qo'shish"}`}>
+            <Modal modalKey="create-pip" title={`Yangi bo'lim qo'shish`}>
                 <CreateDepartment item={null} />
             </Modal>
         </PageLayout>

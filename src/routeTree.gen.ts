@@ -32,7 +32,6 @@ import { Route as MainFinanceCostImport } from './routes/_main/finance/cost'
 import { Route as MainEmployeesMainImport } from './routes/_main/employees/_main'
 import { Route as MainAttendanceMainImport } from './routes/_main/attendance/_main'
 import { Route as MainSettingsMainIndexImport } from './routes/_main/settings/_main/index'
-import { Route as MainLeadsStatsIndexImport } from './routes/_main/leads/stats/index'
 import { Route as MainLeadsFormsIndexImport } from './routes/_main/leads/forms/index'
 import { Route as MainLeadsIdIndexImport } from './routes/_main/leads/$id/index'
 import { Route as MainEmployeesMainIndexImport } from './routes/_main/employees/_main/index'
@@ -226,12 +225,6 @@ const MainSettingsMainIndexRoute = MainSettingsMainIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => MainSettingsMainRoute,
-} as any)
-
-const MainLeadsStatsIndexRoute = MainLeadsStatsIndexImport.update({
-  id: '/leads/stats/',
-  path: '/leads/stats/',
-  getParentRoute: () => MainRoute,
 } as any)
 
 const MainLeadsFormsIndexRoute = MainLeadsFormsIndexImport.update({
@@ -772,13 +765,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainLeadsFormsIndexImport
       parentRoute: typeof MainImport
     }
-    '/_main/leads/stats/': {
-      id: '/_main/leads/stats/'
-      path: '/leads/stats'
-      fullPath: '/leads/stats'
-      preLoaderRoute: typeof MainLeadsStatsIndexImport
-      parentRoute: typeof MainImport
-    }
     '/_main/settings/_main/': {
       id: '/_main/settings/_main/'
       path: '/'
@@ -1105,7 +1091,6 @@ interface MainRouteChildren {
   MainStudentsIdRoute: typeof MainStudentsIdRouteWithChildren
   MainLeadsIdIndexRoute: typeof MainLeadsIdIndexRoute
   MainLeadsFormsIndexRoute: typeof MainLeadsFormsIndexRoute
-  MainLeadsStatsIndexRoute: typeof MainLeadsStatsIndexRoute
   MainLeadsIdUserUserRoute: typeof MainLeadsIdUserUserRoute
   MainLeadsFormsEditIdRoute: typeof MainLeadsFormsEditIdRoute
 }
@@ -1132,7 +1117,6 @@ const MainRouteChildren: MainRouteChildren = {
   MainStudentsIdRoute: MainStudentsIdRouteWithChildren,
   MainLeadsIdIndexRoute: MainLeadsIdIndexRoute,
   MainLeadsFormsIndexRoute: MainLeadsFormsIndexRoute,
-  MainLeadsStatsIndexRoute: MainLeadsStatsIndexRoute,
   MainLeadsIdUserUserRoute: MainLeadsIdUserUserRoute,
   MainLeadsFormsEditIdRoute: MainLeadsFormsEditIdRoute,
 }
@@ -1177,7 +1161,6 @@ export interface FileRoutesByFullPath {
   '/employees/': typeof MainEmployeesMainIndexRoute
   '/leads/$id': typeof MainLeadsIdIndexRoute
   '/leads/forms': typeof MainLeadsFormsIndexRoute
-  '/leads/stats': typeof MainLeadsStatsIndexRoute
   '/settings/': typeof MainSettingsMainIndexRoute
   '/groups/$id/attendance': typeof MainGroupsIdMainAttendanceRoute
   '/groups/$id/notes': typeof MainGroupsIdMainNotesRoute
@@ -1234,7 +1217,6 @@ export interface FileRoutesByTo {
   '/employees/attendance': typeof MainEmployeesMainAttendanceLazyRoute
   '/leads/$id': typeof MainLeadsIdIndexRoute
   '/leads/forms': typeof MainLeadsFormsIndexRoute
-  '/leads/stats': typeof MainLeadsStatsIndexRoute
   '/groups/$id/attendance': typeof MainGroupsIdMainAttendanceRoute
   '/groups/$id/notes': typeof MainGroupsIdMainNotesRoute
   '/groups/$id/sale': typeof MainGroupsIdMainSaleRoute
@@ -1298,7 +1280,6 @@ export interface FileRoutesById {
   '/_main/employees/_main/': typeof MainEmployeesMainIndexRoute
   '/_main/leads/$id/': typeof MainLeadsIdIndexRoute
   '/_main/leads/forms/': typeof MainLeadsFormsIndexRoute
-  '/_main/leads/stats/': typeof MainLeadsStatsIndexRoute
   '/_main/settings/_main/': typeof MainSettingsMainIndexRoute
   '/_main/groups/$id/_main/attendance': typeof MainGroupsIdMainAttendanceRoute
   '/_main/groups/$id/_main/notes': typeof MainGroupsIdMainNotesRoute
@@ -1359,7 +1340,6 @@ export interface FileRouteTypes {
     | '/employees/'
     | '/leads/$id'
     | '/leads/forms'
-    | '/leads/stats'
     | '/settings/'
     | '/groups/$id/attendance'
     | '/groups/$id/notes'
@@ -1415,7 +1395,6 @@ export interface FileRouteTypes {
     | '/employees/attendance'
     | '/leads/$id'
     | '/leads/forms'
-    | '/leads/stats'
     | '/groups/$id/attendance'
     | '/groups/$id/notes'
     | '/groups/$id/sale'
@@ -1477,7 +1456,6 @@ export interface FileRouteTypes {
     | '/_main/employees/_main/'
     | '/_main/leads/$id/'
     | '/_main/leads/forms/'
-    | '/_main/leads/stats/'
     | '/_main/settings/_main/'
     | '/_main/groups/$id/_main/attendance'
     | '/_main/groups/$id/_main/notes'
@@ -1558,7 +1536,6 @@ export const routeTree = rootRoute
         "/_main/students/$id",
         "/_main/leads/$id/",
         "/_main/leads/forms/",
-        "/_main/leads/stats/",
         "/_main/leads/$id/user/$user",
         "/_main/leads/forms/edit/$id"
       ]
@@ -1778,10 +1755,6 @@ export const routeTree = rootRoute
     },
     "/_main/leads/forms/": {
       "filePath": "_main/leads/forms/index.tsx",
-      "parent": "/_main"
-    },
-    "/_main/leads/stats/": {
-      "filePath": "_main/leads/stats/index.tsx",
       "parent": "/_main"
     },
     "/_main/settings/_main/": {

@@ -6,7 +6,7 @@ export default function LeadsTab() {
     const { pathname } = useLocation()
 
     const { id } = useParams({ strict: false })
- 
+
     return (
         <div className="flex flex-col items-start w-full overflow-x-auto no-scrollbar-x">
             <div className="flex items-center bg-card rounded-md">
@@ -25,18 +25,6 @@ export default function LeadsTab() {
                     to={search.pipeline ? "/leads/$id" : "/leads"}
                 >
                     {"Varonka"}
-                </Link>
-
-                <Link
-                    search={search}
-                    className={buttonVariants({
-                        variant: pathname.includes("/leads/stats")
-                            ? "default"
-                            : "ghost",
-                    })}
-                    to="/leads/stats"
-                >
-                    {"Statistika"}
                 </Link>
 
                 <Link

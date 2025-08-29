@@ -163,6 +163,13 @@ export const menuItems = [
                 search: {
                     tabs: "attendance_emp"
                 },
+            }),
+             linkOptions({
+                title: "Lidlar hisoboti",
+                to: "/reports",
+                search: {
+                    tabs: "leads_statistic"
+                },
             })
         ],
     }),

@@ -14,7 +14,7 @@ import useMe from "@/hooks/useMe"
 import { useCallback, useMemo, useState } from "react"
 import { useParams } from "@tanstack/react-router"
 import { useQueryClient } from "@tanstack/react-query"
-import showFormErrors from "@/lib/show-form-errors"
+import { handleFormError } from "@/lib/show-form-errors"
 
 export default function DiscountStudentCreate({
     current,
@@ -44,7 +44,7 @@ export default function DiscountStudentCreate({
                 queryKey: [GROUP_STUDENTS_DISCOUNTS],
             })
         },
-        onError: (err) => showFormErrors(err, form),
+        onError: (err) => handleFormError(err, form),
     })
 
     const form = useForm<DiscountStudent>({

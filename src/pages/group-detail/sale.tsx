@@ -13,8 +13,7 @@ import { Button } from "@/components/ui/button"
 import FormTextarea from "@/components/form/textarea"
 import { usePost } from "@/hooks/usePost"
 import DeleteModal from "@/components/custom/delete-modal"
-import { AxiosError } from "axios"
-import showFormErrors from "@/lib/show-form-errors"
+import { handleFormError } from "@/lib/show-form-errors"
 
 export default function GroupSale() {
     const columns = useGroupSalesCols()
@@ -56,7 +55,7 @@ export default function GroupSale() {
             closeModal()
             form.reset({})
         },
-        onError: (err) => showFormErrors(err, form),
+        onError: (err) => handleFormError(err, form),
     })
 
     const form = useForm<StudentDiscount>()

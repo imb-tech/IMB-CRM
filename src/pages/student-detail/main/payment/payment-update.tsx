@@ -49,7 +49,7 @@ function PaymentUpdate({ current, student_id, onSuccessPayment }: Props) {
         defaultValues: {
             amount: Math.abs(Number(current?.amount)),
             payment_type: current?.payment_type,
-            date: current?.date,
+            from_date: current?.from_date,
             description: current?.description,
             group_student: current?.group_data.id,
         },
@@ -95,7 +95,7 @@ function PaymentUpdate({ current, student_id, onSuccessPayment }: Props) {
                 amount: current?.condition
                     ? -Math.abs(values.amount)
                     : Math.abs(values.amount),
-                from_date: values.date
+                from_date: values.from_date
             }
 
             if (current?.id) {
@@ -154,7 +154,7 @@ function PaymentUpdate({ current, student_id, onSuccessPayment }: Props) {
 
             <FormDatePicker
                 control={form.control}
-                name="date"
+                name="from_date"
                 label="To'lov sanasi"
                 className="!w-full"
                 required

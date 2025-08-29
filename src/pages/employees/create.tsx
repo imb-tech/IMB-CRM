@@ -10,7 +10,7 @@ import useMe from "@/hooks/useMe"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
 import { usePost } from "@/hooks/usePost"
-import showFormErrors from "@/lib/show-form-errors"
+import { handleFormError } from "@/lib/show-form-errors"
 import { generateUsername } from "@/lib/utils"
 import { useQueryClient } from "@tanstack/react-query"
 import { AxiosError } from "axios"
@@ -57,14 +57,14 @@ const EmployeeCreate = ({ item }: Props) => {
     const { mutate: mutateCreate, isPending: isPendingCreate } = usePost(
         {
             onSuccess,
-            onError: (err) => showFormErrors(err, form),
+            onError: (err) => handleFormError(err, form),
         },
         { headers },
     )
     const { mutate: mutateUpdate, isPending: isPendingUpdate } = usePatch(
         {
             onSuccess,
-            onError: (err) => showFormErrors(err, form),
+            onError: (err) => handleFormError(err, form),
         },
         { headers },
     )
