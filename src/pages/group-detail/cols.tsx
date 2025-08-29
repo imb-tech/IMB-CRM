@@ -6,7 +6,7 @@ import { useMemo, useState } from "react"
 import { StatusPopover } from "./status-popover"
 import { useModal } from "@/hooks/useModal"
 import { useStore } from "@/hooks/use-store"
-import { Check, MessageSquareMore, Pencil, Trash2 } from "lucide-react"
+import { Check, Pencil } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { formatDate } from "@/lib/utils"
@@ -16,6 +16,7 @@ export const useGroupStudentCols = () => {
     const { openModal } = useModal("update")
     const { setStore } = useStore("student-data")
     const { openModal: openDelete } = useModal("delete-student")
+    const { openModal: pay } = useModal("payment-update")
 
     return useMemo<ColumnDef<GroupStudent>[]>(
         () => [
@@ -113,7 +114,7 @@ export const useGroupStudentCols = () => {
                                 key: "payment",
                                 onClick() {
                                     setStore(original)
-                                    openDelete()
+                                    pay()
                                 },
                             },
                             {
