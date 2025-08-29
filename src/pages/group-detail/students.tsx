@@ -15,6 +15,7 @@ import { useStore } from "@/hooks/use-store"
 import AppendStudentModal from "./append-student-modal"
 import ParamSwtich from "@/components/as-params/switch"
 import { useQueryClient } from "@tanstack/react-query"
+import PaymentUpdate from "../student-detail/main/payment/payment-update"
 
 export default function GroupStudents() {
     const { id: group } = useParams({
@@ -84,6 +85,19 @@ export default function GroupStudents() {
             <Modal modalKey="update" title="Tahrirlash" size="max-w-md">
                 <UpdateStudent />
             </Modal>
+
+            <Modal
+                modalKey="payment-update"
+                title={"To'lov qo'shish"}
+            >
+                {/* current type error */}
+                <PaymentUpdate
+                    student_id={store?.student}
+                    current={{ group_data: { id: store?.id ?? -1, name: "" } } as GroupStudentPayments}
+                    onSuccessPayment={refetchOrg}
+                />
+            </Modal>
+
 
             <AppendStudentModal refetch={refetch} />
             <DeleteModal
