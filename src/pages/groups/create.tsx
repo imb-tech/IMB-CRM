@@ -86,6 +86,11 @@ const GroupCreate = ({ item }: Props) => {
         })
         queryClient.invalidateQueries({
             queryKey: [
+                GROUP + '/' + conf.id,
+            ],
+        })
+        queryClient.invalidateQueries({
+            queryKey: [
                 "platform/groups/days-to-teach/" + conf.id + "/" + search.date],
         })
         queryClient.invalidateQueries({
