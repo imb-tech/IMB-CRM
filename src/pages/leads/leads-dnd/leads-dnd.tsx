@@ -1,4 +1,4 @@
-import { DragDropContext, DragStart, Droppable } from "react-beautiful-dnd"
+import { DragDropContext,  Droppable } from "react-beautiful-dnd"
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import LeadsColumn from "./leads-column"
@@ -18,7 +18,7 @@ import { usePost } from "@/hooks/usePost"
 import { generateIndexedData, moveBetweenArrays, moveItem } from "../utils"
 import useLeadStatuses from "../use-lead-statuses"
 import DeleteLeadModal from "./delete-lead-modal"
-
+ 
 const LeadsDnd = () => {
     const { id } = useParams({ strict: false })
     const { store, remove } = useStore<LeadStatus>("status-data")
@@ -47,7 +47,7 @@ const LeadsDnd = () => {
 
     const { data: users } = useGet<LeadFields[]>("leads/crud", {
         params: { condition: "active", status__pipeline: id },
-    })
+    }) 
 
     const { mutate } = usePatch()
     const { mutate: orderMutation } = usePost()

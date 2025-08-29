@@ -4,7 +4,6 @@ import { Link, useLocation, useParams, useSearch } from "@tanstack/react-router"
 export default function LeadsTab() {
     const search = useSearch({ strict: false })
     const { pathname } = useLocation()
-
     const { id } = useParams({ strict: false })
 
     return (

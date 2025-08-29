@@ -12,7 +12,6 @@ import GetSourceIcon from "../sources/get-source-icon"
 import { usePatch } from "@/hooks/usePatch"
 import { useParams } from "@tanstack/react-router"
 import FormInput from "@/components/form/input"
-import { FormNumberInput } from "@/components/form/number-input"
 
 export default function CreateLeadModal() {
     const { closeModal } = useModal()
@@ -86,19 +85,8 @@ export default function CreateLeadModal() {
                             }
                         } else return usr
                     })
-                    const cfgStatus = oldDataStatus?.map((usr) => {
-                        if (usr.id == item.status) {
-                            return {
-                                ...usr,
-                                total_amount:
-                                    Number(usr.total_amount) +
-                                    Number(item.amount),
-                            }
-                        } else return usr
-                    })
 
                     queryClient.setQueryData(queryKeyUsers, cfg)
-                    queryClient.setQueryData(queryKeyStatus, cfgStatus)
                 },
             })
         } else {
@@ -109,9 +97,6 @@ export default function CreateLeadModal() {
                         if (usr.id == item.status) {
                             return {
                                 ...usr,
-                                total_amount:
-                                    Number(usr.total_amount) +
-                                    Number(item.amount),
                                 total_count: usr.total_count + 1,
                             }
                         } else return usr
@@ -162,14 +147,6 @@ export default function CreateLeadModal() {
                     required
                     placeholder={"Lid ismi yoki nomi"}
                     autoComplete="off"
-                />
-                <FormNumberInput
-                    label={"Kelishuv summasi"}
-                    control={form.control}
-                    name="amount"
-                    placeholder={`${"Ex"}: 1 000 000`}
-                    size={"lg" as any}
-                    thousandSeparator=" "
                 />
 
                 <LeadPhones />

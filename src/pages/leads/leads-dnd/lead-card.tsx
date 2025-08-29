@@ -17,10 +17,10 @@ import GetSourceIcon from "../sources/get-source-icon"
 import { useStore } from "@/hooks/use-store"
 import { useModal } from "@/hooks/useModal"
 import axiosInstance from "@/services/axios-instance"
-import { formatMoney } from "@/lib/format-money"
+
 
 export default function LeadCard(props: Lead & { index: number }) {
-    const { id, name, source_icon, worker_name, get_main_contact, amount } =
+    const { id, name, source_icon, worker_name, get_main_contact, source_name } =
         props
 
     const { id: sourceId } = useParams({ strict: false })
@@ -60,23 +60,16 @@ export default function LeadCard(props: Lead & { index: number }) {
                 <CardContent className="p-4">
                     <div className="w-full">
                         <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div>
-                                    <div className="flex items-center gap-2">
-                                        <GetSourceIcon
-                                            icon={source_icon}
-                                            size={16}
-                                            className="bg-transparent"
-                                        />
-                                        <h3 className="font-medium text-lg text-slate-900 dark:text-slate-100">
-                                            {name}
-                                        </h3>
-                                    </div>
-                                    <p className="text-slate-500 dark:text-slate-400 text-sm">
-                                        {formatPhoneNumber(get_main_contact)}
-                                    </p>
-                                </div>
+                            <div>
+                                <h3 className="font-medium text-lg text-slate-900 dark:text-slate-100">
+                                    {name}
+                                </h3>
+
+                                <p className="text-slate-500 dark:text-slate-400 text-sm">
+                                    {formatPhoneNumber(get_main_contact)}
+                                </p>
                             </div>
+
                             <div className="flex items-center gap-1">
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
@@ -141,9 +134,14 @@ export default function LeadCard(props: Lead & { index: number }) {
                         </div>
 
                         <div className="flex items-center gap-4 mt-4 pt-3 text-xs ">
-                            <p className=" dark:text-slate-300 text-sm">
-                                {formatMoney(amount)} {"so'm"}
-                            </p>
+                            <div className="flex items-center gap-2">
+                                <GetSourceIcon
+                                    icon={source_icon}
+                                    size={16}
+                                    className="bg-transparent"
+                                />
+                                <span className="uppercase">{source_name}</span>
+                            </div>
                             <Badge
                                 className={cn(
                                     "ml-auto cursor-pointer transition-colors duration-200 text-xs font-normal bg-emerald-500/10 text-emerald-500 dark:bg-emerald-500/20 dark:text-emerald-400 hover:bg-emerald-500/20",
