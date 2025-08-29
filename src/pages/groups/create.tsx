@@ -17,7 +17,7 @@ import useMe from "@/hooks/useMe"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
 import { usePost } from "@/hooks/usePost"
-import showFormErrors from "@/lib/show-form-errors"
+import { handleFormError } from "@/lib/show-form-errors"
 import { cn, weekdays } from "@/lib/utils"
 import { useQueryClient } from "@tanstack/react-query"
 import { useSearch } from "@tanstack/react-router"
@@ -86,6 +86,11 @@ const GroupCreate = ({ item }: Props) => {
         })
         queryClient.invalidateQueries({
             queryKey: [
+                GROUP + '/' + conf.id,
+            ],
+        })
+        queryClient.invalidateQueries({
+            queryKey: [
                 "platform/groups/days-to-teach/" + conf.id + "/" + search.date],
         })
         queryClient.invalidateQueries({
@@ -109,13 +114,13 @@ const GroupCreate = ({ item }: Props) => {
         if (item?.id) {
             patch(`${GROUP}/${item.id}`, nv, {
                 onError(err) {
-                    showFormErrors(err, form)
+                    handleFormError(err, form)
                 },
             })
         } else {
             mutate(GROUP, nv, {
                 onError(error) {
-                    showFormErrors(error, form)
+                    handleFormError(error, form)
                 },
             })
         }

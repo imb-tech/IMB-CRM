@@ -91,7 +91,7 @@ export default function DeleteModal({
                     <Button
                         variant="secondary"
                         onClick={closeModal}
-                        className="px-8 py-2 text-white bg-transparent hover:bg-muted transition-all duration-200"
+                        className="px-8 py-2 dark:text-white bg-transparent hover:bg-muted transition-all duration-200"
                     >
                         Bekor qilish
                     </Button>

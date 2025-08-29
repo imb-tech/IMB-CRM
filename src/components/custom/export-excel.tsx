@@ -1,4 +1,3 @@
-import { onError } from "@/lib/onError"
 import { Download } from "lucide-react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -12,6 +11,7 @@ import { FormDatePicker } from "../form/date-picker"
 import { getAccessToken } from "@/lib/get-token"
 import { downloadExcel } from "@/lib/download-excel"
 import { baseURL } from "@/services/axios-instance"
+import { handleFormError } from "@/lib/show-form-errors"
 
 type Dates = {
     start: string
@@ -51,7 +51,7 @@ const ExportAsExcel = ({
             downloadExcel({ data, name })
         }
         if (isError) {
-            onError(error)
+            handleFormError(error)
         }
     }
 

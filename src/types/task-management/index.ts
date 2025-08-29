@@ -19,10 +19,8 @@ type QuoteCard = {
     users: number[]
     users_data: {
         id: number
-        face: string
-        last_name: string
-        first_name: string
-        middle_name: string
+        photo: string
+        full_name: string
     }[]
     todo: number
     finished: number
@@ -56,10 +54,8 @@ type FormValues = {
     created_at: string
     users: {
         id: number
-        face: string
-        last_name: string
-        first_name: string
-        middle_name: string
+        photo: string
+        full_name: string
     }[]
     employees: number[]
 }

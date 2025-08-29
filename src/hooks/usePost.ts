@@ -1,3 +1,4 @@
+import { handleFormError } from "@/lib/show-form-errors"
 import axiosInstance from "@/services/axios-instance"
 import {
     MutateOptions,
@@ -5,7 +6,6 @@ import {
     UseMutationOptions,
 } from "@tanstack/react-query"
 import { AxiosRequestConfig } from "axios"
-import { onError } from "@/lib/onError"
 
 export const postRequest = <T>(
     url: string,
@@ -27,7 +27,6 @@ export const usePost = <P = any, D = any>(
 ) => {
     const mutation = useMutation<D, any, { url: string; payload: P }>({
         mutationFn: ({ url, payload }) => postRequest(url, payload, config),
-        onError,
         ...(options || {}),
     })
 

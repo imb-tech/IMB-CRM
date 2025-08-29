@@ -6,7 +6,6 @@ export const queryClient = new QueryClient({
             refetchOnWindowFocus: false,
             retry: process.env.NODE_ENV === "development" ? 0 : 3,
             gcTime: 1000 * 60 * 2,
-            staleTime: 1000 * 60 * 2,
         },
     },
 })

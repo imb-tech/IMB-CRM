@@ -1,4 +1,4 @@
-import { onError } from "@/lib/onError"
+import { handleFormError } from "@/lib/show-form-errors"
 import axiosInstance from "@/services/axios-instance"
 import {
     MutateOptions,
@@ -25,7 +25,6 @@ export const usePatch = <P = any, D = any>(
 ) => {
     const mutation = useMutation<D, any, { url: string; payload: P }>({
         mutationFn: ({ url, payload }) => patchRequest(url, payload, config),
-        onError,
         ...(options || {}),
     })
 

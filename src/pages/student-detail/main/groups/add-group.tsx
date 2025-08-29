@@ -25,7 +25,7 @@ import {
 } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import { Button } from "@/components/ui/button"
-import showFormErrors from "@/lib/show-form-errors"
+import { handleFormError } from "@/lib/show-form-errors"
 
 type Props = {}
 
@@ -70,7 +70,7 @@ function AddGroup({}: Props) {
             mutate(
                 GROUP_STUDENTS,
                 { group_students: [body] },
-                { onError: (err) => showFormErrors(err, form) },
+                { onError: (err) => handleFormError(err, form) },
             )
         },
         [mutate, id, form],

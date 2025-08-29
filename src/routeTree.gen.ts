@@ -16,7 +16,6 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as MainImport } from './routes/_main'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as MainIndexImport } from './routes/_main/index'
-import { Route as V1PathImport } from './routes/v1/$path'
 import { Route as FormIdImport } from './routes/form/$id'
 import { Route as MainReportsImport } from './routes/_main/reports'
 import { Route as MainStudentsIndexImport } from './routes/_main/students/index'
@@ -33,7 +32,6 @@ import { Route as MainFinanceCostImport } from './routes/_main/finance/cost'
 import { Route as MainEmployeesMainImport } from './routes/_main/employees/_main'
 import { Route as MainAttendanceMainImport } from './routes/_main/attendance/_main'
 import { Route as MainSettingsMainIndexImport } from './routes/_main/settings/_main/index'
-import { Route as MainLeadsStatsIndexImport } from './routes/_main/leads/stats/index'
 import { Route as MainLeadsFormsIndexImport } from './routes/_main/leads/forms/index'
 import { Route as MainLeadsIdIndexImport } from './routes/_main/leads/$id/index'
 import { Route as MainEmployeesMainIndexImport } from './routes/_main/employees/_main/index'
@@ -123,12 +121,6 @@ const AuthLoginLazyRoute = AuthLoginLazyImport.update({
   path: '/login',
   getParentRoute: () => AuthRoute,
 } as any).lazy(() => import('./routes/_auth/login.lazy').then((d) => d.Route))
-
-const V1PathRoute = V1PathImport.update({
-  id: '/v1/$path',
-  path: '/v1/$path',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const FormIdRoute = FormIdImport.update({
   id: '/form/$id',
@@ -233,12 +225,6 @@ const MainSettingsMainIndexRoute = MainSettingsMainIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => MainSettingsMainRoute,
-} as any)
-
-const MainLeadsStatsIndexRoute = MainLeadsStatsIndexImport.update({
-  id: '/leads/stats/',
-  path: '/leads/stats/',
-  getParentRoute: () => MainRoute,
 } as any)
 
 const MainLeadsFormsIndexRoute = MainLeadsFormsIndexImport.update({
@@ -504,13 +490,6 @@ declare module '@tanstack/react-router' {
       path: '/form/$id'
       fullPath: '/form/$id'
       preLoaderRoute: typeof FormIdImport
-      parentRoute: typeof rootRoute
-    }
-    '/v1/$path': {
-      id: '/v1/$path'
-      path: '/v1/$path'
-      fullPath: '/v1/$path'
-      preLoaderRoute: typeof V1PathImport
       parentRoute: typeof rootRoute
     }
     '/_auth/login': {
@@ -784,13 +763,6 @@ declare module '@tanstack/react-router' {
       path: '/leads/forms'
       fullPath: '/leads/forms'
       preLoaderRoute: typeof MainLeadsFormsIndexImport
-      parentRoute: typeof MainImport
-    }
-    '/_main/leads/stats/': {
-      id: '/_main/leads/stats/'
-      path: '/leads/stats'
-      fullPath: '/leads/stats'
-      preLoaderRoute: typeof MainLeadsStatsIndexImport
       parentRoute: typeof MainImport
     }
     '/_main/settings/_main/': {
@@ -1119,7 +1091,6 @@ interface MainRouteChildren {
   MainStudentsIdRoute: typeof MainStudentsIdRouteWithChildren
   MainLeadsIdIndexRoute: typeof MainLeadsIdIndexRoute
   MainLeadsFormsIndexRoute: typeof MainLeadsFormsIndexRoute
-  MainLeadsStatsIndexRoute: typeof MainLeadsStatsIndexRoute
   MainLeadsIdUserUserRoute: typeof MainLeadsIdUserUserRoute
   MainLeadsFormsEditIdRoute: typeof MainLeadsFormsEditIdRoute
 }
@@ -1146,7 +1117,6 @@ const MainRouteChildren: MainRouteChildren = {
   MainStudentsIdRoute: MainStudentsIdRouteWithChildren,
   MainLeadsIdIndexRoute: MainLeadsIdIndexRoute,
   MainLeadsFormsIndexRoute: MainLeadsFormsIndexRoute,
-  MainLeadsStatsIndexRoute: MainLeadsStatsIndexRoute,
   MainLeadsIdUserUserRoute: MainLeadsIdUserUserRoute,
   MainLeadsFormsEditIdRoute: MainLeadsFormsEditIdRoute,
 }
@@ -1157,7 +1127,6 @@ export interface FileRoutesByFullPath {
   '': typeof MainRouteWithChildren
   '/reports': typeof MainReportsRoute
   '/form/$id': typeof FormIdRoute
-  '/v1/$path': typeof V1PathRoute
   '/login': typeof AuthLoginLazyRoute
   '/': typeof MainIndexRoute
   '/attendance': typeof MainAttendanceMainRouteWithChildren
@@ -1192,7 +1161,6 @@ export interface FileRoutesByFullPath {
   '/employees/': typeof MainEmployeesMainIndexRoute
   '/leads/$id': typeof MainLeadsIdIndexRoute
   '/leads/forms': typeof MainLeadsFormsIndexRoute
-  '/leads/stats': typeof MainLeadsStatsIndexRoute
   '/settings/': typeof MainSettingsMainIndexRoute
   '/groups/$id/attendance': typeof MainGroupsIdMainAttendanceRoute
   '/groups/$id/notes': typeof MainGroupsIdMainNotesRoute
@@ -1217,7 +1185,6 @@ export interface FileRoutesByTo {
   '': typeof AuthRouteWithChildren
   '/reports': typeof MainReportsRoute
   '/form/$id': typeof FormIdRoute
-  '/v1/$path': typeof V1PathRoute
   '/login': typeof AuthLoginLazyRoute
   '/': typeof MainIndexRoute
   '/attendance': typeof MainAttendanceMainIndexRoute
@@ -1250,7 +1217,6 @@ export interface FileRoutesByTo {
   '/employees/attendance': typeof MainEmployeesMainAttendanceLazyRoute
   '/leads/$id': typeof MainLeadsIdIndexRoute
   '/leads/forms': typeof MainLeadsFormsIndexRoute
-  '/leads/stats': typeof MainLeadsStatsIndexRoute
   '/groups/$id/attendance': typeof MainGroupsIdMainAttendanceRoute
   '/groups/$id/notes': typeof MainGroupsIdMainNotesRoute
   '/groups/$id/sale': typeof MainGroupsIdMainSaleRoute
@@ -1275,7 +1241,6 @@ export interface FileRoutesById {
   '/_main': typeof MainRouteWithChildren
   '/_main/reports': typeof MainReportsRoute
   '/form/$id': typeof FormIdRoute
-  '/v1/$path': typeof V1PathRoute
   '/_auth/login': typeof AuthLoginLazyRoute
   '/_main/': typeof MainIndexRoute
   '/_main/attendance': typeof MainAttendanceRouteWithChildren
@@ -1315,7 +1280,6 @@ export interface FileRoutesById {
   '/_main/employees/_main/': typeof MainEmployeesMainIndexRoute
   '/_main/leads/$id/': typeof MainLeadsIdIndexRoute
   '/_main/leads/forms/': typeof MainLeadsFormsIndexRoute
-  '/_main/leads/stats/': typeof MainLeadsStatsIndexRoute
   '/_main/settings/_main/': typeof MainSettingsMainIndexRoute
   '/_main/groups/$id/_main/attendance': typeof MainGroupsIdMainAttendanceRoute
   '/_main/groups/$id/_main/notes': typeof MainGroupsIdMainNotesRoute
@@ -1342,7 +1306,6 @@ export interface FileRouteTypes {
     | ''
     | '/reports'
     | '/form/$id'
-    | '/v1/$path'
     | '/login'
     | '/'
     | '/attendance'
@@ -1377,7 +1340,6 @@ export interface FileRouteTypes {
     | '/employees/'
     | '/leads/$id'
     | '/leads/forms'
-    | '/leads/stats'
     | '/settings/'
     | '/groups/$id/attendance'
     | '/groups/$id/notes'
@@ -1401,7 +1363,6 @@ export interface FileRouteTypes {
     | ''
     | '/reports'
     | '/form/$id'
-    | '/v1/$path'
     | '/login'
     | '/'
     | '/attendance'
@@ -1434,7 +1395,6 @@ export interface FileRouteTypes {
     | '/employees/attendance'
     | '/leads/$id'
     | '/leads/forms'
-    | '/leads/stats'
     | '/groups/$id/attendance'
     | '/groups/$id/notes'
     | '/groups/$id/sale'
@@ -1457,7 +1417,6 @@ export interface FileRouteTypes {
     | '/_main'
     | '/_main/reports'
     | '/form/$id'
-    | '/v1/$path'
     | '/_auth/login'
     | '/_main/'
     | '/_main/attendance'
@@ -1497,7 +1456,6 @@ export interface FileRouteTypes {
     | '/_main/employees/_main/'
     | '/_main/leads/$id/'
     | '/_main/leads/forms/'
-    | '/_main/leads/stats/'
     | '/_main/settings/_main/'
     | '/_main/groups/$id/_main/attendance'
     | '/_main/groups/$id/_main/notes'
@@ -1523,14 +1481,12 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   MainRoute: typeof MainRouteWithChildren
   FormIdRoute: typeof FormIdRoute
-  V1PathRoute: typeof V1PathRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   MainRoute: MainRouteWithChildren,
   FormIdRoute: FormIdRoute,
-  V1PathRoute: V1PathRoute,
 }
 
 export const routeTree = rootRoute
@@ -1547,8 +1503,7 @@ export const routeTree = rootRoute
       "children": [
         "/_auth",
         "/_main",
-        "/form/$id",
-        "/v1/$path"
+        "/form/$id"
       ]
     },
     "/_auth": {
@@ -1581,7 +1536,6 @@ export const routeTree = rootRoute
         "/_main/students/$id",
         "/_main/leads/$id/",
         "/_main/leads/forms/",
-        "/_main/leads/stats/",
         "/_main/leads/$id/user/$user",
         "/_main/leads/forms/edit/$id"
       ]
@@ -1592,9 +1546,6 @@ export const routeTree = rootRoute
     },
     "/form/$id": {
       "filePath": "form/$id.tsx"
-    },
-    "/v1/$path": {
-      "filePath": "v1/$path.tsx"
     },
     "/_auth/login": {
       "filePath": "_auth/login.lazy.tsx",
@@ -1804,10 +1755,6 @@ export const routeTree = rootRoute
     },
     "/_main/leads/forms/": {
       "filePath": "_main/leads/forms/index.tsx",
-      "parent": "/_main"
-    },
-    "/_main/leads/stats/": {
-      "filePath": "_main/leads/stats/index.tsx",
       "parent": "/_main"
     },
     "/_main/settings/_main/": {

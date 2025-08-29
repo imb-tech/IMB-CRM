@@ -1,7 +1,16 @@
 import { useCallback, useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Clock, User, Trash2, Check, X, Plus, Pen, AlarmClock } from "lucide-react"
+import {
+    Clock,
+    User,
+    Trash2,
+    Check,
+    X,
+    Plus,
+    Pen,
+    AlarmClock,
+} from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
 import { useGet } from "@/hooks/useGet"
 import { STUDENT_NOTES } from "@/constants/api-endpoints"
@@ -55,7 +64,9 @@ export default function StudentNotesMain() {
                     <h1 className="text-xl font-medium ">
                         {"Eslatmalar ro'yxati"}
                     </h1>
-                    <Badge className="text-sm">{formatMoney(data?.count)}</Badge>
+                    <Badge className="text-sm">
+                        {formatMoney(data?.count)}
+                    </Badge>
                 </div>
                 <Button
                     type="button"
@@ -95,7 +106,8 @@ export default function StudentNotesMain() {
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2 text-orange-600">
-                                       Eslatish vaqti: <AlarmClock className="w-4 h-4" />
+                                        Eslatish vaqti:{" "}
+                                        <AlarmClock className="w-4 h-4" />
                                         <span className="text-sm">
                                             {format(
                                                 note.remind_at,
@@ -147,7 +159,7 @@ export default function StudentNotesMain() {
                 modalKey="notes-add"
                 title={`Eslatma  ${current?.id ? "tahrirlash" : "qo'shish"}`}
             >
-                <StudentNotesCreate current={current} />
+                <StudentNotesCreate id={id} current={current} />
             </Modal>
         </div>
     )

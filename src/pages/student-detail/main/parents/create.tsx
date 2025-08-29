@@ -12,7 +12,7 @@ import FormInput from "@/components/form/input"
 import PhoneField from "@/components/form/phone-field"
 import { toast } from "sonner"
 import { usePatch } from "@/hooks/usePatch"
-import showFormErrors from "@/lib/show-form-errors"
+import { handleFormError } from "@/lib/show-form-errors"
 
 export default function StudentParentsCreate({
     current,
@@ -42,11 +42,11 @@ export default function StudentParentsCreate({
 
     const { mutate: mutatePost, isPending: isPendingPost } = usePost({
         onSuccess,
-        onError: (err) => showFormErrors(err, form),
+        onError: (err) => handleFormError(err, form),
     })
     const { mutate: mutatePatch, isPending: isPendingPatch } = usePatch({
         onSuccess,
-        onError: (err) => showFormErrors(err, form),
+        onError: (err) => handleFormError(err, form),
     })
 
     const handleSubmit = useCallback(

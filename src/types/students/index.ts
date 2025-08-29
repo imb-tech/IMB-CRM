@@ -76,7 +76,7 @@ type GroupStudentPayments = {
     condition: number
     group_student: number
     start_date: string
-    date: string
+    from_date: string
     description: string
     payment_type: string
     payment_type_name: string

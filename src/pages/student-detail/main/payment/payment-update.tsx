@@ -23,9 +23,11 @@ import { toast } from "sonner"
 
 type Props = {
     current: GroupStudentPayments | null
+    student_id?: number
+    onSuccessPayment?: () => void
 }
 
-function PaymentUpdate({ current }: Props) {
+function PaymentUpdate({ current, student_id, onSuccessPayment }: Props) {
     const queryClient = useQueryClient()
     const { id } = useParams({ strict: false }) as { id: string }
     const { active_branch } = useMe()
@@ -39,7 +41,7 @@ function PaymentUpdate({ current }: Props) {
     const { data: groupOptions = [] } = useGet<Group[]>(
         OPTION_GROUPS_STUDENTS,
         {
-            params: { search, branch: active_branch, student: id },
+            params: { search, branch: active_branch, student: student_id ?? id },
         },
     )
 
@@ -47,7 +49,7 @@ function PaymentUpdate({ current }: Props) {
         defaultValues: {
             amount: Math.abs(Number(current?.amount)),
             payment_type: current?.payment_type,
-            date: current?.date,
+            from_date: current?.from_date,
             description: current?.description,
             group_student: current?.group_data.id,
         },
@@ -57,6 +59,7 @@ function PaymentUpdate({ current }: Props) {
         toast.success("Muvaffaqiyatli yangilandi")
         closeModal()
         form.reset()
+        onSuccessPayment?.()
         queryClient.invalidateQueries({
             queryKey: [GROUP_STUDENTS_PAYMENT],
         })
@@ -79,9 +82,8 @@ function PaymentUpdate({ current }: Props) {
         () =>
             groupOptions.map((item) => ({
                 id: item.id,
-                name: `${item.name} - ${item.teacher_name} - ${
-                    item.is_active ? "Aktiv" : "O'chirilgan"
-                }`,
+                name: `${item.name} - ${item.teacher_name} - ${item.is_active ? "Aktiv" : "O'chirilgan"
+                    }`,
             })),
         [groupOptions],
     )
@@ -93,6 +95,7 @@ function PaymentUpdate({ current }: Props) {
                 amount: current?.condition
                     ? -Math.abs(values.amount)
                     : Math.abs(values.amount),
+                from_date: values.from_date
             }
 
             if (current?.id) {
@@ -112,7 +115,7 @@ function PaymentUpdate({ current }: Props) {
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-4 mt-1 px-1"
         >
-            {!current?.id && (
+            {!current?.id && !student_id && (
                 <FormCombobox
                     control={form.control}
                     name="group_student"
@@ -151,7 +154,7 @@ function PaymentUpdate({ current }: Props) {
 
             <FormDatePicker
                 control={form.control}
-                name="date"
+                name="from_date"
                 label="To'lov sanasi"
                 className="!w-full"
                 required

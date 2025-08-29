@@ -13,10 +13,7 @@ import {
     MoreHorizontal,
     Banknote,
     ChevronUp,
-    EllipsisVertical,
     ArrowLeft,
-    MessageSquareMore,
-    Pencil,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useCallback, useMemo, useState } from "react"
@@ -26,16 +23,11 @@ import { useGet } from "@/hooks/useGet"
 import { GROUP } from "@/constants/api-endpoints"
 import { daysMap, shiftGroupped } from "@/lib/shift-groupped"
 import { formatMoney } from "@/lib/format-money"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
 import Modal from "@/components/custom/modal"
 import GroupCreate from "../groups/create"
 import { useModal } from "@/hooks/useModal"
 import useHistoryNavigate from "@/hooks/use-history-navigate"
-import ActionDropdown, { ACTIONS } from "@/components/elements/action-dropdown"
+import ActionDropdown from "@/components/elements/action-dropdown"
 
 function MiniStatCard({ label, value, icon: Icon, color }: any) {
     const colors = colorClasses[color as string]
@@ -195,55 +187,8 @@ export default function GroupProfile() {
                                     options={[
                                         { key: "edit", onClick: openModal },
                                         { key: "delete", onClick: openModal },
-                                        { key: "share", onClick: openModal },
                                     ]}
                                 />
-                                {/* <div className="rounded-sm px-3 py-3 h-full cursor-pointer">
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <EllipsisVertical />
-                                        </PopoverTrigger>
-                                        <PopoverContent
-                                            className="p-0 w-[160px]"
-                                            side="bottom"
-                                            align="end"
-                                        >
-                                            <div className="bg-background rounded-sm flex flex-col p-3 gap-3 text-sm cursor-pointer">
-                                                <div className="flex items-center gap-2 hover:pl-1 transition-all duration-150">
-                                                    <MessageSquareMore
-                                                        className="text-orange-300"
-                                                        size={18}
-                                                    />
-                                                    <p>SMS yuborish</p>
-                                                </div>
-                                                <div className="flex items-center gap-2 hover:pl-1 transition-all duration-150">
-                                                    <Trash2
-                                                        className="text-rose-500"
-                                                        size={18}
-                                                    />
-                                                    <p>O'chirish</p>
-                                                </div>
-                                                <div
-                                                    className="flex items-center gap-2 hover:pl-1 transition-all duration-150"
-                                                    onClick={openModal}
-                                                >
-                                                    <Pencil
-                                                        className="text-primary"
-                                                        size={18}
-                                                    />
-                                                    <p>Tahrirlash</p>
-                                                </div>
-                                                <div className="flex items-center gap-2 hover:pl-1 transition-all duration-150">
-                                                    <UserPlus
-                                                        className="text-blue-500"
-                                                        size={18}
-                                                    />
-                                                    <p>O'quvchi</p>
-                                                </div>
-                                            </div>
-                                        </PopoverContent>
-                                    </Popover>
-                                </div> */}
                             </div>
                         </div>
 

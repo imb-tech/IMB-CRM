@@ -138,7 +138,7 @@ const TaskManagment = () => {
                 modalKey="project-delete"
                 id={currentId}
                 path={STATUSES}
-                refetchKeys={[`${PROJECTS_TASKS}/${params?.id}`]}
+                refetchKeys={[`${PROJECTS_TASKS}/${params?.id}`,]}
             />
         </div>
     )

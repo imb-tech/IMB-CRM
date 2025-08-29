@@ -31,8 +31,6 @@ type Lead = {
     get_main_contact: string
     condition: LeadCondition
     pipeline_id: number
-    amount: number
-    total_amount: number
     total_count: number
 }
 
@@ -74,7 +72,6 @@ type LeadStatus = {
     is_active: boolean
     pipeline: number
     editable?: boolean
-    total_amount: number
     total_count: number
 }
 

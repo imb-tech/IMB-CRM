@@ -6,16 +6,19 @@ import { useMemo, useState } from "react"
 import { StatusPopover } from "./status-popover"
 import { useModal } from "@/hooks/useModal"
 import { useStore } from "@/hooks/use-store"
-import { Check, MessageSquareMore, Pencil, Trash2 } from "lucide-react"
+import { Check, Pencil } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { formatDate } from "@/lib/utils"
 import ActionDropdown from "@/components/elements/action-dropdown"
+import { Link } from "@tanstack/react-router"
 
 export const useGroupStudentCols = () => {
     const { openModal } = useModal("update")
     const { setStore } = useStore("student-data")
     const { openModal: openDelete } = useModal("delete-student")
+    const { openModal: pay } = useModal("payment-update")
+    const { openModal: exportStudent } = useModal("export-student")
 
     return useMemo<ColumnDef<GroupStudent>[]>(
         () => [
@@ -23,6 +26,9 @@ export const useGroupStudentCols = () => {
                 header: "FIO",
                 accessorKey: "student_name",
                 enableSorting: true,
+                cell: ({ row: { original: { student_name, student } } }) => {
+                    return <Link to="/students/$id/groups" className="hover:text-primary" params={{ id: student.toString() }}>{student_name}</Link>
+                },
             },
             {
                 header: "Telefon",
@@ -51,43 +57,11 @@ export const useGroupStudentCols = () => {
             },
             {
                 header: "Qo'shilgan sana",
-                cell: ({ row }) => {
-                    return (
-                        <div className="flex items-center gap-3">
-                            <p>{row.original.start_date}</p>
-                            <Pencil
-                                size={16}
-                                onClick={() => {
-                                    openModal()
-                                    setStore(row.original)
-                                }}
-                                className="text-primary"
-                            />
-                        </div>
-                    )
-                },
+                accessorKey: "start_date"
             },
             {
                 header: "Aktivlashgan sana",
-                cell: ({ row: { original } }) => {
-                    return (
-                        <div>
-                            {original.status == 0 ? <p className="bg-yellow-500/20 py-1 px-2 rounded-sm font-light inline text-xs">Kutilmoqda</p> : (
-                                <div className="flex items-center gap-3">
-                                    <p>{original.activated_date}</p>
-                                    <Pencil
-                                        size={16}
-                                        onClick={() => {
-                                            openModal()
-                                            setStore(original)
-                                        }}
-                                        className="text-primary"
-                                    />
-                                </div>
-                            )}
-                        </div>
-                    )
-                },
+                accessorKey: "activated_date"
             },
             {
                 header: "Balans",
@@ -103,6 +77,13 @@ export const useGroupStudentCols = () => {
                     return (
                         <ActionDropdown options={[
                             {
+                                key: "edit",
+                                onClick() {
+                                    setStore(original)
+                                    openModal()
+                                },
+                            },
+                            {
                                 key: "delete",
                                 onClick() {
                                     setStore(original)
@@ -113,14 +94,14 @@ export const useGroupStudentCols = () => {
                                 key: "payment",
                                 onClick() {
                                     setStore(original)
-                                    openDelete()
+                                    pay()
                                 },
                             },
                             {
                                 key: "transfer",
                                 onClick() {
                                     setStore(original)
-                                    openDelete()
+                                    exportStudent()
                                 },
                             },
                             {
