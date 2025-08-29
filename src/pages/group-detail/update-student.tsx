@@ -35,8 +35,8 @@ export default function UpdateStudent() {
     }
 
     return (
-        <form onSubmit={form.handleSubmit(handleSubmit)}>
-            <div className="bg-rose-500/10 p-3 mb-3 rounded text-rose-500 flex gap-2">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-3">
+            <div className="bg-rose-500/10 p-3 mb-2 rounded text-rose-500 flex gap-2">
                 <p>
                     <TriangleAlert className="inline mr-2 mb-1" size={16} />
                     Qo‘shilish sanasini o‘zgartirsangiz, o‘quvchi balansi ham
@@ -48,6 +48,14 @@ export default function UpdateStudent() {
                 label="Guruhga qo'shilgan sana"
                 control={form.control}
                 name="start_date"
+                fullWidth
+                className="!w-full"
+            />
+
+            <FormDatePicker
+                label="Aktivlashtirilgan sana"
+                control={form.control}
+                name="activated_date"
                 fullWidth
                 className="!w-full"
             />

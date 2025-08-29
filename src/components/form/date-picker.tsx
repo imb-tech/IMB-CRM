@@ -5,6 +5,7 @@ import FieldError from "./form-error"
 import FieldLabel from "./form-label"
 import { getNestedValue } from "./input"
 import { ClassNameValue } from "tailwind-merge"
+import { cn } from "@/lib/utils"
 
 export function FormDatePicker<TForm extends FieldValues>({
     name,
@@ -54,7 +55,7 @@ export function FormDatePicker<TForm extends FieldValues>({
                             placeholder={placeholder || label}
                             disabled={field.disabled || disabled}
                             fullWidth={fullWidth}
-                            className={className}
+                            className={cn(className, "dark:text-white")}
                             isError={!!fieldState.error}
                         />
                         {!hideError && fieldState.error && (

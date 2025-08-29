@@ -16,6 +16,7 @@ import AppendStudentModal from "./append-student-modal"
 import ParamSwtich from "@/components/as-params/switch"
 import { useQueryClient } from "@tanstack/react-query"
 import PaymentUpdate from "../student-detail/main/payment/payment-update"
+import ExportStudent from "./export-student"
 
 export default function GroupStudents() {
     const { id: group } = useParams({
@@ -31,7 +32,7 @@ export default function GroupStudents() {
         GROUP_STUDENTS,
         {
             params: { group, ...search },
-            options: { queryKey: [GROUP_STUDENTS, search] },
+            options: { queryKey: [GROUP_STUDENTS, search], refetchOnMount: true },
         },
     )
 
@@ -109,6 +110,10 @@ export default function GroupStudents() {
                 modalKey="delete-student"
                 path={GROUP_STUDENTS}
             />
+
+            <Modal title="Boshqa guruhga ko'chirish" modalKey="export-student" size="max-w-md">
+                <ExportStudent onSuccess={refetch} />
+            </Modal>
         </div>
     )
 }
