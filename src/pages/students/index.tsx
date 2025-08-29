@@ -5,9 +5,6 @@ import { Plus } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { useStudentsCols } from "./columns"
 import { useModal } from "@/hooks/useModal"
-import { useState } from "react"
-import Modal from "@/components/custom/modal"
-import StudentCreate from "./create"
 import DeleteModal from "@/components/custom/delete-modal"
 import { STUDENT } from "@/constants/api-endpoints"
 import { useNavigate, useSearch } from "@tanstack/react-router"
@@ -15,11 +12,12 @@ import StudentsFilter from "./students-filter"
 import { useGet } from "@/hooks/useGet"
 import { formatMoney } from "@/lib/format-money"
 import ParamSwtich from "@/components/as-params/switch"
+import { useStore } from "@/hooks/use-store"
 
 const StudentsMain = () => {
     const { openModal: openModalStudent } = useModal(`${STUDENT}-add`)
     const { openModal: openModalDelete } = useModal(`${STUDENT}-delete`)
-    const [current, setCurrent] = useState<Student | null>(null)
+    const { store, remove, setStore } = useStore<Student | null>("student")
     const navigate = useNavigate()
 
     const params = useSearch({ from: "/_main/students/" })
@@ -29,18 +27,18 @@ const StudentsMain = () => {
     })
 
     const handleItemAdd = () => {
-        setCurrent(null)
+        remove()
         openModalStudent()
     }
     const handleItemEdit = (item: Student) => {
         if (item.id) {
-            setCurrent(item)
+            setStore(item)
             openModalStudent()
         }
     }
     const handleItemDelete = (item: Student) => {
         if (item.id) {
-            setCurrent(item)
+            setStore(item)
             openModalDelete()
         }
     }
@@ -106,19 +104,9 @@ const StudentsMain = () => {
                 </CardContent>
             </Card>
 
-            <Modal
-                size="max-w-xl"
-                modalKey={`${STUDENT}-add`}
-                title={`O'quvchi ${current?.id ? "tahrirlash" : "yaratish"}`}
-            >
-                <div className="max-h-[75vh] overflow-y-auto no-scrollbar-x">
-                    <StudentCreate item={current} />
-                </div>
-            </Modal>
-
             <DeleteModal
                 modalKey={`${STUDENT}-delete`}
-                id={current?.id}
+                id={store?.id}
                 path={STUDENT}
             />
         </div>

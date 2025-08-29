@@ -3,6 +3,7 @@ import { FormMultiCombobox } from "@/components/form/multi-combobox"
 import FormTextarea from "@/components/form/textarea"
 import { Button } from "@/components/ui/button"
 import { HOLIDAY } from "@/constants/api-endpoints"
+import { useStore } from "@/hooks/use-store"
 import useMe from "@/hooks/useMe"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
@@ -11,11 +12,9 @@ import { useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
-type Props = {
-    item: Holiday | null
-}
+const HolidayCreate = () => {
+    const { store: item } = useStore<Holiday | null>("holiday")
 
-const HolidayCreate = ({ item }: Props) => {
     const queryClient = useQueryClient()
     const { closeModal } = useModal(`${HOLIDAY}-add`)
     const { active_branch, data } = useMe()

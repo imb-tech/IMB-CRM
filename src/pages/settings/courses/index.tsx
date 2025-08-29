@@ -1,38 +1,36 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { DataTable } from "@/components/ui/datatable"
 import { useCoursesCols } from "./columns"
-import Modal from "@/components/custom/modal"
 import DeleteModal from "@/components/custom/delete-modal"
-import CoursesCreate from "./create"
 import { useModal } from "@/hooks/useModal"
-import { useState } from "react"
 import { COURSE } from "@/constants/api-endpoints"
 import { useSearch } from "@tanstack/react-router"
 import { useGet } from "@/hooks/useGet"
 import ParamPagination from "@/components/as-params/pagination"
 import SettingsHeader from "../settings-header"
+import { useStore } from "@/hooks/use-store"
 
 const CoursesMain = () => {
     const { openModal: openModalCourse } = useModal(`${COURSE}-add`)
     const { openModal: openModalDelete } = useModal(`${COURSE}-delete`)
-    const [current, setCurrent] = useState<Course | null>(null)
+    const { store, setStore, remove } = useStore<Course | null>("courses")
 
     const params = useSearch({ from: "/_main/groups/" })
     const { data, isFetching } = useGet<ListResp<Course>>(COURSE, { params })
 
     const handleItemAdd = () => {
-        setCurrent(null)
+        remove()
         openModalCourse()
     }
     const handleItemEdit = (item: Course) => {
         if (item.id) {
-            setCurrent(item)
+            setStore(item)
             openModalCourse()
         }
     }
     const handleItemDelete = (item: Course) => {
         if (item.id) {
-            setCurrent(item)
+            setStore(item)
             openModalDelete()
         }
     }
@@ -62,15 +60,9 @@ const CoursesMain = () => {
                     />
                 </CardContent>
             </Card>
-            <Modal
-                modalKey={`${COURSE}-add`}
-                title={`Kurs ${current?.id ? "tahrirlash" : "yaratish"}`}
-            >
-                <CoursesCreate item={current} />
-            </Modal>
             <DeleteModal
                 modalKey={`${COURSE}-delete`}
-                id={current?.id}
+                id={store?.id}
                 path={COURSE}
             />
         </div>

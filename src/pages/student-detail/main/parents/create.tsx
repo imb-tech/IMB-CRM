@@ -1,8 +1,7 @@
 import { useModal } from "@/hooks/useModal"
-import { Path, useForm } from "react-hook-form"
+import {  useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { usePost } from "@/hooks/usePost"
-import { AxiosError } from "axios"
 import { STUDENT_PARENTS } from "@/constants/api-endpoints"
 
 import { useCallback } from "react"
@@ -13,12 +12,10 @@ import PhoneField from "@/components/form/phone-field"
 import { toast } from "sonner"
 import { usePatch } from "@/hooks/usePatch"
 import { handleFormError } from "@/lib/show-form-errors"
+import { useStore } from "@/hooks/use-store"
 
-export default function StudentParentsCreate({
-    current,
-}: {
-    current: StudentParents | null
-}) {
+export default function StudentParentsCreate() {
+    const { store: current } = useStore<StudentParents | null>("parent")
     const queryClient = useQueryClient()
 
     const { id } = useParams({ from: "/_main/students/$id/_main/parents" })

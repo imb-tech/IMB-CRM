@@ -2,37 +2,35 @@ import { Card, CardContent } from "@/components/ui/card"
 import { DataTable } from "@/components/ui/datatable"
 import { useRoomsCols } from "./columns"
 import DeleteModal from "@/components/custom/delete-modal"
-import RoomCreate from "./create"
-import Modal from "@/components/custom/modal"
 import { useModal } from "@/hooks/useModal"
-import { useState } from "react"
 import { ROOM } from "@/constants/api-endpoints"
 import { useSearch } from "@tanstack/react-router"
 import { useGet } from "@/hooks/useGet"
 import ParamPagination from "@/components/as-params/pagination"
 import SettingsHeader from "../settings-header"
+import { useStore } from "@/hooks/use-store"
 
 const RoomsMain = () => {
     const { openModal: openModalRoom } = useModal(`${ROOM}-add`)
     const { openModal: openModalDelete } = useModal(`${ROOM}-delete`)
-    const [current, setCurrent] = useState<Room | null>(null)
+    const { store, setStore, remove } = useStore<Room | null>("rooms")
 
     const params = useSearch({ from: "/_main/groups/" })
     const { data, isFetching } = useGet<ListResp<Room>>(ROOM, { params })
 
     const handleItemAdd = () => {
-        setCurrent(null)
+        remove()
         openModalRoom()
     }
     const handleItemEdit = (item: Room) => {
         if (item.id) {
-            setCurrent(item)
+            setStore(item)
             openModalRoom()
         }
     }
     const handleItemDelete = (item: Room) => {
         if (item.id) {
-            setCurrent(item)
+            setStore(item)
             openModalDelete()
         }
     }
@@ -59,15 +57,10 @@ const RoomsMain = () => {
                     <ParamPagination totalPages={data?.total_pages} />
                 </CardContent>
             </Card>
-            <Modal
-                modalKey={`${ROOM}-add`}
-                title={`Xona ${current?.id ? "tahrirlash" : "yaratish"}`}
-            >
-                <RoomCreate item={current} />
-            </Modal>
+        
             <DeleteModal
                 modalKey={`${ROOM}-delete`}
-                id={current?.id}
+                id={store?.id}
                 path={ROOM}
             />
         </div>

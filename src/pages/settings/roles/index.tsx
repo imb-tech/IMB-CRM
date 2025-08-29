@@ -1,20 +1,18 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { DataTable } from "@/components/ui/datatable"
 import { useRolesCols } from "./columns"
-import Modal from "@/components/custom/modal"
-import RoleCreate from "./create"
 import DeleteModal from "@/components/custom/delete-modal"
 import { useModal } from "@/hooks/useModal"
-import { useState } from "react"
 import { ROLE } from "@/constants/api-endpoints"
 import { useSearch } from "@tanstack/react-router"
 import { useGet } from "@/hooks/useGet"
 import SettingsHeader from "../settings-header"
+import { useStore } from "@/hooks/use-store"
 
 const RolesMain = () => {
     const { openModal: openModalRole } = useModal(`${ROLE}-add`)
     const { openModal: openModalDelete } = useModal(`${ROLE}-delete`)
-    const [current, setCurrent] = useState<Role | null>(null)
+    const { store, setStore, remove } = useStore<Role | null>("roles")
 
     const params = useSearch({ from: "/_main/settings/_main/roles" })
     const { data, isFetching } = useGet<ListResp<Role>>(ROLE, {
@@ -22,18 +20,18 @@ const RolesMain = () => {
     })
 
     const handleItemAdd = () => {
-        setCurrent(null)
+        remove()
         openModalRole()
     }
     const handleItemEdit = (item: Role) => {
         if (item.id) {
-            setCurrent(item)
+            setStore(item)
             openModalRole()
         }
     }
     const handleItemDelete = (item: Role) => {
         if (item.id) {
-            setCurrent(item)
+            setStore(item)
             openModalDelete()
         }
     }
@@ -62,15 +60,9 @@ const RolesMain = () => {
                     />
                 </CardContent>
             </Card>
-            <Modal
-                modalKey={`${ROLE}-add`}
-                title={`Role ${current?.id ? "tahrirlash" : "yaratish"}`}
-            >
-                <RoleCreate item={current} />
-            </Modal>
             <DeleteModal
                 modalKey={`${ROLE}-delete`}
-                id={current?.id}
+                id={store?.id}
                 path={ROLE}
             />
         </div>

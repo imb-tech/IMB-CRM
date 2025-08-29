@@ -55,6 +55,8 @@ export default function GroupStudents() {
 
     const columns = useGroupStudentCols()
 
+
+
     return (
         <div>
             <SectionHeader
@@ -88,7 +90,7 @@ export default function GroupStudents() {
             </Modal>
 
             <Modal
-                modalKey="payment-update"
+                modalKey="payment-update-group"
                 title={"To'lov qo'shish"}
             >
                 {/* current type error */}

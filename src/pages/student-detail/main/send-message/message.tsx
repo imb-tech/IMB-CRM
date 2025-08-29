@@ -8,8 +8,6 @@ import { Send } from "lucide-react"
 import { useParams, useSearch } from "@tanstack/react-router"
 import { useCallback } from "react"
 import { useModal } from "@/hooks/useModal"
-import Modal from "@/components/custom/modal"
-import StudentMessageCreate from "./create"
 import { formatMoney } from "@/lib/format-money"
 
 const StudentSendMessageMain = () => {
@@ -55,9 +53,6 @@ const StudentSendMessageMain = () => {
                 numeration
                 viewAll
             />
-            <Modal modalKey="message-add" title={`Xabar yuborish`}>
-                <StudentMessageCreate />
-            </Modal>
         </div>
     )
 }

@@ -20,11 +20,10 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
-import Modal from "@/components/custom/modal"
-import PaymentUpdate from "./payment-update"
 import { useModal } from "@/hooks/useModal"
 import DeleteModal from "@/components/custom/delete-modal"
 import { toast } from "sonner"
+import { useStore } from "@/hooks/use-store"
 
 const StudnetPaymentMain = () => {
     const { id } = useParams({ from: "/_main/students/$id/_main/payments" })
@@ -32,7 +31,10 @@ const StudnetPaymentMain = () => {
     const { group_student, ...updateSearch } = search
     const navigate = useNavigate()
     const [isAll, setIsAll] = useState(false)
-    const [current, setCurrent] = useState<GroupStudentPayments | null>(null)
+    const {
+        store: payment,
+        remove,
+    } = useStore<GroupStudentPayments | null>("payments")
     const { openModal } = useModal("payment-update")
 
     const { data: studentGroups } = useGet<ListResp<Student>>(STUDENT_GROUP, {
@@ -66,7 +68,7 @@ const StudnetPaymentMain = () => {
     )
 
     const handleAddPayment = useCallback(() => {
-        setCurrent(null)
+        remove()
         openModal()
     }, [openModal])
 
@@ -98,8 +100,6 @@ const StudnetPaymentMain = () => {
                             data={groupPayments}
                             isLoading={isLoading}
                             isGroup={false}
-                            current={current}
-                            setCurrent={setCurrent}
                             openModal={openModal}
                         />
                     </AccordionContent>
@@ -111,7 +111,6 @@ const StudnetPaymentMain = () => {
         group_student,
         groupPayments,
         isLoading,
-        current,
         openModal,
         handleAccordionChange,
     ])
@@ -161,19 +160,12 @@ const StudnetPaymentMain = () => {
                     data={groupPayments}
                     isLoading={isLoading}
                     isGroup={true}
-                    current={current}
-                    setCurrent={setCurrent}
                     openModal={openModal}
                 />
             )}
-            <Modal
-                modalKey="payment-update"
-                title={current?.id ? "To'lovni tahrirlash" : "To'lov qo'shish"}
-            >
-                <PaymentUpdate current={current} />
-            </Modal>
+
             <DeleteModal
-                id={current?.id}
+                id={payment?.id}
                 modalKey="delete-student-payment"
                 path={GROUP_STUDENTS_PAYMENT}
             />
@@ -188,28 +180,20 @@ type PropsTable = {
     data: ListResp<GroupStudentPayments> | undefined
     isGroup: boolean
     openModal: () => void
-    setCurrent: (val: GroupStudentPayments) => void
-    current: GroupStudentPayments | null
 }
 
-const PaymenTable = ({
-    data,
-    isLoading,
-    isGroup,
-    current,
-    openModal,
-    setCurrent,
-}: PropsTable) => {
+const PaymenTable = ({ data, isLoading, isGroup, openModal }: PropsTable) => {
+    const { setStore } = useStore<GroupStudentPayments | null>("payments")
     const { openModal: openDelete } = useModal("delete-student-payment")
 
     const handleUpdate = useCallback(
         (item: GroupStudentPayments) => {
             if (item?.id) {
-                setCurrent(item)
+                setStore(item)
                 openModal()
             }
         },
-        [openModal, setCurrent],
+        [openModal, setStore],
     )
 
     const columns = useColumns({ isGroup })
@@ -218,7 +202,7 @@ const PaymenTable = ({
         (item: GroupStudentPayments) => {
             if (item.condition === 2)
                 return toast.error("Qarzdorlikni  o'chira olmaysiz!")
-            setCurrent(item)
+            setStore(item)
             openDelete()
         },
         [openDelete],

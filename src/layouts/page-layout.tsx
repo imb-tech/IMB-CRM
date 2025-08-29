@@ -1,9 +1,33 @@
+import Modal from "@/components/custom/modal"
 import Header from "@/components/header"
 import MobileHeaderLinks from "@/components/header/mobile-header-links"
+import {
+    BRANCH,
+    COURSE,
+    HOLIDAY,
+    PAYMENT_TYPE,
+    ROLE,
+    ROOM,
+    STUDENT,
+} from "@/constants/api-endpoints"
 import { menuItems } from "@/constants/menu"
 import { findChildPaths } from "@/constants/util.menu"
+import { useStore } from "@/hooks/use-store"
 import { cn } from "@/lib/utils"
-import { ReactNode, useLocation } from "@tanstack/react-router"
+import BranchesCreate from "@/pages/settings/branches/create"
+import CoursesCreate from "@/pages/settings/courses/create"
+import HolidayCreate from "@/pages/settings/holidays/create"
+import PaymentTypeCreate from "@/pages/settings/payment-type/create"
+import RoleCreate from "@/pages/settings/roles/create"
+import RoomCreate from "@/pages/settings/rooms/create"
+import DiscountStudentCreate from "@/pages/student-detail/main/discount/create"
+import AddGroup from "@/pages/student-detail/main/groups/add-group"
+import StudentNotesCreate from "@/pages/student-detail/main/notes/create"
+import StudentParentsCreate from "@/pages/student-detail/main/parents/create"
+import PaymentUpdate from "@/pages/student-detail/main/payment/payment-update"
+import StudentMessageCreate from "@/pages/student-detail/main/send-message/create"
+import StudentCreate from "@/pages/students/create"
+import { ReactNode, useLocation, useParams } from "@tanstack/react-router"
 import { CSSProperties, useMemo } from "react"
 import { ClassNameValue } from "tailwind-merge"
 
@@ -31,6 +55,20 @@ const PageLayout = ({
     const { pathname } = useLocation()
     const defaultLinks = items ? items : findChildPaths(menuItems, pathname)
     const len = useMemo(() => defaultLinks.length, [defaultLinks])
+    const { id } = useParams({ from: "__root__" }) as any
+
+    // create stores
+    const { store: branch } = useStore<Branch | null>("branch")
+    const { store: course } = useStore<Course | null>("courses")
+    const { store: holiday } = useStore<Holiday | null>("holiday")
+    const { store: paymentType } = useStore<PaymentType | null>("payment-type")
+    const { store: roles } = useStore<Role | null>("roles")
+    const { store: room } = useStore<Room | null>("rooms")
+    const { store: discount } = useStore<DiscountStudent | null>("discount")
+    const { store: notes } = useStore<Notes | null>("notes")
+    const { store: parent } = useStore<StudentParents | null>("parent")
+    const { store: payment } = useStore<GroupStudentPayments | null>("payments")
+    const { store: student } = useStore<Student | null>("student")
 
     return (
         <div className="w-full h-full overflow-y-auto">
@@ -64,6 +102,122 @@ const PageLayout = ({
             >
                 {children}
             </main>
+
+            {/* Create Modals */}
+            <>
+                {/* Branch create modal */}
+                <Modal
+                    modalKey={`${BRANCH}-add`}
+                    title={`Filial ${branch?.id ? "tahrirlash" : "yaratish"}`}
+                >
+                    <BranchesCreate />
+                </Modal>
+
+                {/* Course create modal */}
+                <Modal
+                    modalKey={`${COURSE}-add`}
+                    title={`Kurs ${course?.id ? "tahrirlash" : "yaratish"}`}
+                >
+                    <CoursesCreate />
+                </Modal>
+
+                {/* Holiday create modal */}
+                <Modal
+                    modalKey={`${HOLIDAY}-add`}
+                    title={`Ta'til kunini ${
+                        holiday?.id ? "tahrirlash" : "yaratish"
+                    }`}
+                >
+                    <HolidayCreate />
+                </Modal>
+
+                {/* Payment Type create modal */}
+                <Modal
+                    modalKey={`${PAYMENT_TYPE}-add`}
+                    title={`To'lov turi ${
+                        paymentType?.id ? "tahrirlash" : "yaratish"
+                    }`}
+                >
+                    <PaymentTypeCreate />
+                </Modal>
+
+                {/* Roles create modal */}
+                <Modal
+                    modalKey={`${ROLE}-add`}
+                    title={`Role ${roles?.id ? "tahrirlash" : "yaratish"}`}
+                >
+                    <RoleCreate />
+                </Modal>
+
+                {/* Rooms create modal */}
+                <Modal
+                    modalKey={`${ROOM}-add`}
+                    title={`Xona ${room?.id ? "tahrirlash" : "yaratish"}`}
+                >
+                    <RoomCreate />
+                </Modal>
+
+                {/* Discount create modal */}
+                <Modal
+                    modalKey="discount-add"
+                    title={`Chegirma ${
+                        discount?.id ? "tahrirlash" : "qo'shish"
+                    }`}
+                >
+                    <DiscountStudentCreate />
+                </Modal>
+
+                {/* Add Group modal */}
+                <Modal title="Guruhga qo'shish" modalKey="student-groups-add">
+                    <AddGroup />
+                </Modal>
+
+                {/*  Notes cretae  modal*/}
+                <Modal
+                    modalKey="notes-add"
+                    title={`Eslatma  ${notes?.id ? "tahrirlash" : "qo'shish"}`}
+                >
+                    <StudentNotesCreate id={id} />
+                </Modal>
+
+                {/* Prents create modal */}
+                <Modal
+                    modalKey="parents-add"
+                    title={`Ma'sul shaxs ${
+                        parent?.id ? "tahrirlash" : "qo'shish"
+                    }`}
+                >
+                    <StudentParentsCreate />
+                </Modal>
+
+                {/* Students Payments create modal */}
+                <Modal
+                    modalKey="payment-update"
+                    title={
+                        payment?.id ? "To'lovni tahrirlash" : "To'lov qo'shish"
+                    }
+                >
+                    <PaymentUpdate current={payment} student_id={id} />
+                </Modal>
+
+                {/* Send message create modal */}
+                <Modal modalKey="message-add" title={`Xabar yuborish`}>
+                    <StudentMessageCreate />
+                </Modal>
+
+                {/* Students create modal */}
+                <Modal
+                    size="max-w-xl"
+                    modalKey={`${STUDENT}-add`}
+                    title={`O'quvchi ${
+                        student?.id ? "tahrirlash" : "yaratish"
+                    }`}
+                >
+                    <div className="max-h-[75vh] overflow-y-auto no-scrollbar-x">
+                        <StudentCreate />
+                    </div>
+                </Modal>
+            </>
         </div>
     )
 }

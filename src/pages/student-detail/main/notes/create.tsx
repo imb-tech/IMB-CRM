@@ -10,6 +10,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import FormTextarea from "@/components/form/textarea"
 import { toast } from "sonner"
 import { usePatch } from "@/hooks/usePatch"
+import { useStore } from "@/hooks/use-store"
 
 // const add5Hours = (dateString: string) => {
 //     const date = new Date(dateString)
@@ -17,13 +18,8 @@ import { usePatch } from "@/hooks/usePatch"
 //     return date
 // }
 
-export default function StudentNotesCreate({
-    current,
-    id,
-}: {
-    current: Notes | null
-    id: string
-}) {
+export default function StudentNotesCreate({ id }: { id: string }) {
+    const { store: current } = useStore<Notes | null>("notes")
     const queryClient = useQueryClient()
 
     const { closeModal } = useModal("notes-add")

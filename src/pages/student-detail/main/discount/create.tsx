@@ -15,12 +15,10 @@ import { useCallback, useMemo, useState } from "react"
 import { useParams } from "@tanstack/react-router"
 import { useQueryClient } from "@tanstack/react-query"
 import { handleFormError } from "@/lib/show-form-errors"
+import { useStore } from "@/hooks/use-store"
 
-export default function DiscountStudentCreate({
-    current,
-}: {
-    current: DiscountStudent | null
-}) {
+export default function DiscountStudentCreate() {
+    const { store: current } = useStore<DiscountStudent | null>("discount")
     const queryClient = useQueryClient()
 
     const { id } = useParams({ strict: false }) as { id: string }

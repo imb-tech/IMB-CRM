@@ -1,17 +1,15 @@
 import { FormDatePicker } from "@/components/form/date-picker"
 import { Button } from "@/components/ui/button"
 import { GROUP_STUDENTS, STUDENT_GROUP } from "@/constants/api-endpoints"
+import { useStore } from "@/hooks/use-store"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
 import { useQueryClient } from "@tanstack/react-query"
 import { TriangleAlert } from "lucide-react"
 import { useForm } from "react-hook-form"
 
-type Props = {
-    current: Student | undefined
-}
-
-export default function UpdateStudentDate({ current }: Props) {
+export default function UpdateStudentDate() {
+    const { store: current } = useStore<Student | null>("student-groups-add")
     const { closeModal } = useModal("student-groups-update")
     const form = useForm<{ start_date: string }>({
         defaultValues: {

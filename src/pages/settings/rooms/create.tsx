@@ -1,9 +1,9 @@
 import { FormCombobox } from "@/components/form/combobox"
 import FormInput from "@/components/form/input"
 import { FormNumberInput } from "@/components/form/number-input"
-import { FormSelect } from "@/components/form/select"
 import { Button } from "@/components/ui/button"
 import { ROOM } from "@/constants/api-endpoints"
+import { useStore } from "@/hooks/use-store"
 import useMe from "@/hooks/useMe"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
@@ -13,11 +13,8 @@ import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
-type Props = {
-    item: Room | null
-}
-
-const RoomCreate = ({ item }: Props) => {
+const RoomCreate = () => {
+    const { store: item } = useStore<Room | null>("rooms")
     const queryClient = useQueryClient()
     const { closeModal } = useModal(`${ROOM}-add`)
     const { data, active_branch } = useMe()

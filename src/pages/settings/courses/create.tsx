@@ -1,9 +1,9 @@
 import { FormCombobox } from "@/components/form/combobox"
 import FormInput from "@/components/form/input"
 import { FormNumberInput } from "@/components/form/number-input"
-import FormTextarea from "@/components/form/textarea"
 import { Button } from "@/components/ui/button"
 import { COURSE } from "@/constants/api-endpoints"
+import { useStore } from "@/hooks/use-store"
 import useMe from "@/hooks/useMe"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
@@ -13,11 +13,8 @@ import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
-type Props = {
-    item: Course | null
-}
-
-const CoursesCreate = ({ item }: Props) => {
+const CoursesCreate = () => {
+    const { store: item } = useStore<Course | null>("courses")
     const queryClient = useQueryClient()
     const { closeModal } = useModal(`${COURSE}-add`)
     const form = useForm<Course>({ defaultValues: item || undefined })

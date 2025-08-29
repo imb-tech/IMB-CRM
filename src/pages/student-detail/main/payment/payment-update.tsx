@@ -10,6 +10,7 @@ import {
     PAYMENT_TYPES_OPTION,
     STUDENT_GROUP,
 } from "@/constants/api-endpoints"
+import { useStore } from "@/hooks/use-store"
 import { useGet } from "@/hooks/useGet"
 import useMe from "@/hooks/useMe"
 import { useModal } from "@/hooks/useModal"
@@ -22,16 +23,17 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
 type Props = {
-    current: GroupStudentPayments | null
     student_id?: number
     onSuccessPayment?: () => void
+    current?: GroupStudentPayments | null
 }
 
-function PaymentUpdate({ current, student_id, onSuccessPayment }: Props) {
+function PaymentUpdate({ student_id, onSuccessPayment, current }: Props) {
     const queryClient = useQueryClient()
     const { id } = useParams({ strict: false }) as { id: string }
     const { active_branch } = useMe()
     const { closeModal } = useModal("payment-update")
+    const { closeModal: closeModalGroup } = useModal("payment-update-group")
 
     const [search, setSearch] = useState<string>("")
 
@@ -41,7 +43,11 @@ function PaymentUpdate({ current, student_id, onSuccessPayment }: Props) {
     const { data: groupOptions = [] } = useGet<Group[]>(
         OPTION_GROUPS_STUDENTS,
         {
-            params: { search, branch: active_branch, student: student_id ?? id },
+            params: {
+                search,
+                branch: active_branch,
+                student: student_id ?? id,
+            },
         },
     )
 
@@ -58,6 +64,7 @@ function PaymentUpdate({ current, student_id, onSuccessPayment }: Props) {
     const onSuccess = useCallback(() => {
         toast.success("Muvaffaqiyatli yangilandi")
         closeModal()
+        closeModalGroup()
         form.reset()
         onSuccessPayment?.()
         queryClient.invalidateQueries({
@@ -66,7 +73,7 @@ function PaymentUpdate({ current, student_id, onSuccessPayment }: Props) {
         queryClient.invalidateQueries({
             queryKey: [STUDENT_GROUP],
         })
-    }, [closeModal, form, queryClient])
+    }, [closeModal, closeModalGroup, form, queryClient])
 
     const { mutate: mutatePatch, isPending: isPendingPatch } = usePatch({
         onSuccess,
@@ -82,8 +89,9 @@ function PaymentUpdate({ current, student_id, onSuccessPayment }: Props) {
         () =>
             groupOptions.map((item) => ({
                 id: item.id,
-                name: `${item.name} - ${item.teacher_name} - ${item.is_active ? "Aktiv" : "O'chirilgan"
-                    }`,
+                name: `${item.name} - ${item.teacher_name} - ${
+                    item.is_active ? "Aktiv" : "O'chirilgan"
+                }`,
             })),
         [groupOptions],
     )
@@ -95,7 +103,7 @@ function PaymentUpdate({ current, student_id, onSuccessPayment }: Props) {
                 amount: current?.condition
                     ? -Math.abs(values.amount)
                     : Math.abs(values.amount),
-                from_date: values.from_date
+                from_date: values.from_date,
             }
 
             if (current?.id) {
