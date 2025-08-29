@@ -20,14 +20,8 @@ import HolidayCreate from "@/pages/settings/holidays/create"
 import PaymentTypeCreate from "@/pages/settings/payment-type/create"
 import RoleCreate from "@/pages/settings/roles/create"
 import RoomCreate from "@/pages/settings/rooms/create"
-import DiscountStudentCreate from "@/pages/student-detail/main/discount/create"
-import AddGroup from "@/pages/student-detail/main/groups/add-group"
-import StudentNotesCreate from "@/pages/student-detail/main/notes/create"
-import StudentParentsCreate from "@/pages/student-detail/main/parents/create"
-import PaymentUpdate from "@/pages/student-detail/main/payment/payment-update"
-import StudentMessageCreate from "@/pages/student-detail/main/send-message/create"
 import StudentCreate from "@/pages/students/create"
-import { ReactNode, useLocation, useParams } from "@tanstack/react-router"
+import { ReactNode, useLocation } from "@tanstack/react-router"
 import { CSSProperties, useMemo } from "react"
 import { ClassNameValue } from "tailwind-merge"
 
@@ -55,7 +49,6 @@ const PageLayout = ({
     const { pathname } = useLocation()
     const defaultLinks = items ? items : findChildPaths(menuItems, pathname)
     const len = useMemo(() => defaultLinks.length, [defaultLinks])
-    const { id } = useParams({ from: "__root__" }) as any
 
     // create stores
     const { store: branch } = useStore<Branch | null>("branch")
@@ -64,12 +57,8 @@ const PageLayout = ({
     const { store: paymentType } = useStore<PaymentType | null>("payment-type")
     const { store: roles } = useStore<Role | null>("roles")
     const { store: room } = useStore<Room | null>("rooms")
-    const { store: discount } = useStore<DiscountStudent | null>("discount")
-    const { store: notes } = useStore<Notes | null>("notes")
-    const { store: parent } = useStore<StudentParents | null>("parent")
-    const { store: payment } = useStore<GroupStudentPayments | null>("payments")
     const { store: student } = useStore<Student | null>("student")
-
+ 
     return (
         <div className="w-full h-full overflow-y-auto">
             <div
@@ -157,53 +146,7 @@ const PageLayout = ({
                     <RoomCreate />
                 </Modal>
 
-                {/* Discount create modal */}
-                <Modal
-                    modalKey="discount-add"
-                    title={`Chegirma ${
-                        discount?.id ? "tahrirlash" : "qo'shish"
-                    }`}
-                >
-                    <DiscountStudentCreate />
-                </Modal>
 
-                {/* Add Group modal */}
-                <Modal title="Guruhga qo'shish" modalKey="student-groups-add">
-                    <AddGroup />
-                </Modal>
-
-                {/*  Notes cretae  modal*/}
-                <Modal
-                    modalKey="notes-add"
-                    title={`Eslatma  ${notes?.id ? "tahrirlash" : "qo'shish"}`}
-                >
-                    <StudentNotesCreate id={id} />
-                </Modal>
-
-                {/* Prents create modal */}
-                <Modal
-                    modalKey="parents-add"
-                    title={`Ma'sul shaxs ${
-                        parent?.id ? "tahrirlash" : "qo'shish"
-                    }`}
-                >
-                    <StudentParentsCreate />
-                </Modal>
-
-                {/* Students Payments create modal */}
-                <Modal
-                    modalKey="payment-update"
-                    title={
-                        payment?.id ? "To'lovni tahrirlash" : "To'lov qo'shish"
-                    }
-                >
-                    <PaymentUpdate current={payment} student_id={id} />
-                </Modal>
-
-                {/* Send message create modal */}
-                <Modal modalKey="message-add" title={`Xabar yuborish`}>
-                    <StudentMessageCreate />
-                </Modal>
 
                 {/* Students create modal */}
                 <Modal

@@ -1,7 +1,9 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { STUDENT } from "@/constants/api-endpoints"
+import { useStore } from "@/hooks/use-store"
 import { useGet } from "@/hooks/useGet"
+import { useModal } from "@/hooks/useModal"
 import { formatMoney } from "@/lib/format-money"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
 import { cn } from "@/lib/utils"
@@ -12,6 +14,8 @@ import { CalendarDays, Edit, KeyRound, PhoneCall, School } from "lucide-react"
 type Props = {}
 
 function StudentProfile({}: Props) {
+    const { openModal } = useModal(`${STUDENT}-add`)
+    const { setStore } = useStore<Student | null>("student")
     const { id } = useParams({ from: "/_main/students/$id" })
     const { data } = useGet<Student>(`${STUDENT}/${id}`, {
         options: { enabled: !!id },
@@ -121,7 +125,16 @@ function StudentProfile({}: Props) {
                 </div>
             </div>
 
-            <Button className="absolute top-2 right-2">
+            <Button
+                type="button"
+                onClick={() => {
+                    if (data?.id) {
+                        openModal()
+                        setStore(data)
+                    }
+                }}
+                className="absolute top-2 right-2"
+            >
                 <Edit size={16} />
             </Button>
         </div>

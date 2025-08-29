@@ -14,6 +14,7 @@ import DeleteModal from "@/components/custom/delete-modal"
 import UpdateStudentDate from "./update-date"
 import { formatMoney } from "@/lib/format-money"
 import { useStore } from "@/hooks/use-store"
+import AddGroup from "./add-group"
 
 function StudentGroupMain() {
     const { id } = useParams({ from: "/_main/students/$id/_main/groups" })
@@ -79,6 +80,10 @@ function StudentGroupMain() {
                 size="max-w-md"
             >
                 <UpdateStudentDate />
+            </Modal>
+            {/* Add Group modal */}
+            <Modal title="Guruhga qo'shish" modalKey="student-groups-add">
+                <AddGroup id={id} />
             </Modal>
 
             {/* Delete Group Modal */}

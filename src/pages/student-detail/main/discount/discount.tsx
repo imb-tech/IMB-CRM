@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import { formatMoney } from "@/lib/format-money"
 import { useStore } from "@/hooks/use-store"
+import Modal from "@/components/custom/modal"
+import DiscountStudentCreate from "./create"
 
 const StudentDiscountMain = () => {
     const { id } = useParams({ from: "/_main/students/$id/_main/discount" })
@@ -81,12 +83,19 @@ const StudentDiscountMain = () => {
                 numeration
                 paginationProps={{ totalPages: data?.total_pages }}
             />
+
+            <Modal
+                modalKey="discount-add"
+                title={`Chegirma ${store?.id ? "tahrirlash" : "qo'shish"}`}
+            >
+                <DiscountStudentCreate id={id} />
+            </Modal>
+
             <DeleteModal
                 modalKey="discount-delete"
                 id={store?.id}
                 path={GROUP_STUDENTS_DISCOUNTS}
             />
-
         </div>
     )
 }

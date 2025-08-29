@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import { formatMoney } from "@/lib/format-money"
 import { useStore } from "@/hooks/use-store"
+import StudentParentsCreate from "./create"
+import Modal from "@/components/custom/modal"
 
 const StudentParentsMain = () => {
     const { id } = useParams({ from: "/_main/students/$id/_main/parents" })
@@ -83,13 +85,20 @@ const StudentParentsMain = () => {
                 numeration
                 paginationProps={{ totalPages: data?.total_pages }}
             />
+
+            {/* Prents create modal */}
+            <Modal
+                modalKey="parents-add"
+                title={`Ma'sul shaxs ${parent?.id ? "tahrirlash" : "qo'shish"}`}
+            >
+                <StudentParentsCreate />
+            </Modal>
+
             <DeleteModal
                 modalKey="parents-delete"
                 id={parent?.id}
                 path={STUDENT_PARENTS}
             />
-
-
         </div>
     )
 }

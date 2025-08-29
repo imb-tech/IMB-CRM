@@ -17,7 +17,7 @@ export const useGroupStudentCols = () => {
     const { openModal } = useModal("update")
     const { setStore } = useStore("student-data")
     const { openModal: openDelete } = useModal("delete-student")
-    const { openModal: pay } = useModal("payment-update-group")
+    const { openModal: pay } = useModal("payment-update")
     const { openModal: exportStudent } = useModal("export-student")
 
     return useMemo<ColumnDef<GroupStudent>[]>(

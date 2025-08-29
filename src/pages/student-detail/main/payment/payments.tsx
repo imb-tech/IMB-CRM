@@ -24,6 +24,8 @@ import { useModal } from "@/hooks/useModal"
 import DeleteModal from "@/components/custom/delete-modal"
 import { toast } from "sonner"
 import { useStore } from "@/hooks/use-store"
+import Modal from "@/components/custom/modal"
+import PaymentUpdate from "./payment-update"
 
 const StudnetPaymentMain = () => {
     const { id } = useParams({ from: "/_main/students/$id/_main/payments" })
@@ -31,10 +33,9 @@ const StudnetPaymentMain = () => {
     const { group_student, ...updateSearch } = search
     const navigate = useNavigate()
     const [isAll, setIsAll] = useState(false)
-    const {
-        store: payment,
-        remove,
-    } = useStore<GroupStudentPayments | null>("payments")
+    const { store: payment, remove } = useStore<GroupStudentPayments | null>(
+        "payments",
+    )
     const { openModal } = useModal("payment-update")
 
     const { data: studentGroups } = useGet<ListResp<Student>>(STUDENT_GROUP, {
@@ -163,6 +164,14 @@ const StudnetPaymentMain = () => {
                     openModal={openModal}
                 />
             )}
+
+            {/* Students Payments create modal */}
+            <Modal
+                modalKey="payment-update"
+                title={payment?.id ? "To'lovni tahrirlash" : "To'lov qo'shish"}
+            >
+                <PaymentUpdate current={payment} student_id={id} />
+            </Modal>
 
             <DeleteModal
                 id={payment?.id}

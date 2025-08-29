@@ -9,6 +9,8 @@ import { useParams, useSearch } from "@tanstack/react-router"
 import { useCallback } from "react"
 import { useModal } from "@/hooks/useModal"
 import { formatMoney } from "@/lib/format-money"
+import Modal from "@/components/custom/modal"
+import StudentMessageCreate from "./create"
 
 const StudentSendMessageMain = () => {
     const { id } = useParams({ from: "/_main/students/$id/_main/send-message" })
@@ -33,7 +35,9 @@ const StudentSendMessageMain = () => {
                         {" "}
                         {"SMS xabarlar ro'yxati"}
                     </h1>
-                    <Badge className="text-sm">{formatMoney(data?.count)}</Badge>
+                    <Badge className="text-sm">
+                        {formatMoney(data?.count)}
+                    </Badge>
                 </div>
                 <Button
                     type="button"
@@ -46,6 +50,12 @@ const StudentSendMessageMain = () => {
                     </span>
                 </Button>
             </div>
+
+            {/* Send message create modal */}
+            <Modal modalKey="message-add" title={`Xabar yuborish`}>
+                <StudentMessageCreate id={id} />
+            </Modal>
+
             <DataTable
                 columns={columns}
                 data={data?.results}

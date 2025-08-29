@@ -13,7 +13,6 @@ import { useForm } from "react-hook-form"
 import { FormCombobox } from "@/components/form/combobox"
 import { FormSelect } from "@/components/form/select"
 import { FormDatePicker } from "@/components/form/date-picker"
-import { useParams } from "@tanstack/react-router"
 import { useQueryClient } from "@tanstack/react-query"
 import { useModal } from "@/hooks/useModal"
 import { useCallback, useMemo, useState } from "react"
@@ -27,10 +26,11 @@ import { useGet } from "@/hooks/useGet"
 import { Button } from "@/components/ui/button"
 import { handleFormError } from "@/lib/show-form-errors"
 
-type Props = {}
+type Props = {
+    id: string
+}
 
-function AddGroup({}: Props) {
-    const { id } = useParams({ from: "/_main/students/$id/_main/groups" })
+function AddGroup({ id }: Props) {
     const queryClient = useQueryClient()
     const { closeModal } = useModal("student-groups-add")
     const [search, setSearch] = useState("")
@@ -86,7 +86,6 @@ function AddGroup({}: Props) {
             })) || [],
         [groupsOptions],
     )
-
 
     return (
         <form

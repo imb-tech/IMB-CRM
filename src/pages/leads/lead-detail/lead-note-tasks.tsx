@@ -121,7 +121,7 @@ export default function LeadNotes() {
                         users: vals.users,
                         deadline: vals.created_at,
                         project: vals.project,
-                    },
+                    }, 
                     {
                         onSuccess(d: LeadNote) {
                             form.reset()

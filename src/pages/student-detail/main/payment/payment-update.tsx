@@ -10,7 +10,6 @@ import {
     PAYMENT_TYPES_OPTION,
     STUDENT_GROUP,
 } from "@/constants/api-endpoints"
-import { useStore } from "@/hooks/use-store"
 import { useGet } from "@/hooks/useGet"
 import useMe from "@/hooks/useMe"
 import { useModal } from "@/hooks/useModal"
@@ -23,7 +22,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
 type Props = {
-    student_id?: number
+    student_id?: string
     onSuccessPayment?: () => void
     current?: GroupStudentPayments | null
 }
@@ -33,7 +32,6 @@ function PaymentUpdate({ student_id, onSuccessPayment, current }: Props) {
     const { id } = useParams({ strict: false }) as { id: string }
     const { active_branch } = useMe()
     const { closeModal } = useModal("payment-update")
-    const { closeModal: closeModalGroup } = useModal("payment-update-group")
 
     const [search, setSearch] = useState<string>("")
 
@@ -64,7 +62,6 @@ function PaymentUpdate({ student_id, onSuccessPayment, current }: Props) {
     const onSuccess = useCallback(() => {
         toast.success("Muvaffaqiyatli yangilandi")
         closeModal()
-        closeModalGroup()
         form.reset()
         onSuccessPayment?.()
         queryClient.invalidateQueries({
@@ -73,7 +70,7 @@ function PaymentUpdate({ student_id, onSuccessPayment, current }: Props) {
         queryClient.invalidateQueries({
             queryKey: [STUDENT_GROUP],
         })
-    }, [closeModal, closeModalGroup, form, queryClient])
+    }, [closeModal, form, queryClient])
 
     const { mutate: mutatePatch, isPending: isPendingPatch } = usePatch({
         onSuccess,
