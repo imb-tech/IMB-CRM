@@ -6,7 +6,7 @@ export default function LeadsTab() {
     const { pathname } = useLocation()
 
     const { id } = useParams({ strict: false })
-
+ 
     return (
         <div className="flex flex-col items-start w-full overflow-x-auto no-scrollbar-x">
             <div className="flex items-center bg-card rounded-md">

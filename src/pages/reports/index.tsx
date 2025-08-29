@@ -1,27 +1,12 @@
-import ParamTabList, { ParamTabProvider } from "@/components/as-params/tab"
+import  { ParamTabProvider } from "@/components/as-params/tab"
 import { TabsContent } from "@/components/ui/tabs"
 import { lazy } from "react"
-import ReportsFilter from "./student-payment/students-filter"
 import StudentsAttendanceMain from "../attendance/students"
 import EmployeesAttendanceMain from "../attendance/employees"
 
 const StudentPayment = lazy(() => import("./student-payment"))
 
 const ReportsMain = () => {
-    const options = [
-        {
-            id: "student_payments",
-            name: "O'quvchilar to'lovi",
-        },
-        {
-            id: "attendance",
-            name: "O'quvchilar davomati",
-        },
-        {
-            id: "attendance_emp",
-            name: "Hodimlar davomati",
-        },
-    ]
 
     return (
         <div>

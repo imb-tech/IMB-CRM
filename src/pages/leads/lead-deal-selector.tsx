@@ -1,14 +1,7 @@
 import { Button } from "@/components/ui/button"
-import {
-    ChevronDown,
-    Pencil,
-    Plus,
-    Trash,
-    Image,
-    CircleCheck,
-} from "lucide-react"
+import { ChevronDown, Pencil, Plus, Trash, CircleCheck } from "lucide-react"
 import { useMemo, useState } from "react"
-import { cn, getRandomImage, imagePaths } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import { useGet } from "@/hooks/useGet"
 import {
     useLocation,
@@ -18,19 +11,12 @@ import {
 } from "@tanstack/react-router"
 import Modal from "@/components/custom/modal"
 import { useModal } from "@/hooks/useModal"
-import FormInput from "@/components/form/input"
-import { useForm } from "react-hook-form"
-import { usePost } from "@/hooks/usePost"
 import DeleteModal from "@/components/custom/delete-modal"
-import { usePatch } from "@/hooks/usePatch"
-import FormImagePicker from "@/components/form/img-picker"
-import { useQueryClient } from "@tanstack/react-query"
+import CreateDepartment from "./create-department"
 
 export const pipelineUrl = "leads/pipeline/crud"
 
 export default function LeadDealSelector() {
-    const params = useParams({ strict: false })
-    const queryClinet = useQueryClient()
     const { pathname } = useLocation()
     const search = useSearch({ strict: false })
     const [open, setOpen] = useState<boolean>(false)
@@ -41,48 +27,15 @@ export default function LeadDealSelector() {
     const handleMouseEnter = (id: number) => setHoveredId(id)
     const handleMouseLeave = () => setHoveredId(null)
 
-    const { openModal, closeModal } = useModal("create-pip")
+    const { openModal } = useModal("create-pip")
     const { openModal: openDelete } = useModal("delete")
 
     const { id } = useParams({ strict: false })
     const navigate = useNavigate()
 
-    const { data, refetch } = useGet<Pipeline[]>(pipelineUrl, {
+    const { data } = useGet<Pipeline[]>(pipelineUrl, {
         params: { is_active: true },
     })
-
-    function onSuccess(resp: Pipeline) {
-        closeModal()
-        setOpen(false)
-        refetch()
-        queryClinet.refetchQueries({
-            queryKey: [`${pipelineUrl}/${params?.id}`],
-        })
-        navigate({
-            search: search,
-            to: "/leads/$id",
-            params: {
-                id: resp.id,
-            },
-        })
-    }
-
-    const { mutate, isPending } = usePost(
-        { onSuccess },
-        {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        },
-    )
-    const { mutate: patch, isPending: isPatching } = usePatch(
-        { onSuccess },
-        {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        },
-    )
 
     const activePip = useMemo(
         () => data?.find((el) => Number(el.id) === Number(search.pipeline)),
@@ -90,44 +43,6 @@ export default function LeadDealSelector() {
     )
 
     const handleOpen = () => setOpen((prev) => !prev)
-
-    const form = useForm<Pipeline>()
-
-    async function handleSubmit(vals: Pipeline) {
-        const formData = new FormData()
-        formData.append("name", vals.name)
-        let backgroundValue = vals.background
-
-        if (!backgroundValue) {
-            backgroundValue = getRandomImage()
-        }
-
-        const isUpdate = Boolean(item?.id)
-
-        if (isUpdate) {
-            const prevBackground = item?.background
-            if (backgroundValue !== prevBackground) {
-                if (typeof backgroundValue === "string") {
-                    const file = await urlToFile(
-                        backgroundValue,
-                        "background.jpg",
-                    )
-                    formData.append("background", file)
-                } else {
-                    formData.append("background", backgroundValue)
-                }
-            }
-            patch(`${pipelineUrl}/${vals.id}`, formData)
-        } else {
-            if (typeof backgroundValue === "string") {
-                const file = await urlToFile(backgroundValue, "background.jpg")
-                formData.append("background", file)
-            } else {
-                formData.append("background", backgroundValue)
-            }
-            mutate(pipelineUrl, formData)
-        }
-    }
 
     return (
         <div className="flex items-center gap-3 relative ">
@@ -155,7 +70,7 @@ export default function LeadDealSelector() {
                 )}
             >
                 <div className="flex flex-col mb-3  flex-1 gap-1 p-2">
-                    {Number(data?.length) > 1 ? (
+                    {!!data?.length ? (
                         data?.map((itm) => {
                             const isActive =
                                 Number(itm?.id) ===
@@ -166,9 +81,7 @@ export default function LeadDealSelector() {
                                     key={itm.id}
                                     onClick={() => {
                                         navigate({
-                                            to: params.id
-                                                ? "/leads/$id"
-                                                : pathname,
+                                            to: id ? "/leads/$id" : pathname,
                                             params: { id: itm.id },
                                             search: {
                                                 pipeline: Number(itm.id),
@@ -208,19 +121,7 @@ export default function LeadDealSelector() {
                                                     onClick={(e) => {
                                                         e.stopPropagation()
                                                         if (itm.id) {
-                                                            form.setValue(
-                                                                "id",
-                                                                itm.id,
-                                                            )
-                                                            form.setValue(
-                                                                "name",
-                                                                itm.name,
-                                                            )
                                                             setItem(itm)
-                                                            form.setValue(
-                                                                "background",
-                                                                itm?.background,
-                                                            )
                                                             openModal()
                                                         }
                                                     }}
@@ -248,9 +149,7 @@ export default function LeadDealSelector() {
                 <div
                     className="flex items-center text-sm px-3 bg-secondary py-1 rounded-md cursor-pointer m-2"
                     onClick={() => {
-                        form.setValue("id", "")
-                        form.setValue("name", "")
-                        form.setValue("background", "")
+                        setItem(null)
                         handleOpen()
                         openModal()
                     }}
@@ -265,74 +164,13 @@ export default function LeadDealSelector() {
             <Modal
                 modalKey="create-pip"
                 title={`${
-                    form.watch("id")
-                        ? "Bo'limni tahrirlash"
-                        : "Yangi bo'lim qo'shish"
+                    item?.id ? "Bo'limni tahrirlash" : "Yangi bo'lim qo'shish"
                 }`}
             >
-                <div className="w-full overflow-hidden px-1">
-                    <form
-                        onSubmit={form.handleSubmit(handleSubmit)}
-                        className="space-y-2"
-                    >
-                        <FormInput
-                            methods={form}
-                            name="name"
-                            required
-                            label={"Nomi"}
-                            placeholder={"Misol: Yangi mahsulot sotuvi uchun"}
-                        />
-                        <div className="w-full overflow-x-auto no-scrollbar-x">
-                            <div className="flex gap-2 w-max">
-                                {imagePaths?.map((item, index) => (
-                                    <div
-                                        onClick={() =>
-                                            form.setValue("background", item)
-                                        }
-                                        className={cn(
-                                            "w-20 h-20 border rounded shrink-0 cursor-pointer hover:shadow-lg",
-                                            form.watch("background") === item &&
-                                                "border-primary",
-                                        )}
-                                        key={index}
-                                    >
-                                        <img
-                                            src={item}
-                                            className="w-full h-full object-cover rounded"
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                        <FormImagePicker
-                            methods={form}
-                            name="background"
-                            label={
-                                <div className="flex items-center gap-2 justify-center">
-                                    <Image size={20} />
-                                    <span>{"Orqa fon rasmi"}</span>
-                                </div>
-                            }
-                        />
-
-                        <Button
-                            className="w-full"
-                            loading={isPending || isPatching}
-                        >
-                            {"Saqlash"}
-                        </Button>
-                    </form>
-                </div>
+                <CreateDepartment item={item} />
             </Modal>
 
             <DeleteModal id={item?.id} path={pipelineUrl} name={item?.name} />
         </div>
     )
-}
-
-export async function urlToFile(url: string, fileName: string): Promise<File> {
-    const res = await fetch(url)
-    const blob = await res.blob()
-    const contentType = blob.type || "image/jpeg"
-    return new File([blob], fileName, { type: contentType })
 }

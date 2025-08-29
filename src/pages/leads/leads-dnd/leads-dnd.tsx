@@ -166,7 +166,7 @@ const LeadsDnd = () => {
         return ord ? ord + 1 : 0
     }, [data])
 
-    console.log(data)
+
 
     return (
         <div className="py-3 flex items-start gap-3 w-full h-full relative">
@@ -235,7 +235,7 @@ const LeadsDnd = () => {
                     creatingOrder={creatingOrder}
                 />
             </Modal>
-
+ 
             <DeleteModal
                 modalKey="delete-status"
                 name={store?.name}
