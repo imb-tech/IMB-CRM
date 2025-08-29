@@ -54,7 +54,7 @@ function RouteComponent() {
             {isSuccess && !!dataUsers?.length && (
                 <div className="hidden md:flex flex-col gap-2 fixed top-0  right-0 py-20  pb-2 px-2 h-full backdrop-blur-sm bg-white/5">
                     {dataUsers?.map((item, index) => (
-                        <TooltipProvider delayDuration={1}>
+                        <TooltipProvider key={index} delayDuration={1}>
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <Avatar

@@ -15,7 +15,7 @@ export const useColumns = ({ isGroup }: { isGroup: boolean }) => {
                 cell({ row }) {
                     return (
                         <p className="whitespace-nowrap">
-                            {format(row.original.date, "yyyy-MM-dd")}
+                            {format(row.original.from_date, "yyyy-MM-dd")}
                         </p>
                     )
                 },

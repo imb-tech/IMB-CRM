@@ -4,10 +4,10 @@ import {
     Award,
     CalendarRange,
     ChartNoAxesCombined,
-    ClipboardList,
     DollarSign,
     GraduationCap,
     House,
+    Kanban,
     Layers,
     ListTodo,
     MessageCircleMore,
@@ -35,8 +35,8 @@ export const menuItems = [
         items: [],
     }),
     linkOptions({
-        title: "Lidlar",
-        icon: <ClipboardList width={20} />,
+        title: "CRM",
+        icon: <Kanban width={20} />,
         to: "/leads",
         enabled: true,
         items: [],
@@ -162,6 +162,13 @@ export const menuItems = [
                 to: "/reports",
                 search: {
                     tabs: "attendance_emp"
+                },
+            }),
+             linkOptions({
+                title: "Lidlar hisoboti",
+                to: "/reports",
+                search: {
+                    tabs: "leads_statistic"
                 },
             })
         ],

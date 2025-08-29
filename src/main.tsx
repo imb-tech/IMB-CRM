@@ -2,7 +2,6 @@ import ReactDOM from "react-dom/client"
 import { RouterProvider, createRouter } from "@tanstack/react-router"
 import { routeTree } from "./routeTree.gen"
 import { QueryClientProvider } from "@tanstack/react-query"
-// import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import "./main.css"
 import { queryClient } from "./lib/query-client"
 import { setupAxiosInterceptors } from "./services/axios-instance"
@@ -17,7 +16,7 @@ declare module "@tanstack/react-router" {
         router: typeof router
     }
 }
-setupAxiosInterceptors(queryClient)
+setupAxiosInterceptors()
 
 const rootElement = document.getElementById("app")!
 

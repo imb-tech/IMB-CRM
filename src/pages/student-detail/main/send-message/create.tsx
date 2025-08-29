@@ -9,7 +9,7 @@ import { useParams } from "@tanstack/react-router"
 import { useQueryClient } from "@tanstack/react-query"
 import FormTextarea from "@/components/form/textarea"
 import { toast } from "sonner"
-import showFormErrors from "@/lib/show-form-errors"
+import { handleFormError } from "@/lib/show-form-errors"
 
 export default function StudentMessageCreate() {
     const queryClient = useQueryClient()
@@ -28,7 +28,7 @@ export default function StudentMessageCreate() {
 
 
 
-    const { mutate, isPending } = usePost({ onSuccess, onError: (err) => showFormErrors(err, form), })
+    const { mutate, isPending } = usePost({ onSuccess, onError: (err) => handleFormError(err, form), })
 
     const handleSubmit = useCallback(
         (values: SendMessage) => {

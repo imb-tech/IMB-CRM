@@ -6,7 +6,6 @@ import {
 import { getAccessToken, getRefreshToken } from "@/lib/get-token"
 import { setAccessToken } from "@/lib/set-token"
 import { setActiveBranch } from "@/lib/utils"
-import { QueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { toast } from "sonner"
 
@@ -20,7 +19,7 @@ const axiosInstance = axios.create({
     },
 })
 
-export function setupAxiosInterceptors(queryClient: QueryClient) {
+export function setupAxiosInterceptors() {
     axiosInstance.interceptors.request.use(
         function (config) {
             const token = getAccessToken()
@@ -53,7 +52,8 @@ export function setupAxiosInterceptors(queryClient: QueryClient) {
         async function (error) {
             const originalRequest = error.config
             const status = error.response?.status
-            const isLoginPage = window.location.pathname === "/login"
+            const isLoginPage = window.location.pathname === '/login';
+            const currentSearch = window.location.search || '';
 
             // Agar request yo'q bo'lsa yoki status yo'q bo'lsa, reject
             if (!originalRequest || !status) {
@@ -78,13 +78,13 @@ export function setupAxiosInterceptors(queryClient: QueryClient) {
                         }
                     }
                     if (!isLoginPage) {
-                        location.href = "/login"
+                        location.href = "/login" + currentSearch
                     }
                 } catch (refreshError) {
                     localStorage.removeItem(USER_ACCESS_KEY)
                     localStorage.removeItem(USER_REFRESH_KEY)
                     if (!isLoginPage) {
-                        location.href = "/login"
+                        location.href = "/login" + currentSearch
                     }
                     return Promise.reject(refreshError)
                 }
@@ -94,7 +94,7 @@ export function setupAxiosInterceptors(queryClient: QueryClient) {
             if (status === 403 && !originalRequest._403retry) {
                 originalRequest._403retry = true
                 localStorage.removeItem('token')
-                window.location.replace('/login')
+                location.href = "/login" + currentSearch
                 // await queryClient.invalidateQueries({ queryKey: [GET_ME] });
                 await new Promise((resolve) => setTimeout(resolve, 100))
                 // return axiosInstance(originalRequest)

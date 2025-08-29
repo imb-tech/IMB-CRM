@@ -4,7 +4,6 @@ import { Link, useLocation, useParams, useSearch } from "@tanstack/react-router"
 export default function LeadsTab() {
     const search = useSearch({ strict: false })
     const { pathname } = useLocation()
-
     const { id } = useParams({ strict: false })
 
     return (
@@ -25,18 +24,6 @@ export default function LeadsTab() {
                     to={search.pipeline ? "/leads/$id" : "/leads"}
                 >
                     {"Varonka"}
-                </Link>
-
-                <Link
-                    search={search}
-                    className={buttonVariants({
-                        variant: pathname.includes("/leads/stats")
-                            ? "default"
-                            : "ghost",
-                    })}
-                    to="/leads/stats"
-                >
-                    {"Statistika"}
                 </Link>
 
                 <Link

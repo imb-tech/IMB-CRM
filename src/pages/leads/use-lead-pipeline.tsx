@@ -1,4 +1,3 @@
-export const pipelineUrl = "leads/pipeline/crud"
 
 import { useGet } from "@/hooks/useGet"
 

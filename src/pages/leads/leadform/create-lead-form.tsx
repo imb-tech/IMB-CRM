@@ -9,7 +9,6 @@ import { LeadPhones } from "./lead-phones"
 import useLeadStatuses from "../use-lead-statuses"
 import { usePatch } from "@/hooks/usePatch"
 import FormInput from "@/components/form/input"
-import { FormNumberInput } from "@/components/form/number-input"
 
 export default function CreateLeadForm({ data }: { data?: Lead }) {
     const form = useForm<Lead>({
@@ -101,14 +100,6 @@ export default function CreateLeadForm({ data }: { data?: Lead }) {
                                 placeholder={"Lid ismi yoki nomi"}
                             />
 
-                            <FormNumberInput
-                                label={"Kelishuv summasi"}
-                                control={form.control}
-                                name="amount"
-                                placeholder={`${"Ex"}: 1 000 000`}
-                                size={"lg" as any}
-                                thousandSeparator=" "
-                            />
                             <LeadPhones />
 
                             <div

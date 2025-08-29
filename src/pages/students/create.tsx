@@ -16,7 +16,7 @@ import useMe from "@/hooks/useMe"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
 import { usePost } from "@/hooks/usePost"
-import showFormErrors from "@/lib/show-form-errors"
+import { handleFormError } from "@/lib/show-form-errors"
 import { generateUsername } from "@/lib/utils"
 import { useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
@@ -101,11 +101,11 @@ const StudentCreate = ({ item }: Props) => {
             patch(
                 `${STUDENT}/${item.id}`,
                 { ...body, photo: file },
-                { onError: (err) => showFormErrors(err, form) },
+                { onError: (err) => handleFormError(err, form) },
             )
         } else {
             mutate(STUDENT, body, {
-                onError: (err) => showFormErrors(err, form),
+                onError: (err) => handleFormError(err, form),
             })
         }
     }

@@ -1,4 +1,3 @@
-import { DashboardHeader } from "./lead-stats-header"
 import StatsBySources from "./stats-by-sources"
 import { useGet } from "@/hooks/useGet"
 import { useSearch } from "@tanstack/react-router"
@@ -27,135 +26,77 @@ export default function LeadsDashboard() {
     )
 
     return (
-        <div>
-            <DashboardHeader />
+        <main>
+            <div className="w-full flex justify-between border rounded-lg p-2 items-stretch md:gap-8 gap-3 mb-4">
+                <Card className="hover:shadow-md border-none relative md:min-w-36 md:w-max w-[80%]">
+                    <CardHeader className="flex flex-row items-center justify-center border-b space-y-0 pb-2">
+                        <CardTitle className="text-lg font-medium uppercase ">
+                            {"lidlar"}
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="flex justify-center gap-1 items-center ">
+                        <Users className="text-blue-500 size-6 mr-1" />
+                        <CardTitle className="text-2xl font-medium ">
+                            {formatMoney(dataStatus?.main?.total_count)}
+                        </CardTitle>
+                    </CardContent>
+                </Card>
 
-            <main>
-                <div className="w-full flex justify-between border rounded-lg p-2 items-stretch md:gap-8 gap-3 mb-4">
-                    <Card className="hover:shadow-md border-none relative md:min-w-36 md:w-max w-[80%]">
-                        <CardHeader className="flex flex-row items-center justify-center border-b space-y-0 pb-2">
-                            <CardTitle className="text-xl font-medium uppercase ">
-                                {("lidlar")}
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="flex justify-center gap-1 items-center mt-6">
-                            <Users className="text-blue-500 size-8 mr-1" />
-                            <CardTitle className="text-4xl font-medium ">
-                                {formatMoney(dataStatus?.main?.total_count)}
-                            </CardTitle>
-                        </CardContent>
-                    </Card>
-
-                    <div className="overflow-x-auto sm:flex hidden   bg-card rounded-lg p-2  gap-2 no-scrollbar-x">
-                        {dataStatus?.statuses?.map((stage) => (
-                            <StageColumn key={stage.id} stage={stage} />
-                        ))}
-                    </div>
-
-                    <Card className="hover:shadow-md border-none flex flex-col justify-between relative md:min-w-56  md:w-max w-full">
-                        <CardContent className="flex flex-col justify-end ">
-                            <div className="space-y-3">
-                                {/* Erishilgan (Achieved) Card */}
-                                <div className="bg-green-900/30 border border-green-700/50 rounded-lg p-2.5">
-                                    <div className="flex justify-between items-start">
-                                        <div>
-                                            <h3 className="text-green-400 font-medium">
-                                                {("Erishilgan")}
-                                            </h3>
-                                            <p className="text-green-400  font-medium">
-                                                {formatMoney(
-                                                    dataStatus?.main
-                                                        ?.success_amount,
-                                                )}{" "}
-                                                {("so'm")}
-                                            </p>
-                                        </div>
-                                        <div className="text-right">
-                                            <p className="text-green-400 font-medium">
-                                                {formatMoney(
-                                                    dataStatus?.main
-                                                        ?.total_success,
-                                                )}
-                                            </p>
-                                            <p className="text-green-400 text-xs">
-                                                {(
-                                                    (Number(
-                                                        dataStatus?.main
-                                                            ?.total_success,
-                                                    ) /
-                                                        Number(
-                                                            dataStatus?.main
-                                                                ?.total_count,
-                                                        )) *
-                                                    100
-                                                ).toFixed(0)}
-                                                %
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Yo'qotilgan (Lost) Card */}
-                                <div className="bg-red-900/30 border border-red-700/50 rounded-lg p-2.5">
-                                    <div className="flex justify-between items-start">
-                                        <div>
-                                            <h3 className="text-red-400  font-medium">
-                                                {("Yo'qotilgan")}
-                                            </h3>
-                                            <p className="text-red-400  font-medium">
-                                                {formatMoney(
-                                                    dataStatus?.main
-                                                        ?.loosed_amount,
-                                                )}{" "}
-                                                {("so'm")}
-                                            </p>
-                                        </div>
-                                        <div className="text-right">
-                                            <p className="text-red-400  font-medium">
-                                                {formatMoney(
-                                                    dataStatus?.main
-                                                        ?.total_loosed,
-                                                )}
-                                            </p>
-                                            <p className="text-red-400 text-xs">
-                                                {(
-                                                    (Number(
-                                                        dataStatus?.main
-                                                            ?.total_loosed,
-                                                    ) /
-                                                        Number(
-                                                            dataStatus?.main
-                                                                ?.total_count,
-                                                        )) *
-                                                    100
-                                                ).toFixed(0)}
-                                                %
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-                <div className="overflow-x-auto flex sm:hidden   bg-card rounded-lg p-2  gap-2 no-scrollbar-x">
+                <div className="overflow-x-auto sm:flex hidden   bg-card rounded-lg p-2  gap-2 no-scrollbar-x">
                     {dataStatus?.statuses?.map((stage) => (
                         <StageColumn key={stage.id} stage={stage} />
                     ))}
                 </div>
 
-                <section className="grid mt-4 grid-cols-1 lg:grid-cols-12 gap-4 items-start">
-                    <StatsBySources
-                        data={data?.source}
-                        isFetching={isFetching}
-                    />
+                <Card className="hover:shadow-md border-none flex flex-col justify-between relative md:min-w-56  md:w-max w-full">
+                    <CardContent className="flex flex-col justify-between ">
+                        <div className="space-y-3">
+                            {/* Erishilgan (Achieved) Card */}
+                            <div className="bg-green-900/30 border border-green-700/50 rounded-lg p-2.5">
+                                <div className="flex justify-between items-start">
+                                    <h3 className="text-green-400 font-medium">
+                                        {"Erishilgan"}
+                                    </h3>
 
-                    <StatsByEmployee />
-                </section>
+                                    <p className="text-green-400 font-medium">
+                                        {formatMoney(
+                                            dataStatus?.main?.total_success,
+                                        )}
+                                    </p>
+                                </div>
+                            </div>
 
-                <LeadsMonthlyStats />
-            </main>
-        </div>
+                            {/* Yo'qotilgan (Lost) Card */}
+                            <div className="bg-red-900/30 border border-red-700/50 rounded-md p-2.5">
+                                <div className="flex justify-between items-start">
+                                    <h3 className="text-red-400  font-medium">
+                                        {"Yo'qotilgan"}
+                                    </h3>
+                                    <p className="text-red-400  font-medium">
+                                        {formatMoney(
+                                            dataStatus?.main?.total_loosed,
+                                        )}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+            <div className="overflow-x-auto flex sm:hidden   bg-card rounded-lg p-2  gap-2 no-scrollbar-x">
+                {dataStatus?.statuses?.map((stage) => (
+                    <StageColumn key={stage.id} stage={stage} />
+                ))}
+            </div>
+
+            <section className="grid mt-4 grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+                <StatsBySources data={data?.source} isFetching={isFetching} />
+
+                <StatsByEmployee />
+            </section>
+
+            <LeadsMonthlyStats />
+        </main>
     )
 }
 

@@ -125,7 +125,7 @@ export default function TaskHeader() {
                     valueKey="id"
                     options={dataPosition || []}
                     paramName="role_id"
-                    label={"Lavozimlar"}
+                    label={"Role"}
                     addButtonProps={{
                         className: "min-w-[230px] w-full",
                     }}

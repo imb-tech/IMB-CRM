@@ -24,7 +24,7 @@ export default function DeleteLeadModal() {
         "leads/crud",
         ...Object.values({ condition: "active", status__pipeline: id }),
     ]
-
+ 
     const queryKeyStatus = [
         "leads/pipeline/status",
         ...Object.values({ is_active: true, pipeline: id }),

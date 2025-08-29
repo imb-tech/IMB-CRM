@@ -144,7 +144,7 @@ export function ParamCombobox<T extends Record<string, any>>({
                     />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className={cn("p-0 !min-w-full ", className)}>
+            <PopoverContent className={cn("p-0 ", className)}>
                 <Command shouldFilter={onSearchChange ? false : true} >
                     <div className="relative">
                         {isSearch && (

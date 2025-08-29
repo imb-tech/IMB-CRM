@@ -106,13 +106,13 @@ const FinanceMain = () => {
                 <FinanceBenefitChart />
             </div>
 
-            <ParamTabProvider paramName="page_tabs">
+            <ParamTabProvider paramName="tabs">
                 <Card>
                     <CardContent className="space-y-4">
                         <div className="flex items-center">
                             <ParamTabList
                                 options={tabsData}
-                                paramName="page_tabs"
+                                paramName="tabs"
                                 wrapperClassName="w-auto"
                                 listClassName="h-auto gap-1 bg-transparent"
                                 renderOption={(item, actv) => (

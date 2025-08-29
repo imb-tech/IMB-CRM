@@ -1,31 +1,43 @@
 import { UseFormReturn } from "react-hook-form"
 import { toast } from "sonner"
 
-export default function showFormErrors(err: any, form: UseFormReturn<any>) {
-  if (err.status !== 0 && Number(err.status) < 450 && !err?.response?.data?.msg) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function handleFormError(err: any, form?: UseFormReturn<any>) {
+  const isClientError = err?.status !== 0 && Number(err?.status) < 500
+  const data = err?.response?.data || {}
+  const msg = data?.msg
+
+  let hasValidFieldError = false
+
+  if (form && isClientError) {
     const fields = form.getValues()
-    let hasValidFieldError = false
 
-    for (const [k, v] of Object.entries(err?.response?.data)) {
-      if (k !== "msg") {
-        const isFieldExist = k in fields || k.includes(".")
-
+    for (const [key, value] of Object.entries(data)) {
+      if (key !== "msg") {
+        const isFieldExist = key in fields || key.includes(".")
         if (isFieldExist) {
           hasValidFieldError = true
-          form.setError(k as any, {
+          form.setError(key as any, {
             type: "validate",
-            message: v as string,
+            message: value as string,
           })
         }
       }
     }
 
-    if (!hasValidFieldError) {
-      toast.error(
-        err?.response?.data?.msg || "Noto'g'ri ma'lumotlar yuborildi"
-      )
+    if (!hasValidFieldError && msg) {
+      toast.error(msg)
+    }
+  } else if (isClientError && msg) {
+    const arrayErrors = Object.entries(data).filter(([key]) => key !== "msg")
+    if (arrayErrors.length > 0) {
+      toast.error(arrayErrors.map(([_, value]) => String(value)).join("\n"), {
+        duration: 5000,
+      })
+    } else {
+      toast.error(msg, { duration: 5000 })
     }
   } else {
-    toast.error("Xatolik yuz berdi. Iltimos, qayta urinib ko'ring.")
+    toast.error("Xatolik yuz berdi. Iltimos, qayta urinib ko‘ring.")
   }
 }

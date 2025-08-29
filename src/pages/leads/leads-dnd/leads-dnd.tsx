@@ -1,4 +1,4 @@
-import { DragDropContext, DragStart, Droppable } from "react-beautiful-dnd"
+import { DragDropContext,  Droppable } from "react-beautiful-dnd"
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import LeadsColumn from "./leads-column"
@@ -12,13 +12,13 @@ import { usePatch } from "@/hooks/usePatch"
 import Modal from "@/components/custom/modal"
 import CreateStatusFrom from "../leadform/create-status-form"
 import DeleteModal from "@/components/custom/delete-modal"
-import {  Grid2x2Plus } from "lucide-react"
+import { Grid2x2Plus } from "lucide-react"
 import { useStore } from "@/hooks/use-store"
 import { usePost } from "@/hooks/usePost"
 import { generateIndexedData, moveBetweenArrays, moveItem } from "../utils"
 import useLeadStatuses from "../use-lead-statuses"
 import DeleteLeadModal from "./delete-lead-modal"
-
+ 
 const LeadsDnd = () => {
     const { id } = useParams({ strict: false })
     const { store, remove } = useStore<LeadStatus>("status-data")
@@ -43,11 +43,11 @@ const LeadsDnd = () => {
         ...Object.values({ is_active: true, pipeline: id }),
     ]
 
-    const { data, isLoading } = useLeadStatuses()
+    const { data, isLoading, refetch } = useLeadStatuses()
 
     const { data: users } = useGet<LeadFields[]>("leads/crud", {
         params: { condition: "active", status__pipeline: id },
-    })
+    }) 
 
     const { mutate } = usePatch()
     const { mutate: orderMutation } = usePost()
@@ -125,6 +125,7 @@ const LeadsDnd = () => {
                 { status: cfg.to },
                 {
                     onSuccess() {
+                        refetch()
                         orderMutation(
                             "leads/common/lead-order",
                             generateIndexedData(updatedToUsers, "lead"),
@@ -220,15 +221,12 @@ const LeadsDnd = () => {
                         </div>
                     )}
                 </Droppable>
-
             </DragDropContext>
 
             <Modal
                 modalKey="create-status"
                 title={
-                    store?.id ?
-                        ("Bo'limni tahrirlash")
-                    :   ("Yangi bo'lim yaratish")
+                    store?.id ? "Bo'limni tahrirlash" : "Yangi bo'lim yaratish"
                 }
                 onClose={remove}
             >
@@ -237,7 +235,7 @@ const LeadsDnd = () => {
                     creatingOrder={creatingOrder}
                 />
             </Modal>
-
+ 
             <DeleteModal
                 modalKey="delete-status"
                 name={store?.name}

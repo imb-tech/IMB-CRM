@@ -7,6 +7,7 @@ import { useGet } from "@/hooks/useGet"
 import { useParams } from "@tanstack/react-router"
 import { UserPlus } from "lucide-react"
 import { useStore } from "@/hooks/use-store"
+import { Badge } from "@/components/ui/badge"
 import { formatMoney } from "@/lib/format-money"
 
 type Props = {
@@ -53,40 +54,33 @@ const LeadsColumn = ({ index, item }: Props) => {
                         {...provided.dragHandleProps}
                         className="px-3 dark:bg-card bg-white rounded-md"
                     >
-                        <div className="w-full">
-                            <div className="flex items-center justify-between pt-2">
+                        <div className="flex items-center justify-between py-2">
+                            <div className="flex items-center gap-2">
                                 <h3 className="text-xl">{item?.name ?? ""} </h3>
-
-                                <div className="flex items-center">
-                                    <div
-                                        className="rounded-sm p-1.5 mr-2 bg-background flex items-en justify-center hover:border-primary cursor-pointer transition-all duration-200"
-                                        onClick={() => {
-                                            openModal()
-                                            setLeadData({
-                                                status: item?.id,
-                                            })
-                                        }}
-                                    >
-                                        <UserPlus
-                                            className="text-primary"
-                                            size={16}
-                                        />
-                                    </div>
-                                    {item?.editable && (
-                                        <TableActions
-                                            onDelete={handleDelete}
-                                            onEdit={handleEdit}
-                                        />
-                                    )}
-                                </div>
+                                <Badge>{formatMoney(item?.total_count)}</Badge>
                             </div>
-                            <div className="flex justify-start text-gray-400 items-center gap-3">
-                                <p className="mb-2 text-xs">
-                                    {formatMoney(item?.total_count)} {"lidlar"}
-                                </p>
-                                <p className="mb-2 text-xs">
-                                    {formatMoney(item?.total_amount)} {"so'm"}
-                                </p>
+
+                            <div className="flex items-center">
+                                <div
+                                    className="rounded-sm p-1.5 mr-2 bg-background flex items-en justify-center hover:border-primary cursor-pointer transition-all duration-200"
+                                    onClick={() => {
+                                        openModal()
+                                        setLeadData({
+                                            status: item?.id,
+                                        })
+                                    }}
+                                >
+                                    <UserPlus
+                                        className="text-primary"
+                                        size={16}
+                                    />
+                                </div>
+                                {item?.editable && (
+                                    <TableActions
+                                        onDelete={handleDelete}
+                                        onEdit={handleEdit}
+                                    />
+                                )}
                             </div>
                         </div>
                         <Droppable droppableId={`col-${item?.id}`} type="card">
