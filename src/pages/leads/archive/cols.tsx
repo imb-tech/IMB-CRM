@@ -30,6 +30,10 @@ export const useLeadArchiveCols = () => {
                 },
             },
             {
+                header: "Sabab",
+                accessorKey: "reason",
+            },
+            {
                 header: "Holati",
                 accessorKey: "condition",
                 enableSorting: true,

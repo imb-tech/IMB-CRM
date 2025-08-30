@@ -25,15 +25,17 @@ import GetSourceIcon from "../sources/get-source-icon"
 import { useStore } from "@/hooks/use-store"
 import { useModal } from "@/hooks/useModal"
 import axiosInstance from "@/services/axios-instance"
+import { format } from "date-fns"
 
 export default function LeadCard(props: Lead & { index: number }) {
-    const { id, name, source_icon, worker_name, get_main_contact } = props
+    const { id, name, source_icon, worker_name, get_main_contact,updated_at } = props
 
     const { id: sourceId } = useParams({ strict: false })
     const { setStore } = useStore<Lead>("lead-data")
     const { openModal: openModalGroupAdd } = useModal("student-groups-add")
     const { openModal: openModalMessageAdd } = useModal("message-add")
     const { openModal: openModalNotesAdd } = useModal("notes-add")
+    const { openModal: openModalDepartment } = useModal("update-department")
 
     const { setStore: setDelete } = useStore<{
         id: number
@@ -137,12 +139,10 @@ export default function LeadCard(props: Lead & { index: number }) {
                                         <DropdownMenuItem
                                             onClick={(e) => {
                                                 e.stopPropagation()
-                                                setDelete({
-                                                    id,
-                                                    type: "success",
-                                                    name: props.name,
-                                                })
-                                                openDelete()
+                                                if (props?.id) {
+                                                    setStore(props)
+                                                    openModalDepartment()
+                                                }
                                             }}
                                         >
                                             <RefreshCcw
@@ -200,7 +200,7 @@ export default function LeadCard(props: Lead & { index: number }) {
 
                         <div className="flex items-center gap-4 mt-4 pt-3 text-xs ">
                             <p className=" dark:text-slate-300 text-sm">
-                                29 Avgust 2025
+                                {format(updated_at, "yyyy-MM-dd HH:mm")}
                             </p>
                             <Badge
                                 className={cn(

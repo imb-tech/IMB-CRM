@@ -21,6 +21,7 @@ import DeleteLeadModal from "./delete-lead-modal"
 import AddGroup from "@/pages/student-detail/main/groups/add-group"
 import StudentMessageCreate from "@/pages/student-detail/main/send-message/create"
 import StudentNotesCreate from "@/pages/student-detail/main/notes/create"
+import LeadsUpdateDepartment from "./leads-update-department"
 
 const LeadsDnd = () => {
     const { id } = useParams({ strict: false })
@@ -239,12 +240,16 @@ const LeadsDnd = () => {
             </Modal>
 
             <Modal title="Guruhga qo'shish" modalKey="student-groups-add">
-                <AddGroup id={String(student?.id)} />
+                <AddGroup url="leads/to-group" id={String(student?.id)} leads={true} />
             </Modal>
 
             {/* Send message create modal */}
             <Modal modalKey="message-add" title={`Xabar yuborish`}>
                 <StudentMessageCreate id={String(student?.id)} />
+            </Modal>
+
+            <Modal modalKey="update-department" title={`Bo'lim o'zgartirish`}>
+                <LeadsUpdateDepartment id={String(student?.id)} />
             </Modal>
 
             <Modal modalKey="notes-add" title={`Eslatma  qo'shish`}>

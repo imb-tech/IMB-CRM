@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/accordion"
 import FormTextarea from "@/components/form/textarea"
 import { format } from "date-fns"
-import { useForm } from "react-hook-form"
+import { Path, useForm } from "react-hook-form"
 import { FormCombobox } from "@/components/form/combobox"
 import { FormSelect } from "@/components/form/select"
 import { FormDatePicker } from "@/components/form/date-picker"
@@ -18,6 +18,7 @@ import { useModal } from "@/hooks/useModal"
 import { useCallback, useMemo, useState } from "react"
 import useMe from "@/hooks/useMe"
 import {
+    GROUP,
     GROUP_STUDENTS,
     OPTION_GROUPS,
     STUDENT_GROUP,
@@ -25,12 +26,16 @@ import {
 import { useGet } from "@/hooks/useGet"
 import { Button } from "@/components/ui/button"
 import { handleFormError } from "@/lib/show-form-errors"
+import { cn } from "@/lib/utils"
+import { AxiosError } from "axios"
 
 type Props = {
     id: string
+    leads?: boolean
+    url?: string
 }
 
-function AddGroup({ id }: Props) {
+function AddGroup({ id, leads = false, url = GROUP_STUDENTS }: Props) {
     const queryClient = useQueryClient()
     const { closeModal } = useModal("student-groups-add")
     const [search, setSearch] = useState("")
@@ -43,7 +48,7 @@ function AddGroup({ id }: Props) {
 
     const form = useForm<GroupStudentCreate>({
         defaultValues: {
-            status: 1,
+            status: leads ? 0 : 1,
             start_date: format(new Date(), "yyyy-MM-dd"),
         },
     })
@@ -53,25 +58,61 @@ function AddGroup({ id }: Props) {
         closeModal()
         form.reset()
         queryClient.invalidateQueries({ queryKey: [STUDENT_GROUP] })
+        queryClient.invalidateQueries({ queryKey: [GROUP] })
     }, [closeModal, form, queryClient])
 
     const { mutate, isPending } = usePost({ onSuccess })
+
+    const onError = useCallback(
+        (errors: AxiosError) => {
+            const data = errors.response?.data ?? {}
+            for (const [key, value] of Object.entries(data)) {
+                if (key === "group_students" && Array.isArray(value)) {
+                    value.forEach((groupError, index) => {
+                        if (
+                            typeof groupError === "object" &&
+                            groupError !== null
+                        ) {
+                            for (const [field, messages] of Object.entries(
+                                groupError,
+                            )) {
+                                console.log(field)
+                                console.log(messages)
+
+                                form.setError(
+                                    field as Path<GroupStudentCreate>,
+                                    {
+                                        type: "validate",
+                                        message: String(messages),
+                                    },
+                                )
+                            }
+                        }
+                    })
+                } else {
+                    toast.error(
+                        (errors as any).response?.msg ||
+                            "Xatolik yuzaga keldi qaytadan urinib ko'ring!",
+                    )
+                }
+            }
+        },
+        [form],
+    )
 
     const onSubmit = useCallback(
         (values: GroupStudentCreate) => {
             const { discount, ...rest } = values
             const body = {
                 ...rest,
-                student: id,
                 is_group: true,
+                ...(leads ? { lead: Number(id) } : { student: id }),
                 ...(discount?.amount && discount?.reason ? { discount } : {}),
             }
 
-            mutate(
-                GROUP_STUDENTS,
-                { group_students: [body] },
-                { onError: (err) => handleFormError(err, form) },
-            )
+            mutate(url, leads ? body : { group_students: [body] }, {
+                onError,
+            })
         },
         [mutate, id, form],
     )
@@ -102,19 +143,26 @@ function AddGroup({ id }: Props) {
                 label="Guruh tanlang"
                 required
             />
-            <div className="grid grid-cols-2 items-start gap-3">
-                <FormSelect
-                    control={form.control}
-                    name="status"
-                    label="Holati"
-                    labelKey="name"
-                    valueKey="id"
-                    options={[
-                        { name: "Aktiv", id: 1 },
-                        { name: "Yangi", id: 0 },
-                    ]}
-                    required
-                />
+            <div
+                className={cn(
+                    "grid grid-cols-2 items-start gap-3",
+                    leads && "grid-cols-1",
+                )}
+            >
+                {!leads && (
+                    <FormSelect
+                        control={form.control}
+                        name="status"
+                        label="Holati"
+                        labelKey="name"
+                        valueKey="id"
+                        options={[
+                            { name: "Aktiv", id: 1 },
+                            { name: "Yangi", id: 0 },
+                        ]}
+                        required
+                    />
+                )}
                 <FormDatePicker
                     control={form.control}
                     name="start_date"
