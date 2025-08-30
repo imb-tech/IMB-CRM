@@ -56,6 +56,10 @@ export const menuItems = [
                 title: "Arxiv",
                 to: "/leads/archive",
             }),
+            linkOptions({
+                title: "Sinovga yozilganlar",
+                to: "/leads/lesson-test-students",
+            }),
         ],
     }),
     linkOptions({

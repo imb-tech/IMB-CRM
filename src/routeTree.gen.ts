@@ -26,6 +26,7 @@ import { Route as MainFinanceIndexImport } from './routes/_main/finance/index'
 import { Route as MainSettingsMainImport } from './routes/_main/settings/_main'
 import { Route as MainProjectIdImport } from './routes/_main/project/$id'
 import { Route as MainLeadsSourcesImport } from './routes/_main/leads/sources'
+import { Route as MainLeadsLessonTestStudentsImport } from './routes/_main/leads/lesson-test-students'
 import { Route as MainLeadsArchiveImport } from './routes/_main/leads/archive'
 import { Route as MainFinanceIncomeImport } from './routes/_main/finance/income'
 import { Route as MainFinanceCostImport } from './routes/_main/finance/cost'
@@ -193,6 +194,13 @@ const MainLeadsSourcesRoute = MainLeadsSourcesImport.update({
   path: '/leads/sources',
   getParentRoute: () => MainRoute,
 } as any)
+
+const MainLeadsLessonTestStudentsRoute =
+  MainLeadsLessonTestStudentsImport.update({
+    id: '/leads/lesson-test-students',
+    path: '/leads/lesson-test-students',
+    getParentRoute: () => MainRoute,
+  } as any)
 
 const MainLeadsArchiveRoute = MainLeadsArchiveImport.update({
   id: '/leads/archive',
@@ -562,6 +570,13 @@ declare module '@tanstack/react-router' {
       path: '/leads/archive'
       fullPath: '/leads/archive'
       preLoaderRoute: typeof MainLeadsArchiveImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/leads/lesson-test-students': {
+      id: '/_main/leads/lesson-test-students'
+      path: '/leads/lesson-test-students'
+      fullPath: '/leads/lesson-test-students'
+      preLoaderRoute: typeof MainLeadsLessonTestStudentsImport
       parentRoute: typeof MainImport
     }
     '/_main/leads/sources': {
@@ -1093,6 +1108,7 @@ interface MainRouteChildren {
   MainFinanceCostRoute: typeof MainFinanceCostRoute
   MainFinanceIncomeRoute: typeof MainFinanceIncomeRoute
   MainLeadsArchiveRoute: typeof MainLeadsArchiveRoute
+  MainLeadsLessonTestStudentsRoute: typeof MainLeadsLessonTestStudentsRoute
   MainLeadsSourcesRoute: typeof MainLeadsSourcesRoute
   MainProjectIdRoute: typeof MainProjectIdRoute
   MainSettingsRoute: typeof MainSettingsRouteWithChildren
@@ -1120,6 +1136,7 @@ const MainRouteChildren: MainRouteChildren = {
   MainFinanceCostRoute: MainFinanceCostRoute,
   MainFinanceIncomeRoute: MainFinanceIncomeRoute,
   MainLeadsArchiveRoute: MainLeadsArchiveRoute,
+  MainLeadsLessonTestStudentsRoute: MainLeadsLessonTestStudentsRoute,
   MainLeadsSourcesRoute: MainLeadsSourcesRoute,
   MainProjectIdRoute: MainProjectIdRoute,
   MainSettingsRoute: MainSettingsRouteWithChildren,
@@ -1152,6 +1169,7 @@ export interface FileRoutesByFullPath {
   '/finance/cost': typeof MainFinanceCostRoute
   '/finance/income': typeof MainFinanceIncomeRoute
   '/leads/archive': typeof MainLeadsArchiveRoute
+  '/leads/lesson-test-students': typeof MainLeadsLessonTestStudentsRoute
   '/leads/sources': typeof MainLeadsSourcesRoute
   '/project/$id': typeof MainProjectIdRoute
   '/settings': typeof MainSettingsMainRouteWithChildren
@@ -1211,6 +1229,7 @@ export interface FileRoutesByTo {
   '/finance/cost': typeof MainFinanceCostRoute
   '/finance/income': typeof MainFinanceIncomeRoute
   '/leads/archive': typeof MainLeadsArchiveRoute
+  '/leads/lesson-test-students': typeof MainLeadsLessonTestStudentsRoute
   '/leads/sources': typeof MainLeadsSourcesRoute
   '/project/$id': typeof MainProjectIdRoute
   '/settings': typeof MainSettingsMainIndexRoute
@@ -1270,6 +1289,7 @@ export interface FileRoutesById {
   '/_main/finance/cost': typeof MainFinanceCostRoute
   '/_main/finance/income': typeof MainFinanceIncomeRoute
   '/_main/leads/archive': typeof MainLeadsArchiveRoute
+  '/_main/leads/lesson-test-students': typeof MainLeadsLessonTestStudentsRoute
   '/_main/leads/sources': typeof MainLeadsSourcesRoute
   '/_main/project/$id': typeof MainProjectIdRoute
   '/_main/settings': typeof MainSettingsRouteWithChildren
@@ -1334,6 +1354,7 @@ export interface FileRouteTypes {
     | '/finance/cost'
     | '/finance/income'
     | '/leads/archive'
+    | '/leads/lesson-test-students'
     | '/leads/sources'
     | '/project/$id'
     | '/settings'
@@ -1392,6 +1413,7 @@ export interface FileRouteTypes {
     | '/finance/cost'
     | '/finance/income'
     | '/leads/archive'
+    | '/leads/lesson-test-students'
     | '/leads/sources'
     | '/project/$id'
     | '/settings'
@@ -1449,6 +1471,7 @@ export interface FileRouteTypes {
     | '/_main/finance/cost'
     | '/_main/finance/income'
     | '/_main/leads/archive'
+    | '/_main/leads/lesson-test-students'
     | '/_main/leads/sources'
     | '/_main/project/$id'
     | '/_main/settings'
@@ -1546,6 +1569,7 @@ export const routeTree = rootRoute
         "/_main/finance/cost",
         "/_main/finance/income",
         "/_main/leads/archive",
+        "/_main/leads/lesson-test-students",
         "/_main/leads/sources",
         "/_main/project/$id",
         "/_main/settings",
@@ -1623,6 +1647,10 @@ export const routeTree = rootRoute
     },
     "/_main/leads/archive": {
       "filePath": "_main/leads/archive.tsx",
+      "parent": "/_main"
+    },
+    "/_main/leads/lesson-test-students": {
+      "filePath": "_main/leads/lesson-test-students.tsx",
       "parent": "/_main"
     },
     "/_main/leads/sources": {
