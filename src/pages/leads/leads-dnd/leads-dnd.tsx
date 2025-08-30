@@ -38,10 +38,7 @@ const LeadsDnd = () => {
 
     const queryClient = useQueryClient()
 
-    const queryKeyUsers = [
-        "leads/crud",
-        ...Object.values({ condition: "active", status__pipeline: id }),
-    ]
+    const queryKeyUsers = ["leads/crud", ...Object.values({ pipeline: id })]
 
     const queryKeyStatus = [
         "leads/pipeline/status",
@@ -51,7 +48,7 @@ const LeadsDnd = () => {
     const { data, isLoading, refetch } = useLeadStatuses()
 
     const { data: users } = useGet<LeadFields[]>("leads/crud", {
-        params: { condition: "active", status__pipeline: id },
+        params: { pipeline: id },
     })
 
     const { mutate } = usePatch()
@@ -171,6 +168,8 @@ const LeadsDnd = () => {
         return ord ? ord + 1 : 0
     }, [data])
 
+
+
     return (
         <div className="py-3 flex items-start gap-3 w-full h-full relative">
             <DragDropContext onDragEnd={onDragEnd}>
@@ -239,8 +238,15 @@ const LeadsDnd = () => {
                 />
             </Modal>
 
-            <Modal title="Guruhga qo'shish" modalKey="student-groups-add">
-                <AddGroup url="leads/to-group" id={String(student?.id)} leads={true} />
+            <Modal
+                title="Sinov darsiga  qo'shish"
+                modalKey="student-groups-add"
+            >
+                <AddGroup
+                    url="leads/to-group"
+                    id={String(student?.id)}
+                    leads={true}
+                />
             </Modal>
 
             {/* Send message create modal */}
@@ -249,7 +255,7 @@ const LeadsDnd = () => {
             </Modal>
 
             <Modal modalKey="update-department" title={`Bo'lim o'zgartirish`}>
-                <LeadsUpdateDepartment id={String(student?.id)} />
+                <LeadsUpdateDepartment />
             </Modal>
 
             <Modal modalKey="notes-add" title={`Eslatma  qo'shish`}>

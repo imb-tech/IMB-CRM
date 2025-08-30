@@ -3,35 +3,53 @@ import { cn } from "@/lib/utils"
 import { ColumnDef } from "@tanstack/react-table"
 import { useMemo } from "react"
 import GetSourceIcon from "../sources/get-source-icon"
+import { format } from "date-fns"
 
 export const useLeadArchiveCols = () => {
     return useMemo<ColumnDef<Lead>[]>(
         () => [
             {
+                header: "Manba",
+                accessorKey: "source",
+                cell: ({ row }) => {
+                    return (
+                        <GetSourceIcon
+                            icon={row.original.source_icon}
+                            className="bg-transparent ml-2"
+                            size={20}
+                        />
+                    )
+                },
+            },
+            {
                 header: "Ism",
                 accessorKey: "name",
                 cell: ({ row }) => {
                     return (
-                        <div className="min-w-[200px]">{row.original.name}</div>
+                        <div className="flex flex-col min-w-[200px] ">
+                            <span> {row.original.name}</span>
+                            <span className="whitespace-nowrap text-zinc-400">
+                                {formatPhoneNumber(
+                                    String(row.original.get_main_contact),
+                                )}
+                            </span>
+                        </div>
                     )
                 },
             },
             {
-                header: "Telefon",
-                accessorKey: "get_main_contact",
+                header: "Sana",
+                accessorKey: "updated_at",
                 cell: ({ row }) => {
                     return (
-                        <span className="">
-                            {formatPhoneNumber(
-                                String(row.original.get_main_contact),
+                        <div className="whitespace-nowrap min-w-[150px]">
+                            {format(
+                                row.original.updated_at,
+                                "yyyy-MM-dd HH:mm",
                             )}
-                        </span>
+                        </div>
                     )
                 },
-            },
-            {
-                header: "Sabab",
-                accessorKey: "reason",
             },
             {
                 header: "Holati",
@@ -40,39 +58,31 @@ export const useLeadArchiveCols = () => {
                 cell: ({ row }) => {
                     const val = row.original.condition
                     return (
-                        <span
+                        <div
                             className={cn(
-                                val === "deleted"
-                                    ? "text-rose-500/70"
+                                "whitespace-nowrap min-w-[150px]",
+                                val === "loosed"
+                                    ? "text-red-500/70"
                                     : "text-green-500/70",
                             )}
                         >
                             {
                                 {
-                                    deleted: "O'chirilgan",
                                     success: "Muvaffaqiyatli",
-                                    connected: "Bog'lanildi",
-                                    loosed: "Yo'qotildi",
+                                    loosed: "O'chirilgan",
                                     new: "Yangi",
                                 }[val]
                             }
-                        </span>
+                        </div>
                     )
                 },
             },
             {
-                header: "Manba",
-                accessorKey: "source",
+                header: "Sabab",
+                accessorKey: "reason",
                 cell: ({ row }) => {
                     return (
-                        <span className="flex items-center gap-1">
-                            <GetSourceIcon
-                                icon={row.original.source_icon}
-                                className="bg-transparent"
-                                size={16}
-                            />
-                            <span>{row.original.source_name}</span>
-                        </span>
+                        <div className="max-w-lg ">{row.original.reason}</div>
                     )
                 },
             },

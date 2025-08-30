@@ -120,7 +120,7 @@ export function ParamCombobox<T extends Record<string, any>>({
                     role="combobox"
                     aria-expanded={open}
                     className={cn(
-                        "w-full  justify-between font-normal ",
+                        "justify-between font-normal select-none",
                         currentValue && "font-medium dark:!text-white",
                         isError && "!text-destructive",
                     )}

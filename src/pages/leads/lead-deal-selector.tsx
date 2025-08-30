@@ -81,7 +81,7 @@ export default function LeadDealSelector() {
                                     key={itm.id}
                                     onClick={() => {
                                         navigate({
-                                            to: id ? "/leads/$id" : pathname,
+                                            to: id ? "/leads/varonka/$id" : pathname,
                                             params: { id: itm.id },
                                             search: {
                                                 pipeline: Number(itm.id),

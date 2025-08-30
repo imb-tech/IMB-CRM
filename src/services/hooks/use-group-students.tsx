@@ -2,14 +2,14 @@ import { GROUP_STUDENTS } from '@/constants/api-endpoints'
 import { useGet } from '@/hooks/useGet'
 import { useSearch } from '@tanstack/react-router'
 
-export default function apiGroupStudents(group?: number | string) {
+export default function apiGroupStudents(group?: number | string, freeze = false) {
     const search = useSearch({ from: "__root__" })
     return useGet<GroupStudent[]>(
         GROUP_STUDENTS,
         {
-            params: { group, ...search },
+            params: freeze ? { group } : { group, ...search },
             options: {
-                queryKey: [GROUP_STUDENTS, search],
+                queryKey: freeze ? undefined : [GROUP_STUDENTS, search],
                 refetchOnMount: true,
                 enabled: !!group
             },
@@ -19,7 +19,10 @@ export default function apiGroupStudents(group?: number | string) {
 
 
 export function apiGroupDays(group?: number | string, date?: string) {
-    return useGet<string[]>(
+    return useGet<{
+        date: string
+        values: []
+    }[]>(
         "platform/groups/days-to-teach/" + group + "/" + date,
         {
             options: {

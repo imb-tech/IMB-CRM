@@ -47,3 +47,14 @@ type StudentAttandence = {
     }
     attendances: AttReason[]
 }
+
+type StudentScore = {
+    id: number
+    full_name: string
+    phone: string
+    modules: {
+        id: number
+        target_date: string
+        score: number
+    }[]
+}

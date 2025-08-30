@@ -19,6 +19,7 @@ export const useGroupStudentCols = () => {
     const { openModal: openDelete } = useModal("delete-student")
     const { openModal: pay } = useModal("payment-update")
     const { openModal: exportStudent } = useModal("export-student")
+    const { openModal: note } = useModal("notes-add")
 
     return useMemo<ColumnDef<GroupStudent>[]>(
         () => [
@@ -108,7 +109,7 @@ export const useGroupStudentCols = () => {
                                 key: "note",
                                 onClick() {
                                     setStore(original)
-                                    openDelete()
+                                    note()
                                 },
                             },
                             {

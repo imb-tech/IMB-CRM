@@ -8,16 +8,25 @@ import { useForm } from 'react-hook-form'
 import { newStudentStatusKeys } from '../students/student-status'
 import { useStore } from '@/hooks/use-store'
 import { usePost } from '@/hooks/usePost'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useModal } from '@/hooks/useModal'
 import { useParams } from '@tanstack/react-router'
+import useMe from '@/hooks/useMe'
+import Select from '@/components/ui/select'
 
 export default function ExportStudent({ onSuccess }: { onSuccess?: () => void }) {
     const { store } = useStore<GroupStudent>("student-data")
     const { closeModal } = useModal('export-student')
     const { id } = useParams({ strict: false })
+    const { data: user, active_branch } = useMe()
 
-    const { data } = useGet<Group[]>(OPTION_GROUPS)
+    const [branch, setBranch] = useState<number>(Number(active_branch))
+
+    const { data } = useGet<Group[]>(OPTION_GROUPS, {
+        params: {
+            branch
+        }
+    })
     const options = useMemo(() => data?.filter(g => g.id !== Number(id))?.map(gr => ({ ...gr, name: `${gr.name} - ${gr.teacher_name}` })) ?? [], [data])
 
     const form = useForm<Student>({
@@ -75,6 +84,15 @@ export default function ExportStudent({ onSuccess }: { onSuccess?: () => void })
 
     return (
         <form className='flex flex-col gap-4' onSubmit={handleSubmit(onSubmit)}>
+            <Select
+                label="Oy bo'yicha"
+                options={user?.branches ?? []}
+                labelKey="name"
+                valueKey="id"
+                value={branch}
+                setValue={(v) => setBranch(Number(v))}
+            />
+
             <FormCombobox
                 options={options}
                 control={control}

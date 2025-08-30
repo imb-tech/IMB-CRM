@@ -3,12 +3,12 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import {
     Edit,
-    Layers,
     MessageSquareText,
     MoreHorizontal,
     NotebookPen,
     RefreshCcw,
     Trash,
+    UserPlus,
 } from "lucide-react"
 
 import {
@@ -28,7 +28,8 @@ import axiosInstance from "@/services/axios-instance"
 import { format } from "date-fns"
 
 export default function LeadCard(props: Lead & { index: number }) {
-    const { id, name, source_icon, worker_name, get_main_contact,updated_at } = props
+    const { id, name, source_icon, worker_name, get_main_contact, updated_at } =
+        props
 
     const { id: sourceId } = useParams({ strict: false })
     const { setStore } = useStore<Lead>("lead-data")
@@ -36,12 +37,6 @@ export default function LeadCard(props: Lead & { index: number }) {
     const { openModal: openModalMessageAdd } = useModal("message-add")
     const { openModal: openModalNotesAdd } = useModal("notes-add")
     const { openModal: openModalDepartment } = useModal("update-department")
-
-    const { setStore: setDelete } = useStore<{
-        id: number
-        type: "delete" | "success"
-        name: string
-    }>("conf-lead")
 
     const { pipeline } = useSearch({ strict: false })
     const { openModal } = useModal()
@@ -64,7 +59,7 @@ export default function LeadCard(props: Lead & { index: number }) {
     return (
         <Link
             search={{ pipeline }}
-            to="/leads/$id/user/$user"
+            to="/leads/varonka/$id/user/$user"
             params={{ id: sourceId as string, user: id.toString() }}
         >
             <Card className="group border rounded-lg overflow-hidden transition-all duration-300 bg-secondary dark:hover:shadow-slate-800/30">
@@ -161,11 +156,11 @@ export default function LeadCard(props: Lead & { index: number }) {
                                                 }
                                             }}
                                         >
-                                            <Layers
+                                            <UserPlus
                                                 size={16}
                                                 className="mr-2"
                                             />{" "}
-                                            Guruhga qo'shish
+                                            Sinov darsiga
                                         </DropdownMenuItem>
 
                                         <DropdownMenuItem
@@ -182,12 +177,10 @@ export default function LeadCard(props: Lead & { index: number }) {
                                             className="text-red-500"
                                             onClick={(e) => {
                                                 e.stopPropagation()
-                                                setDelete({
-                                                    id,
-                                                    type: "delete",
-                                                    name: props.name,
-                                                })
-                                                openDelete()
+                                                if (props?.id) {
+                                                    setStore(props)
+                                                    openDelete()
+                                                }
                                             }}
                                         >
                                             <Trash size={16} className="mr-2" />{" "}

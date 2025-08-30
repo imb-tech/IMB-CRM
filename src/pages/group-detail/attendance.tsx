@@ -62,8 +62,9 @@ export default function GroupAttendance() {
         <div>
             <SectionHeader
                 title="Oylik yo'qlama jadvali"
+                className="items-stretch md:items-start"
                 rightComponent={
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-row justify-between md:justify-between md:flex-row bg-red-">
                         <ParamSwtich
                             label="Arxiv"
                             paramName="is_active"
@@ -85,10 +86,10 @@ export default function GroupAttendance() {
             <Card>
                 <CardContent className="p-0">
                     <div className="overflow-x-auto !rounded-sm">
-                        <table className="w-full">
+                        <table className="w-full md:min-w-full" style={{ maxWidth: (sector.length * 40) + 160 }}>
                             <thead>
                                 <tr className="bg-secondary">
-                                    <th className="text-left pl-2 font-medium sticky left-0 bg-secondary min-w-[160px] border-b border-b-background">
+                                    <th className="text-left pl-2 font-medium sticky left-0 bg-secondary min-w-[160px] w-[160px] border-b border-b-background">
                                         O'quvchi
                                     </th>
                                     {sector.map((day, i) => (
@@ -137,7 +138,7 @@ export default function GroupAttendance() {
                                             </td>
                                             {sector.map((day, i) => {
                                                 const at =
-                                                    student.attendances.find(
+                                                    student.attendances?.find(
                                                         (f) =>
                                                             f.date ==
                                                             day.formatted_date,
@@ -163,7 +164,7 @@ export default function GroupAttendance() {
                                             <td className="p-1 text-center">
                                                 <div className="space-y-1">
                                                     <div className="text-sm font-semibold">
-                                                        {statistics.all}
+                                                        {statistics?.all}
                                                     </div>
                                                     <div className="flex justify-center gap-1 text-xs">
                                                         <span className="text-green-600">

@@ -26,14 +26,18 @@ export const getDaysInMonth = (date: Date) => {
     return days
 }
 
-export function getGroupSector(groupDays?: string[]) {
+export function getGroupSector(groupDays?: {
+    date: string
+    values: GroupModule[]
+}[]) {
     return useMemo(() => groupDays?.map((d) => {
-        const dt = new Date(d)
+        const dt = new Date(d.date)
         return {
             date: dt,
             dayName: dt.toString().slice(0, 3),
-            formatted_date: d,
+            formatted_date: d.date,
             day: dt.getDate(),
+            modules: d.values
         }
     }) ?? [], [groupDays])
 }
