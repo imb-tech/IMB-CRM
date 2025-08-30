@@ -45,6 +45,11 @@ export const menuItems = [
                 to: "/leads/varonka",
             }),
             linkOptions({
+                title: "Sinovdagi O'quvchilar",
+                to: "/leads/lesson-test-students",
+            }),
+
+            linkOptions({
                 title: "Formalar",
                 to: "/leads/forms",
             }),
@@ -55,10 +60,6 @@ export const menuItems = [
             linkOptions({
                 title: "Arxiv",
                 to: "/leads/archive",
-            }),
-            linkOptions({
-                title: "Sinovga yozilganlar",
-                to: "/leads/lesson-test-students",
             }),
         ],
     }),

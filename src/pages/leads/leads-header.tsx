@@ -3,8 +3,10 @@ import LeadDealSelector from "./lead-deal-selector"
 
 export default function LeadsHeader() {
     return (
-        <div className="flex items-center gap-3 sm:w-max w-full">
-            <ParamInput />
+        <div className="flex items-center justify-end gap-3  w-full">
+           <div className="sm:w-1/4">
+             <ParamInput fullWidth />
+           </div>
             <LeadDealSelector />
         </div>
     )
