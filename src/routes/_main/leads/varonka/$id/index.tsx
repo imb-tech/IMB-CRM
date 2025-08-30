@@ -18,21 +18,24 @@ function RouteComponent() {
         options: { enabled: !!params?.id },
     })
 
-    const { data: dataDepartment, isSuccess } =
-        useGet<{ id: number; name: string }[]>(pipelineUrl)
+    const {
+        data: dataDepartment,
+        isSuccess,
+        isFetched,
+    } = useGet<{ id: number; name: string }[]>(pipelineUrl)
 
     const hasLeads = isSuccess && dataDepartment?.[0]?.id
 
     const hasNavigated = useRef(false)
 
     useEffect(() => {
-        if (!hasLeads && !hasNavigated.current) {
+        if (isFetched && !hasLeads && !hasNavigated.current) {
             hasNavigated.current = true
             navigate({
                 to: "/leads/varonka",
             })
         }
-    }, [hasLeads, navigate, dataDepartment])
+    }, [hasLeads, navigate, isFetched])
 
     return (
         <PageLayout
