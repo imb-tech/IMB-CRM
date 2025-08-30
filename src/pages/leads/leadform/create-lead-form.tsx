@@ -1,8 +1,8 @@
 import { ArrowLeft, RotateCcw } from "lucide-react"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { FormSelect } from "@/components/form/select"
-import { Link, useParams, useSearch } from "@tanstack/react-router"
+import { useNavigate, useParams, useSearch } from "@tanstack/react-router"
 import { cn } from "@/lib/utils"
 import { FormProvider, useForm } from "react-hook-form"
 import { LeadPhones } from "./lead-phones"
@@ -11,6 +11,7 @@ import { usePatch } from "@/hooks/usePatch"
 import FormInput from "@/components/form/input"
 
 export default function CreateLeadForm({ data }: { data?: Lead }) {
+    const navigate = useNavigate()
     const form = useForm<Lead>({
         defaultValues: {
             ...data,
@@ -52,23 +53,23 @@ export default function CreateLeadForm({ data }: { data?: Lead }) {
                 <Card className="border-none">
                     <CardContent>
                         <div className="flex items-center gap-3">
-                            <Link
-                                search={{ pipeline }}
-                                to="/leads/varonka/$id"
-                                className={cn(
-                                    "text-sidebar-foreground",
-                                    buttonVariants({
-                                        variant: "default",
-                                        size: "sm",
-                                    }),
-                                )}
-                                type="button"
-                                params={{
-                                    id: id?.toString()!,
+                            <Button
+                                className="min-w-4"
+                                onClick={() => {
+                                    if (window.history.length > 1) {
+                                        window.history.back()
+                                    } else {
+                                        navigate({
+                                            to: "/leads/varonka/$id",
+                                            params: { id: id?.toString()! },
+                                            search: { pipeline },
+                                        })
+                                    }
                                 }}
                             >
-                                <ArrowLeft className="h-4 w-4" />
-                            </Link>
+                                <ArrowLeft className="w-5 h-5" />
+                            </Button>
+
                             <h1 className="text-lg font-medium text-sidebar-foreground flex-1">
                                 {watchedData.name}
                             </h1>

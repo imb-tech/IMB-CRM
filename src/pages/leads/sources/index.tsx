@@ -13,6 +13,7 @@ import { useState } from "react"
 import { usePatch } from "@/hooks/usePatch"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { formatMoney } from "@/lib/format-money"
 
 const url = "leads/common/sources"
 
@@ -53,7 +54,7 @@ export default function Sources() {
                 <div className="flex mb-3  justify-between items-center gap-3 ">
                     <div className="flex items-center gap-3">
                         <h1 className="text-xl">Manbalar ro'yxati</h1>
-                        <Badge className="text-sm">{data?.length}</Badge>
+                        <Badge className="text-sm">{formatMoney(data?.length)}</Badge>
                     </div>
 
                     <Button
@@ -72,10 +73,10 @@ export default function Sources() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2">
                     {Number(data?.length) > 0 ? (
-                        data?.map((src) => (
+                        data?.map((src, index) => (
                             <div
                                 className="bg-secondary p-4 rounded-md flex items-center gap-2"
-                                key={src.id}
+                                key={index}
                             >
                                 <span className="p-1 rounded-md">
                                     <GetSourceIcon

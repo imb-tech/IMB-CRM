@@ -14,9 +14,11 @@ export default function LeadDetail() {
         <div className="text-foreground">
             <div className="flex items-start gap-3 flex-col md:flex-row">
                 <div className="md:flex-[0.4] w-full flex flex-col gap-3">
-                    {isLoading ?
+                    {isLoading ? (
                         <FormSkeleton />
-                    :   <CreateLeadForm data={data} />}
+                    ) : (
+                        <CreateLeadForm data={data} />
+                    )}
                     <LeadResponses />
                 </div>
 

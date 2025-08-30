@@ -11,6 +11,7 @@ import { useModal } from "@/hooks/useModal"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import LeadsDepartmentFilter from "@/pages/reports/student-payment/leads-department-filter"
+import { formatMoney } from "@/lib/format-money"
 
 export default function FormsList() {
     const params = useSearch({ strict: false })
@@ -62,7 +63,7 @@ export default function FormsList() {
                                         Formalar ro'yxati
                                     </h1>
                                     <Badge className="text-sm">
-                                        {data?.count}
+                                        {formatMoney(data?.count)}
                                     </Badge>
                                 </div>
                                 <div className="flex items-center gap-3">

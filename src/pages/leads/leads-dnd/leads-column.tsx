@@ -24,7 +24,7 @@ const LeadsColumn = ({ index, item }: Props) => {
     const { setStore: setLeadData } = useStore("lead-data")
 
     const { data: users } = useGet<Lead[]>("leads/crud", {
-        params: { condition: "active", status__pipeline: id },
+        params: { pipeline: id },
     })
 
     const data = useMemo(
@@ -41,6 +41,8 @@ const LeadsColumn = ({ index, item }: Props) => {
         setStore(item)
         openEdit()
     }
+
+
 
     return (
         <Draggable draggableId={`col-${item?.id}`} index={index}>

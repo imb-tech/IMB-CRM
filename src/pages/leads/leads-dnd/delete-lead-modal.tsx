@@ -17,10 +17,7 @@ export default function DeleteLeadModal() {
 
     const queryClient = useQueryClient()
 
-    const queryKeyUsers = [
-        "leads/crud",
-        ...Object.values({ condition: "active", status__pipeline: id }),
-    ]
+    const queryKeyUsers = ["leads/crud", ...Object.values({ pipeline: id })]
 
     const queryKeyStatus = [
         "leads/pipeline/status",
