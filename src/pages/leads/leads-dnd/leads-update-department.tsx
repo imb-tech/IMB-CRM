@@ -61,6 +61,9 @@ const LeadsUpdateDepartment = () => {
             const oldData =
                 queryClient.getQueryData<Lead[]>(queryKeyUsers) ?? []
 
+            const oldDataStatus =
+                queryClient.getQueryData<LeadStatus[]>(queryKeyStatus) ?? []
+
             const updatedData = oldData?.map((usr) => {
                 if (usr.id == item.id) {
                     return {
@@ -71,9 +74,25 @@ const LeadsUpdateDepartment = () => {
                 } else return usr
             })
             queryClient.setQueryData(queryKeyUsers, updatedData)
-            if (pipeline === String(item.pipeline_id)) {
-                queryClient.removeQueries({ queryKey: queryKeyStatus })
-            }
+
+            const cfgStatus = oldDataStatus?.map((status) => {
+                if (status.id == item.status) {
+                    return {
+                        ...status,
+                        total_count: status.total_count + 1,
+                    }
+                }
+                if (status.id === Number(store?.status)) {
+                    console.log("ishladi")
+
+                    return {
+                        ...status,
+                        total_count: Math.max(0, status.total_count - 1),
+                    }
+                } else return status
+            })
+
+            queryClient.setQueryData(queryKeyStatus, cfgStatus)
 
             closeModal()
             form.reset()
