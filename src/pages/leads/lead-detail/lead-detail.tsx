@@ -7,16 +7,18 @@ import LeadResponses from "./lead-responses"
 import FormSkeleton from "./lead-detail-skeleton"
 
 export default function LeadDetail() {
-    const { user } = useParams({ from: "/_main/leads/$id/user/$user" })
+    const { user } = useParams({ from: "/_main/leads/varonka/$id/user/$user" })
     const { data, isLoading } = useGet<Lead>(`leads/crud/${user}`)
 
     return (
         <div className="text-foreground">
             <div className="flex items-start gap-3 flex-col md:flex-row">
                 <div className="md:flex-[0.4] w-full flex flex-col gap-3">
-                    {isLoading ?
+                    {isLoading ? (
                         <FormSkeleton />
-                    :   <CreateLeadForm data={data} />}
+                    ) : (
+                        <CreateLeadForm data={data} />
+                    )}
                     <LeadResponses />
                 </div>
 

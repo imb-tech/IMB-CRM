@@ -39,7 +39,24 @@ export const menuItems = [
         icon: <Kanban width={20} />,
         to: "/leads",
         enabled: true,
-        items: [],
+        items: [
+            linkOptions({
+                title: "Varonka",
+                to: "/leads/varonka",
+            }),
+            linkOptions({
+                title: "Formalar",
+                to: "/leads/forms",
+            }),
+            linkOptions({
+                title: "Manbalar",
+                to: "/leads/sources",
+            }),
+            linkOptions({
+                title: "Arxiv",
+                to: "/leads/archive",
+            }),
+        ],
     }),
     linkOptions({
         title: "Vazifalar",
@@ -58,23 +75,23 @@ export const menuItems = [
                 title: "O'quvchilar to'lovi",
                 to: "/groups",
                 search: {
-                    tabs: "groups"
+                    tabs: "groups",
                 },
             }),
             linkOptions({
                 title: "O'quvchilar davomati",
                 to: "/groups",
                 search: {
-                    tabs: "rooms"
+                    tabs: "rooms",
                 },
             }),
             linkOptions({
                 title: "Hodimlar davomati",
                 to: "/groups",
                 search: {
-                    tabs: "courses"
+                    tabs: "courses",
                 },
-            })
+            }),
         ],
     }),
     linkOptions({
@@ -147,30 +164,30 @@ export const menuItems = [
                 title: "O'quvchilar to'lovi",
                 to: "/reports",
                 search: {
-                    tabs: "student_payments"
+                    tabs: "student_payments",
                 },
             }),
             linkOptions({
                 title: "O'quvchilar davomati",
                 to: "/reports",
                 search: {
-                    tabs: "attendance"
+                    tabs: "attendance",
                 },
             }),
             linkOptions({
                 title: "Hodimlar davomati",
                 to: "/reports",
                 search: {
-                    tabs: "attendance_emp"
+                    tabs: "attendance_emp",
                 },
             }),
-             linkOptions({
+            linkOptions({
                 title: "Lidlar hisoboti",
                 to: "/reports",
                 search: {
-                    tabs: "leads_statistic"
+                    tabs: "leads_statistic",
                 },
-            })
+            }),
         ],
     }),
     linkOptions({

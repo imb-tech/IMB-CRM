@@ -8,10 +8,10 @@ import { PAGE_SIZE_KEY } from "@/constants/default"
 import { useState } from "react"
 import DeleteModal from "@/components/custom/delete-modal"
 import { useModal } from "@/hooks/useModal"
-import LeadsTab from "../leads-tab"
-import LeadDealSelector from "../lead-deal-selector"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
+import LeadsDepartmentFilter from "@/pages/reports/student-payment/leads-department-filter"
+import { formatMoney } from "@/lib/format-money"
 
 export default function FormsList() {
     const params = useSearch({ strict: false })
@@ -31,10 +31,6 @@ export default function FormsList() {
 
     return (
         <div>
-            <div className="flex sm:flex-row flex-col gap-3 sm:justify-between mb-3">
-                <LeadsTab />
-                <LeadDealSelector />
-            </div>
             <Card>
                 <CardContent>
                     <DataTable
@@ -67,23 +63,26 @@ export default function FormsList() {
                                         Formalar ro'yxati
                                     </h1>
                                     <Badge className="text-sm">
-                                        {data?.count}
+                                        {formatMoney(data?.count)}
                                     </Badge>
                                 </div>
-                                <Button
-                                    onClick={() =>
-                                        navigate({
-                                            to: "/leads/forms/create",
-                                            search: {
-                                                pipeline: params.pipeline,
-                                            },
-                                        })
-                                    }
-                                    className="sm:w-max w-full"
-                                >
-                                    <Plus size={18} />
-                                    {"Yangi yaratish"}
-                                </Button>
+                                <div className="flex items-center gap-3">
+                                    <LeadsDepartmentFilter />
+                                    <Button
+                                        onClick={() =>
+                                            navigate({
+                                                to: "/leads/forms/create",
+                                                search: {
+                                                    pipeline: params.pipeline,
+                                                },
+                                            })
+                                        }
+                                        className="sm:w-max w-full"
+                                    >
+                                        <Plus size={18} />
+                                        {"Yangi yaratish"}
+                                    </Button>
+                                </div>
                             </div>
                         }
                     />

@@ -4,7 +4,7 @@ import { createFileRoute } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/_main/leads/forms/")({
     component: () => (
-        <PageLayout>
+        <PageLayout navOnHeader>
             <FormsList />
         </PageLayout>
     ),

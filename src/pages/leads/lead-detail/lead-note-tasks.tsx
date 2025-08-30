@@ -24,7 +24,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import DeleteModal from "@/components/custom/delete-modal"
 import { useModal } from "@/hooks/useModal"
 import { FormSelect } from "@/components/form/select"
-import { HR_API, TASKLY_PROJECT_CRM } from "@/constants/api-endpoints"
+import { OPTION_EMPLOYEES, TASKLY_PROJECT_CRM } from "@/constants/api-endpoints"
 import { cn } from "@/lib/utils"
 import { FormMultiCombobox } from "@/components/form/multi-combobox"
 
@@ -38,11 +38,7 @@ export default function LeadNotes() {
 
     const { data: projects } = useGet<FormValues[]>(TASKLY_PROJECT_CRM)
 
-    const { data: employees, isFetching } = useGet<ListResp<any>>(HR_API, {
-        params: { search },
-    })
-
-    const { user } = useParams({ from: "/_main/leads/$id/user/$user" })
+    const { user } = useParams({ from: "/_main/leads/varonka/$id/user/$user" })
 
     const queryClient = useQueryClient()
     const queryKey = [`leads/notes-list/${user}`]
@@ -76,6 +72,16 @@ export default function LeadNotes() {
             scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight
         }
     }
+    const { data: employees, isFetching } = useGet<
+        {
+            id: number
+            full_name: string
+            phone: string
+        }[]
+    >(OPTION_EMPLOYEES, {
+        params: { search },
+        enabled: !!(values.type == "task"),
+    })
 
     const groupedMessages = groupMessagesByDate(mixData ?? [])
     const sortedDates = Object.keys(groupedMessages).sort(
@@ -121,7 +127,7 @@ export default function LeadNotes() {
                         users: vals.users,
                         deadline: vals.created_at,
                         project: vals.project,
-                    }, 
+                    },
                     {
                         onSuccess(d: LeadNote) {
                             form.reset()
@@ -448,7 +454,7 @@ export default function LeadNotes() {
                                     labelKey="full_name"
                                     isLoading={isFetching}
                                     placeholder={"Kim uchun"}
-                                    options={employees?.results ?? []}
+                                    options={employees ?? []}
                                     addButtonProps={{
                                         disabled: !values.project,
                                         className:
@@ -468,6 +474,9 @@ export default function LeadNotes() {
                                         addButtonProps={{
                                             className: "!h-10",
                                             variant: "secondary",
+                                        }}
+                                        calendarProps={{
+                                            fromDate: new Date(),
                                         }}
                                     />
                                 )}

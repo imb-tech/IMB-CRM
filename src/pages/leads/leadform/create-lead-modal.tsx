@@ -20,10 +20,7 @@ export default function CreateLeadModal() {
 
     const queryClient = useQueryClient()
 
-    const queryKeyUsers = [
-        "leads/crud",
-        ...Object.values({ condition: "active", status__pipeline: id }),
-    ]
+    const queryKeyUsers = ["leads/crud", ...Object.values({ pipeline: id })]
 
     const queryKeyStatus = [
         "leads/pipeline/status",
@@ -49,7 +46,6 @@ export default function CreateLeadModal() {
     })
 
     function onSuccess() {
-        // queryClient.removeQueries({ queryKey: ["leads/crud"] })
         closeModal()
     }
 
@@ -68,8 +64,6 @@ export default function CreateLeadModal() {
         }
         const oldData = queryClient.getQueryData<Lead[]>(queryKeyUsers) ?? []
 
-        const oldDataStatus =
-            queryClient.getQueryData<LeadStatus[]>(queryKeyStatus) ?? []
 
         if (data.id) {
             patch(`leads/crud/${data.id}`, vls, {
@@ -87,22 +81,17 @@ export default function CreateLeadModal() {
                     })
 
                     queryClient.setQueryData(queryKeyUsers, cfg)
+                    queryClient.removeQueries({
+                        queryKey: [`leads/crud/${data?.id}`],
+                    })
                 },
             })
         } else {
             mutate("leads/crud", vls, {
                 onSuccess(item: Lead) {
                     const cfg = [item, ...oldData]
-                    const cfgStatus = oldDataStatus?.map((usr) => {
-                        if (usr.id == item.status) {
-                            return {
-                                ...usr,
-                                total_count: usr.total_count + 1,
-                            }
-                        } else return usr
-                    })
                     queryClient.setQueryData(queryKeyUsers, cfg)
-                    queryClient.setQueryData(queryKeyStatus, cfgStatus)
+                    queryClient.removeQueries({ queryKey: queryKeyStatus })
                 },
             })
         }

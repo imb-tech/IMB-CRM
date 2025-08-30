@@ -100,14 +100,14 @@ export function MultiCombobox<T extends Record<string, any>>({
                     variant={"secondary"}
                     aria-expanded={open}
                     className={cn(
-                        "w-full relative justify-between  overflow-hidden px-2 hover:bg-card font-normal text-gray-400 hover:text-gray-400 items-center",
+                        "w-full justify-between  overflow-hidden px-2 hover:bg-card font-normal text-gray-400 hover:text-gray-400 items-center",
                         values && "font-medium text-foreground",
                         isError && "!border-red-600 border",
                         className,
                     )}
                     {...addButtonProps}
                 >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 w-full">
                         <ChevronDown className=" h-4 w-4  text-primary opacity-50 " />
                         <span className="line-clamp-1 break-all whitespace-pre">
                             {values?.length && values?.length < 3
@@ -125,8 +125,8 @@ export function MultiCombobox<T extends Record<string, any>>({
                     {!!values?.length && (
                         <span
                             className={cn(
-                                "absolute cursor-pointer text-red-600 top-1/2 -translate-y-1/2 right-1 p-1",
-                                onAdd && "right-8",
+                                "cursor-pointer text-red-600  p-1",
+                                // onAdd && "right-8",
                             )}
                         >
                             <X

@@ -29,7 +29,7 @@ export default function HeaderLinks({
         () =>
             items.map((link) => {
                 const key = getLinkKey(router, link as any)
-                const active = isActive(link as any, location) // ❗ faqat tabs-aware
+                const active = isActive(link as any, location) 
                 return { link, key, active }
             }),
         [items, router, location, isActive]

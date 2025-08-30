@@ -35,9 +35,12 @@ const CreateDepartment = ({ item }: Props) => {
         queryClinet.refetchQueries({
             queryKey: [`${pipelineUrl}/${id}`],
         })
+        queryClinet.refetchQueries({
+            queryKey: [pipelineUrl],
+        })
         navigate({
             search: search,
-            to: "/leads/$id",
+            to: "/leads/varonka/$id",
             params: {
                 id: resp.id,
             },

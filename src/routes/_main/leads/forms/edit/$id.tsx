@@ -9,7 +9,7 @@ export const Route = createFileRoute("/_main/leads/forms/edit/$id")({
         const { data } = useGet<FormConfig>(`leads/forms/${id}`)
 
         return (
-            <PageLayout>
+            <PageLayout navOnHeader>
                 {data ?
                     <CreateAppForm defaultValues={data} />
                 :   ""}

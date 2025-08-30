@@ -5,40 +5,41 @@ import { pipelineUrl } from "@/pages/leads/lead-deal-selector"
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router"
 import { useEffect, useRef } from "react"
 
-export const Route = createFileRoute("/_main/leads/$id/")({
+export const Route = createFileRoute("/_main/leads/varonka/$id/")({
     component: RouteComponent,
 })
 
 function RouteComponent() {
     const navigate = useNavigate()
-    const params = useParams({ from: "/_main/leads/$id/" })
+    const params = useParams({ from: "/_main/leads/varonka/$id/" })
     const { data } = useGet<{
         background: string
     }>(`${pipelineUrl}/${params?.id}`, {
         options: { enabled: !!params?.id },
     })
 
-
-    console.log(data);
-    
-    const { data: dataDepartment, isSuccess } =
-        useGet<{ id: number; name: string }[]>(pipelineUrl)
+    const {
+        data: dataDepartment,
+        isSuccess,
+        isFetched,
+    } = useGet<{ id: number; name: string }[]>(pipelineUrl)
 
     const hasLeads = isSuccess && dataDepartment?.[0]?.id
 
     const hasNavigated = useRef(false)
 
     useEffect(() => {
-        if (!hasLeads && !hasNavigated.current) {
+        if (isFetched && !hasLeads && !hasNavigated.current) {
             hasNavigated.current = true
             navigate({
-                to: "/leads",
+                to: "/leads/varonka",
             })
         }
-    }, [hasLeads, navigate, dataDepartment])
+    }, [hasLeads, navigate, isFetched])
 
     return (
         <PageLayout
+            navOnHeader
             className={
                 "bg-cover bg-center overflow-x-auto !overflow-y-hidden px-1 sm:px-4 "
             }
