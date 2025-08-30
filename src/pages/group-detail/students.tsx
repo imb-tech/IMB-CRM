@@ -88,7 +88,7 @@ export default function GroupStudents() {
             >
                 {/* current type error */}
                 <PaymentUpdate
-                    student_id={store?.student}
+                    student_id={String(store?.student)}
                     current={{ group_data: { id: store?.id ?? -1, name: "" } } as GroupStudentPayments}
                     onSuccessPayment={refetchOrg}
                 />

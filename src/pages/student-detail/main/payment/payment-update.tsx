@@ -22,12 +22,12 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
 type Props = {
-    current: GroupStudentPayments | null
-    student_id?: number
+    student_id?: string
     onSuccessPayment?: () => void
+    current?: GroupStudentPayments | null
 }
 
-function PaymentUpdate({ current, student_id, onSuccessPayment }: Props) {
+function PaymentUpdate({ student_id, onSuccessPayment, current }: Props) {
     const queryClient = useQueryClient()
     const { id } = useParams({ strict: false }) as { id: string }
     const { active_branch } = useMe()
@@ -41,7 +41,11 @@ function PaymentUpdate({ current, student_id, onSuccessPayment }: Props) {
     const { data: groupOptions = [] } = useGet<Group[]>(
         OPTION_GROUPS_STUDENTS,
         {
-            params: { search, branch: active_branch, student: student_id ?? id },
+            params: {
+                search,
+                branch: active_branch,
+                student: student_id ?? id,
+            },
         },
     )
 
@@ -82,8 +86,9 @@ function PaymentUpdate({ current, student_id, onSuccessPayment }: Props) {
         () =>
             groupOptions.map((item) => ({
                 id: item.id,
-                name: `${item.name} - ${item.teacher_name} - ${item.is_active ? "Aktiv" : "O'chirilgan"
-                    }`,
+                name: `${item.name} - ${item.teacher_name} - ${
+                    item.is_active ? "Aktiv" : "O'chirilgan"
+                }`,
             })),
         [groupOptions],
     )
@@ -95,7 +100,7 @@ function PaymentUpdate({ current, student_id, onSuccessPayment }: Props) {
                 amount: current?.condition
                     ? -Math.abs(values.amount)
                     : Math.abs(values.amount),
-                from_date: values.from_date
+                from_date: values.from_date,
             }
 
             if (current?.id) {

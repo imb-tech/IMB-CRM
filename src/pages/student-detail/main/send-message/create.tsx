@@ -1,20 +1,16 @@
 import { useModal } from "@/hooks/useModal"
-import { Path, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { usePost } from "@/hooks/usePost"
-import { AxiosError } from "axios"
 import { SMS_LIST } from "@/constants/api-endpoints"
 import { useCallback } from "react"
-import { useParams } from "@tanstack/react-router"
 import { useQueryClient } from "@tanstack/react-query"
 import FormTextarea from "@/components/form/textarea"
 import { toast } from "sonner"
 import { handleFormError } from "@/lib/show-form-errors"
 
-export default function StudentMessageCreate() {
+export default function StudentMessageCreate({ id }: { id: string }) {
     const queryClient = useQueryClient()
-
-    const { id } = useParams({ from: "/_main/students/$id/_main/send-message" })
 
     const { closeModal } = useModal("message-add")
     const form = useForm<SendMessage>()
@@ -26,9 +22,10 @@ export default function StudentMessageCreate() {
         queryClient.invalidateQueries({ queryKey: [SMS_LIST] })
     }, [closeModal, form, queryClient])
 
-
-
-    const { mutate, isPending } = usePost({ onSuccess, onError: (err) => handleFormError(err, form), })
+    const { mutate, isPending } = usePost({
+        onSuccess,
+        onError: (err) => handleFormError(err, form),
+    })
 
     const handleSubmit = useCallback(
         (values: SendMessage) => {

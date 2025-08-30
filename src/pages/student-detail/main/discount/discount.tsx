@@ -5,18 +5,21 @@ import { GROUP_STUDENTS_DISCOUNTS } from "@/constants/api-endpoints"
 import { Badge } from "@/components/ui/badge"
 import { useParams, useSearch } from "@tanstack/react-router"
 import DeleteModal from "@/components/custom/delete-modal"
-import Modal from "@/components/custom/modal"
 import { useModal } from "@/hooks/useModal"
-import { useCallback, useState } from "react"
+import { useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
-import DiscountStudentCreate from "./create"
 import { formatMoney } from "@/lib/format-money"
+import { useStore } from "@/hooks/use-store"
+import Modal from "@/components/custom/modal"
+import DiscountStudentCreate from "./create"
 
 const StudentDiscountMain = () => {
     const { id } = useParams({ from: "/_main/students/$id/_main/discount" })
     const search = useSearch({ from: "/_main/students/$id/_main/discount" })
-    const [current, setCurrent] = useState<DiscountStudent | null>(null)
+    const { store, setStore, remove } = useStore<DiscountStudent | null>(
+        "discount",
+    )
     const { openModal } = useModal("discount-add")
     const { openModal: openDelete } = useModal("discount-delete")
 
@@ -28,23 +31,23 @@ const StudentDiscountMain = () => {
     )
 
     const handleAddDiscount = useCallback(() => {
-        setCurrent(null)
+        remove()
         openModal()
     }, [openModal])
 
     const handleUpdate = useCallback(
         (item: DiscountStudent) => {
             if (item?.id) {
-                setCurrent(item)
+                setStore(item)
                 openModal()
             }
         },
-        [openModal, setCurrent],
+        [openModal, setStore],
     )
 
     const handleDelete = useCallback(
         (item: DiscountStudent) => {
-            setCurrent(item)
+            setStore(item)
             openDelete()
         },
         [openDelete],
@@ -58,7 +61,9 @@ const StudentDiscountMain = () => {
                     <h1 className="text-xl font-medium ">
                         {"Chegirmalar ro'yxati"}
                     </h1>
-                    <Badge className="text-sm">{formatMoney(data?.count)}</Badge>
+                    <Badge className="text-sm">
+                        {formatMoney(data?.count)}
+                    </Badge>
                 </div>
                 <Button
                     type="button"
@@ -78,18 +83,19 @@ const StudentDiscountMain = () => {
                 numeration
                 paginationProps={{ totalPages: data?.total_pages }}
             />
-            <DeleteModal
-                modalKey="discount-delete"
-                id={current?.id}
-                path={GROUP_STUDENTS_DISCOUNTS}
-            />
 
             <Modal
                 modalKey="discount-add"
-                title={`Chegirma ${current?.id ? "tahrirlash" : "qo'shish"}`}
+                title={`Chegirma ${store?.id ? "tahrirlash" : "qo'shish"}`}
             >
-                <DiscountStudentCreate current={current} />
+                <DiscountStudentCreate id={id} />
             </Modal>
+
+            <DeleteModal
+                modalKey="discount-delete"
+                id={store?.id}
+                path={GROUP_STUDENTS_DISCOUNTS}
+            />
         </div>
     )
 }

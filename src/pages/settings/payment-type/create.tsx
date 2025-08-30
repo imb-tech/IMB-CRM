@@ -1,6 +1,7 @@
 import FormInput from "@/components/form/input"
 import { Button } from "@/components/ui/button"
 import { PAYMENT_TYPE } from "@/constants/api-endpoints"
+import { useStore } from "@/hooks/use-store"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
 import { usePost } from "@/hooks/usePost"
@@ -8,11 +9,8 @@ import { useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
-type Props = {
-    item: PaymentType | null
-}
-
-const PaymentTypeCreate = ({ item }: Props) => {
+const PaymentTypeCreate = () => {
+    const { store: item } = useStore<PaymentType | null>("payment-type")
     const queryClient = useQueryClient()
     const { closeModal } = useModal(`${PAYMENT_TYPE}-add`)
     const form = useForm<PaymentType>({ defaultValues: item || undefined })

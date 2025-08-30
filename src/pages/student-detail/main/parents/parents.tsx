@@ -5,18 +5,23 @@ import { STUDENT_PARENTS } from "@/constants/api-endpoints"
 import { Badge } from "@/components/ui/badge"
 import { useParams, useSearch } from "@tanstack/react-router"
 import DeleteModal from "@/components/custom/delete-modal"
-import Modal from "@/components/custom/modal"
 import { useModal } from "@/hooks/useModal"
-import { useCallback, useState } from "react"
+import { useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
-import StudentParentsCreate from "./create"
 import { formatMoney } from "@/lib/format-money"
+import { useStore } from "@/hooks/use-store"
+import StudentParentsCreate from "./create"
+import Modal from "@/components/custom/modal"
 
 const StudentParentsMain = () => {
     const { id } = useParams({ from: "/_main/students/$id/_main/parents" })
     const search = useSearch({ from: "/_main/students/$id/_main/parents" })
-    const [current, setCurrent] = useState<StudentParents | null>(null)
+    const {
+        store: parent,
+        remove,
+        setStore,
+    } = useStore<StudentParents | null>("parent")
     const { openModal } = useModal("parents-add")
     const { openModal: openDelete } = useModal("parents-delete")
 
@@ -29,23 +34,23 @@ const StudentParentsMain = () => {
     )
 
     const handleAddDiscount = useCallback(() => {
-        setCurrent(null)
+        remove()
         openModal()
     }, [openModal])
 
     const handleUpdate = useCallback(
         (item: StudentParents) => {
             if (item?.id) {
-                setCurrent(item)
+                setStore(item)
                 openModal()
             }
         },
-        [openModal, setCurrent],
+        [openModal, setStore],
     )
 
     const handleDelete = useCallback(
         (item: StudentParents) => {
-            setCurrent(item)
+            setStore(item)
             openDelete()
         },
         [openDelete],
@@ -58,7 +63,9 @@ const StudentParentsMain = () => {
             <div className="flex  mb-3 flex-row items-center gap-3 justify-between">
                 <div className="flex items-center gap-3">
                     <h1 className="text-xl font-medium ">{"Ota-Ona"}</h1>
-                    <Badge className="text-sm">{formatMoney(data?.count)}</Badge>
+                    <Badge className="text-sm">
+                        {formatMoney(data?.count)}
+                    </Badge>
                 </div>
                 <Button
                     type="button"
@@ -78,20 +85,20 @@ const StudentParentsMain = () => {
                 numeration
                 paginationProps={{ totalPages: data?.total_pages }}
             />
-            <DeleteModal
-                modalKey="parents-delete"
-                id={current?.id}
-                path={STUDENT_PARENTS}
-            />
 
+            {/* Prents create modal */}
             <Modal
                 modalKey="parents-add"
-                title={`Ma'sul shaxs ${
-                    current?.id ? "tahrirlash" : "qo'shish"
-                }`}
+                title={`Ma'sul shaxs ${parent?.id ? "tahrirlash" : "qo'shish"}`}
             >
-                <StudentParentsCreate current={current} />
+                <StudentParentsCreate />
             </Modal>
+
+            <DeleteModal
+                modalKey="parents-delete"
+                id={parent?.id}
+                path={STUDENT_PARENTS}
+            />
         </div>
     )
 }
