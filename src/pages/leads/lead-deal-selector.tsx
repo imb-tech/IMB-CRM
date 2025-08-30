@@ -47,7 +47,7 @@ export default function LeadDealSelector() {
     return (
         <div className="flex items-center gap-3 relative ">
             <Button
-                className="min-w-32 "
+                className="min-w-32 justify-between"
                 variant={"secondary"}
                 onClick={handleOpen}
             >
@@ -81,7 +81,9 @@ export default function LeadDealSelector() {
                                     key={itm.id}
                                     onClick={() => {
                                         navigate({
-                                            to: id ? "/leads/varonka/$id" : pathname,
+                                            to: id
+                                                ? "/leads/varonka/$id"
+                                                : pathname,
                                             params: { id: itm.id },
                                             search: {
                                                 pipeline: Number(itm.id),
@@ -94,7 +96,7 @@ export default function LeadDealSelector() {
                                     }
                                     onMouseLeave={handleMouseLeave}
                                     className={cn(
-                                        "w-full rounded-md hover:bg-primary/10 py-2 px-3 font-light flex items-center justify-between  text-[16px]",
+                                        "w-full cursor-pointer rounded-md hover:bg-primary/10 hover:text-primary py-2 px-3 font-light flex items-center justify-between  text-[16px]",
                                         isActive &&
                                             "bg-primary/10 text-primary",
                                     )}
@@ -147,7 +149,7 @@ export default function LeadDealSelector() {
                 </div>
 
                 <div
-                    className="flex items-center text-sm px-3 bg-secondary py-1 rounded-md cursor-pointer m-2"
+                    className="flex items-center text-sm px-3 bg-secondary hover:bg-primary/10 hover:text-primary py-2 rounded-md cursor-pointer m-2"
                     onClick={() => {
                         setItem(null)
                         handleOpen()
@@ -155,9 +157,7 @@ export default function LeadDealSelector() {
                     }}
                 >
                     <p className="flex-1">{"Yangi yaratish"}</p>
-                    <Button size={"sm"} variant="secondary" className="px-2">
-                        <Plus />
-                    </Button>
+                    <Plus />
                 </div>
             </div>
 

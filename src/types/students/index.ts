@@ -70,6 +70,31 @@ type GroupStudent = {
     allowed_statuses: number[]
 }
 
+type GroupStudentTestStudents = {
+    id: number
+    student_data: {
+        id: number
+        full_name: string
+        phone: string
+    }
+    group_data: {
+        id: number
+        name: string
+        start_date: string
+        end_date: string
+        teacher: string
+        course: string
+        branch: string
+    }
+    start_date: string
+    activated_date: string
+    status: number
+    lead: number
+}
+
+
+
+
 type GroupStudentPayments = {
     id: number
     author: string
