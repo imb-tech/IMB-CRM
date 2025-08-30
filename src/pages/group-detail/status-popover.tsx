@@ -11,27 +11,37 @@ import { ChevronDown } from "lucide-react"
 import { useQueryClient } from "@tanstack/react-query"
 import { GROUP_STUDENTS } from "@/constants/api-endpoints"
 import { usePost } from "@/hooks/usePost"
+import { usePrompt } from "@/hooks/usePrompt"
 
 type Props = {
     allowed_statuses: number[]
     status: number
     student: number
+    date?: string
 }
 
 export function StatusPopover({
     status,
     allowed_statuses = [],
     student,
+    date
 }: Props) {
     const qC = useQueryClient()
     const { mutate } = usePost()
+    const prompt = usePrompt()
 
-    function handleChange(d: number) {
+    async function handleChange(d: number) {
+        let activated_date = undefined
+        if (d === 1) {
+            activated_date = await prompt("Aktivlashtirish sanasi", date)
+        }
+
         mutate(
             "platform/group-students/change-status",
             {
                 status: d,
                 group_student: student,
+                activated_date
             },
             {
                 onSuccess() {
@@ -51,10 +61,10 @@ export function StatusPopover({
                             status == 3
                                 ? "bg-red-500/10 text-red-500"
                                 : status == 0
-                                ? "bg-yellow-500/10 text-yellow-500 "
-                                : status == 2
-                                ? "bg-sky-500/10  text-sky-500"
-                                : "bg-green-500/10 text-green-500",
+                                    ? "bg-yellow-500/10 text-yellow-500 "
+                                    : status == 2
+                                        ? "bg-sky-500/10  text-sky-500"
+                                        : "bg-green-500/10 text-green-500",
                             "w-[80px]",
                         )}
                     >
