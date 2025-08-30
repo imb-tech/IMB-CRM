@@ -17,6 +17,7 @@ import ParamSwtich from "@/components/as-params/switch"
 import { useQueryClient } from "@tanstack/react-query"
 import PaymentUpdate from "../student-detail/main/payment/payment-update"
 import ExportStudent from "./export-student"
+import apiGroupStudents from "@/services/hooks/use-group-students"
 
 export default function GroupStudents() {
     const { id: group } = useParams({
@@ -28,13 +29,7 @@ export default function GroupStudents() {
 
     const queryClient = useQueryClient()
 
-    const { data, refetch: refetchOrg } = useGet<GroupStudent[]>(
-        GROUP_STUDENTS,
-        {
-            params: { group, ...search },
-            options: { queryKey: [GROUP_STUDENTS, search], refetchOnMount: true },
-        },
-    )
+    const { data, refetch: refetchOrg } = apiGroupStudents(group)
 
     function invalidateQueries() {
         queryClient.invalidateQueries({
