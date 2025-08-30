@@ -7,20 +7,23 @@ import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import Modal from "@/components/custom/modal"
 import { useModal } from "@/hooks/useModal"
-import { useState, useCallback } from "react"
+import { useCallback } from "react"
 
 import { useParams } from "@tanstack/react-router"
 import DeleteModal from "@/components/custom/delete-modal"
 import UpdateStudentDate from "./update-date"
-import AddGroup from "./add-group"
 import { formatMoney } from "@/lib/format-money"
+import { useStore } from "@/hooks/use-store"
+import AddGroup from "./add-group"
 
 function StudentGroupMain() {
     const { id } = useParams({ from: "/_main/students/$id/_main/groups" })
     const { openModal: openDelete } = useModal("delete-student-group")
     const { openModal } = useModal("student-groups-add")
     const { openModal: openModalUpdate } = useModal("student-groups-update")
-    const [current, setCurrent] = useState<Student>()
+    const { store: current, setStore } = useStore<Student | null>(
+        "student-groups-add",
+    )
 
     const { data: studentGroups, isLoading } = useGet<ListResp<Student>>(
         STUDENT_GROUP,
@@ -32,7 +35,7 @@ function StudentGroupMain() {
 
     const handleDelete = useCallback(
         (item: Student) => {
-            setCurrent(item)
+            setStore(item)
             openDelete()
         },
         [openDelete],
@@ -40,7 +43,6 @@ function StudentGroupMain() {
 
     const columns = useColumns({
         openModal: openModalUpdate,
-        setCurrent,
     })
 
     return (
@@ -48,7 +50,9 @@ function StudentGroupMain() {
             <div className="flex mb-3 flex-row items-center gap-3 justify-between">
                 <div className="flex items-center gap-3">
                     <h1 className="text-xl font-medium">Guruhlar ro'yxati</h1>
-                    <Badge className="text-sm">{formatMoney(studentGroups?.count)}</Badge>
+                    <Badge className="text-sm">
+                        {formatMoney(studentGroups?.count)}
+                    </Badge>
                 </div>
                 <Button
                     type="button"
@@ -69,18 +73,17 @@ function StudentGroupMain() {
                 viewAll
             />
 
-            {/* Add Group Modal */}
-            <Modal title="Guruhga qo'shish" modalKey="student-groups-add">
-                <AddGroup />
-            </Modal>
-
             {/* Update Group Modal */}
             <Modal
                 modalKey="student-groups-update"
                 title="Tahrirlash"
                 size="max-w-md"
             >
-                <UpdateStudentDate current={current} />
+                <UpdateStudentDate />
+            </Modal>
+            {/* Add Group modal */}
+            <Modal title="Guruhga qo'shish" modalKey="student-groups-add">
+                <AddGroup id={id} />
             </Modal>
 
             {/* Delete Group Modal */}

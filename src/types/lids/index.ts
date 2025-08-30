@@ -32,6 +32,8 @@ type Lead = {
     condition: LeadCondition
     pipeline_id: number
     total_count: number
+    updated_at: string
+    reason?: string
 }
 
 type Task = {

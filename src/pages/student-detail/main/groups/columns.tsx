@@ -7,15 +7,11 @@ import { StatusPopoverStudent } from "./status-update"
 import { Pencil } from "lucide-react"
 import { formatMoney } from "@/lib/format-money"
 import { cn } from "@/lib/utils"
+import { useStore } from "@/hooks/use-store"
 
-export const useColumns = ({
-    openModal,
-    setCurrent,
-}: {
-    setCurrent: (item: Student) => void
-    openModal: () => void
-}) => {
-    const navigate = useNavigate() 
+export const useColumns = ({ openModal }: { openModal: () => void }) => {
+    const { setStore } = useStore<Student | null>("student-groups-add")
+    const navigate = useNavigate()
     return useMemo<ColumnDef<Student>[]>(
         () => [
             {
@@ -29,7 +25,7 @@ export const useColumns = ({
                                 params: { id: String(row.original.id) },
                             })
                         }
-                        className="hover:text-primary cursor-pointer hover:underline" 
+                        className="hover:text-primary cursor-pointer hover:underline"
                     >
                         {row.original?.group_data?.name}
                     </span>
@@ -112,7 +108,7 @@ export const useColumns = ({
                         <div
                             onClick={() => {
                                 openModal()
-                                setCurrent(row.original)
+                                setStore(row.original)
                             }}
                             className="flex items-center gap-3 cursor-pointer hover:text-primary"
                         >

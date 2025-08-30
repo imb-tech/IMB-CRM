@@ -1,4 +1,4 @@
-import { DragDropContext,  Droppable } from "react-beautiful-dnd"
+import { DragDropContext, Droppable } from "react-beautiful-dnd"
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import LeadsColumn from "./leads-column"
@@ -18,10 +18,15 @@ import { usePost } from "@/hooks/usePost"
 import { generateIndexedData, moveBetweenArrays, moveItem } from "../utils"
 import useLeadStatuses from "../use-lead-statuses"
 import DeleteLeadModal from "./delete-lead-modal"
- 
+import AddGroup from "@/pages/student-detail/main/groups/add-group"
+import StudentMessageCreate from "@/pages/student-detail/main/send-message/create"
+import StudentNotesCreate from "@/pages/student-detail/main/notes/create"
+import LeadsUpdateDepartment from "./leads-update-department"
+
 const LeadsDnd = () => {
     const { id } = useParams({ strict: false })
     const { store, remove } = useStore<LeadStatus>("status-data")
+    const { store: student } = useStore<Lead>("lead-data")
     const { openModal } = useModal("create-status")
     const { openModal: confirmDelete } = useModal("confirm-delete")
 
@@ -47,7 +52,7 @@ const LeadsDnd = () => {
 
     const { data: users } = useGet<LeadFields[]>("leads/crud", {
         params: { condition: "active", status__pipeline: id },
-    }) 
+    })
 
     const { mutate } = usePatch()
     const { mutate: orderMutation } = usePost()
@@ -166,8 +171,6 @@ const LeadsDnd = () => {
         return ord ? ord + 1 : 0
     }, [data])
 
-
-
     return (
         <div className="py-3 flex items-start gap-3 w-full h-full relative">
             <DragDropContext onDragEnd={onDragEnd}>
@@ -235,7 +238,29 @@ const LeadsDnd = () => {
                     creatingOrder={creatingOrder}
                 />
             </Modal>
- 
+
+            <Modal title="Guruhga qo'shish" modalKey="student-groups-add">
+                <AddGroup url="leads/to-group" id={String(student?.id)} leads={true} />
+            </Modal>
+
+            {/* Send message create modal */}
+            <Modal modalKey="message-add" title={`Xabar yuborish`}>
+                <StudentMessageCreate id={String(student?.id)} />
+            </Modal>
+
+            <Modal modalKey="update-department" title={`Bo'lim o'zgartirish`}>
+                <LeadsUpdateDepartment id={String(student?.id)} />
+            </Modal>
+
+            <Modal modalKey="notes-add" title={`Eslatma  qo'shish`}>
+                <StudentNotesCreate
+                    url="leads/notes"
+                    hasPayload={true}
+                    id={String(student?.id)}
+                    refetchUrl={`leads/log/${student?.id}`}
+                />
+            </Modal>
+
             <DeleteModal
                 modalKey="delete-status"
                 name={store?.name}

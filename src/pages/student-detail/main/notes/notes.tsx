@@ -1,31 +1,22 @@
-import { useCallback, useState } from "react"
+import { useCallback } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-    Clock,
-    User,
-    Trash2,
-    Check,
-    X,
-    Plus,
-    Pen,
-    AlarmClock,
-} from "lucide-react"
-import { Textarea } from "@/components/ui/textarea"
+import { Clock, User, Trash2, Plus, Pen, AlarmClock } from "lucide-react"
 import { useGet } from "@/hooks/useGet"
 import { STUDENT_NOTES } from "@/constants/api-endpoints"
 import { format } from "date-fns"
 import { useParams, useSearch } from "@tanstack/react-router"
 import { useModal } from "@/hooks/useModal"
 import DeleteModal from "@/components/custom/delete-modal"
-import StudentNotesCreate from "./create"
-import Modal from "@/components/custom/modal"
 import { formatMoney } from "@/lib/format-money"
+import { useStore } from "@/hooks/use-store"
+import Modal from "@/components/custom/modal"
+import StudentNotesCreate from "./create"
 
 export default function StudentNotesMain() {
     const { id } = useParams({ from: "/_main/students/$id/_main/notes" })
     const search = useSearch({ from: "/_main/students/$id/_main/notes" })
-    const [current, setCurrent] = useState<Notes | null>(null)
+    const { store: current, setStore, remove } = useStore<Notes | null>("notes")
     const { openModal } = useModal("notes-add")
     const { openModal: openDelete } = useModal("notes-delete")
 
@@ -35,23 +26,23 @@ export default function StudentNotesMain() {
     })
 
     const handleAddNotes = useCallback(() => {
-        setCurrent(null)
+        remove()
         openModal()
     }, [openModal])
 
     const handleUpdate = useCallback(
         (item: Notes) => {
             if (item?.id) {
-                setCurrent(item)
+                setStore(item)
                 openModal()
             }
         },
-        [openModal, setCurrent],
+        [openModal, setStore],
     )
 
     const handleDelete = useCallback(
         (item: Notes) => {
-            setCurrent(item)
+            setStore(item)
             openDelete()
         },
         [openDelete],
@@ -149,18 +140,18 @@ export default function StudentNotesMain() {
                 </div>
             )}
 
+            <Modal
+                modalKey="notes-add"
+                title={`Eslatma  ${current?.id ? "tahrirlash" : "qo'shish"}`}
+            >
+                <StudentNotesCreate id={id} />
+            </Modal>
+
             <DeleteModal
                 modalKey="notes-delete"
                 id={current?.id}
                 path={STUDENT_NOTES}
             />
-
-            <Modal
-                modalKey="notes-add"
-                title={`Eslatma  ${current?.id ? "tahrirlash" : "qo'shish"}`}
-            >
-                <StudentNotesCreate id={id} current={current} />
-            </Modal>
         </div>
     )
 }

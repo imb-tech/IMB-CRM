@@ -1,6 +1,7 @@
 import FormInput from "@/components/form/input"
 import { Button } from "@/components/ui/button"
 import { ROLE } from "@/constants/api-endpoints"
+import { useStore } from "@/hooks/use-store"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
 import { usePost } from "@/hooks/usePost"
@@ -8,11 +9,9 @@ import { useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
-type Props = {
-    item: Role | null
-}
+const RoleCreate = () => {
+    const { store: item } = useStore<Role | null>("roles")
 
-const RoleCreate = ({ item }: Props) => {
     const queryClient = useQueryClient()
     const { closeModal } = useModal(`${ROLE}-add`)
     const form = useForm<Role>({ defaultValues: item || undefined })

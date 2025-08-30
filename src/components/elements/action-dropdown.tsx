@@ -19,7 +19,7 @@ type Props = {
     className?: ClassNameValue
     options: Action[]
 }
-
+ 
 export const ACTIONS: Record<
     typeAction,
     { label: string; icon: typeof Pencil, className?: string }

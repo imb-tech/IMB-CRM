@@ -25,12 +25,10 @@ import { FormCombobox } from "@/components/form/combobox"
 import { useEffect, useState } from "react"
 import { useGet } from "@/hooks/useGet"
 import { format } from "date-fns"
+import { useStore } from "@/hooks/use-store"
 
-type Props = {
-    item: Student | null
-}
-
-const StudentCreate = ({ item }: Props) => {
+const StudentCreate = () => {
+    const { store: item } = useStore<Student | null>("student")
     const queryClient = useQueryClient()
     const { closeModal } = useModal(`${STUDENT}-add`)
     const [search, setSearch] = useState<string>("")

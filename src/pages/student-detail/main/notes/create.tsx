@@ -1,15 +1,15 @@
 import { useModal } from "@/hooks/useModal"
-import { Path, useForm } from "react-hook-form"
+import {  useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { usePost } from "@/hooks/usePost"
-import { AxiosError } from "axios"
 import { STUDENT_NOTES } from "@/constants/api-endpoints"
 import { useCallback } from "react"
-import { useParams } from "@tanstack/react-router"
 import { useQueryClient } from "@tanstack/react-query"
 import FormTextarea from "@/components/form/textarea"
 import { toast } from "sonner"
 import { usePatch } from "@/hooks/usePatch"
+import { useStore } from "@/hooks/use-store"
+import { handleFormError } from "@/lib/show-form-errors"
 
 // const add5Hours = (dateString: string) => {
 //     const date = new Date(dateString)
@@ -17,57 +17,54 @@ import { usePatch } from "@/hooks/usePatch"
 //     return date
 // }
 
-export default function StudentNotesCreate({
-    current,
-    id,
-}: {
-    current: Notes | null
+type Props = {
     id: string
-}) {
+    url?: string
+    refetchUrl?: string
+    hasPayload?: boolean
+}
+
+export default function StudentNotesCreate({
+    id,
+    hasPayload = false,
+    url = STUDENT_NOTES,
+    refetchUrl = STUDENT_NOTES,
+}: Props) {
+    const { store: current } = useStore<Notes | null>("notes")
     const queryClient = useQueryClient()
 
     const { closeModal } = useModal("notes-add")
 
     const form = useForm<Notes>({
-        defaultValues: {
-            content: current?.content || "",
-            // remind_at: current?.remind_at
-            //     ? add5Hours(current.remind_at.toString())
-            //     : undefined,
-            // time: current?.remind_at
-            //     ? add5Hours(current.remind_at.toString())
-            //           .toISOString()
-            //           .substring(11, 16)
-            //     : "",
-        },
+        defaultValues: hasPayload
+            ? undefined
+            : {
+                  content: current?.content || "",
+                  // remind_at: current?.remind_at
+                  //     ? add5Hours(current.remind_at.toString())
+                  //     : undefined,
+                  // time: current?.remind_at
+                  //     ? add5Hours(current.remind_at.toString())
+                  //           .toISOString()
+                  //           .substring(11, 16)
+                  //     : "",
+              },
     })
 
     const onSuccess = useCallback(() => {
         toast.success("Muvaffaqiyatli qo'shildi")
         closeModal()
         form.reset()
-        queryClient.invalidateQueries({ queryKey: [STUDENT_NOTES] })
+        queryClient.invalidateQueries({ queryKey: [refetchUrl] })
     }, [closeModal, form, queryClient])
-
-    const onError = useCallback(
-        (errors: AxiosError) => {
-            for (const [k, v] of Object.entries(errors.response?.data ?? {})) {
-                form.setError(k as Path<Notes>, {
-                    type: "validate",
-                    message: v,
-                })
-            }
-        },
-        [form],
-    )
 
     const { mutate: mutatePost, isPending: isPendingPost } = usePost({
         onSuccess,
-        onError,
+        onError: (err) => handleFormError(err, form),
     })
     const { mutate: mutatePatch, isPending: isPendingPatch } = usePatch({
         onSuccess,
-        onError,
+        onError: (err) => handleFormError(err, form),
     })
 
     const handleSubmit = useCallback(
@@ -82,11 +79,15 @@ export default function StudentNotesCreate({
                 user: id,
                 // remind_at: formattedDate,
             }
+            const payloadLeads = {
+                note: values.content,
+                lead: id,
+            }
 
             if (current?.id) {
-                mutatePatch(`${STUDENT_NOTES}/${current?.id}`, payload)
+                mutatePatch(`${url}/${current?.id}`, payload)
             } else {
-                mutatePost(STUDENT_NOTES, payload)
+                mutatePost(url, hasPayload ? payloadLeads : payload)
             }
         },
         [mutatePatch, mutatePost, id],

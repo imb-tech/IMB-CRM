@@ -5,15 +5,13 @@ import SectionHeader from "@/components/elements/section-header"
 import { useGet } from "@/hooks/useGet"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
 import { AttendanceSelect } from "./attendance-select"
-import { ParamCombobox } from "@/components/as-params/combobox"
 import AttendanceFooter from "./attendance-footer"
-import { formatDate } from "date-fns"
 import { formatDateToUz } from "@/lib/utils"
 import ParamSwtich from "@/components/as-params/switch"
-import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight } from "lucide-react"
 import useQueryParams from "@/hooks/use-query-params"
-import Select from "@/components/ui/select"
+import MonthNavigator from "@/components/as-params/month-navigator"
+import { apiGroupDays, useGroupMonths } from "@/services/hooks/use-group-students"
+import { getGroupSector, groupDefaultDate } from "./utils"
 
 export default function GroupAttendance() {
     const { id } = useParams({
@@ -24,9 +22,7 @@ export default function GroupAttendance() {
         strict: false,
     })
 
-    const { data: options } = useGet<string[]>(
-        "platform/groups/months-to-teach/" + id,
-    )
+    const { data: options } = useGroupMonths(id)
 
     const months = useMemo(
         () =>
@@ -49,60 +45,10 @@ export default function GroupAttendance() {
             },
         },
     )
-    const currDate = formatDate(new Date().setDate(1), "yyyy-MM-dd")
 
-    const defaultOpt = useMemo(
-        () =>
-            months?.length ?
-                (months?.find((usr) => usr.value === currDate) ?? months[0])
-                : null,
-        [months],
-    )
-
-    const { data: days } = useGet<string[]>(
-        "platform/groups/days-to-teach/" + id + "/" + date,
-        {
-            options: {
-                enabled: !!date,
-            },
-        },
-    )
-
-    const sector = useMemo(
-        () =>
-            days?.map((d) => {
-                const dt = new Date(d)
-                return {
-                    date: dt,
-                    dayName: dt.toString().slice(0, 3),
-                    formatted_date: d,
-                    day: dt.getDate(),
-                }
-            }) ?? [],
-        [days],
-    )
-
-    const currentIndex = useMemo(() => {
-        return months.findIndex((m) => m.value === date)
-    }, [months, date])
-
-    // Prev bosilganda
-    const handlePrev = () => {
-        if (currentIndex > 0) {
-            updateParams({
-                date: months[currentIndex - 1].value,
-            })
-        }
-    }
-
-    // Next bosilganda
-    const handleNext = () => {
-        if (currentIndex < months.length - 1) {
-            updateParams({
-                date: months[currentIndex + 1].value,
-            })
-        }
-    }
+    const defaultOpt = groupDefaultDate(months)
+    const { data: days } = apiGroupDays(id, date)
+    const sector = getGroupSector(days)
 
     useEffect(() => {
         if (defaultOpt?.value || !!date) {
@@ -124,33 +70,14 @@ export default function GroupAttendance() {
                             reverse
                         />
                         {date && (
-                            <div className="flex items-center gap-1">
-                                <Button
-                                    variant={currentIndex <= 0 ? "secondary" : undefined}
-                                    className="min-w-10 h-10 p-0 select-none"
-                                    disabled={currentIndex <= 0}
-                                    onClick={handlePrev}
-                                >
-                                    <ChevronLeft size={24} />
-                                </Button>
-                                <Select
-                                    label="Oy bo'yicha"
-                                    options={months}
-                                    value={date}
-                                    setValue={(v) => updateParams({
-                                        date: v.toString()
-                                    })}
-                                    className="min-w-[130px] text-center"
-                                />
-                                <Button
-                                    variant={currentIndex === months.length - 1 ? "secondary" : undefined}
-                                    className="min-w-10 h-10 p-0 select-none"
-                                    disabled={currentIndex === months.length - 1}
-                                    onClick={handleNext}
-                                >
-                                    <ChevronRight size={24} />
-                                </Button>
-                            </div>
+                            <MonthNavigator
+                                months={months}
+                                value={date}
+                                onChange={(v) => updateParams({
+                                    date: v.toString()
+                                })}
+                                className="min-w-[130px] text-center"
+                            />
                         )}
                     </div>
                 }

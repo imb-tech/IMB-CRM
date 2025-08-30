@@ -32,7 +32,7 @@ export const GROUP = "platform/groups"
 export const GROUP_STUDENTS = "platform/group-students"
 export const GROUP_STUDENTS_DISCOUNTS = "platform/group-students/discounts"
 export const GROUP_STUDENTS_PAYMENT = "platform/group-students/payments"
-export const GROUP_STUDENTS_MODULES = "platform/group-students/crud/modules"
+export const GROUP_STUDENTS_MODULES = "platform/group-students/modules"
 
 export const REFRESH_TOKEN = "token/refresh"
 export const INVENTORY_CAR = `/car`

@@ -1,7 +1,15 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { CircleCheckBig, Edit, MoreHorizontal, Trash } from "lucide-react"
+import {
+    Edit,
+    Layers,
+    MessageSquareText,
+    MoreHorizontal,
+    NotebookPen,
+    RefreshCcw,
+    Trash,
+} from "lucide-react"
 
 import {
     DropdownMenu,
@@ -17,14 +25,17 @@ import GetSourceIcon from "../sources/get-source-icon"
 import { useStore } from "@/hooks/use-store"
 import { useModal } from "@/hooks/useModal"
 import axiosInstance from "@/services/axios-instance"
-
+import { format } from "date-fns"
 
 export default function LeadCard(props: Lead & { index: number }) {
-    const { id, name, source_icon, worker_name, get_main_contact, source_name } =
-        props
+    const { id, name, source_icon, worker_name, get_main_contact,updated_at } = props
 
     const { id: sourceId } = useParams({ strict: false })
     const { setStore } = useStore<Lead>("lead-data")
+    const { openModal: openModalGroupAdd } = useModal("student-groups-add")
+    const { openModal: openModalMessageAdd } = useModal("message-add")
+    const { openModal: openModalNotesAdd } = useModal("notes-add")
+    const { openModal: openModalDepartment } = useModal("update-department")
 
     const { setStore: setDelete } = useStore<{
         id: number
@@ -60,16 +71,23 @@ export default function LeadCard(props: Lead & { index: number }) {
                 <CardContent className="p-4">
                     <div className="w-full">
                         <div className="flex items-center justify-between">
-                            <div>
-                                <h3 className="font-medium text-lg text-slate-900 dark:text-slate-100">
-                                    {name}
-                                </h3>
-
-                                <p className="text-slate-500 dark:text-slate-400 text-sm">
-                                    {formatPhoneNumber(get_main_contact)}
-                                </p>
+                            <div className="flex items-center gap-3">
+                                <div>
+                                    <div className="flex items-center gap-2">
+                                        <GetSourceIcon
+                                            icon={source_icon}
+                                            size={16}
+                                            className="bg-transparent"
+                                        />
+                                        <h3 className="font-medium text-lg text-slate-900 dark:text-slate-100">
+                                            {name}
+                                        </h3>
+                                    </div>
+                                    <p className="text-slate-500 dark:text-slate-400 text-sm">
+                                        {formatPhoneNumber(get_main_contact)}
+                                    </p>
+                                </div>
                             </div>
-
                             <div className="flex items-center gap-1">
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
@@ -83,25 +101,71 @@ export default function LeadCard(props: Lead & { index: number }) {
                                         </Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent
-                                        align="end"
-                                        className="w-40"
+                                        align="center"
+                                        className="w-44"
                                     >
                                         <DropdownMenuItem
                                             onClick={(e) => {
                                                 e.stopPropagation()
-                                                setDelete({
-                                                    id,
-                                                    type: "success",
-                                                    name: props.name,
-                                                })
-                                                openDelete()
+                                                if (props?.id) {
+                                                    setStore(props)
+                                                    openModalNotesAdd()
+                                                }
                                             }}
                                         >
-                                            <CircleCheckBig
+                                            <NotebookPen
+                                                size={16}
+                                                className="mr-2 "
+                                            />{" "}
+                                            Eslatma qo'shish
+                                        </DropdownMenuItem>
+
+                                        <DropdownMenuItem
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                if (props?.id) {
+                                                    setStore(props)
+                                                    openModalMessageAdd()
+                                                }
+                                            }}
+                                        >
+                                            <MessageSquareText
+                                                size={16}
+                                                className="mr-2 "
+                                            />{" "}
+                                            SMS yuborish
+                                        </DropdownMenuItem>
+
+                                        <DropdownMenuItem
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                if (props?.id) {
+                                                    setStore(props)
+                                                    openModalDepartment()
+                                                }
+                                            }}
+                                        >
+                                            <RefreshCcw
                                                 size={16}
                                                 className="mr-2"
                                             />{" "}
-                                            {"Muvaffaqiyatli"}
+                                            Boshqa bo'limga
+                                        </DropdownMenuItem>
+
+                                        <DropdownMenuItem
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                if (props?.id) {
+                                                    setStore(props)
+                                                    openModalGroupAdd()
+                                                }
+                                            }}
+                                        >
+                                            <Layers
+                                                size={16}
+                                                className="mr-2"
+                                            />{" "}
+                                            Guruhga qo'shish
                                         </DropdownMenuItem>
 
                                         <DropdownMenuItem
@@ -113,6 +177,7 @@ export default function LeadCard(props: Lead & { index: number }) {
                                             <Edit size={16} className="mr-2" />{" "}
                                             {"Tahrirlash"}
                                         </DropdownMenuItem>
+
                                         <DropdownMenuItem
                                             className="text-red-500"
                                             onClick={(e) => {
@@ -134,14 +199,9 @@ export default function LeadCard(props: Lead & { index: number }) {
                         </div>
 
                         <div className="flex items-center gap-4 mt-4 pt-3 text-xs ">
-                            <div className="flex items-center gap-2">
-                                <GetSourceIcon
-                                    icon={source_icon}
-                                    size={16}
-                                    className="bg-transparent"
-                                />
-                                <span className="uppercase">{source_name}</span>
-                            </div>
+                            <p className=" dark:text-slate-300 text-sm">
+                                {format(updated_at, "yyyy-MM-dd HH:mm")}
+                            </p>
                             <Badge
                                 className={cn(
                                     "ml-auto cursor-pointer transition-colors duration-200 text-xs font-normal bg-emerald-500/10 text-emerald-500 dark:bg-emerald-500/20 dark:text-emerald-400 hover:bg-emerald-500/20",

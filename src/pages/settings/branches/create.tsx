@@ -2,6 +2,7 @@ import FormInput from "@/components/form/input"
 import FormTimeInput from "@/components/form/time-input"
 import { Button } from "@/components/ui/button"
 import { BRANCH } from "@/constants/api-endpoints"
+import { useStore } from "@/hooks/use-store"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
 import { usePost } from "@/hooks/usePost"
@@ -9,23 +10,19 @@ import { useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
-type Props = {
-    item: Branch | null
-}
-
-const BranchesCreate = ({ item }: Props) => {
+const BranchesCreate = () => {
     const queryClient = useQueryClient()
     const { closeModal } = useModal(`${BRANCH}-add`)
+    const { store: item } = useStore<Branch | null>("branch")
 
     const form = useForm<Branch>({
-        defaultValues:
-            item ?
-                {
-                    ...item,
-                    start_time: item?.start_time?.slice(0, 5),
-                    end_time: item?.end_time?.slice(0, 5),
-                }
-            :   undefined,
+        defaultValues: item
+            ? {
+                  ...item,
+                  start_time: item?.start_time?.slice(0, 5),
+                  end_time: item?.end_time?.slice(0, 5),
+              }
+            : undefined,
     })
 
     const { mutate: mutateCreate, isPending: isPendingCreate } = usePost({
