@@ -37,7 +37,7 @@ const CreateDepartment = ({ item }: Props) => {
         })
         navigate({
             search: search,
-            to: "/leads/$id",
+            to: "/leads/varonka/$id",
             params: {
                 id: resp.id,
             },

@@ -5,7 +5,7 @@ type LeadContact = {
     is_main: boolean
 }
 
-type LeadCondition = "new" | "connected" | "loosed" | "deleted" | "success"
+type LeadCondition = "new" | "loosed" | "success"
 
 type Lid = {
     name: string

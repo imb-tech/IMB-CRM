@@ -32,8 +32,8 @@ import { Route as MainFinanceCostImport } from './routes/_main/finance/cost'
 import { Route as MainEmployeesMainImport } from './routes/_main/employees/_main'
 import { Route as MainAttendanceMainImport } from './routes/_main/attendance/_main'
 import { Route as MainSettingsMainIndexImport } from './routes/_main/settings/_main/index'
+import { Route as MainLeadsVaronkaIndexImport } from './routes/_main/leads/varonka/index'
 import { Route as MainLeadsFormsIndexImport } from './routes/_main/leads/forms/index'
-import { Route as MainLeadsIdIndexImport } from './routes/_main/leads/$id/index'
 import { Route as MainEmployeesMainIndexImport } from './routes/_main/employees/_main/index'
 import { Route as MainAttendanceMainIndexImport } from './routes/_main/attendance/_main/index'
 import { Route as MainStudentsIdMainImport } from './routes/_main/students/$id/_main'
@@ -50,6 +50,7 @@ import { Route as MainEmployeesMainSalaryImport } from './routes/_main/employees
 import { Route as MainEmployeesMainHrImport } from './routes/_main/employees/_main/hr'
 import { Route as MainAttendanceMainStudentsImport } from './routes/_main/attendance/_main/students'
 import { Route as MainAttendanceMainEmployeesImport } from './routes/_main/attendance/_main/employees'
+import { Route as MainLeadsVaronkaIdIndexImport } from './routes/_main/leads/varonka/$id/index'
 import { Route as MainGroupsIdMainIndexImport } from './routes/_main/groups/$id/_main/index'
 import { Route as MainStudentsIdMainSendMessageImport } from './routes/_main/students/$id/_main/send-message'
 import { Route as MainStudentsIdMainPaymentsImport } from './routes/_main/students/$id/_main/payments'
@@ -60,13 +61,13 @@ import { Route as MainStudentsIdMainGroupsImport } from './routes/_main/students
 import { Route as MainStudentsIdMainDiscountImport } from './routes/_main/students/$id/_main/discount'
 import { Route as MainStudentsIdMainAppropriationImport } from './routes/_main/students/$id/_main/appropriation'
 import { Route as MainLeadsFormsEditIdImport } from './routes/_main/leads/forms/edit/$id'
-import { Route as MainLeadsIdUserUserImport } from './routes/_main/leads/$id/user/$user'
 import { Route as MainGroupsIdMainStudentsImport } from './routes/_main/groups/$id/_main/students'
 import { Route as MainGroupsIdMainScoreImport } from './routes/_main/groups/$id/_main/score'
 import { Route as MainGroupsIdMainSaleImport } from './routes/_main/groups/$id/_main/sale'
 import { Route as MainGroupsIdMainNotesImport } from './routes/_main/groups/$id/_main/notes'
 import { Route as MainGroupsIdMainAttendanceImport } from './routes/_main/groups/$id/_main/attendance'
 import { Route as MainGroupsIdMainTasksIndexImport } from './routes/_main/groups/$id/_main/tasks/index'
+import { Route as MainLeadsVaronkaIdUserUserImport } from './routes/_main/leads/varonka/$id/user/$user'
 
 // Create Virtual Routes
 
@@ -227,15 +228,15 @@ const MainSettingsMainIndexRoute = MainSettingsMainIndexImport.update({
   getParentRoute: () => MainSettingsMainRoute,
 } as any)
 
-const MainLeadsFormsIndexRoute = MainLeadsFormsIndexImport.update({
-  id: '/leads/forms/',
-  path: '/leads/forms/',
+const MainLeadsVaronkaIndexRoute = MainLeadsVaronkaIndexImport.update({
+  id: '/leads/varonka/',
+  path: '/leads/varonka/',
   getParentRoute: () => MainRoute,
 } as any)
 
-const MainLeadsIdIndexRoute = MainLeadsIdIndexImport.update({
-  id: '/leads/$id/',
-  path: '/leads/$id/',
+const MainLeadsFormsIndexRoute = MainLeadsFormsIndexImport.update({
+  id: '/leads/forms/',
+  path: '/leads/forms/',
   getParentRoute: () => MainRoute,
 } as any)
 
@@ -348,6 +349,12 @@ const MainAttendanceMainEmployeesRoute =
     getParentRoute: () => MainAttendanceMainRoute,
   } as any)
 
+const MainLeadsVaronkaIdIndexRoute = MainLeadsVaronkaIdIndexImport.update({
+  id: '/leads/varonka/$id/',
+  path: '/leads/varonka/$id/',
+  getParentRoute: () => MainRoute,
+} as any)
+
 const MainGroupsIdMainIndexRoute = MainGroupsIdMainIndexImport.update({
   id: '/',
   path: '/',
@@ -414,12 +421,6 @@ const MainLeadsFormsEditIdRoute = MainLeadsFormsEditIdImport.update({
   getParentRoute: () => MainRoute,
 } as any)
 
-const MainLeadsIdUserUserRoute = MainLeadsIdUserUserImport.update({
-  id: '/leads/$id/user/$user',
-  path: '/leads/$id/user/$user',
-  getParentRoute: () => MainRoute,
-} as any)
-
 const MainGroupsIdMainStudentsRoute = MainGroupsIdMainStudentsImport.update({
   id: '/students',
   path: '/students',
@@ -457,6 +458,14 @@ const MainGroupsIdMainTasksIndexRoute = MainGroupsIdMainTasksIndexImport.update(
     id: '/tasks/',
     path: '/tasks/',
     getParentRoute: () => MainGroupsIdMainRoute,
+  } as any,
+)
+
+const MainLeadsVaronkaIdUserUserRoute = MainLeadsVaronkaIdUserUserImport.update(
+  {
+    id: '/leads/varonka/$id/user/$user',
+    path: '/leads/varonka/$id/user/$user',
+    getParentRoute: () => MainRoute,
   } as any,
 )
 
@@ -751,18 +760,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainEmployeesMainIndexImport
       parentRoute: typeof MainEmployeesMainImport
     }
-    '/_main/leads/$id/': {
-      id: '/_main/leads/$id/'
-      path: '/leads/$id'
-      fullPath: '/leads/$id'
-      preLoaderRoute: typeof MainLeadsIdIndexImport
-      parentRoute: typeof MainImport
-    }
     '/_main/leads/forms/': {
       id: '/_main/leads/forms/'
       path: '/leads/forms'
       fullPath: '/leads/forms'
       preLoaderRoute: typeof MainLeadsFormsIndexImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/leads/varonka/': {
+      id: '/_main/leads/varonka/'
+      path: '/leads/varonka'
+      fullPath: '/leads/varonka'
+      preLoaderRoute: typeof MainLeadsVaronkaIndexImport
       parentRoute: typeof MainImport
     }
     '/_main/settings/_main/': {
@@ -806,13 +815,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/groups/$id/students'
       preLoaderRoute: typeof MainGroupsIdMainStudentsImport
       parentRoute: typeof MainGroupsIdMainImport
-    }
-    '/_main/leads/$id/user/$user': {
-      id: '/_main/leads/$id/user/$user'
-      path: '/leads/$id/user/$user'
-      fullPath: '/leads/$id/user/$user'
-      preLoaderRoute: typeof MainLeadsIdUserUserImport
-      parentRoute: typeof MainImport
     }
     '/_main/leads/forms/edit/$id': {
       id: '/_main/leads/forms/edit/$id'
@@ -883,6 +885,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/groups/$id/'
       preLoaderRoute: typeof MainGroupsIdMainIndexImport
       parentRoute: typeof MainGroupsIdMainImport
+    }
+    '/_main/leads/varonka/$id/': {
+      id: '/_main/leads/varonka/$id/'
+      path: '/leads/varonka/$id'
+      fullPath: '/leads/varonka/$id'
+      preLoaderRoute: typeof MainLeadsVaronkaIdIndexImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/leads/varonka/$id/user/$user': {
+      id: '/_main/leads/varonka/$id/user/$user'
+      path: '/leads/varonka/$id/user/$user'
+      fullPath: '/leads/varonka/$id/user/$user'
+      preLoaderRoute: typeof MainLeadsVaronkaIdUserUserImport
+      parentRoute: typeof MainImport
     }
     '/_main/groups/$id/_main/tasks/': {
       id: '/_main/groups/$id/_main/tasks/'
@@ -1089,10 +1105,11 @@ interface MainRouteChildren {
   MainLeadsFormsIdRoute: typeof MainLeadsFormsIdRoute
   MainLeadsFormsCreateRoute: typeof MainLeadsFormsCreateRoute
   MainStudentsIdRoute: typeof MainStudentsIdRouteWithChildren
-  MainLeadsIdIndexRoute: typeof MainLeadsIdIndexRoute
   MainLeadsFormsIndexRoute: typeof MainLeadsFormsIndexRoute
-  MainLeadsIdUserUserRoute: typeof MainLeadsIdUserUserRoute
+  MainLeadsVaronkaIndexRoute: typeof MainLeadsVaronkaIndexRoute
   MainLeadsFormsEditIdRoute: typeof MainLeadsFormsEditIdRoute
+  MainLeadsVaronkaIdIndexRoute: typeof MainLeadsVaronkaIdIndexRoute
+  MainLeadsVaronkaIdUserUserRoute: typeof MainLeadsVaronkaIdUserUserRoute
 }
 
 const MainRouteChildren: MainRouteChildren = {
@@ -1115,10 +1132,11 @@ const MainRouteChildren: MainRouteChildren = {
   MainLeadsFormsIdRoute: MainLeadsFormsIdRoute,
   MainLeadsFormsCreateRoute: MainLeadsFormsCreateRoute,
   MainStudentsIdRoute: MainStudentsIdRouteWithChildren,
-  MainLeadsIdIndexRoute: MainLeadsIdIndexRoute,
   MainLeadsFormsIndexRoute: MainLeadsFormsIndexRoute,
-  MainLeadsIdUserUserRoute: MainLeadsIdUserUserRoute,
+  MainLeadsVaronkaIndexRoute: MainLeadsVaronkaIndexRoute,
   MainLeadsFormsEditIdRoute: MainLeadsFormsEditIdRoute,
+  MainLeadsVaronkaIdIndexRoute: MainLeadsVaronkaIdIndexRoute,
+  MainLeadsVaronkaIdUserUserRoute: MainLeadsVaronkaIdUserUserRoute,
 }
 
 const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
@@ -1159,15 +1177,14 @@ export interface FileRoutesByFullPath {
   '/employees/attendance': typeof MainEmployeesMainAttendanceLazyRoute
   '/attendance/': typeof MainAttendanceMainIndexRoute
   '/employees/': typeof MainEmployeesMainIndexRoute
-  '/leads/$id': typeof MainLeadsIdIndexRoute
   '/leads/forms': typeof MainLeadsFormsIndexRoute
+  '/leads/varonka': typeof MainLeadsVaronkaIndexRoute
   '/settings/': typeof MainSettingsMainIndexRoute
   '/groups/$id/attendance': typeof MainGroupsIdMainAttendanceRoute
   '/groups/$id/notes': typeof MainGroupsIdMainNotesRoute
   '/groups/$id/sale': typeof MainGroupsIdMainSaleRoute
   '/groups/$id/score': typeof MainGroupsIdMainScoreRoute
   '/groups/$id/students': typeof MainGroupsIdMainStudentsRoute
-  '/leads/$id/user/$user': typeof MainLeadsIdUserUserRoute
   '/leads/forms/edit/$id': typeof MainLeadsFormsEditIdRoute
   '/students/$id/appropriation': typeof MainStudentsIdMainAppropriationRoute
   '/students/$id/discount': typeof MainStudentsIdMainDiscountRoute
@@ -1178,6 +1195,8 @@ export interface FileRoutesByFullPath {
   '/students/$id/payments': typeof MainStudentsIdMainPaymentsRoute
   '/students/$id/send-message': typeof MainStudentsIdMainSendMessageRoute
   '/groups/$id/': typeof MainGroupsIdMainIndexRoute
+  '/leads/varonka/$id': typeof MainLeadsVaronkaIdIndexRoute
+  '/leads/varonka/$id/user/$user': typeof MainLeadsVaronkaIdUserUserRoute
   '/groups/$id/tasks': typeof MainGroupsIdMainTasksIndexRoute
 }
 
@@ -1215,14 +1234,13 @@ export interface FileRoutesByTo {
   '/settings/rooms': typeof MainSettingsMainRoomsRoute
   '/students/$id': typeof MainStudentsIdMainRouteWithChildren
   '/employees/attendance': typeof MainEmployeesMainAttendanceLazyRoute
-  '/leads/$id': typeof MainLeadsIdIndexRoute
   '/leads/forms': typeof MainLeadsFormsIndexRoute
+  '/leads/varonka': typeof MainLeadsVaronkaIndexRoute
   '/groups/$id/attendance': typeof MainGroupsIdMainAttendanceRoute
   '/groups/$id/notes': typeof MainGroupsIdMainNotesRoute
   '/groups/$id/sale': typeof MainGroupsIdMainSaleRoute
   '/groups/$id/score': typeof MainGroupsIdMainScoreRoute
   '/groups/$id/students': typeof MainGroupsIdMainStudentsRoute
-  '/leads/$id/user/$user': typeof MainLeadsIdUserUserRoute
   '/leads/forms/edit/$id': typeof MainLeadsFormsEditIdRoute
   '/students/$id/appropriation': typeof MainStudentsIdMainAppropriationRoute
   '/students/$id/discount': typeof MainStudentsIdMainDiscountRoute
@@ -1232,6 +1250,8 @@ export interface FileRoutesByTo {
   '/students/$id/parents': typeof MainStudentsIdMainParentsRoute
   '/students/$id/payments': typeof MainStudentsIdMainPaymentsRoute
   '/students/$id/send-message': typeof MainStudentsIdMainSendMessageRoute
+  '/leads/varonka/$id': typeof MainLeadsVaronkaIdIndexRoute
+  '/leads/varonka/$id/user/$user': typeof MainLeadsVaronkaIdUserUserRoute
   '/groups/$id/tasks': typeof MainGroupsIdMainTasksIndexRoute
 }
 
@@ -1278,15 +1298,14 @@ export interface FileRoutesById {
   '/_main/employees/_main/attendance': typeof MainEmployeesMainAttendanceLazyRoute
   '/_main/attendance/_main/': typeof MainAttendanceMainIndexRoute
   '/_main/employees/_main/': typeof MainEmployeesMainIndexRoute
-  '/_main/leads/$id/': typeof MainLeadsIdIndexRoute
   '/_main/leads/forms/': typeof MainLeadsFormsIndexRoute
+  '/_main/leads/varonka/': typeof MainLeadsVaronkaIndexRoute
   '/_main/settings/_main/': typeof MainSettingsMainIndexRoute
   '/_main/groups/$id/_main/attendance': typeof MainGroupsIdMainAttendanceRoute
   '/_main/groups/$id/_main/notes': typeof MainGroupsIdMainNotesRoute
   '/_main/groups/$id/_main/sale': typeof MainGroupsIdMainSaleRoute
   '/_main/groups/$id/_main/score': typeof MainGroupsIdMainScoreRoute
   '/_main/groups/$id/_main/students': typeof MainGroupsIdMainStudentsRoute
-  '/_main/leads/$id/user/$user': typeof MainLeadsIdUserUserRoute
   '/_main/leads/forms/edit/$id': typeof MainLeadsFormsEditIdRoute
   '/_main/students/$id/_main/appropriation': typeof MainStudentsIdMainAppropriationRoute
   '/_main/students/$id/_main/discount': typeof MainStudentsIdMainDiscountRoute
@@ -1297,6 +1316,8 @@ export interface FileRoutesById {
   '/_main/students/$id/_main/payments': typeof MainStudentsIdMainPaymentsRoute
   '/_main/students/$id/_main/send-message': typeof MainStudentsIdMainSendMessageRoute
   '/_main/groups/$id/_main/': typeof MainGroupsIdMainIndexRoute
+  '/_main/leads/varonka/$id/': typeof MainLeadsVaronkaIdIndexRoute
+  '/_main/leads/varonka/$id/user/$user': typeof MainLeadsVaronkaIdUserUserRoute
   '/_main/groups/$id/_main/tasks/': typeof MainGroupsIdMainTasksIndexRoute
 }
 
@@ -1338,15 +1359,14 @@ export interface FileRouteTypes {
     | '/employees/attendance'
     | '/attendance/'
     | '/employees/'
-    | '/leads/$id'
     | '/leads/forms'
+    | '/leads/varonka'
     | '/settings/'
     | '/groups/$id/attendance'
     | '/groups/$id/notes'
     | '/groups/$id/sale'
     | '/groups/$id/score'
     | '/groups/$id/students'
-    | '/leads/$id/user/$user'
     | '/leads/forms/edit/$id'
     | '/students/$id/appropriation'
     | '/students/$id/discount'
@@ -1357,6 +1377,8 @@ export interface FileRouteTypes {
     | '/students/$id/payments'
     | '/students/$id/send-message'
     | '/groups/$id/'
+    | '/leads/varonka/$id'
+    | '/leads/varonka/$id/user/$user'
     | '/groups/$id/tasks'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -1393,14 +1415,13 @@ export interface FileRouteTypes {
     | '/settings/rooms'
     | '/students/$id'
     | '/employees/attendance'
-    | '/leads/$id'
     | '/leads/forms'
+    | '/leads/varonka'
     | '/groups/$id/attendance'
     | '/groups/$id/notes'
     | '/groups/$id/sale'
     | '/groups/$id/score'
     | '/groups/$id/students'
-    | '/leads/$id/user/$user'
     | '/leads/forms/edit/$id'
     | '/students/$id/appropriation'
     | '/students/$id/discount'
@@ -1410,6 +1431,8 @@ export interface FileRouteTypes {
     | '/students/$id/parents'
     | '/students/$id/payments'
     | '/students/$id/send-message'
+    | '/leads/varonka/$id'
+    | '/leads/varonka/$id/user/$user'
     | '/groups/$id/tasks'
   id:
     | '__root__'
@@ -1454,15 +1477,14 @@ export interface FileRouteTypes {
     | '/_main/employees/_main/attendance'
     | '/_main/attendance/_main/'
     | '/_main/employees/_main/'
-    | '/_main/leads/$id/'
     | '/_main/leads/forms/'
+    | '/_main/leads/varonka/'
     | '/_main/settings/_main/'
     | '/_main/groups/$id/_main/attendance'
     | '/_main/groups/$id/_main/notes'
     | '/_main/groups/$id/_main/sale'
     | '/_main/groups/$id/_main/score'
     | '/_main/groups/$id/_main/students'
-    | '/_main/leads/$id/user/$user'
     | '/_main/leads/forms/edit/$id'
     | '/_main/students/$id/_main/appropriation'
     | '/_main/students/$id/_main/discount'
@@ -1473,6 +1495,8 @@ export interface FileRouteTypes {
     | '/_main/students/$id/_main/payments'
     | '/_main/students/$id/_main/send-message'
     | '/_main/groups/$id/_main/'
+    | '/_main/leads/varonka/$id/'
+    | '/_main/leads/varonka/$id/user/$user'
     | '/_main/groups/$id/_main/tasks/'
   fileRoutesById: FileRoutesById
 }
@@ -1534,10 +1558,11 @@ export const routeTree = rootRoute
         "/_main/leads/forms/$id",
         "/_main/leads/forms/create",
         "/_main/students/$id",
-        "/_main/leads/$id/",
         "/_main/leads/forms/",
-        "/_main/leads/$id/user/$user",
-        "/_main/leads/forms/edit/$id"
+        "/_main/leads/varonka/",
+        "/_main/leads/forms/edit/$id",
+        "/_main/leads/varonka/$id/",
+        "/_main/leads/varonka/$id/user/$user"
       ]
     },
     "/_main/reports": {
@@ -1749,12 +1774,12 @@ export const routeTree = rootRoute
       "filePath": "_main/employees/_main/index.tsx",
       "parent": "/_main/employees/_main"
     },
-    "/_main/leads/$id/": {
-      "filePath": "_main/leads/$id/index.tsx",
-      "parent": "/_main"
-    },
     "/_main/leads/forms/": {
       "filePath": "_main/leads/forms/index.tsx",
+      "parent": "/_main"
+    },
+    "/_main/leads/varonka/": {
+      "filePath": "_main/leads/varonka/index.tsx",
       "parent": "/_main"
     },
     "/_main/settings/_main/": {
@@ -1780,10 +1805,6 @@ export const routeTree = rootRoute
     "/_main/groups/$id/_main/students": {
       "filePath": "_main/groups/$id/_main/students.tsx",
       "parent": "/_main/groups/$id/_main"
-    },
-    "/_main/leads/$id/user/$user": {
-      "filePath": "_main/leads/$id/user/$user.tsx",
-      "parent": "/_main"
     },
     "/_main/leads/forms/edit/$id": {
       "filePath": "_main/leads/forms/edit/$id.tsx",
@@ -1824,6 +1845,14 @@ export const routeTree = rootRoute
     "/_main/groups/$id/_main/": {
       "filePath": "_main/groups/$id/_main/index.tsx",
       "parent": "/_main/groups/$id/_main"
+    },
+    "/_main/leads/varonka/$id/": {
+      "filePath": "_main/leads/varonka/$id/index.tsx",
+      "parent": "/_main"
+    },
+    "/_main/leads/varonka/$id/user/$user": {
+      "filePath": "_main/leads/varonka/$id/user/$user.tsx",
+      "parent": "/_main"
     },
     "/_main/groups/$id/_main/tasks/": {
       "filePath": "_main/groups/$id/_main/tasks/index.tsx",

@@ -239,8 +239,15 @@ const LeadsDnd = () => {
                 />
             </Modal>
 
-            <Modal title="Guruhga qo'shish" modalKey="student-groups-add">
-                <AddGroup url="leads/to-group" id={String(student?.id)} leads={true} />
+            <Modal
+                title="Sinov darsiga  qo'shish"
+                modalKey="student-groups-add"
+            >
+                <AddGroup
+                    url="leads/to-group"
+                    id={String(student?.id)}
+                    leads={true}
+                />
             </Modal>
 
             {/* Send message create modal */}
@@ -268,7 +275,7 @@ const LeadsDnd = () => {
                 path="leads/pipeline/status"
             />
 
-            <DeleteLeadModal />
+            <DeleteLeadModal  />
         </div>
     )
 }

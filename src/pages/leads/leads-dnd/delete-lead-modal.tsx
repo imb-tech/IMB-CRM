@@ -6,17 +6,14 @@ import { usePatch } from "@/hooks/usePatch"
 import Modal from "@/components/custom/modal"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { cn } from "@/lib/utils"
-import { useDelete } from "@/hooks/useDelete"
+import { useState } from "react"
+import { Textarea } from "@/components/ui/textarea"
 
 export default function DeleteLeadModal() {
     const { id } = useParams({ strict: false })
     const { closeModal } = useModal("confirm-delete")
-    const { store } = useStore<{
-        id: number
-        type: "delete" | "success"
-        name: string
-    }>("conf-lead")
+    const { store } = useStore<Lead>("lead-data")
+    const [text, setText] = useState<string>("")
 
     const queryClient = useQueryClient()
 
@@ -24,13 +21,12 @@ export default function DeleteLeadModal() {
         "leads/crud",
         ...Object.values({ condition: "active", status__pipeline: id }),
     ]
- 
+
     const queryKeyStatus = [
         "leads/pipeline/status",
         ...Object.values({ is_active: true, pipeline: id }),
     ]
 
-    const { mutate: mutateDelete, isPending: isPendingDelete } = useDelete()
     const { mutate: mutatePatch, isPending: isPendingPatch } = usePatch()
 
     function handleConfirm() {
@@ -44,61 +40,46 @@ export default function DeleteLeadModal() {
             originUsers?.filter((usr) => usr.id !== drpId),
         )
 
-        if (store?.type === "delete") {
-            mutateDelete(`leads/crud/${drpId}`, {
+        mutatePatch(
+            `leads/update/${drpId}`,
+            {
+                condition: "loosed",
+                is_active: false,
+                reason: text,
+            },
+            {
                 onError() {
                     queryClient.setQueryData(queryKeyUsers, originUsers)
                 },
                 onSuccess() {
-                    closeModal()
                     queryClient.refetchQueries({ queryKey: queryKeyStatus })
+                    closeModal()
                 },
-            })
-        } else {
-            mutatePatch(
-                `leads/update/${drpId}`,
-                {
-                    condition: "success",
-                    is_active: false,
-                },
-                {
-                    onError() {
-                        queryClient.setQueryData(queryKeyUsers, originUsers)
-                    },
-                    onSuccess() {
-                        queryClient.refetchQueries({ queryKey: queryKeyStatus })
-                        closeModal()
-                    },
-                },
-            )
-        }
+            },
+        )
     }
 
     return (
-        <Modal modalKey="confirm-delete" title="O'zgarishni tasdiqlang">
-            <div className="pt-4">
+        <Modal modalKey="confirm-delete" title="O'chirishni tasdiqlang">
+            <div className="pt-4 space-y-4">
                 <h1 className="text-xl">
-                    {store?.name}ni
+                    Haqiqatan ham bu {store?.name}ni
                     <Badge
                         color="emerald"
-                        className={cn(
-                            "text-lg rounded-md mx-2 font-light",
-                            store?.type == "delete"
-                                ? "text-rose-500 bg-rose-500/10 hover:bg-rose-500/10"
-                                : "text-emerald-500 bg-emerald-500/10 hover:bg-emerald-500/10",
-                        )}
+                        className={
+                            "text-lg rounded-md mx-2 font-light text-red-500 bg-red-500/10 hover:bg-red-500/10"
+                        }
                     >
-                        {store?.type == "delete"
-                            ? "o'chirilgan"
-                            : "muvaffaqiyatli mijoz"}
+                        o'chirmoqchimisiz?
                     </Badge>
-                    holatiga o'zgartirmoqchimisiz?
                 </h1>
+                <Textarea onChange={(e) => setText(e.target.value)} />
 
                 <Button
                     className="mt-5 w-full"
                     onClick={handleConfirm}
-                    loading={isPendingDelete || isPendingPatch}
+                    loading={isPendingPatch}
+                    disabled={!text.trim() || isPendingPatch}
                 >
                     Tasdiqlash
                 </Button>

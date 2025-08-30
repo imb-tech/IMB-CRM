@@ -7,7 +7,7 @@ import LeadResponses from "./lead-responses"
 import FormSkeleton from "./lead-detail-skeleton"
 
 export default function LeadDetail() {
-    const { user } = useParams({ from: "/_main/leads/$id/user/$user" })
+    const { user } = useParams({ from: "/_main/leads/varonka/$id/user/$user" })
     const { data, isLoading } = useGet<Lead>(`leads/crud/${user}`)
 
     return (

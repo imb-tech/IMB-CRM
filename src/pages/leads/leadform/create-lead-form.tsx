@@ -24,7 +24,7 @@ export default function CreateLeadForm({ data }: { data?: Lead }) {
     const { mutate, isPending } = usePatch()
 
     const onSubmit = (data: Lead) => {
-        if (data?.condition === "deleted" || data?.condition === "success") {
+        if (data?.condition === "loosed" || data?.condition === "success") {
             return
         }
         mutate(
@@ -54,7 +54,7 @@ export default function CreateLeadForm({ data }: { data?: Lead }) {
                         <div className="flex items-center gap-3">
                             <Link
                                 search={{ pipeline }}
-                                to="/leads/$id"
+                                to="/leads/varonka/$id"
                                 className={cn(
                                     "text-sidebar-foreground",
                                     buttonVariants({

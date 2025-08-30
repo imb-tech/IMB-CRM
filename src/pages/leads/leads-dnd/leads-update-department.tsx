@@ -22,7 +22,7 @@ type FormValues = {
 }
 
 const LeadsUpdateDepartment = ({ id: lead }: Props) => {
-    const { id } = useParams({ from: "/_main/leads/$id/" })
+    const { id } = useParams({ from: "/_main/leads/varonka/$id/" })
     const queryClient = useQueryClient()
     const { closeModal } = useModal("update-department")
     const { data: dataLeadDepartment } = useGet<Pipeline[]>(pipelineUrl, {

@@ -42,7 +42,7 @@ export default function LeadNotes() {
         params: { search },
     })
 
-    const { user } = useParams({ from: "/_main/leads/$id/user/$user" })
+    const { user } = useParams({ from: "/_main/leads/varonka/$id/user/$user" })
 
     const queryClient = useQueryClient()
     const queryKey = [`leads/notes-list/${user}`]
