@@ -15,12 +15,12 @@ export default function SectionHeader({
     return (
         <div
             className={cn(
-                "mb-1 py-1 pb-1 flex items-start md:items-center justify-between flex-col md:flex-row gap-2",
+                "mb-1 py-1 pb-1 flex items-start md:items-center justify-between flex-col md:flex-row gap-2 w-full",
                 className,
             )}
             {...props}
         >
-            <h1 className="text-lg md:text-2xl font-light">{title}</h1>
+            <h1 className="text-lg hidden md:block md:text-2xl font-light">{title}</h1>
             <div>{rightComponent}</div>
         </div>
     )

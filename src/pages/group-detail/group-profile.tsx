@@ -217,9 +217,8 @@ export default function GroupProfile() {
 
                     {/* Quick Info */}
                     <div className="grid grid-cols-2 gap-3">
-                        {cards.map((card, idx) => (
-                            <MiniStatCard key={idx} {...card} />
-                        ))}
+                        <MiniStatCard label="Faol o'quvchilar soni" color="blue" value={data?.students_count.active} icon={Users} />
+                        <MiniStatCard label="Xona" color="blue" value={data?.room_name} icon={Users} />
                     </div>
 
                     {/* Details */}
@@ -288,7 +287,12 @@ export default function GroupProfile() {
                             variant="ghost"
                             className="h-8 p-1 text-gray-600 hover:bg-gray-500/20"
                         >
-                            <MoreHorizontal size={15} />
+                            <ActionDropdown
+                                options={[
+                                    { key: "edit", onClick: openModal },
+                                    { key: "delete", onClick: openModal },
+                                ]}
+                            />
                         </Button>
                     </div>
                 </CardContent>
