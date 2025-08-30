@@ -2,18 +2,18 @@ import { DataTable } from "@/components/ui/datatable"
 import { useGroupSalesCols } from "./cols"
 import SectionHeader from "@/components/elements/section-header"
 import { useGet } from "@/hooks/useGet"
-import { useParams, useSearch } from "@tanstack/react-router"
-import { GROUP_STUDENTS } from "@/constants/api-endpoints"
+import { useParams } from "@tanstack/react-router"
 import { useMemo } from "react"
 import Modal from "@/components/custom/modal"
 import { useModal } from "@/hooks/useModal"
-import { Path, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { FormNumberInput } from "@/components/form/number-input"
 import { Button } from "@/components/ui/button"
 import FormTextarea from "@/components/form/textarea"
 import { usePost } from "@/hooks/usePost"
 import DeleteModal from "@/components/custom/delete-modal"
 import { handleFormError } from "@/lib/show-form-errors"
+import apiGroupStudents from "@/services/hooks/use-group-students"
 
 export default function GroupSale() {
     const columns = useGroupSalesCols()
@@ -24,16 +24,12 @@ export default function GroupSale() {
         from: "/_main/groups/$id/_main/sale",
     })
 
-    const search = useSearch({ from: "/_main/groups/$id/_main/sale" })
-
     const { data, refetch, isLoading } = useGet<ListResp<StudentDiscount>>(
         "platform/group-students/discounts",
         { params: { group } },
     )
 
-    const { data: students } = useGet<GroupStudent[]>(GROUP_STUDENTS, {
-        params: { group, ...search },
-    })
+    const { data: students } = apiGroupStudents(group)
 
     const mergedData = useMemo<StudentMergeDiscount[]>(() => {
         if (!students?.length) {

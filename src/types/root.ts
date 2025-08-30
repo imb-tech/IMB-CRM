@@ -20,9 +20,10 @@ type SearchParams = {
     id?: string
     group?: string
     student?: string
-    task?:string
-    project?:string
-    tabs?:string
+    task?: string
+    project?: string
+    tabs?: string
+    date?: string
 }
 
 
