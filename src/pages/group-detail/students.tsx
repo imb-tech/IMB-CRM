@@ -3,7 +3,6 @@ import { useGroupStudentCols } from "./cols"
 import SectionHeader from "@/components/elements/section-header"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
-import { useGet } from "@/hooks/useGet"
 import { GROUP_STUDENTS } from "@/constants/api-endpoints"
 import { useParams, useSearch } from "@tanstack/react-router"
 import Modal from "@/components/custom/modal"
@@ -18,6 +17,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import PaymentUpdate from "../student-detail/main/payment/payment-update"
 import ExportStudent from "./export-student"
 import apiGroupStudents from "@/services/hooks/use-group-students"
+import StudentNotesCreate from "../student-detail/main/notes/create"
 
 export default function GroupStudents() {
     const { id: group } = useParams({
@@ -73,7 +73,7 @@ export default function GroupStudents() {
                 columns={columns}
                 data={data}
                 viewAll
-                className="min-w-[700px] md:min-w-0 max-w-full"
+                className="min-w-[800px] md:min-w-0 max-w-full"
                 numeration
                 selecteds_row
             />
@@ -94,8 +94,15 @@ export default function GroupStudents() {
                 />
             </Modal>
 
+            {store?.student && <Modal
+                modalKey="notes-add"
+                title={`Eslatma qo'shish`}
+            >
+                <StudentNotesCreate id={store?.student.toString()} />
+            </Modal>}
 
             <AppendStudentModal refetch={refetch} />
+
             <DeleteModal
                 id={store?.id}
                 onSuccessAction={() => {

@@ -12,12 +12,17 @@ import { formatDate } from "date-fns"
 import { ParamCombobox } from "@/components/as-params/combobox"
 import TaskCard from "./task-card"
 import { useStore } from "@/hooks/use-store"
+import { groupDefaultDate } from "./utils"
+import { apiGroupDays } from "@/services/hooks/use-group-students"
+import MonthNavigator from "@/components/as-params/month-navigator"
+import useQueryParams from "@/hooks/use-query-params"
 
 export default function GroupTasks() {
     const { id: group } = useParams({ strict: false })
     const { date } = useSearch({ strict: false })
     const { store, remove } = useStore<GroupModule>("item")
     const [isScroll, setIsScroll] = useState(0)
+    const { updateParams } = useQueryParams()
 
     const refMap = useRef<Record<string, HTMLDivElement | null>>({})
 
@@ -34,15 +39,7 @@ export default function GroupTasks() {
         [options],
     )
 
-    const currDate = formatDate(new Date().setDate(1), "yyyy-MM-dd")
-
-    const defaultOpt = useMemo(
-        () =>
-            months?.length ?
-                (months?.find((usr) => usr.value === currDate) ?? months[0])
-                : null,
-        [months],
-    )
+    const defaultOpt = groupDefaultDate(months)
 
     const { data: modules, refetch } = useGet<GroupModule[]>(
         "platform/groups/modules",
@@ -58,20 +55,13 @@ export default function GroupTasks() {
     )
 
 
-    const { data: days } = useGet<string[]>(
-        "platform/groups/days-to-teach/" + group + "/" + date,
-        {
-            options: {
-                enabled: !!date,
-            },
-        },
-    )
+    const { data: days } = apiGroupDays(group, date)
 
     const grouppedModules = useMemo(() => {
         if (isScroll == 0) {
             setIsScroll(1)
         }
-        return moduleGroupper(modules, days)
+        return moduleGroupper(modules, days?.map(d => d.date))
     }, [modules, days])
 
     useEffect(() => {
@@ -92,28 +82,33 @@ export default function GroupTasks() {
         }
     }, [isScroll, grouppedModules])
 
+    useEffect(() => {
+        if (defaultOpt?.value || !!date) {
+            updateParams({
+                date: date ?? defaultOpt?.value
+            })
+        }
+    }, [defaultOpt, date])
+
     return (
         <div className="w-full">
             <div className="max-w-full mx-auto h-full">
                 <SectionHeader
                     title="Vazifalar"
                     rightComponent={
-                        defaultOpt && (
-                            <ParamCombobox
-                                dontAllowClear
-                                paramName="date"
-                                defaultOpt={defaultOpt}
-                                options={months}
-                                isSearch={false}
-                                label="Oy bo'yicha"
+                        date && (
+                            <MonthNavigator
+                                months={months}
+                                value={date}
+                                onChange={(date) => updateParams({ date })}
                             />
                         )
                     }
                 />
-                <Card className="grid grid-cols-2 ">
+                <Card className="grid md:grid-cols-2">
                     <CardContent className="p-0">
                         <ScrollArea className="max-h-[65vh] overflow-y-auto no-scrollbar">
-                            <div className="flex flex-col gap-2 pr-5">
+                            <div className="flex flex-col gap-2 md:pr-5">
                                 {grouppedModules?.map((item, i) => (
                                     <div
                                         key={i}

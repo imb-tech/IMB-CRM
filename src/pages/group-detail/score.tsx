@@ -6,18 +6,20 @@ import SectionHeader from "@/components/elements/section-header"
 import apiGroupStudents, { apiGroupDays, useGroupMonths } from "@/services/hooks/use-group-students"
 import ParamSwtich from "@/components/as-params/switch"
 import MonthNavigator from "@/components/as-params/month-navigator"
-import { formatDateToUz } from "@/lib/utils"
+import { cn, formatDateToUz } from "@/lib/utils"
 import useQueryParams from "@/hooks/use-query-params"
 import { getGroupSector, groupDefaultDate } from "./utils"
+import { useGet } from "@/hooks/useGet"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
 export default function GroupScore() {
     const { id } = useParams({ from: "/_main/groups/$id/_main/score" })
-    const { date } = useSearch({ from: "/_main/groups/$id/_main/score" })
+    const { date, is_active } = useSearch({ from: "/_main/groups/$id/_main/score" })
 
     const { updateParams } = useQueryParams()
 
-    const { data } = apiGroupStudents(id)
-    const { data: groupDays } = apiGroupDays(id, '2025-08-01')
+    const { data } = apiGroupStudents(id, true)
+    const { data: groupDays } = apiGroupDays(id, date)
     const { data: options } = useGroupMonths(id)
 
     const months = useMemo(
@@ -33,6 +35,18 @@ export default function GroupScore() {
     const sector = getGroupSector(groupDays)
     const defaultOpt = groupDefaultDate(months)
 
+    const { data: scores } = useGet<StudentScore[]>(
+        "platform/group-students/modules/" + id + "/" + date,
+        {
+            options: {
+                enabled: !!date,
+                refetchOnMount: true
+            },
+            params: {
+                is_active: typeof is_active == "boolean" ? is_active : true,
+            },
+        },
+    )
 
     useEffect(() => {
         if (defaultOpt?.value || !!date) {
@@ -78,18 +92,29 @@ export default function GroupScore() {
                                         {sector.map((day, i) => (
                                             <th
                                                 key={i}
-                                                className="text-center p-2 font-medium text-gray-700 min-w-[40px]"
+                                                className="text-center font-medium text-gray-700 min-w-[40px]"
                                             >
-                                                <div className="flex flex-col items-center">
-                                                    <span className="text-xs text-gray-500">
-                                                        {day.dayName}
-                                                    </span>
-                                                    <span
-                                                        className={`text-sm ${false ? "text-blue-600 font-semibold" : "text-gray-400"}`}
-                                                    >
-                                                        {day?.day}
-                                                    </span>
-                                                </div>
+                                                <Popover>
+                                                    <PopoverTrigger asChild>
+                                                        <div className="flex flex-col items-center cursor-pointer dark:hover:bg-primary/20 hover:bg-card p-2 rounded-sm group">
+                                                            <span className="text-xs text-gray-500 group-hover:text-primary">
+                                                                {day.dayName}
+                                                            </span>
+                                                            <span
+                                                                className={`text-sm ${false ? "text-blue-600 font-semibold" : "text-gray-400"} group-hover:text-primary`}
+                                                            >
+                                                                {day?.day}
+                                                            </span>
+                                                        </div>
+                                                    </PopoverTrigger>
+                                                    <PopoverContent className="w-full max-w-[300px] bg-background">
+                                                        <div className="w-full min-w-[300px]">
+                                                            {
+                                                                day.modules.map(md => <p>{md.title}</p>)
+                                                            }
+                                                        </div>
+                                                    </PopoverContent>
+                                                </Popover>
                                             </th>
                                         ))}
                                         <th className="text-center p-4 font-medium text-muted-foreground min-w-[100px]">
@@ -98,27 +123,31 @@ export default function GroupScore() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {data?.map((student) => {
+                                    {scores?.map((student) => {
                                         return (
                                             <tr
                                                 key={student.id}
                                                 className="border-b hover:bg-secondary/40"
                                             >
-                                                <td className="sticky left-0  bg-secondary border-r">
+                                                <td className="sticky left-0 border-r">
                                                     <div className="font-medium pl-2">
-                                                        {student.student_name}
+                                                        {student.full_name}
                                                     </div>
                                                 </td>
                                                 {sector.map((day) => {
+                                                    const scr = student.modules.find(g => g.target_date === day.formatted_date)?.score ?? 0
                                                     return (
                                                         <td
                                                             key={day.day}
                                                             className="p-2 text-center border-r"
                                                         >
                                                             <NumberInput
-                                                                className="w-8 h-8 rounded-lg flex items-center text-center justify-center mx-auto border-none border-transparent shadow-none p-0"
+                                                                className={cn(
+                                                                    "w-8 h-8 rounded-lg flex items-center text-center justify-center mx-auto border-none border-transparent shadow-none p-0",
+                                                                    scr == 0 ? "text-transparent" : ""
+                                                                )}
                                                                 max={9}
-                                                                defaultValue={4}
+                                                                defaultValue={scr}
                                                                 maxLength={1}
                                                             />
                                                         </td>
