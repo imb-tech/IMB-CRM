@@ -23,6 +23,7 @@ export default function UpdateStudent() {
             GROUP_STUDENTS + "/" + v.id,
             {
                 start_date: v.start_date,
+                activated_date: v.activated_date
             },
             {
                 onSuccess() {
