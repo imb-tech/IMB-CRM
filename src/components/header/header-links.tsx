@@ -3,7 +3,12 @@ import { useLocation, useNavigate, useRouter } from "@tanstack/react-router"
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
 import { useMemo } from "react"
 import { cn } from "@/lib/utils"
-import { findChildPaths, getCurrentKey, getLinkKey, useIsActiveEx } from "@/constants/util.menu"
+import {
+    findChildPaths,
+    getCurrentKey,
+    getLinkKey,
+    useIsActiveEx,
+} from "@/constants/util.menu"
 
 export default function HeaderLinks({
     defaultLinks,
@@ -17,8 +22,11 @@ export default function HeaderLinks({
     const location = useLocation()
     const router = useRouter()
     const items = useMemo(
-        () => (defaultLinks ? defaultLinks : findChildPaths(menuItems, location.pathname)),
-        [defaultLinks, location.pathname]
+        () =>
+            defaultLinks
+                ? defaultLinks
+                : findChildPaths(menuItems, location.pathname),
+        [defaultLinks, location.pathname],
     )
     const navigate = useNavigate()
     const { isActive } = useIsActiveEx()
@@ -29,12 +37,11 @@ export default function HeaderLinks({
         () =>
             items.map((link) => {
                 const key = getLinkKey(router, link as any)
-                const active = isActive(link as any, location) 
+                const active = isActive(link as any, location)
                 return { link, key, active }
             }),
-        [items, router, location, isActive]
+        [items, router, location, isActive],
     )
-
 
     const handleChange = (val: string) => {
         const found = computed.find((x) => x.key === val)
@@ -54,7 +61,7 @@ export default function HeaderLinks({
                                 value={key}
                                 className={cn(
                                     "font-medium flex items-center gap-2 hover:bg-primary/10",
-                                    active && "!bg-primary/20 !text-primary"
+                                    active && "!bg-primary/20 !text-primary",
                                 )}
                             >
                                 {link.title}

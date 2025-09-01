@@ -15,6 +15,7 @@ import Select from "../ui/select"
 import { cn, getActiveBranch, setActiveBranch } from "@/lib/utils"
 import HeaderLinks from "./header-links"
 import FullScreenToggle from "../shared/full-screen"
+import LeadDealSelector from "@/pages/leads/lead-deal-selector"
 
 type Props = {
     title?: string
@@ -61,6 +62,7 @@ const Header = ({ rigthChildren, leftChildren, navOnHeader }: Props) => {
             </div>
             <hgroup className="flex items-center gap-4">
                 {rigthChildren ? rigthChildren : null}
+                {pathname.includes("/leads/") && <LeadDealSelector />}
                 {pathname !== "/reports" && pathname !== "/finance" && (
                     <Select
                         value={branch}

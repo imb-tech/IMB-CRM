@@ -58,7 +58,7 @@ const LeadsColumn = ({ index, item }: Props) => {
                     >
                         <div className="flex items-center justify-between py-2">
                             <div className="flex items-center gap-2">
-                                <h3 className="text-xl">{item?.name ?? ""} </h3>
+                                <h3 className="text-lg">{item?.name ?? ""} </h3>
                                 <Badge>{formatMoney(item?.total_count)}</Badge>
                             </div>
 

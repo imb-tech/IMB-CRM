@@ -31,11 +31,11 @@ const chartData: Data[] = [
 const chartConfig = {
     Kirim: {
         label: "Chiqim",
-        color: "fill-red-500/60 bg-red-500/60",
+        color: "fill-[#FF0052] bg-[#FF0052]",
     },
     Chiqim: {
         label: "Kirim",
-        color: "fill-blue-500/60 bg-blue-500/60",
+        color: "fill-sky-800  bg-sky-800",
     },
 } satisfies ChartConfig
 
@@ -45,11 +45,11 @@ export default function FinanceInExChart() {
             <CardHeader className="">
                 <div className="flex items-center  gap-3 font-light">
                     <div className="flex items-center gap-2  py-1 px-3 rounded-md ">
-                        <span className="bg-blue-500/60 block w-4 h-4 rounded"></span>
+                        <span className="bg-sky-800 block w-4 h-4 rounded"></span>
                         <p>Kirim</p>
                     </div>
                     <div className="flex items-center gap-2  py-1 px-3 rounded-md ">
-                        <span className="bg-red-500/60 block w-4 h-4 rounded"></span>
+                        <span className="bg-[#FF0052] block w-4 h-4 rounded"></span>
                         <p>Chiqim</p>
                     </div>
                 </div>
@@ -101,7 +101,7 @@ const CustomTooltip = ({
                     >
                         <span
                             className={cn(
-                                "bg-blue-500/60 block w-4 h-4 rounded",
+                                "bg-sky-800 block w-4 h-4 rounded",
                                 entry.className,
                             )}
                         ></span>

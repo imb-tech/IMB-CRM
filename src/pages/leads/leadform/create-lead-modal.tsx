@@ -132,7 +132,7 @@ export default function CreateLeadModal() {
                 <FormInput
                     methods={form}
                     name="name"
-                    label={"Ism"}
+                    label={"FIO"}
                     required
                     placeholder={"Lid ismi yoki nomi"}
                     autoComplete="off"
