@@ -26,6 +26,9 @@ export default function FinanceFilter() {
                 isSearch={false}
                 label="Yil"
                 className="w-full"
+                addButtonProps={{
+                    className: "!bg-background dark:!bg-secondary"
+                }}
             />
             <ParamCombobox
                 dontAllowClear
@@ -36,6 +39,9 @@ export default function FinanceFilter() {
                 labelKey="name"
                 label="Oy"
                 className="w-full"
+                addButtonProps={{
+                    className: "!bg-background dark:!bg-secondary"
+                }}
             />
             <ParamCombobox
                 dontAllowClear
@@ -50,6 +56,9 @@ export default function FinanceFilter() {
                 valueKey="id"
                 isSearch={false}
                 label="Filial"
+                addButtonProps={{
+                    className: "!bg-background dark:!bg-secondary"
+                }}
             />
             <ExportAsExcel url="url" name="finance" />
         </aside>

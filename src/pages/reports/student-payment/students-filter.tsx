@@ -22,6 +22,9 @@ export default function ReportsFilter() {
                 labelKey="name"
                 label="Oy"
                 className="w-full"
+                addButtonProps={{
+                    className: "!bg-background dark:!bg-secondary"
+                }}
             />
             <ParamCombobox
                 dontAllowClear
@@ -30,6 +33,9 @@ export default function ReportsFilter() {
                 isSearch={false}
                 label="Yil"
                 className="w-full"
+                addButtonProps={{
+                    className: "!bg-background dark:!bg-secondary"
+                }}
             />
             <ParamDateRangePicker
                 itemClassName={buttonVariants({
@@ -54,6 +60,9 @@ export default function ReportsFilter() {
                 valueKey="id"
                 isSearch={false}
                 label="Filial"
+                addButtonProps={{
+                    className: "!bg-background dark:!bg-secondary"
+                }}
             />
             {tabs === "leads_statistic" && <LeadsDepartmentFilter />}
             <ExportAsExcel url="url" name="reports" />

@@ -3,7 +3,7 @@ import { DataTable } from "@/components/ui/datatable"
 import { useBranchesCols } from "./columns"
 import DeleteModal from "@/components/custom/delete-modal"
 import { useModal } from "@/hooks/useModal"
-import { BRANCH } from "@/constants/api-endpoints"
+import { BRANCH, PROFILE } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import ParamPagination from "@/components/as-params/pagination"
 import { useSearch } from "@tanstack/react-router"
@@ -62,6 +62,7 @@ const BranchesMain = () => {
                 modalKey={`${BRANCH}-delete`}
                 id={store?.id}
                 path={BRANCH}
+                refetchKeys={[BRANCH, PROFILE]}
             />
         </div>
     )

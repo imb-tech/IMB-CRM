@@ -1,7 +1,7 @@
 import FormInput from "@/components/form/input"
 import FormTimeInput from "@/components/form/time-input"
 import { Button } from "@/components/ui/button"
-import { BRANCH } from "@/constants/api-endpoints"
+import { BRANCH, PROFILE } from "@/constants/api-endpoints"
 import { useStore } from "@/hooks/use-store"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
@@ -18,10 +18,10 @@ const BranchesCreate = () => {
     const form = useForm<Branch>({
         defaultValues: item
             ? {
-                  ...item,
-                  start_time: item?.start_time?.slice(0, 5),
-                  end_time: item?.end_time?.slice(0, 5),
-              }
+                ...item,
+                start_time: item?.start_time?.slice(0, 5),
+                end_time: item?.end_time?.slice(0, 5),
+            }
             : undefined,
     })
 
@@ -31,6 +31,7 @@ const BranchesCreate = () => {
             closeModal()
             form.reset()
             queryClient.invalidateQueries({ queryKey: [BRANCH] })
+            queryClient.refetchQueries({ queryKey: [PROFILE] })
         },
     })
 
