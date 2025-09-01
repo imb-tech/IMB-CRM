@@ -42,8 +42,8 @@ export default function LoginForm() {
     const methods = useForm<Form>({
         disabled: isPending,
         defaultValues: {
-            username: "admin1",
-            password: "admin1",
+            username: "admin",
+            password: "admin",
         },
     })
 

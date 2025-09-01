@@ -3,6 +3,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { Link, useNavigate } from "@tanstack/react-router"
 import StudentStatus from "@/pages/students/student-status"
+import { formatMoney } from "@/lib/format-money"
 
 export const useLeadTestStudentCols = () => {
     const navigate = useNavigate()
@@ -65,6 +66,27 @@ export const useLeadTestStudentCols = () => {
                     },
                 }) {
                     return <StudentStatus status={status} />
+                },
+            },
+            {
+                header: "Balans",
+                accessorKey: "group_data",
+                cell({
+                    row: {
+                        original: { group_data },
+                    },
+                }) {
+                    return (
+                        <span
+                            className={
+                                Number(group_data?.balance) < 0
+                                    ? "text-red-500"
+                                    : ""
+                            }
+                        >
+                            {formatMoney(group_data?.balance)}
+                        </span>
+                    )
                 },
             },
             {

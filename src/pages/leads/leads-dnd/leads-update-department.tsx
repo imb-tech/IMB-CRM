@@ -87,8 +87,6 @@ const LeadsUpdateDepartment = () => {
                     }
                 }
                 if (status.id === Number(store?.status)) {
-                    console.log("ishladi")
-
                     return {
                         ...status,
                         total_count: Math.max(0, status.total_count - 1),

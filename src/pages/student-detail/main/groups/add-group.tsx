@@ -25,9 +25,10 @@ import {
 } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import { Button } from "@/components/ui/button"
-import { handleFormError } from "@/lib/show-form-errors"
 import { cn } from "@/lib/utils"
 import { AxiosError } from "axios"
+import { useSearch } from "@tanstack/react-router"
+import { useParams } from "@tanstack/react-router"
 
 type Props = {
     id: string
@@ -36,6 +37,8 @@ type Props = {
 }
 
 function AddGroup({ id, leads = false, url = GROUP_STUDENTS }: Props) {
+    const params = useSearch({ strict: false })
+    const { id: statusId } = useParams({ strict: false })
     const queryClient = useQueryClient()
     const { closeModal } = useModal("student-groups-add")
     const [search, setSearch] = useState("")
@@ -46,6 +49,16 @@ function AddGroup({ id, leads = false, url = GROUP_STUDENTS }: Props) {
         params: { search, branch: active_branch },
     })
 
+    const queryKeyUsers = [
+        "leads/crud",
+        ...Object.values({ ...params, pipeline: statusId }),
+    ]
+
+    const queryKeyStatus = [
+        "leads/pipeline/status",
+        ...Object.values({ is_active: true, pipeline: statusId }),
+    ]
+
     const form = useForm<GroupStudentCreate>({
         defaultValues: {
             status: leads ? 0 : 1,
@@ -54,11 +67,25 @@ function AddGroup({ id, leads = false, url = GROUP_STUDENTS }: Props) {
     })
 
     const onSuccess = useCallback(() => {
+        if (leads) {
+            const originUsers =
+                queryClient.getQueryData<LeadFields[]>(queryKeyUsers)
+
+            queryClient.setQueryData(
+                queryKeyUsers,
+                originUsers?.filter((usr) => usr.id !== Number(id)),
+            )
+        }
+
         toast.success("Muvaffaqiyatli qo'shildi")
         closeModal()
         form.reset()
         queryClient.invalidateQueries({ queryKey: [STUDENT_GROUP] })
         queryClient.invalidateQueries({ queryKey: [GROUP] })
+
+        if (leads) {
+            queryClient.refetchQueries({ queryKey: queryKeyStatus })
+        }
     }, [closeModal, form, queryClient])
 
     const { mutate, isPending } = usePost({ onSuccess })
