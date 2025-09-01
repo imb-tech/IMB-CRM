@@ -37,7 +37,7 @@ function RouteComponent() {
         }
     }, [hasLeads, navigate, isFetched])
 
-    
+
 
     return (
         <PageLayout

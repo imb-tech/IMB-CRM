@@ -29,7 +29,7 @@ export default function LeadDealSelector() {
     const handleMouseEnter = (id: number) => setHoveredId(id)
     const handleMouseLeave = () => setHoveredId(null)
 
-    const { openModal } = useModal("create-pip")
+    const { openModal, isOpen } = useModal("create-pip")
     const { openModal: openDelete } = useModal("delete")
 
     const { id } = useParams({ strict: false })
@@ -47,13 +47,28 @@ export default function LeadDealSelector() {
     const handleOpen = () => setOpen((prev) => !prev)
 
     useEffect(() => {
-        if (pipeline) {
-            navigate({
-                to: pathname,
-                search: { pipeline: Number(pipeline) },
-            })
+        if (!data?.length || isOpen) return
+
+        const currentPipeline = Number(pipeline)
+        const found = data.find((el) => Number(el.id) === currentPipeline)
+
+        const firstPipelineId = data[0].id
+
+        const targetPipeline = found ? currentPipeline : firstPipelineId
+
+        if (!found) {
+            localStorage.setItem("pipeline", JSON.stringify(firstPipelineId))
         }
-    }, [pipeline, navigate, pathname, search])
+
+        navigate({
+            to: found ? pathname : "/leads/varonka/$id",
+            params: found ? undefined : { id: firstPipelineId },
+            search: {
+                ...search,
+                pipeline: Number(targetPipeline),
+            },
+        })
+    }, [pipeline, data, navigate, pathname, search])
 
     if (!data?.length) return null
 
@@ -86,8 +101,8 @@ export default function LeadDealSelector() {
                     {!!data?.length ? (
                         data?.map((itm) => {
                             const isActive =
-                                Number(itm?.id) ===
-                                (Number(id) || search?.pipeline)
+                                Number(itm.id) === Number(search?.pipeline)
+
                             const isHovered = hoveredId === Number(itm.id)
                             return (
                                 <div
