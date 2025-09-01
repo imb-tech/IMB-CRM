@@ -1,8 +1,9 @@
 import ParamSwtich from "@/components/as-params/switch"
 import { Badge } from "@/components/ui/badge"
-import { Button, buttonVariants } from "@/components/ui/button"
+import { Button } from "@/components/ui/button"
 import { menuItems } from "@/constants/menu"
 import { findChildPaths } from "@/constants/util.menu"
+import { formatMoney } from "@/lib/format-money"
 import { Plus } from "lucide-react"
 import { useMemo } from "react"
 
@@ -25,16 +26,10 @@ export default function SettingsHeader({
         <div className="flex items-center gap-3">
             <div className="flex items-center gap-3 flex-1">
                 <h1 className="text-xl">{pageTitle ?? activeLink?.title}</h1>
-                <Badge className="text-sm">{dataCount}</Badge>
+                <Badge className="text-sm">{formatMoney(dataCount)}</Badge>
             </div>
-            <label
-                className={buttonVariants({
-                    variant: "secondary",
-                })}
-                htmlFor="is_active"
-            >
-                <ParamSwtich paramName="is_active" reverse label="Arxiv" />
-            </label>
+
+            <ParamSwtich paramName="is_active" reverse label="Arxiv" />
             <Button onClick={handleAdd}>
                 <Plus className="h-4 w-4" />
                 Yaratish

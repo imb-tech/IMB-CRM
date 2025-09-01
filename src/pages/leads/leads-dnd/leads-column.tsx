@@ -64,7 +64,7 @@ const LeadsColumn = ({ index, item }: Props) => {
 
                             <div className="flex items-center">
                                 <div
-                                    className="rounded-sm p-1.5 mr-2 bg-background flex items-en justify-center hover:border-primary cursor-pointer transition-all duration-200"
+                                    className="rounded-sm p-1.5 mr-2 bg-primary/10 flex items-en justify-center hover:border-primary cursor-pointer transition-all duration-200"
                                     onClick={() => {
                                         openModal()
                                         setLeadData({

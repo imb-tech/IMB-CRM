@@ -239,7 +239,7 @@ const LeadsDnd = () => {
             </Modal>
 
             <Modal
-                title="Sinov darsiga  qo'shish"
+                title="Guruhga qo'shish"
                 modalKey="student-groups-add"
             >
                 <AddGroup
