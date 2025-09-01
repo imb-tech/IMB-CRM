@@ -9,6 +9,7 @@ import { UserPlus } from "lucide-react"
 import { useStore } from "@/hooks/use-store"
 import { Badge } from "@/components/ui/badge"
 import { formatMoney } from "@/lib/format-money"
+import { cn } from "@/lib/utils"
 
 type Props = {
     index: number
@@ -41,7 +42,6 @@ const LeadsColumn = ({ index, item }: Props) => {
         setStore(item)
         openEdit()
     }
-
 
 
     return (
@@ -91,7 +91,10 @@ const LeadsColumn = ({ index, item }: Props) => {
                                     ref={dropProvided.innerRef}
                                     {...dropProvided.droppableProps}
                                     // className="dark:bg-[#0c0d03] bg-zinc-200 rounded-lg min-w-80 max-w-80"
-                                    className="rounded-lg min-w-80 max-w-80 pb-10"
+                                    className={cn(
+                                        "rounded-lg min-w-80 max-w-80 pb-2",
+                                        !data?.length && "pb-10"
+                                    )}
                                 >
                                     <div className="no-scrollbar-x max-h-[68vh] 2xl:max-h-[80vh] overflow-y-auto">
                                         <LeadsList users={data} />

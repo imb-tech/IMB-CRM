@@ -39,8 +39,11 @@ export default function CreateLeadForm({ data }: { data?: Lead }) {
             {
                 onSuccess() {
                     form.reset(data)
-                    queryClient.removeQueries({
+                    queryClient.invalidateQueries({
                         queryKey: [`leads/crud/${data?.id}`],
+                    })
+                    queryClient.invalidateQueries({
+                        queryKey: [`leads/log/${data?.id}`],
                     })
                 },
             },
