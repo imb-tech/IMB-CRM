@@ -5,7 +5,6 @@ import { useGet } from "@/hooks/useGet"
 import { useNavigate, useSearch } from "@tanstack/react-router"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import LeadsDepartmentFilter from "@/pages/reports/student-payment/leads-department-filter"
 import { ParamCombobox } from "@/components/as-params/combobox"
 import { formatMoney } from "@/lib/format-money"
 
@@ -73,7 +72,6 @@ export default function LeadsArchive() {
                                         className: "min-w-[170px]",
                                     }}
                                 />
-                                <LeadsDepartmentFilter />
                             </div>
                         </div>
                     }

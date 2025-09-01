@@ -65,7 +65,7 @@ export default function LeadDealSelector() {
 
             <div
                 className={cn(
-                    "absolute bg-card w-0 right-0 py-[14px] p-0 top-11 opacity-0 z-20 rounded-xl shadow-sm shadow-primary/40 transition-opacity duration-200 overflow-hidden px-0 flex flex-col",
+                    "absolute bg-card w-0 right-0 py-[14px] p-0 top-11 opacity-0 z-20 rounded-xl shadow-sm  transition-opacity duration-200 overflow-hidden px-0 flex flex-col",
                     open ? "w-72 opacity-100 min-h-[300px]" : "",
                 )}
             >
@@ -108,7 +108,7 @@ export default function LeadDealSelector() {
                                             <>
                                                 <Trash
                                                     size={18}
-                                                    className="transition-all duration-200 cursor-pointer text-rose-500"
+                                                    className="transition-all duration-200 cursor-pointer text-red-600"
                                                     onClick={(e) => {
                                                         e.stopPropagation()
                                                         if (itm.id) {

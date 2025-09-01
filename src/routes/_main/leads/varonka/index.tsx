@@ -20,7 +20,7 @@ function RouteComponent() {
     const { data, isSuccess, isFetched } =
         useGet<{ id: number; name: string }[]>(pipelineUrl)
 
-    const hasLeads = isSuccess && data?.length
+    const hasLeads = isSuccess && !!data?.length
 
     useEffect(() => {
         if (isFetched && data?.length) {
