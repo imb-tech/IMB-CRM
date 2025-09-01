@@ -133,6 +133,11 @@ export default function AppendStudent({
         mutate(GROUP_STUDENTS, payload, {
             onError(err) {
                 const errors = err.response.data as ErrorType
+                if (errors.group_students) {
+                    for (const _ of defaultStudents!) {
+                        errors.group_students.unshift({} as MultiStudent)
+                    }
+                }
                 errors.group_students.forEach((element, i) =>
                     showError(element, `students.${i}.`),
                 )
@@ -161,7 +166,7 @@ export default function AppendStudent({
         if (defaultStudents && data) {
             const md = defaultStudents.map((s) => data.find((c) => c.id == s))
             for (const el of md) {
-                if (!wStudents.includes(el?.id!)) {
+                if (!wStudents?.includes(el?.id!)) {
                     append({
                         ...el,
                         discount: {
