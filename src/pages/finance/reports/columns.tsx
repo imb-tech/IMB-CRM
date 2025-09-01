@@ -22,9 +22,10 @@ export const useCostAndIncomeCols = () => {
                     <span
                         className={cn(
                             "text-red-600 font-medium",
-                            search.page_tabs === "income" && "text-green-600",
+                            search.tabs === "income" && "text-green-600",
                         )}
                     >
+                        {search.tabs === "income" ? "" : "-"}
                         {formatMoney(row.original.price)}
                     </span>
                 ),

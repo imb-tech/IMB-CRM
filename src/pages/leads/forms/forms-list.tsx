@@ -10,7 +10,6 @@ import DeleteModal from "@/components/custom/delete-modal"
 import { useModal } from "@/hooks/useModal"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-import LeadsDepartmentFilter from "@/pages/reports/student-payment/leads-department-filter"
 import { formatMoney } from "@/lib/format-money"
 
 export default function FormsList() {
@@ -66,23 +65,21 @@ export default function FormsList() {
                                         {formatMoney(data?.count)}
                                     </Badge>
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <LeadsDepartmentFilter />
-                                    <Button
-                                        onClick={() =>
-                                            navigate({
-                                                to: "/leads/forms/create",
-                                                search: {
-                                                    pipeline: params.pipeline,
-                                                },
-                                            })
-                                        }
-                                        className="sm:w-max w-full"
-                                    >
-                                        <Plus size={18} />
-                                        {"Yangi yaratish"}
-                                    </Button>
-                                </div>
+
+                                <Button
+                                    onClick={() =>
+                                        navigate({
+                                            to: "/leads/forms/create",
+                                            search: {
+                                                pipeline: params.pipeline,
+                                            },
+                                        })
+                                    }
+                                    className="sm:w-max w-full"
+                                >
+                                    <Plus size={18} />
+                                    {"Yangi yaratish"}
+                                </Button>
                             </div>
                         }
                     />

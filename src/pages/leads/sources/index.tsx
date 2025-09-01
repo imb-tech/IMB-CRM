@@ -54,7 +54,9 @@ export default function Sources() {
                 <div className="flex mb-3  justify-between items-center gap-3 ">
                     <div className="flex items-center gap-3">
                         <h1 className="text-xl">Manbalar ro'yxati</h1>
-                        <Badge className="text-sm">{formatMoney(data?.length)}</Badge>
+                        <Badge className="text-sm">
+                            {formatMoney(data?.length)}
+                        </Badge>
                     </div>
 
                     <Button
@@ -132,9 +134,10 @@ export default function Sources() {
 
                         <p className="mt-5">{"Belgi tanlang"}</p>
                         <div className="flex gap-3 flex-wrap pb-3 pt-1">
-                            {leadSources?.map((Ic) => {
+                            {leadSources?.map((Ic, index) => {
                                 return (
                                     <button
+                                        key={index}
                                         className={cn(
                                             "bg-secondary cursor-pointer rounded-sm p-2 border border-secondary",
                                             watchIcon === Ic.key

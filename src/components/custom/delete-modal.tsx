@@ -1,6 +1,6 @@
 import { useModal } from "@/hooks/useModal"
 import { useQueryClient } from "@tanstack/react-query"
-import { ReactNode } from "@tanstack/react-router"
+import { ReactNode, useNavigate } from "@tanstack/react-router"
 import { toast } from "sonner"
 import { Button } from "../ui/button"
 import Modal from "./modal"
@@ -8,6 +8,7 @@ import { useDelete } from "@/hooks/useDelete"
 import { Trash2 } from "lucide-react"
 
 interface IProps {
+    url?: string
     path: string
     id: string | number | undefined
     name?: ReactNode
@@ -26,7 +27,10 @@ export default function DeleteModal({
     modalKey = "delete",
     disableRefetch = false,
     refetchKeys,
+    refetchKey,
+    url,
 }: IProps) {
+    const navigate = useNavigate()
     const { closeModal } = useModal(modalKey)
     const queryClient = useQueryClient()
 
@@ -47,8 +51,13 @@ export default function DeleteModal({
                         return refetchKeys?.includes(q.queryKey[0])
                     },
                 })
+            } else if (refetchKey) {
+                queryClient.removeQueries({ queryKey: [refetchKey] })
             }
             closeModal()
+            if (url) {
+                navigate({ to: url })
+            }
         },
     })
 

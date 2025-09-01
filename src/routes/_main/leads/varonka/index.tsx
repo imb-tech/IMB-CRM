@@ -2,6 +2,7 @@ import Modal from "@/components/custom/modal"
 import { Button } from "@/components/ui/button"
 import { useGet } from "@/hooks/useGet"
 import { useModal } from "@/hooks/useModal"
+import { useStorage } from "@/hooks/useStorage"
 import PageLayout from "@/layouts/page-layout"
 import LeadsMain from "@/pages/leads"
 import CreateDepartment from "@/pages/leads/create-department"
@@ -15,23 +16,27 @@ export const Route = createFileRoute("/_main/leads/varonka/")({
 })
 
 function RouteComponent() {
+    const pipeline = useStorage("pipeline")
     const { openModal } = useModal("create-pip")
     const navigate = useNavigate()
     const { data, isSuccess, isFetched } =
         useGet<{ id: number; name: string }[]>(pipelineUrl)
 
-    const hasLeads = isSuccess && data?.length
+    const hasLeads = isSuccess && !!data?.length
 
     useEffect(() => {
-        if (isFetched && data?.length) {
+        if (isFetched && !!data?.length) {
+            const firstId = pipeline || data?.[0]?.id
             navigate({
                 to: "/leads/varonka/$id",
-                params: { id: data?.[0]?.id?.toString() },
-                search: { pipeline: data?.[0]?.id },
+                params: { id: String(firstId) },
+                search: { pipeline: firstId },
                 replace: true,
             })
+            localStorage.setItem("pipeline", JSON.stringify(firstId))
         }
-    }, [isFetched, data, navigate])
+    }, [isFetched, data, navigate]) 
+    
 
     return (
         <PageLayout

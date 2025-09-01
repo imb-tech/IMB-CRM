@@ -45,13 +45,20 @@ export function AttendanceSelect({ status, student, id: attId }: Props) {
             queryKey,
             oldData?.map((st) => {
                 if (st.id == student) {
+                    const stat = ((st.statistics as any)[sk[d]] ?? 0)
+                    const oldStat = ((st.statistics as any)[sk[status]] ?? 0)
                     return {
                         ...st,
                         attendances: st.attendances?.map((at) =>
                             at.id === attId ?
-                                { ...at, status: d == status ? 0 : d }
-                            :   at,
+                                { ...at, status: d == status ? 0 : d, }
+                                : at,
                         ),
+                        statistics: {
+                            ...st.statistics,
+                            [sk[status]]: oldStat - 1,
+                            [sk[d]]: d == status ? stat - 1 : stat + 1,
+                        }
                     }
                 } else return st
             }),
@@ -83,12 +90,12 @@ export function AttendanceSelect({ status, student, id: attId }: Props) {
                         >
                             {getStatusIcon(sk[status.toString()])}
                         </div>
-                    :   <div
+                        : <div
                             className={cn(
                                 "w-7 h-7 rounded-full flex items-center justify-center border border-separate border-gray-300 dark:border-gray-400/40",
                                 status == 3 ?
                                     "bg-gray-500/5 border-transparent dark:border-transparent"
-                                :   "",
+                                    : "",
                             )}
                         ></div>
                     }
@@ -132,19 +139,19 @@ export const getStatusColor = (status: string, type = "bg") => {
     switch (status) {
         case "present":
             return type == "bg" ?
-                    "bg-green-600/20 hover:bg-green-600/40"
-                :   "text-green-600 hover:text-green-600"
+                "bg-green-600/20 hover:bg-green-600/40"
+                : "text-green-600 hover:text-green-600"
         case "absent":
             return type == "bg" ?
-                    "bg-red-600/20 hover:bg-red-600/40"
-                :   "text-red-600 hover:text-red-600"
+                "bg-red-600/20 hover:bg-red-600/40"
+                : "text-red-600 hover:text-red-600"
         case "late":
             return type == "bg" ?
-                    "bg-yellow-600/20 hover:bg-yellow-600/40"
-                :   "text-yellow-600 hover:text-yellow-600"
+                "bg-yellow-600/20 hover:bg-yellow-600/40"
+                : "text-yellow-600 hover:text-yellow-600"
         default:
             return type == "bg" ?
-                    "bg-gray-50 hover:bg-gray-100"
-                :   "text-gray-50 hover:text-gray-100"
+                "bg-gray-50 hover:bg-gray-100"
+                : "text-gray-50 hover:text-gray-100"
     }
 }

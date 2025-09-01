@@ -197,7 +197,7 @@ export default function LeadCard(props: Lead & { index: number }) {
                             </p>
                             <Badge
                                 className={cn(
-                                    "ml-auto cursor-pointer transition-colors duration-200 text-xs font-normal bg-emerald-500/10 text-emerald-500 dark:bg-emerald-500/20 dark:text-emerald-400 hover:bg-emerald-500/20",
+                                    "ml-auto cursor-pointer transition-colors duration-200 text-xs font-normal bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary hover:bg-primary/20",
                                 )}
                             >
                                 {worker_name}
