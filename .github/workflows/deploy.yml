@@ -1,18 +1,54 @@
-- name: Deploy to server
-  env:
-      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      HOST: ${{ secrets.HOST }}
-      USERNAME: ${{ secrets.USERNAME }}
-  run: |
-      # Create the .ssh directory
-      mkdir -p ~/.ssh
+name: Deploy Vite React App
 
-      # Add the SSH private key
-      echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-      chmod 600 ~/.ssh/id_rsa
+on:
+    push:
+        branches:
+            - prod
 
-      # Disable strict host key checking (agar SSH_KNOWN_HOSTS ishlatmasak)
-      echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
 
-      # Sync only the **contents** of dist/ into target folder
-      rsync -avz --delete dist/ $USERNAME@$HOST:/var/www/edu-front/
+        steps:
+            # 1. Checkout code
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            # 2. Setup Node.js
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: "pnpm"
+
+            # 3. Install pnpm
+            - name: Install pnpm
+              run: npm install -g pnpm
+
+            # 4. Install dependencies with pnpm
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            # 5. Build project with pnpm
+            - name: Build project
+              run: pnpm build
+
+            # 6. Deploy to server
+            - name: Deploy to server
+              env:
+                  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+                  HOST: ${{ secrets.HOST }}
+                  USERNAME: ${{ secrets.USERNAME }}
+              run: |
+                  # Create .ssh directory
+                  mkdir -p ~/.ssh
+
+                  # Add SSH private key
+                  echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+                  chmod 600 ~/.ssh/id_rsa
+
+                  # Disable strict host key checking
+                  echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+
+                  # Sync only contents of dist/ into target folder
+                  rsync -avz --delete dist/ $USERNAME@$HOST:/var/www/edu-front/
