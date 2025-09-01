@@ -19,6 +19,7 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: 22
+                  cache: "pnpm"
 
             # 3. Setup pnpm (rasmiy action)
             - name: Install pnpm
