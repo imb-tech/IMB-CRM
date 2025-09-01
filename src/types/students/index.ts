@@ -84,9 +84,9 @@ type GroupStudentTestStudents = {
         end_date: string
         teacher: string
         course: string
-        balance: number
         branch: string
     }
+    balance: number
     start_date: string
     activated_date: string
     status: number
