@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { ChevronDown, Pencil, Plus, Trash, CircleCheck } from "lucide-react"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { cn } from "@/lib/utils"
 import { useGet } from "@/hooks/useGet"
 import {
@@ -13,6 +13,7 @@ import Modal from "@/components/custom/modal"
 import { useModal } from "@/hooks/useModal"
 import DeleteModal from "@/components/custom/delete-modal"
 import CreateDepartment from "./create-department"
+import { useStorage } from "@/hooks/useStorage"
 
 export const pipelineUrl = "leads/pipeline/crud"
 
@@ -21,6 +22,7 @@ export default function LeadDealSelector() {
     const search = useSearch({ strict: false })
     const [open, setOpen] = useState<boolean>(false)
     const [item, setItem] = useState<Pipeline | null>(null)
+    const pipeline = useStorage("pipeline")
 
     const [hoveredId, setHoveredId] = useState<number | null>(null)
 
@@ -44,6 +46,15 @@ export default function LeadDealSelector() {
 
     const handleOpen = () => setOpen((prev) => !prev)
 
+    useEffect(() => {
+        if (pipeline) {
+            navigate({
+                to: pathname,
+                search: { pipeline: Number(pipeline) },
+            })
+        }
+    }, [pipeline, navigate, pathname])
+
     return (
         <div className="flex items-center gap-3 relative ">
             <Button
@@ -65,7 +76,7 @@ export default function LeadDealSelector() {
 
             <div
                 className={cn(
-                    "absolute bg-card w-0 right-0 py-[14px] p-0 top-11 opacity-0 z-20 rounded-xl shadow-sm shadow-primary/40 transition-opacity duration-200 overflow-hidden px-0 flex flex-col",
+                    "absolute bg-card w-0 right-0 py-[14px] p-0 top-11 opacity-0 z-20 rounded-xl shadow-sm  transition-opacity duration-200 overflow-hidden px-0 flex flex-col",
                     open ? "w-72 opacity-100 min-h-[300px]" : "",
                 )}
             >
@@ -89,6 +100,10 @@ export default function LeadDealSelector() {
                                                 pipeline: Number(itm.id),
                                             },
                                         })
+                                        localStorage.setItem(
+                                            "pipeline",
+                                            JSON.stringify(itm.id),
+                                        )
                                         handleOpen()
                                     }}
                                     onMouseEnter={() =>
@@ -108,7 +123,7 @@ export default function LeadDealSelector() {
                                             <>
                                                 <Trash
                                                     size={18}
-                                                    className="transition-all duration-200 cursor-pointer text-rose-500"
+                                                    className="transition-all duration-200 cursor-pointer text-red-600"
                                                     onClick={(e) => {
                                                         e.stopPropagation()
                                                         if (itm.id) {

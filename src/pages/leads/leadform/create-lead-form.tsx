@@ -9,8 +9,10 @@ import { LeadPhones } from "./lead-phones"
 import useLeadStatuses from "../use-lead-statuses"
 import { usePatch } from "@/hooks/usePatch"
 import FormInput from "@/components/form/input"
+import { useQueryClient } from "@tanstack/react-query"
 
 export default function CreateLeadForm({ data }: { data?: Lead }) {
+    const queryClient = useQueryClient()
     const navigate = useNavigate()
     const form = useForm<Lead>({
         defaultValues: {
@@ -37,6 +39,9 @@ export default function CreateLeadForm({ data }: { data?: Lead }) {
             {
                 onSuccess() {
                     form.reset(data)
+                    queryClient.removeQueries({
+                        queryKey: [`leads/crud/${data?.id}`],
+                    })
                 },
             },
         )
@@ -96,9 +101,9 @@ export default function CreateLeadForm({ data }: { data?: Lead }) {
                             <FormInput
                                 methods={form}
                                 name="name"
-                                label={"Ism"}
+                                label={"FIO"}
                                 required
-                                placeholder={"Lid ismi yoki nomi"}
+                                placeholder={"Lid FIO yoki nomi"}
                             />
 
                             <LeadPhones />

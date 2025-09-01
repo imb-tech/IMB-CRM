@@ -1,6 +1,6 @@
 import JSEncrypt from "jsencrypt"
 
-const publicKeyPem = import.meta.env.VITE_SSH_PUBLIC_KEY.replace(/\\n/g, '\n');
+const publicKeyPem = import.meta.env.VITE_SSH_PUBLIC_KEY?.replace(/\\n/g, '\n');
 export function encryptMessage(message: string) {
     const encrypt = new JSEncrypt()
     encrypt.setPublicKey(publicKeyPem)

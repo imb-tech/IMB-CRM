@@ -1,28 +1,17 @@
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { STUDENT } from "@/constants/api-endpoints"
-import { useStore } from "@/hooks/use-store"
-import { useGet } from "@/hooks/useGet"
-import { useModal } from "@/hooks/useModal"
 import { formatMoney } from "@/lib/format-money"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
 import { cn } from "@/lib/utils"
-import { useParams } from "@tanstack/react-router"
 import { format } from "date-fns"
-import { CalendarDays, Edit, KeyRound, PhoneCall, School } from "lucide-react"
+import { CalendarDays, KeyRound, PhoneCall, School } from "lucide-react"
 
-type Props = {}
+type Props = {
+    data: Student | undefined
+}
 
-function StudentProfile({}: Props) {
-    const { openModal } = useModal(`${STUDENT}-add`)
-    const { setStore } = useStore<Student | null>("student")
-    const { id } = useParams({ from: "/_main/students/$id" })
-    const { data } = useGet<Student>(`${STUDENT}/${id}`, {
-        options: { enabled: !!id },
-    })
-
+function StudentProfile({ data }: Props) {
     return (
-        <div className="bg-card border-divider border relative rounded-lg  p-4 flex lg:flex-row flex-col gap-5 lg:gap-0 lg:justify-between lg:items-end">
+        <div className="bg-card border-divider border relative rounded-lg  p-4 flex lg:flex-row flex-col gap-5 lg:gap-0 lg:justify-between ">
             <div className="flex flex-col sm:flex-row items-start gap-6 h-full">
                 <div className="border border-divider   sm:h-full sm:w-[170px] rounded-lg">
                     <img
@@ -98,7 +87,7 @@ function StudentProfile({}: Props) {
                 </div>
             </div>
 
-            <div className="flex-col border border-divider py-3 whitespace-nowrap px-6 rounded-lg flex items-start justify-center gap-1">
+            <div className="flex-col h-[170px]  border border-divider py-3 whitespace-nowrap px-6 rounded-lg flex items-start  gap-1">
                 <div className="flex items-center w-full border-b pb-2 dark:border-b-zinc-700">
                     <span className=" min-w-28 font-medium ">{"Baho"}:</span>
                     <span className={cn("w-full font-medium")}>
@@ -124,198 +113,8 @@ function StudentProfile({}: Props) {
                     </span>
                 </div>
             </div>
-
-            <Button
-                type="button"
-                onClick={() => {
-                    if (data?.id) {
-                        openModal()
-                        setStore(data)
-                    }
-                }}
-                className="absolute top-2 right-2"
-            >
-                <Edit size={16} />
-            </Button>
         </div>
     )
 }
 
 export default StudentProfile
-
-const student = {
-    id: "123",
-    fullName: "Alice Johnson",
-    phone: "+998 88 102 30 42",
-    status: "Aktiv holatda",
-    group: "Group A",
-    enrollmentDate: "2023-09-01",
-    photoUrl:
-        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
-    overviewData: {
-        enrollmentDate: "September 1, 2023",
-        currentGroup: "Group A (Advanced Math)",
-        lastPaymentDate: "July 25, 2024",
-        nextPaymentDue: "August 25, 2024",
-    },
-    groupsData: [
-        {
-            id: 1,
-            name: "Group A (Advanced Math)",
-            startDate: "2023-09-01",
-            endDate: "2024-08-31",
-            performance: "Excellent",
-            paymentStatus: "Paid",
-            balance: "$0.00",
-            status: "Active",
-            paymentHistory: [
-                {
-                    date: "2023-09-01",
-                    amount: "$500.00",
-                    type: "Tuition",
-                    status: "Paid",
-                },
-                {
-                    date: "2023-10-01",
-                    amount: "$500.00",
-                    type: "Tuition",
-                    status: "Paid",
-                },
-                {
-                    date: "2023-11-01",
-                    amount: "$500.00",
-                    type: "Tuition",
-                    status: "Paid",
-                },
-                {
-                    date: "2024-07-25",
-                    amount: "$500.00",
-                    type: "Tuition",
-                    status: "Paid",
-                }, // Latest payment
-            ],
-        },
-        {
-            id: 2,
-            name: "Group B (Physics Basics)",
-            startDate: "2024-01-15",
-            endDate: "2024-06-30",
-            performance: "Good",
-            paymentStatus: "Paid",
-            balance: "$0.00",
-            status: "Active",
-            paymentHistory: [
-                {
-                    date: "2024-01-15",
-                    amount: "$450.00",
-                    type: "Tuition",
-                    status: "Paid",
-                },
-                {
-                    date: "2024-02-15",
-                    amount: "$450.00",
-                    type: "Tuition",
-                    status: "Paid",
-                },
-            ],
-        },
-        {
-            id: 3,
-            name: "Group C (Archived History)",
-            startDate: "2022-03-01",
-            endDate: "2022-12-31",
-            performance: "Average",
-            paymentStatus: "Paid",
-            balance: "$0.00",
-            status: "Archived",
-            paymentHistory: [
-                {
-                    date: "2022-03-01",
-                    amount: "$300.00",
-                    type: "Tuition",
-                    status: "Paid",
-                },
-                {
-                    date: "2022-04-01",
-                    amount: "$300.00",
-                    type: "Tuition",
-                    status: "Paid",
-                },
-            ],
-        },
-        {
-            id: 4,
-            name: "Group D (Pending Payment)",
-            startDate: "2024-07-01",
-            endDate: "2024-12-31",
-            performance: "N/A",
-            paymentStatus: "Pending",
-            balance: "$250.00",
-            status: "Active",
-            paymentHistory: [
-                {
-                    date: "2024-07-01",
-                    amount: "$250.00",
-                    type: "Tuition",
-                    status: "Pending",
-                },
-            ],
-        },
-    ],
-    notesData: [
-        {
-            id: 1,
-            date: "2024-07-20",
-            author: "Mr. Smith",
-            content:
-                "Alice is a very diligent student, always completes homework on time.",
-        },
-        {
-            id: 2,
-            date: "2024-08-02", // Latest note
-            author: "Admin",
-            content: "Discussed upcoming exam schedule with Alice.",
-        },
-        {
-            id: 3,
-            date: "2024-07-15",
-            author: "Admin",
-            content: "Called parents to confirm new group enrollment.",
-        },
-    ],
-    activityLogData: [
-        {
-            id: 1,
-            timestamp: "2024-08-01 10:30 AM",
-            type: "SMS Sent",
-            description: "Sent payment reminder to parent.",
-        },
-        {
-            id: 2,
-            timestamp: "2024-07-28 09:00 AM",
-            type: "Profile Edit",
-            description: "Updated phone number by Admin.",
-        },
-        {
-            id: 3,
-            timestamp: "2024-07-25 02:15 PM",
-            type: "Login",
-            description: "Parent logged in to portal.",
-        },
-    ],
-
-    discountsData: [
-        {
-            id: 1,
-            amount: "10%",
-            reason: "Early Bird Enrollment",
-            status: "Active",
-        },
-        {
-            id: 2,
-            amount: "$50",
-            reason: "Sibling Discount",
-            status: "Active",
-        },
-    ],
-}

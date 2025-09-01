@@ -4,22 +4,11 @@ import { useGet } from "@/hooks/useGet"
 import { useSearch } from "@tanstack/react-router"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import LeadsDepartmentFilter from "@/pages/reports/student-payment/leads-department-filter"
 import { ParamCombobox } from "@/components/as-params/combobox"
 import { formatMoney } from "@/lib/format-money"
 import { useLeadTestStudentCols } from "./cols"
 import { studentStatusKeys } from "@/pages/students/student-status"
 
-const options = [
-    {
-        id: "success",
-        name: "Muvaffaqiyatli",
-    },
-    {
-        id: "loosed",
-        name: "O'chirilgan",
-    },
-]
 
 export default function LeadsTestStudents() {
     const params = useSearch({ strict: false })
@@ -76,7 +65,6 @@ export default function LeadsTestStudents() {
                                         className: "min-w-[170px]",
                                     }}
                                 />
-                                <LeadsDepartmentFilter />
                             </div>
                         </div>
                     }
