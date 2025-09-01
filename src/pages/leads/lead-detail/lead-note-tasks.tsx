@@ -338,7 +338,7 @@ export default function LeadNotes() {
                                                                     message?.author_name
                                                                 }
                                                             </span>
-                                                            <span className="bg-gray-500 rounded-[2px] px-2">
+                                                            <span className="bg-gray-400/40 dark:bg-gray-500 rounded-[2px] px-2">
                                                                 {
                                                                     message?.old_status
                                                                 }
