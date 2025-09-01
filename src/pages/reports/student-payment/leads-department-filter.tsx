@@ -20,7 +20,7 @@ function LeadsDepartmentFilter({}: Props) {
             isSearch={false}
             label="Varonkalar"
             addButtonProps={{
-                className:"min-w-[150px] justify-start"
+                className:"min-w-[150px] justify-between !bg-background dark:!bg-secondary"
             }}
         />
     )

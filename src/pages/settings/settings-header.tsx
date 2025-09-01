@@ -29,7 +29,7 @@ export default function SettingsHeader({
             </div>
             <label
                 className={buttonVariants({
-                    variant: "secondary",
+                    variant: "ghost",
                 })}
                 htmlFor="is_active"
             >
