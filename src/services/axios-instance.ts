@@ -9,7 +9,9 @@ import { setActiveBranch } from "@/lib/utils"
 import axios from "axios"
 import { toast } from "sonner"
 
-export const baseURL = import.meta.env.DEV ? "/api/" : import.meta.env.VITE_DEFAULT_URL
+const hostname = window.location.hostname.split('0')[0]
+const urlPART = import.meta.env.VITE_DEFAULT_URL
+export const baseURL = import.meta.env.DEV ? "/api/" : 'https://' + hostname + urlPART
 
 const axiosInstance = axios.create({
     baseURL,
