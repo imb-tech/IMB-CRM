@@ -19,7 +19,6 @@ type Props = {
 const CreateDepartment = ({ item }: Props) => {
     const { active_branch } = useMe()
     const queryClinet = useQueryClient()
-
     const search = useSearch({ strict: false })
 
     const { closeModal } = useModal("create-pip")
@@ -41,12 +40,16 @@ const CreateDepartment = ({ item }: Props) => {
             queryKey: [pipelineUrl],
         })
         navigate({
-            search: search,
+            search: {
+                ...search,
+                pipeline: Number(resp.id),
+            },
             to: "/leads/varonka/$id",
             params: {
                 id: resp.id,
             },
         })
+        localStorage.setItem("pipeline", JSON.stringify(resp.id))
     }
 
     const { mutate, isPending } = usePost(
