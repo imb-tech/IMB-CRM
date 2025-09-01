@@ -29,11 +29,11 @@ const chartData: Data[] = [
 ]
 
 const chartConfig = {
-    Kirim: {
+    Chiqim: {
         label: "Chiqim",
         color: "fill-[#FF0052] bg-[#FF0052]",
     },
-    Chiqim: {
+    Kirim: {
         label: "Kirim",
         color: "fill-sky-800  bg-sky-800",
     },
