@@ -70,21 +70,21 @@ export const useLeadTestStudentCols = () => {
             },
             {
                 header: "Balans",
-                accessorKey: "group_data",
+                accessorKey: "balance",
                 cell({
                     row: {
-                        original: { group_data },
+                        original: { balance },
                     },
                 }) {
                     return (
                         <span
                             className={
-                                Number(group_data?.balance) < 0
+                                Number(balance) < 0
                                     ? "text-red-500"
                                     : ""
                             }
                         >
-                            {formatMoney(group_data?.balance)}
+                            {formatMoney(balance)}
                         </span>
                     )
                 },
