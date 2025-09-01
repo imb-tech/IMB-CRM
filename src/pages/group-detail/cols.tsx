@@ -44,7 +44,7 @@ export const useGroupStudentCols = () => {
                 enableSorting: true,
                 cell({
                     row: {
-                        original: { status, allowed_statuses, id },
+                        original: { status, allowed_statuses, id, start_date },
                     },
                 }) {
                     return (
@@ -52,6 +52,7 @@ export const useGroupStudentCols = () => {
                             student={id}
                             allowed_statuses={allowed_statuses}
                             status={status}
+                            date={start_date}
                         />
                     )
                 },

@@ -110,12 +110,13 @@ export function ParamMultiCombobox<T extends Record<string, any>>({
                     role="combobox"
                     variant={"secondary"}
                     aria-expanded={open}
+                    {...addButtonProps}
                     className={cn(
                         "w-full justify-between text-muted-foreground font-normal",
                         currentValues.length && "text-foreground font-medium",
                         isError && "!text-destructive",
+                        addButtonProps?.className
                     )}
-                    {...addButtonProps}
                 >
                     <span className="line-clamp-1 break-all whitespace-pre-line">
                         {currentValues.length > 2

@@ -45,7 +45,7 @@ export const menuItems = [
                 to: "/leads/varonka",
             }),
             linkOptions({
-                title: "Sinovdagi O'quvchilar",
+                title: "Guruhga qo'shilganlar",
                 to: "/leads/lesson-test-students",
             }),
 
@@ -77,21 +77,21 @@ export const menuItems = [
         enabled: true,
         items: [
             linkOptions({
-                title: "O'quvchilar to'lovi",
+                title: "Guruhlar",
                 to: "/groups",
                 search: {
                     tabs: "groups",
                 },
             }),
             linkOptions({
-                title: "O'quvchilar davomati",
+                title: "Xonalar",
                 to: "/groups",
                 search: {
                     tabs: "rooms",
                 },
             }),
             linkOptions({
-                title: "Hodimlar davomati",
+                title: "Kurslar",
                 to: "/groups",
                 search: {
                     tabs: "courses",
@@ -112,7 +112,7 @@ export const menuItems = [
                 items: [],
             }),
             linkOptions({
-                title: "Yo'qlama",
+                title: "Davomat",
                 to: "/employees/attendance",
                 enabled: true,
                 items: [],

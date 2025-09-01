@@ -38,7 +38,7 @@ export default function LeadsTestStudents() {
                         <div className="flex mb-3  justify-between items-center gap-3 ">
                             <div className="flex items-center gap-3">
                                 <h1 className="text-xl">
-                                    Sinovga yozilganlar ro'yxati
+                                    Guruhga qo'shilganlar ro'yxati
                                 </h1>
                                 <Badge className="text-sm">
                                     {formatMoney(students?.count)}

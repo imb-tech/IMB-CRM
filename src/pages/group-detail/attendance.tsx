@@ -59,7 +59,7 @@ export default function GroupAttendance() {
     }, [defaultOpt, date])
 
     return (
-        <div>
+        <div className="pt-1">
             <SectionHeader
                 title="Oylik yo'qlama jadvali"
                 className="items-stretch md:items-start"

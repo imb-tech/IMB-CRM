@@ -9,13 +9,16 @@ import { setActiveBranch } from "@/lib/utils"
 import axios from "axios"
 import { toast } from "sonner"
 
-export const baseURL = import.meta.env.DEV ? "/api/" : import.meta.env.VITE_DEFAULT_URL
+const devURL = import.meta.env.VITE_DEFAULT_URL
+const urlPART = import.meta.env.VITE_PART_URL
+const tenant = window.location.hostname.match(/^([a-z0-9-]+)\.reactgo\.uz/i)?.[1]
+
+export const baseURL = import.meta.env.DEV ? devURL : 'https://' + tenant + urlPART
 
 const axiosInstance = axios.create({
     baseURL,
     headers: {
         "Content-Type": "application/json",
-        "ngrok-skip-browser-warning": "true"
     },
 })
 

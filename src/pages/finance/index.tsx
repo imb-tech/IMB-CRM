@@ -118,7 +118,7 @@ const FinanceMain = () => {
                                 renderOption={(item, actv) => (
                                     <div
                                         className={cn(
-                                            "px-2 py-4 min-w-32 border rounded-md",
+                                            "px-2 py-2 min-w-32 border rounded-md",
                                             actv ? "text-primary" : "",
                                         )}
                                     >
@@ -135,7 +135,7 @@ const FinanceMain = () => {
                             />
                             <div
                                 className={cn(
-                                    "px-2 py-[24px] min-w-20 border rounded-md text-sm flex items-center justify-center cursor-pointer hover:bg-secondary",
+                                    "px-2 py-[16px] min-w-20 border rounded-md text-sm flex items-center justify-center cursor-pointer hover:bg-secondary",
                                 )}
                                 onClick={openModal}
                             >
