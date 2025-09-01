@@ -23,6 +23,7 @@ const CreateDepartment = ({ item }: Props) => {
     const search = useSearch({ strict: false })
 
     const { closeModal } = useModal("create-pip")
+    const { closeModal: closeModalPipeline } = useModal("create-pip-pipeline")
 
     const { id } = useParams({ strict: false })
     const navigate = useNavigate()
@@ -32,6 +33,7 @@ const CreateDepartment = ({ item }: Props) => {
 
     function onSuccess(resp: Pipeline) {
         closeModal()
+        closeModalPipeline()
         queryClinet.refetchQueries({
             queryKey: [`${pipelineUrl}/${id}`],
         })
