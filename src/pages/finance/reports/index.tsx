@@ -16,7 +16,7 @@ function CostAndIncomeMain() {
                 <div className="flex mb-3  justify-between items-center gap-3 ">
                     <div className="flex items-center gap-3">
                         <h1 className="text-xl">{`${
-                            search?.page_tabs === "cost"
+                            search?.tabs === "cost"
                                 ? "Xarajatlar"
                                 : "Daromadlar"
                         } tarixi`}</h1>
@@ -35,56 +35,56 @@ const data: Cost[] = [
     {
         id: 1,
         name: "Ijaraga to‘lov",
-        price: -800000,
+        price: 800000,
         created_at: "2025-05-01 08:30:00",
         reason: "Ofis uchun ijara",
     },
     {
         id: 2,
         name: "Elektr energiyasi",
-        price: -150000,
+        price: 150000,
         created_at: "2025-05-02 08:40:00",
         reason: "Oylik hisob",
     },
     {
         id: 3,
         name: "Internet xarajatlari",
-        price: -100000,
+        price: 100000,
         created_at: "2025-05-03 08:50:00",
         reason: "Provider to‘lovi",
     },
     {
         id: 4,
         name: "Transport",
-        price: -50000,
+        price: 50000,
         created_at: "2025-05-04 09:00:00",
         reason: "Shaxsiy xizmat safari",
     },
     {
         id: 5,
         name: "Qurilmalar xaridi",
-        price: -1200000,
+        price: 1200000,
         created_at: "2025-05-05 09:10:00",
         reason: "Yangi kompyuter",
     },
     {
         id: 6,
         name: "Ish haqi",
-        price: -3000000,
+        price: 3000000,
         created_at: "2025-05-06 09:20:00",
         reason: "Xodimlarga oylik",
     },
     {
         id: 7,
         name: "Reklama",
-        price: -250000,
+        price: 250000,
         created_at: "2025-05-07 09:30:00",
         reason: "Facebook reklama",
     },
     {
         id: 8,
         name: "Kurs xarajatlari",
-        price: -60000,
+        price: 60000,
         created_at: "2025-05-08 09:40:00",
         reason: "Online platforma to‘lovi",
     },

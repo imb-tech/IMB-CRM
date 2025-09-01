@@ -17,7 +17,7 @@ export const useCostCols = () =>
                 enableSorting: true,
                 cell: ({ row }) => (
                     <span className="text-red-600 font-medium">
-                        {formatMoney(row.original.price)}
+                        -{formatMoney(row.original.price)}
                     </span>
                 ),
             },

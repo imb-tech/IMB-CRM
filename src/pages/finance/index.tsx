@@ -22,7 +22,7 @@ import FinanceFilter from "./finance-filter"
 export const cardData = [
     {
         title: "Jami Daromad",
-        value: "10 000",
+        value: "100 000 000",
         change: "+12.5%",
         icon: <TrendingUp className="h-4 w-4 " />,
         bgColor: "bg-green-100/70 dark:bg-green-900/30",
@@ -33,7 +33,7 @@ export const cardData = [
     },
     {
         title: "Jami Xarajatlar",
-        value: "3 000",
+        value: "30 000 000",
         change: "-4.2%",
         icon: <TrendingDown className="h-4 w-4" />,
         bgColor: "bg-orange-100/70 dark:bg-orange-900/30",
@@ -44,7 +44,7 @@ export const cardData = [
     },
     {
         title: "Sof Foyda",
-        value: "7 000",
+        value: "70 000 000",
         change: "+8.1%",
         icon: <DollarSign className="h-4 w-4 " />,
         bgColor: "bg-purple-100/70 dark:bg-purple-900/30",
@@ -55,7 +55,7 @@ export const cardData = [
     },
     {
         title: "Hisob Balansi",
-        value: "15 000",
+        value: "150 000 000",
         change: "+2.3%",
         icon: <CreditCard className="h-4 w-4 " />,
         bgColor: "bg-blue-100/70 dark:bg-blue-900/30",
