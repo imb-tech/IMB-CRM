@@ -110,7 +110,9 @@ const LeadsDnd = () => {
                 )
                 const updatedFromUsers = moved.newSource
                 updatedToUsers = moved.newDestination.map((u) =>
-                    u.id === cfg.item ? { ...u, status: cfg.to } : u,
+                    u.id === cfg.item
+                        ? { ...u, status: cfg.to, updated_at: new Date() }
+                        : u,
                 )
 
                 const otherUsers = users.filter(
