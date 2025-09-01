@@ -4,13 +4,13 @@ import { ClassNameValue } from "tailwind-merge"
 
 export const studentStatusKeys: Record<string, string> = {
     "3": "O'chirilgan",
-    "0": "Yangi",
+    "0": "Sinovda",
     "1": "Aktiv",
     "2": "Muzlatilgan",
 }
 
 export const newStudentStatusKeys: Record<string, string> = {
-    "0": "Yangi",
+    "0": "Sinovda",
     "1": "Aktiv",
 }
 

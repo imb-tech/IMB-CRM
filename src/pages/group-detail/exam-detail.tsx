@@ -60,14 +60,42 @@ export default function ExamDetail() {
     const columns = useGroupExamsCols(clickAnswer, updateScore)
 
     return (
-        <div>
+        <div className="-mt-10">
+            {detail?.type !== "topic" && (
+                <div className="mb-5">
+                    <div className="flex items-center justify-between pb-2">
+                        <p className="text-lg hidden md:block md:text-2xl font-light">
+                            O'quvchilar
+                        </p>
+                        <Button size="sm" onClick={assign} className="hidden">
+                            Qo'shish
+                        </Button>
+                    </div>
+                    <DataTable
+                        columns={columns}
+                        data={detail?.students}
+                        viewAll
+                        className="max-w-full"
+                        numeration
+                        minRows={6}
+                        onDelete={({ original }) => {
+                            rs()
+                            setItem({
+                                id: original.id,
+                                file: original.full_name,
+                            })
+                        }}
+                    />
+                </div>
+            )}
+
             {detail?.files.length ?
-                <div>
-                    <p className="text-muted-foreground">
+                <div className="p-3 bg-secondary/50 rounded-md">
+                    <p className="text-muted-foreground text-xl">
                         {moduleTypeLabel[detail?.type ?? "topic"]}ga tegishli
                         fayllar
                     </p>
-                    <div className="flex flex-wrap mt-2 gap-2">
+                    <div className="flex flex-wrap mt-4 gap-2">
                         {detail?.files.map((file) => (
                             <div
                                 className="bg-blue-400/10 p-2 px-3 rounded-md flex items-center gap-2 text-muted-foreground text-sm cursor-pointer hover:underline"
@@ -93,34 +121,7 @@ export default function ExamDetail() {
                         ))}
                     </div>
                 </div>
-            :   ""}
-            {detail?.type !== "topic" && (
-                <div className="mt-3">
-                    <div className="flex items-center justify-between py-2">
-                        <p className="text-muted-foreground text-lg">
-                            O'quvchilar
-                        </p>
-                        <Button size="sm" onClick={assign}>
-                            Qo'shish
-                        </Button>
-                    </div>
-                    <DataTable
-                        columns={columns}
-                        data={detail?.students}
-                        viewAll
-                        className="max-w-full"
-                        numeration
-                        minRows={6}
-                        onDelete={({ original }) => {
-                            rs()
-                            setItem({
-                                id: original.id,
-                                file: original.full_name,
-                            })
-                        }}
-                    />
-                </div>
-            )}
+                : ""}
 
             <Modal modalKey="append-student" title="O'quvchi qo'shish">
                 {id && <AssignStudent module={id} />}

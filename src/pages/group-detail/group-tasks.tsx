@@ -16,6 +16,9 @@ import { groupDefaultDate } from "./utils"
 import { apiGroupDays } from "@/services/hooks/use-group-students"
 import MonthNavigator from "@/components/as-params/month-navigator"
 import useQueryParams from "@/hooks/use-query-params"
+import { Button } from "@/components/ui/button"
+import { useModal } from "@/hooks/useModal"
+import { Plus } from "lucide-react"
 
 export default function GroupTasks() {
     const { id: group } = useParams({ strict: false })
@@ -23,6 +26,7 @@ export default function GroupTasks() {
     const { store, remove } = useStore<GroupModule>("item")
     const [isScroll, setIsScroll] = useState(0)
     const { updateParams } = useQueryParams()
+    const { openModal: assign } = useModal("append-student")
 
     const refMap = useRef<Record<string, HTMLDivElement | null>>({})
 
@@ -96,13 +100,20 @@ export default function GroupTasks() {
                 <SectionHeader
                     title="Vazifalar"
                     rightComponent={
-                        date && (
-                            <MonthNavigator
-                                months={months}
-                                value={date}
-                                onChange={(date) => updateParams({ date })}
-                            />
-                        )
+                        <div className="flex items-center gap-3 relative z-20">
+                            {date && (
+                                <MonthNavigator
+                                    months={months}
+                                    value={date}
+                                    onChange={(date) => updateParams({ date })}
+                                />
+                            )}
+                            <Button size="lg" onClick={assign}>
+                                <Plus />
+                                Qo'shish
+                            </Button>
+                        </div>
+
                     }
                 />
                 <Card className="grid md:grid-cols-2">
@@ -126,7 +137,7 @@ export default function GroupTasks() {
                             />
                         </ScrollArea>
                     </CardContent>
-                    <CardContent className="flex flex-col gap-5 py-0 px-3">
+                    <CardContent className="flex flex-col gap-5 py-0 px-3 pr-0">
                         <ExamDetail />
                     </CardContent>
                 </Card>

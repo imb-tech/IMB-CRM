@@ -45,7 +45,7 @@ export const menuItems = [
                 to: "/leads/varonka",
             }),
             linkOptions({
-                title: "Sinovdagi O'quvchilar",
+                title: "Guruhga qo'shilganlar",
                 to: "/leads/lesson-test-students",
             }),
 
@@ -112,7 +112,7 @@ export const menuItems = [
                 items: [],
             }),
             linkOptions({
-                title: "Yo'qlama",
+                title: "Davomat",
                 to: "/employees/attendance",
                 enabled: true,
                 items: [],

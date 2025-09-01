@@ -47,7 +47,7 @@ export default function TaskForm({ loading }: { loading?: boolean }) {
                         control={form.control}
                         name="deadline"
                         required
-                        label="O'lim chizig'i"
+                        label="Muddati"
                         placeholder="Sana tanlash ixtiyoriy"
                         addButtonProps={{
                             className:

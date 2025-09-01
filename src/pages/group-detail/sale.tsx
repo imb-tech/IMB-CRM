@@ -66,7 +66,7 @@ export default function GroupSale() {
     }
 
     return (
-        <div>
+        <div className="pt-1">
             <SectionHeader title="O'quvchilarga chegirma berish" />
             <DataTable
                 columns={columns}
