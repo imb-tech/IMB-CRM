@@ -168,9 +168,12 @@ export default function TaskBoard() {
                     label={"Xodim"}
                     onSearchChange={(val) => setCustomerSearch(val)}
                     isLoading={isLoadingCustomer}
+                    addButtonProps={{
+                        className: "!bg-background dark:!bg-secondary"
+                    }}
                 />
                 <div className="flex items-center gap-3 ">
-                    <Card className="bg-secondary/90">
+                    <Card className="bg-background dark:bg-secondary/90">
                         <CardContent className=" flex items-center gap-2 py-2 min-w-[200px] text-blue-400">
                             <ListChecks size={18} />{" "}
                             <span>
@@ -178,7 +181,7 @@ export default function TaskBoard() {
                             </span>
                         </CardContent>
                     </Card>
-                    <Card className="bg-secondary/90">
+                    <Card className="bg-background dark:bg-secondary/90">
                         <CardContent className=" flex items-center gap-2 py-2 min-w-[200px] text-primary">
                             <SquareCheckBig size={18} />{" "}
                             <span>

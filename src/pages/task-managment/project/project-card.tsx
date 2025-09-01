@@ -54,7 +54,7 @@ function ProjectCard({ handleItem, handleDelete, item, index }: Props) {
                 })
             }
             className={clsx(
-                "bg-background/80 bg-blend-overlay cursor-pointer min-h-[244px] h-full  bg-center bg-cover",
+                "bg-background/80 dark:bg-secondary/80 bg-blend-overlay cursor-pointer min-h-[244px] h-full  bg-center bg-cover",
             )}
             style={{
                 backgroundImage: `url(${item.background})`,
