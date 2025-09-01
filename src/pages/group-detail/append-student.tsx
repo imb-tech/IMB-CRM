@@ -17,6 +17,7 @@ import FormInput from "@/components/form/input"
 import { cn } from "@/lib/utils"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
 import { useQueryClient } from "@tanstack/react-query"
+import { toast } from "sonner"
 
 type MultiStudent = Student & {
     discount: {
@@ -41,6 +42,7 @@ type Fields = {
 
 type ErrorType = {
     group_students: MultiStudent[]
+    msg: string
 }
 
 export default function AppendStudent({
@@ -133,6 +135,10 @@ export default function AppendStudent({
         mutate(GROUP_STUDENTS, payload, {
             onError(err) {
                 const errors = err.response.data as ErrorType
+                if (errors.msg) {
+                    toast.error(errors.msg)
+                    return
+                }
                 if (errors.group_students) {
                     for (const _ of defaultStudents!) {
                         errors.group_students.unshift({} as MultiStudent)
