@@ -57,7 +57,7 @@ const BranchesMain = () => {
                     />
                 </CardContent>
             </Card>
-            
+
             <DeleteModal
                 modalKey={`${BRANCH}-delete`}
                 id={store?.id}

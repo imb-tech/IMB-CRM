@@ -54,7 +54,7 @@ export default function HeaderLinks({
         <div>
             {!!items.length && (
                 <Tabs value={currentKey} onValueChange={handleChange}>
-                    <TabsList className="bg-transparent">
+                    <TabsList className="bg-transparent gap-1">
                         {computed.map(({ link, key, active }) => (
                             <TabsTrigger
                                 key={key}
