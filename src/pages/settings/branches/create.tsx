@@ -25,24 +25,17 @@ const BranchesCreate = () => {
             : undefined,
     })
 
-    const { mutate: mutateCreate, isPending: isPendingCreate } = usePost({
-        onSuccess: () => {
-            toast.success("Muvaffaqiyatli yaratildi")
-            closeModal()
-            form.reset()
-            queryClient.invalidateQueries({ queryKey: [BRANCH] })
-            queryClient.refetchQueries({ queryKey: [PROFILE] })
-        },
-    })
+    function onSuccess() {
+        toast.success("Muvaffaqiyatli")
+        closeModal()
+        form.reset()
+        queryClient.invalidateQueries({ queryKey: [BRANCH] })
+        queryClient.refetchQueries({ queryKey: [PROFILE] })
+    }
 
-    const { mutate: mutateUpdate, isPending: isPendingUpdate } = usePatch({
-        onSuccess: () => {
-            toast.success("Muvaffaqiyatli yangilandi")
-            closeModal()
-            form.reset()
-            queryClient.invalidateQueries({ queryKey: [BRANCH] })
-        },
-    })
+    const { mutate: mutateCreate, isPending: isPendingCreate } = usePost({ onSuccess })
+    const { mutate: mutateUpdate, isPending: isPendingUpdate } = usePatch({ onSuccess })
+
     const disabled = isPendingCreate || isPendingUpdate
 
     const onSubmit = (values: Branch) => {
