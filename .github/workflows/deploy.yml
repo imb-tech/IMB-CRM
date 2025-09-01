@@ -1,0 +1,18 @@
+- name: Deploy to server
+  env:
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      HOST: ${{ secrets.HOST }}
+      USERNAME: ${{ secrets.USERNAME }}
+  run: |
+      # Create the .ssh directory
+      mkdir -p ~/.ssh
+
+      # Add the SSH private key
+      echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+      chmod 600 ~/.ssh/id_rsa
+
+      # Disable strict host key checking (agar SSH_KNOWN_HOSTS ishlatmasak)
+      echo -e "Host *\n\tStrictHostKeyChecking no\n" > ~/.ssh/config
+
+      # Sync only the **contents** of dist/ into target folder
+      rsync -avz --delete dist/ $USERNAME@$HOST:/var/www/edu-front/

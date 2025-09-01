@@ -11,10 +11,10 @@ import { toast } from "sonner"
 
 const devURL = import.meta.env.VITE_DEFAULT_URL
 const urlPART = import.meta.env.VITE_PART_URL
-const tenant = window.location.hostname.match(/^([a-z0-9-]+)\.reactgo\.uz/i)?.[1]
+const tenant = window.location.hostname.match(/^([a-z0-9-]+)\.imbedu\.uz/i)?.[1]
 
-// export const baseURL = import.meta.env.DEV ? devURL : 'https://' + tenant + urlPART
-export const baseURL = import.meta.env.DEV ? devURL : 'https://demo.xamidovcoder.uz/api/v1/'
+export const baseURL = import.meta.env.DEV ? devURL : 'https://' + tenant + urlPART
+// export const baseURL = import.meta.env.DEV ? devURL : 'https://demo.xamidovcoder.uz/api/v1/'
 
 const axiosInstance = axios.create({
     baseURL,
