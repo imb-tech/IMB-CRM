@@ -77,21 +77,21 @@ export const menuItems = [
         enabled: true,
         items: [
             linkOptions({
-                title: "O'quvchilar to'lovi",
+                title: "Guruhlar",
                 to: "/groups",
                 search: {
                     tabs: "groups",
                 },
             }),
             linkOptions({
-                title: "O'quvchilar davomati",
+                title: "Xonalar",
                 to: "/groups",
                 search: {
                     tabs: "rooms",
                 },
             }),
             linkOptions({
-                title: "Hodimlar davomati",
+                title: "Kurslar",
                 to: "/groups",
                 search: {
                     tabs: "courses",
