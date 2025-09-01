@@ -10,17 +10,18 @@ import { useStore } from "@/hooks/use-store"
 import { cn } from "@/lib/utils"
 import GetSourceIcon from "../sources/get-source-icon"
 import { usePatch } from "@/hooks/usePatch"
-import { useParams } from "@tanstack/react-router"
+import { useParams, useSearch } from "@tanstack/react-router"
 import FormInput from "@/components/form/input"
 
 export default function CreateLeadModal() {
+    const search = useSearch({ strict: false })
     const { closeModal } = useModal()
     const { store } = useStore<Lead>("lead-data")
     const { id } = useParams({ strict: false })
 
     const queryClient = useQueryClient()
 
-    const queryKeyUsers = ["leads/crud", ...Object.values({ pipeline: id })]
+    const queryKeyUsers = ["leads/crud", ...Object.values({...search, pipeline: id })]
 
     const queryKeyStatus = [
         "leads/pipeline/status",
@@ -64,7 +65,6 @@ export default function CreateLeadModal() {
         }
         const oldData = queryClient.getQueryData<Lead[]>(queryKeyUsers) ?? []
 
-
         if (data.id) {
             patch(`leads/crud/${data.id}`, vls, {
                 onSuccess(item: Lead) {
@@ -104,6 +104,7 @@ export default function CreateLeadModal() {
                 onSubmit={form.handleSubmit(onSubmit)}
             >
                 <FormSelect
+                    required
                     label={"Manba"}
                     options={sources ?? []}
                     valueKey="id"

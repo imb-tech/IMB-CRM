@@ -4,7 +4,7 @@ import TableActions from "@/components/custom/table-actions"
 import { useModal } from "@/hooks/useModal"
 import { useMemo } from "react"
 import { useGet } from "@/hooks/useGet"
-import { useParams } from "@tanstack/react-router"
+import { useParams, useSearch } from "@tanstack/react-router"
 import { UserPlus } from "lucide-react"
 import { useStore } from "@/hooks/use-store"
 import { Badge } from "@/components/ui/badge"
@@ -17,6 +17,7 @@ type Props = {
 }
 
 const LeadsColumn = ({ index, item }: Props) => {
+    const search = useSearch({ strict: false })
     const { openModal } = useModal()
     const { openModal: openDelete } = useModal("delete-status")
     const { openModal: openEdit } = useModal("create-status")
@@ -25,7 +26,7 @@ const LeadsColumn = ({ index, item }: Props) => {
     const { setStore: setLeadData } = useStore("lead-data")
 
     const { data: users } = useGet<Lead[]>("leads/crud", {
-        params: { pipeline: id },
+        params: { ...search, pipeline: id },
     })
 
     const data = useMemo(
@@ -42,7 +43,6 @@ const LeadsColumn = ({ index, item }: Props) => {
         setStore(item)
         openEdit()
     }
-
 
     return (
         <Draggable draggableId={`col-${item?.id}`} index={index}>
@@ -93,7 +93,7 @@ const LeadsColumn = ({ index, item }: Props) => {
                                     // className="dark:bg-[#0c0d03] bg-zinc-200 rounded-lg min-w-80 max-w-80"
                                     className={cn(
                                         "rounded-lg min-w-80 max-w-80 pb-2",
-                                        !data?.length && "pb-10"
+                                        !data?.length && "pb-10",
                                     )}
                                 >
                                     <div className="no-scrollbar-x max-h-[68vh] 2xl:max-h-[80vh] overflow-y-auto">
