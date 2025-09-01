@@ -53,7 +53,9 @@ export default function LeadDealSelector() {
                 search: { pipeline: Number(pipeline) },
             })
         }
-    }, [pipeline, navigate, pathname])
+    }, [pipeline, navigate, pathname, search])
+
+    if (!data?.length) return null
 
     return (
         <div className="flex items-center gap-3 relative ">
