@@ -10,7 +10,7 @@ import { usePost } from "@/hooks/usePost"
 import { handleFormError } from "@/lib/show-form-errors"
 import { FormCombobox } from "@/components/form/combobox"
 import { Button } from "@/components/ui/button"
-import { useParams } from "@tanstack/react-router"
+import { useParams, useSearch } from "@tanstack/react-router"
 import { useStore } from "@/hooks/use-store"
 
 type FormValues = {
@@ -20,6 +20,7 @@ type FormValues = {
 }
 
 const LeadsUpdateDepartment = () => {
+    const search = useSearch({ strict: false })
     const { store } = useStore<Lead>("lead-data")
     const { id } = useParams({ from: "/_main/leads/varonka/$id/" })
     const queryClient = useQueryClient()
@@ -28,7 +29,10 @@ const LeadsUpdateDepartment = () => {
         params: { is_active: true },
     })
 
-    const queryKeyUsers = ["leads/crud", ...Object.values({ pipeline: id })]
+    const queryKeyUsers = [
+        "leads/crud",
+        ...Object.values({ ...search, pipeline: id }),
+    ]
 
     const queryKeyStatus = [
         "leads/pipeline/status",

@@ -1,7 +1,7 @@
 import { useStore } from "@/hooks/use-store"
 import { useModal } from "@/hooks/useModal"
 import { useQueryClient } from "@tanstack/react-query"
-import { useParams } from "@tanstack/react-router"
+import { useParams, useSearch } from "@tanstack/react-router"
 import { usePatch } from "@/hooks/usePatch"
 import Modal from "@/components/custom/modal"
 import { Button } from "@/components/ui/button"
@@ -10,6 +10,7 @@ import { useState } from "react"
 import { Textarea } from "@/components/ui/textarea"
 
 export default function DeleteLeadModal() {
+    const search = useSearch({ strict: false })
     const { id } = useParams({ strict: false })
     const { closeModal } = useModal("confirm-delete")
     const { store } = useStore<Lead>("lead-data")
@@ -17,7 +18,10 @@ export default function DeleteLeadModal() {
 
     const queryClient = useQueryClient()
 
-    const queryKeyUsers = ["leads/crud", ...Object.values({ pipeline: id })]
+    const queryKeyUsers = [
+        "leads/crud",
+        ...Object.values({ ...search, pipeline: id }),
+    ]
 
     const queryKeyStatus = [
         "leads/pipeline/status",

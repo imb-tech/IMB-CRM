@@ -100,7 +100,7 @@ export default function PhoneField<IForm extends FieldValues>({
             )}
             <PhoneInput
                 hideDropdown
-                // forceDialCode
+                forceDialCode
                 inputProps={{ autoComplete: "off" }}
                 className={cn(
                     "w-full h-10 rounded-md has-[input:focus]:ring-1 has-[input:focus]:ring-ring has-[input:focus]:ring-offset-0 !outline-none",
