@@ -7,10 +7,9 @@ import {
     MoreHorizontal,
     NotebookPen,
     RefreshCcw,
+    Replace,
     Trash,
-    UserPlus,
 } from "lucide-react"
-
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -28,53 +27,84 @@ import axiosInstance from "@/services/axios-instance"
 import { format } from "date-fns"
 
 export default function LeadCard(props: Lead & { index: number }) {
-    const { id, name, source_icon, worker_name, get_main_contact, updated_at } =
-        props
+    const { id, name, source_icon, worker_name, get_main_contact, updated_at } = props
 
     const { id: sourceId } = useParams({ strict: false })
-    const { setStore } = useStore<Lead>("lead-data")
-    const { openModal: openModalGroupAdd } = useModal("student-groups-add")
-    const { openModal: openModalMessageAdd } = useModal("message-add")
-    const { openModal: openModalNotesAdd } = useModal("notes-add")
-    const { openModal: openModalDepartment } = useModal("update-department")
-
     const { pipeline } = useSearch({ strict: false })
-    const { openModal } = useModal()
-    const { openModal: openDelete } = useModal("confirm-delete")
 
-    async function handleEdit() {
+    const { setStore } = useStore<Lead>("lead-data")
+    const open = {
+        group: useModal("student-groups-add").openModal,
+        message: useModal("message-add").openModal,
+        note: useModal("notes-add").openModal,
+        department: useModal("update-department").openModal,
+        delete: useModal("confirm-delete").openModal,
+        edit: useModal().openModal,
+    }
+
+    const handleEdit = async () => {
         try {
             const resp = await axiosInstance.get<Lead>(`leads/crud/${id}/`)
-            setStore({
-                ...resp.data,
-                contacts_list: resp.data?.contacts ?? [],
-                contacts: undefined,
-            })
-            openModal()
-        } catch (er) {
-            console.log(er)
+            setStore({ ...resp.data, contacts_list: resp.data?.contacts ?? [], contacts: undefined })
+            open.edit()
+        } catch (err) {
+            console.error(err)
         }
     }
+
+    const actions = [
+        {
+            label: "Eslatma qo'shish",
+            icon: <NotebookPen size={16} className="text-sky-500 mr-2" />,
+            onClick: () => open.note(),
+        },
+        {
+            label: "SMS yuborish",
+            icon: <MessageSquareText size={16} className="text-yellow-500 mr-2" />,
+            onClick: () => open.message(),
+        },
+        {
+            label: "Boshqa bo'limga",
+            icon: <RefreshCcw size={16} className="text-indigo-500 mr-2" />,
+            onClick: () => open.department(),
+        },
+        {
+            label: "Guruhga qo'shish",
+            icon: <Replace size={16} className="text-emerald-600 mr-2" />,
+            onClick: () => open.group(),
+        },
+        {
+            label: "Tahrirlash",
+            icon: <Edit size={16} className="text-primary mr-2" />,
+            onClick: handleEdit,
+        },
+        {
+            label: "O'chirish",
+            icon: <Trash size={16} className="text-red-600 mr-2" />,
+            onClick: () => open.delete(),
+            className: "text-red-600",
+        },
+    ]
 
     return (
         <Link
             search={{ pipeline }}
             to="/leads/varonka/$id/user/$user"
-            params={{ id: sourceId as string, user: id.toString() }}
+            params={{ id: sourceId!, user: id.toString() }}
         >
             <Card className="group border rounded-lg overflow-hidden transition-all duration-300 bg-secondary dark:hover:shadow-slate-800/30">
                 <CardContent className="p-4">
-                    <div className="w-full">
-                        <div className="flex items-center justify-between">
+                    <div className="flex justify-between items-start">
+                          <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
                                 <div>
                                     <div className="flex items-center gap-2">
                                         <GetSourceIcon
                                             icon={source_icon}
-                                            size={16}
+                                            size={18}
                                             className="bg-transparent"
                                         />
-                                        <h3 className="font-medium text-lg text-slate-900 dark:text-slate-100">
+                                        <h3 className="font-medium  text-slate-900 dark:text-slate-100">
                                             {name}
                                         </h3>
                                     </div>
@@ -83,126 +113,46 @@ export default function LeadCard(props: Lead & { index: number }) {
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-1">
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            className="rounded-full transition-opacity duration-200 text-slate-500 hover:text-violet-500 dark:text-slate-400 dark:hover:text-violet-400"
-                                            onClick={(e) => e.stopPropagation()}
-                                        >
-                                            <MoreHorizontal className="h-4 w-4" />
-                                        </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent
-                                        align="center"
-                                        className="w-44"
-                                    >
-                                        <DropdownMenuItem
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                if (props?.id) {
-                                                    setStore(props)
-                                                    openModalNotesAdd()
-                                                }
-                                            }}
-                                        >
-                                            <NotebookPen
-                                                size={16}
-                                                className="mr-2 "
-                                            />{" "}
-                                            Eslatma qo'shish
-                                        </DropdownMenuItem>
-
-                                        <DropdownMenuItem
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                if (props?.id) {
-                                                    setStore(props)
-                                                    openModalMessageAdd()
-                                                }
-                                            }}
-                                        >
-                                            <MessageSquareText
-                                                size={16}
-                                                className="mr-2 "
-                                            />{" "}
-                                            SMS yuborish
-                                        </DropdownMenuItem>
-
-                                        <DropdownMenuItem
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                if (props?.id) {
-                                                    setStore(props)
-                                                    openModalDepartment()
-                                                }
-                                            }}
-                                        >
-                                            <RefreshCcw
-                                                size={16}
-                                                className="mr-2"
-                                            />{" "}
-                                            Boshqa bo'limga
-                                        </DropdownMenuItem>
-
-                                        <DropdownMenuItem
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                if (props?.id) {
-                                                    setStore(props)
-                                                    openModalGroupAdd()
-                                                }
-                                            }}
-                                        >
-                                            <UserPlus
-                                                size={16}
-                                                className="mr-2"
-                                            />{" "}
-                                            Sinov darsiga
-                                        </DropdownMenuItem>
-
-                                        <DropdownMenuItem
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                handleEdit()
-                                            }}
-                                        >
-                                            <Edit size={16} className="mr-2" />{" "}
-                                            {"Tahrirlash"}
-                                        </DropdownMenuItem>
-
-                                        <DropdownMenuItem
-                                            className="text-red-500"
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                if (props?.id) {
-                                                    setStore(props)
-                                                    openDelete()
-                                                }
-                                            }}
-                                        >
-                                            <Trash size={16} className="mr-2" />{" "}
-                                            {"O'chirish"}
-                                        </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
                             </div>
-                        </div>
 
-                        <div className="flex items-center gap-4 mt-4 pt-3 text-xs ">
-                            <p className=" dark:text-slate-300 text-sm">
-                                {format(updated_at, "yyyy-MM-dd HH:mm")}
-                            </p>
-                            <Badge
-                                className={cn(
-                                    "ml-auto cursor-pointer transition-colors duration-200 text-xs font-normal bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary hover:bg-primary/20",
-                                )}
-                            >
-                                {worker_name}
-                            </Badge>
-                        </div>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    className="rounded-full text-slate-500 hover:text-violet-500 dark:text-slate-400 dark:hover:text-violet-400"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    <MoreHorizontal className="h-4 w-4" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="center" className="w-48">
+                                {actions.map(({ label, icon, onClick, className }) => (
+                                    <DropdownMenuItem
+                                        key={label}
+                                        className={cn(className)}
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            setStore(props)
+                                            onClick()
+                                        }}
+                                    >
+                                        {icon} {label}
+                                    </DropdownMenuItem>
+                                ))}
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
+
+                    <div className="flex items-center gap-4 mt-2 pt-3 text-xs">
+                        <p className="text-xs dark:text-slate-300">
+                            {format(updated_at, "yyyy-MM-dd HH:mm")}
+                        </p>
+                        <Badge
+                            className="ml-auto text-xs font-normal bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary hover:bg-primary/20"
+                        >
+                            {worker_name}
+                        </Badge>
                     </div>
                 </CardContent>
             </Card>

@@ -34,7 +34,7 @@ export const ACTIONS: Record<
         label: "Guruh almashtirish", icon: Replace, className: ""
     },
 }
-
+ 
 
 export default function ActionDropdown({ className, options }: Props) {
 
