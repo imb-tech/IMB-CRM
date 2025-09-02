@@ -39,6 +39,7 @@ const Header = ({ rigthChildren, leftChildren, navOnHeader }: Props) => {
     function changeBranch(v: string) {
         setBranch(Number(v))
         setActiveBranch(v)
+        window.location.reload()
     }
 
     return (
