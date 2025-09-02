@@ -9,7 +9,7 @@ export const useRolesCols = () =>
                 accessorKey: "name",
             },
             {
-                header: "Hodimlar soni",
+                header: "Xodimlar soni",
                 accessorKey: "employees_count",
             },
             {

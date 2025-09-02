@@ -27,7 +27,7 @@ const EmployeesMain = () => {
             <Modal
                 size="max-w-lg"
                 modalKey={`${EMPLOYEE}-add`}
-                title={`Hodim ${current?.id ? "tahrirlash" : "yaratish"}`}
+                title={`Xodim ${current?.id ? "tahrirlash" : "yaratish"}`}
                 onClose={() => setCurrent(null)}
             >
                 <EmployeeCreate item={current} />

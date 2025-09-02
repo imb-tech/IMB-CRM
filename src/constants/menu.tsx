@@ -100,13 +100,13 @@ export const menuItems = [
         ],
     }),
     linkOptions({
-        title: "Hodimlar",
+        title: "Xodimlar",
         icon: <Users2 width={20} />,
         to: "/employees",
         enabled: true,
         items: [
             linkOptions({
-                title: "Hodimlar",
+                title: "Xodimlar",
                 to: "/employees/hr",
                 enabled: true,
                 items: [],
@@ -180,7 +180,7 @@ export const menuItems = [
                 },
             }),
             linkOptions({
-                title: "Hodimlar Davomati",
+                title: "Xodimlar Davomati",
                 to: "/reports",
                 search: {
                     tabs: "attendance_emp",

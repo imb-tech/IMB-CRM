@@ -32,7 +32,7 @@ export default function EmployeesHeader({
     return (
         <div className="flex items-center flex-col mt-1 md:justify-between md:flex-row gap-2 mb-2">
             <div className="flex items-center gap-3">
-                <h1 className="text-xl font-medium ">{"Hodimlar ro'yxati"}</h1>
+                <h1 className="text-xl font-medium ">{"Xodimlar ro'yxati"}</h1>
                 <Badge className="text-sm">
                     {allEmployes}
                 </Badge>
