@@ -187,7 +187,7 @@ export const menuItems = [
                 },
             }),
             linkOptions({
-                title: "Lidlar hisoboti",
+                title: "CRM hisoboti",
                 to: "/reports",
                 search: {
                     tabs: "leads_statistic",
