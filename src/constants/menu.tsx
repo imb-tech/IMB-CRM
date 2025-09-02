@@ -45,7 +45,7 @@ export const menuItems = [
                 to: "/leads/varonka",
             }),
             linkOptions({
-                title: "Guruhga qo'shilganlar",
+                title: "Guruhga Qo'shilganlar",
                 to: "/leads/lesson-test-students",
             }),
 
