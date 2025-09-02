@@ -110,7 +110,7 @@ export default function TaskHeader() {
         <div className=" flex overflow-x-auto no-scrollbar-x w-full gap-3">
             <div className="flex items-center gap-3 w-full">
                 <Button
-                    className="min-w-4"
+                    className="min-w-4 !bg-background dark:bg-secondary"
                     variant={"secondary"}
                     onClick={() =>
                         navigate({
@@ -127,7 +127,7 @@ export default function TaskHeader() {
                     paramName="role_id"
                     label={"Role"}
                     addButtonProps={{
-                        className: "min-w-[230px] w-full",
+                        className: "min-w-[230px] w-full !bg-background dark:bg-secondary",
                     }}
                 />
             </div>
@@ -138,7 +138,7 @@ export default function TaskHeader() {
                 paramName={"user_id"}
                 label={"Xodim"}
                 addButtonProps={{
-                    className: "min-w-[230px] w-full",
+                    className: "min-w-[230px] w-full !bg-background dark:bg-secondary",
                 }}
             />
             <ParamCombobox
@@ -150,10 +150,10 @@ export default function TaskHeader() {
                 label={"Muhimlik darajasi"}
                 renderOption={(item) => item.label}
                 addButtonProps={{
-                    className: "dark:hover:!bg-secondary min-w-[230px] w-full",
+                    className: "min-w-[230px] w-full !bg-background dark:bg-secondary",
                 }}
             />
-            <ParamInput fullWidth className="min-w-[230px] w-full" />
+            <ParamInput fullWidth className="min-w-[230px] w-full !bg-background dark:bg-secondary" />
         </div>
     )
 }

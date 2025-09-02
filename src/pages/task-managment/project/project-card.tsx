@@ -21,6 +21,7 @@ import { format } from "date-fns"
 import { useGet } from "@/hooks/useGet"
 import { TASKS_EXCEL } from "@/constants/api-endpoints"
 import { downloadExcel } from "@/lib/download-excel"
+import { baseURL } from "@/services/axios-instance"
 
 type Props = {
     handleItem: (item: FormValues) => void
@@ -81,7 +82,7 @@ function ProjectCard({ handleItem, handleDelete, item, index }: Props) {
                                             >
                                                 <AvatarImage
                                                     src={
-                                                        item?.photo || undefined
+                                                        item?.photo ? baseURL?.replace('api/v1', 'media') + item?.photo : undefined
                                                     }
                                                     alt={item.full_name}
                                                 />
@@ -114,8 +115,7 @@ function ProjectCard({ handleItem, handleDelete, item, index }: Props) {
                                                 <Avatar className="h-10 w-10">
                                                     <AvatarImage
                                                         src={
-                                                            item?.photo ||
-                                                            undefined
+                                                            item?.photo ? baseURL?.replace('api/v1', 'media') + item?.photo : undefined
                                                         }
                                                         alt={item.full_name}
                                                     />

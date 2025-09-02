@@ -13,6 +13,7 @@ import { useGet } from "@/hooks/useGet"
 import PageLayout from "@/layouts/page-layout"
 import { cn } from "@/lib/utils"
 import TaskManagment from "@/pages/task-managment/task-board"
+import { baseURL } from "@/services/axios-instance"
 import { createFileRoute, useParams } from "@tanstack/react-router"
 
 export const Route = createFileRoute("/_main/project/$id")({
@@ -62,7 +63,7 @@ function RouteComponent() {
                                         key={index}
                                     >
                                         <AvatarImage
-                                            src={item.photo || undefined}
+                                            src={item?.photo ? baseURL?.replace('api/v1', 'media') + item?.photo : undefined}
                                             alt={item.full_name}
                                         />
                                         <AvatarFallback
@@ -85,7 +86,7 @@ function RouteComponent() {
                                     >
                                         <Avatar className="h-10 w-10">
                                             <AvatarImage
-                                                src={item.photo || undefined}
+                                                src={item?.photo ? baseURL?.replace('api/v1', 'media') + item?.photo : undefined}
                                                 alt={item.full_name}
                                             />
                                             <AvatarFallback
