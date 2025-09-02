@@ -64,7 +64,7 @@ function ProjectCard({ handleItem, handleDelete, item, index }: Props) {
                 <div className="space-y-4">
                     <div className="flex justify-between  items-center gap-3">
                         <h1 className="font-semibold text-xl line-clamp-1 break-all ">
-                            #{index + 1} {item.name}
+                            {index + 1}. {item.name}
                         </h1>
                         <TooltipProvider delayDuration={1}>
                             <Tooltip>

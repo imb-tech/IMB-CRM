@@ -133,7 +133,7 @@ export default function TaskCard({ item, onDelete }: Props) {
             <CardContent className="space-y-3 px-2 py-1">
                 <div>
                     <h3 className="font-semibold 2xl:text-[15px] text-[13px] mb-1 break-all line-clamp-1">
-                        #{item.id} {item.title}
+                        {item.id}. {item.title}
                     </h3>
                     <p className="text-xs 2xl:text-[14px] break-all line-clamp-3 dark:text-zinc-300 text-zinc-500">
                         {item.desc}
