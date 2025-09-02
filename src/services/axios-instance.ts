@@ -39,8 +39,6 @@ export function setupAxiosInterceptors() {
 
     axiosInstance.interceptors.response.use(
         function (response) {
-            console.log(response.config.url);
-            
             if (response.config.url === "/auth/profile/") {
                 const br = localStorage.getItem('branch')
                 const branches = response.data.branches
