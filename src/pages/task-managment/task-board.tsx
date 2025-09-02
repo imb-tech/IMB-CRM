@@ -46,6 +46,7 @@ const TaskManagment = () => {
         }
     }, [search?.task, isSuccess])
 
+    
     return (
         <div className="relative">
             <TaskHeader />
@@ -63,39 +64,30 @@ const TaskManagment = () => {
             </div>
 
             <Modal
-                size={search?.task ? "max-w-[90%]" : "max-w-3xl"}
-                title={
-                    <span className="opacity-0">{"Vazifalar qo'shish"}</span>
-                }
+                size={"max-w-[90%]"}
                 modalKey="task-modal"
                 onClose={closeModal}
                 className={cn(
-                    "lg:max-h-[90vh] outline-none focus:outline-none  max-h-screen  max-w-[100%] lg:max-w-3xl lg:top-[50%] lg:translate-y-[-50%] top-[100%] translate-y-[-100%] ",
-                    search?.task && "!p-0 border-none lg:max-w-[90%]",
+                    "outline-none focus:outline-none   max-w-[100%]  !p-0 !pb-[1px] border-none lg:max-w-[90%] ",
                 )}
-                classNameTitle={search?.task && "hidden"}
                 classNameIcon={
-                    search?.task &&
                     "lg:-right-8 lg:top-0 hidden lg:block lg:bg-[#18222C] lg:text-white  w-max"
                 }
             >
                 {/* DESKTOP */}
                 <div
                     className={cn(
-                        "hidden lg:block",
-                        search?.task && " lg:grid lg:grid-cols-2 gap-3 ",
+                        "hidden lg:grid lg:grid-cols-2 overflow-hidden ",
                     )}
                 >
                     <CompleteTaskManager
                         currentId={currentId}
                         params={params}
-                        comment={search?.task}
                     />
-                    {search?.task && (
-                        <div>
-                            <TaskChat />
-                        </div>
-                    )}
+
+                    <div>
+                        <TaskChat  currentId={currentId} />
+                    </div>
                 </div>
 
                 {/* MOBILE - TABS */}
@@ -106,7 +98,7 @@ const TaskManagment = () => {
                         onValueChange={setActiveTab}
                     >
                         {search?.task && (
-                            <div className="flex justify-between items-center gap-2 px-2 ">
+                            <div className="flex justify-between items-center gap-2 p-2 ">
                                 <Button
                                     className="min-w-4"
                                     onClick={closeTaskModal}
@@ -125,11 +117,10 @@ const TaskManagment = () => {
                             <CompleteTaskManager
                                 currentId={currentId}
                                 params={params}
-                                comment={search?.task}
                             />
                         </TabsContent>
                         <TabsContent className="mt-0" value="chat">
-                            <TaskChat />
+                            <TaskChat  currentId={currentId} />
                         </TabsContent>
                     </Tabs>
                 </div>
@@ -138,7 +129,7 @@ const TaskManagment = () => {
                 modalKey="project-delete"
                 id={currentId}
                 path={STATUSES}
-                refetchKeys={[`${PROJECTS_TASKS}/${params?.id}`,]}
+                refetchKeys={[`${PROJECTS_TASKS}/${params?.id}`]}
             />
         </div>
     )

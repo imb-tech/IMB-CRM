@@ -7,8 +7,6 @@ type SubTask = {
 type QuoteCard = {
     id: number
     title: string
-    is_action: boolean
-    is_checked: boolean
     middle_name: string
     desc: string
     priority: 1 | 2 | 3

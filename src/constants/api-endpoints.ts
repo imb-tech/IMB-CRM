@@ -13,7 +13,7 @@ export const PAYMENT_TYPE = COMMON + "payment-types"
 export const PAYMENT_TYPES_OPTION = "option/payment-types"
 export const HOLIDAY = COMMON + "weekends"
 export const ROLE = COMMON + "roles"
-export const TASKLY_PROJECT_CRM = "taskly/list-projects"
+export const TASKLY_PROJECT_CRM = OPTION + "projects"
 export const HR_API = "users"
 export const OPTION_ROLES = OPTION + "roles"
 export const OPTION_COURSES = OPTION + "courses"
@@ -53,7 +53,7 @@ export const USERS = `users`
 
 // Tasks Endpoints
 export const TASKLY_PROJECT = 'taskly/projects'
-export const TASKLY_PROJECT_USERS = 'taskly/projects-users'
+export const TASKLY_PROJECT_USERS = 'taskly/projects/users'
 export const PROJECTS_TASKS = 'taskly/project-tasks'
 export const STATUSES = 'taskly/statuses'
 export const STATUSES_MOVE = 'taskly/move-status'

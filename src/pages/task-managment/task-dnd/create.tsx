@@ -30,14 +30,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 type Props = {
     params: { id: string }
     currentId: number | undefined
-    comment?: boolean
 }
 
-export default function CompleteTaskManager({
-    currentId,
-    params,
-    comment,
-}: Props) {
+export default function CompleteTaskManager({ currentId, params }: Props) {
     const options = [
         {
             label: (
@@ -399,11 +394,7 @@ export default function CompleteTaskManager({
         <form
             onSubmit={form.handleSubmit(onSubmit)}
             className={cn(
-                "w-full   overflow-y-auto sm:space-y-6 space-y-4 lg:pb-[57px] pb-16    no-scrollbar-x",
-                task?.is_checked && task?.is_action && "pb-0",
-                comment
-                    ? "pr-2 lg:pl-4 pl-2 lg:max-h-[86vh] max-h-[87vh]"
-                    : "px-1 lg:max-h-[80vh] max-h-[87vh]",
+                "w-full h-[90vh]  overflow-y-auto space-y-5 p-3  pb-16    no-scrollbar-x",
             )}
         >
             <div className="space-y-3">
@@ -424,7 +415,6 @@ export default function CompleteTaskManager({
 
                 {/* Title */}
                 <FormInput
-                    disabled={task?.is_action}
                     required
                     label={"Vazifa nomi"}
                     methods={form}
@@ -435,7 +425,6 @@ export default function CompleteTaskManager({
 
             {/* Description */}
             <FormTextarea
-                disabled={task?.is_action}
                 methods={form}
                 name="desc"
                 label={"Tavsif"}
@@ -443,9 +432,8 @@ export default function CompleteTaskManager({
             />
 
             {/* Priority & Deadline */}
-            <div className="grid sm:grid-cols-2 gap-4 ">
+            <div className="grid sm:grid-cols-2 gap-4 items-end ">
                 <FormSelect
-                    disabled={task?.is_action}
                     label={"Muhimlik darajasi"}
                     control={form.control}
                     labelKey="label"
@@ -461,7 +449,6 @@ export default function CompleteTaskManager({
                     addButtonProps={{
                         variant: "secondary",
                         className: "w-full flex justify-start",
-                        disabled: task?.is_action,
                     }}
                     calendarProps={{
                         fromDate: new Date(),
@@ -470,7 +457,7 @@ export default function CompleteTaskManager({
             </div>
 
             {/* Assigned To */}
-            <div className="grid sm:grid-cols-2 gap-4 ">
+            <div className="grid sm:grid-cols-2 gap-4 items-end ">
                 <FormDateTimePicker
                     label={
                         <div className="flex items-center space-x-2">
@@ -478,7 +465,6 @@ export default function CompleteTaskManager({
                                 {"Ogohlantirish"}
                             </Label>
                             <Switch
-                                disabled={task?.is_action}
                                 checked={switchBol}
                                 onCheckedChange={setSwitchBol}
                                 id="airplane-mode"
@@ -490,7 +476,7 @@ export default function CompleteTaskManager({
                     addButtonProps={{
                         variant: "secondary",
                         className: "w-full flex justify-start",
-                        disabled: !switchBol || task?.is_action,
+                        disabled: !switchBol,
                     }}
                     calendarProps={{
                         fromDate: new Date(),
@@ -505,355 +491,288 @@ export default function CompleteTaskManager({
                     valueKey="id"
                     options={hrData}
                     isLoading={isLoading}
-                    addButtonProps={{
-                        disabled: task?.is_action,
-                    }}
                 />
             </div>
 
             {/* Subtasks */}
-            {fields.length > 0 || !task?.is_action ? (
-                <div className={cn("space-y-2 border p-3 rounded-md")}>
-                    <label className="text-sm">{"Kichik vazifalar"}</label>
+            <div className={cn("space-y-2 border p-3 rounded-md")}>
+                <label className="text-sm">{"Kichik vazifalar"}</label>
 
-                    {fields?.map((field, index) => {
-                        const isFinished = form.watch(
-                            `subtasks.${index}.finished`,
-                        )
-                        return (
-                            <div
-                                key={field.id}
-                                className="flex items-center gap-2 mb-2"
-                            >
-                                <div className="flex items-center gap-2">
-                                    {(!task?.is_checked ||
-                                        !task?.is_action) && (
-                                        <FormCheckbox
-                                            disabled={
-                                                task?.is_action &&
-                                                task?.is_checked
-                                            }
-                                            control={form.control}
-                                            name={`subtasks.${index}.finished`}
-                                        />
-                                    )}
-                                    <span className="pb-1">{index + 1}.</span>
-                                </div>
-                                <FormInput
-                                    disabled={task?.is_action}
-                                    methods={form}
-                                    name={`subtasks.${index}.title`}
-                                    className={`flex-1 ${
-                                        isFinished
-                                            ? "line-through text-muted-foreground"
-                                            : ""
-                                    }`}
+                {fields?.map((field, index) => {
+                    const isFinished = form.watch(`subtasks.${index}.finished`)
+                    return (
+                        <div
+                            key={field.id}
+                            className="flex items-center gap-2 mb-2"
+                        >
+                            <div className="flex items-center gap-2">
+                                <FormCheckbox
+                                    control={form.control}
+                                    name={`subtasks.${index}.finished`}
                                 />
-                                {!task?.is_action && (
-                                    <Button
-                                        type="button"
-                                        variant="destructive"
-                                        className="min-w-8"
-                                        onClick={() => remove(index)}
-                                    >
-                                        <X className="w-5 h-5" />
-                                    </Button>
-                                )}
+                                <span className="pb-1">{index + 1}.</span>
+                            </div>
+                            <FormInput
+                                methods={form}
+                                name={`subtasks.${index}.title`}
+                                className={`flex-1 ${
+                                    isFinished
+                                        ? "line-through text-muted-foreground"
+                                        : ""
+                                }`}
+                            />
+                            <Button
+                                type="button"
+                                variant="destructive"
+                                className="min-w-8"
+                                onClick={() => remove(index)}
+                            >
+                                <X className="w-5 h-5" />
+                            </Button>
+                        </div>
+                    )
+                })}
+
+                <Button
+                    type="button"
+                    className="min-w-8 w-full"
+                    onClick={() =>
+                        append({
+                            id: Date.now(),
+                            title: "",
+                            finished: false,
+                        })
+                    }
+                >
+                    <Plus className="w-5 h-5" /> {"Qo'shish"}
+                </Button>
+
+                {fields.length > 0 &&
+                    (() => {
+                        const subtasks = form.watch("subtasks") || []
+                        const finished = subtasks.filter(
+                            (task: any) => task.finished,
+                        ).length
+                        const total = fields.length
+                        const percent = Math.round((finished / total) * 100)
+
+                        const startColor = { r: 160, g: 186, b: 116 }
+                        const endColor = { r: 34, g: 197, b: 94 }
+
+                        const interpolate = (start: number, end: number) =>
+                            Math.round(start + ((end - start) * percent) / 100)
+
+                        const r = interpolate(startColor.r, endColor.r)
+                        const g = interpolate(startColor.g, endColor.g)
+                        const b = interpolate(startColor.b, endColor.b)
+
+                        const barColor = `rgb(${r}, ${g}, ${b})`
+
+                        return (
+                            <div className="space-y-1">
+                                <div className="w-full h-1.5 bg-gray-200 rounded overflow-hidden">
+                                    <div
+                                        className="h-full transition-all duration-500 ease-in-out"
+                                        style={{
+                                            width: `${percent}%`,
+                                            backgroundColor: barColor,
+                                        }}
+                                    />
+                                </div>
+                                <div className="text-xs text-muted-foreground text-right">
+                                    {"Bajarilgan:"} {percent}%
+                                </div>
                             </div>
                         )
-                    })}
-
-                    {!task?.is_action && (
-                        <Button
-                            disabled={task?.is_action}
-                            type="button"
-                            className="min-w-8 w-full"
-                            onClick={() =>
-                                append({
-                                    id: Date.now(),
-                                    title: "",
-                                    finished: false,
-                                })
-                            }
-                        >
-                            <Plus className="w-5 h-5" /> {"Qo'shish"}
-                        </Button>
-                    )}
-
-                    {fields.length > 0 &&
-                        (() => {
-                            const subtasks = form.watch("subtasks") || []
-                            const finished = subtasks.filter(
-                                (task: any) => task.finished,
-                            ).length
-                            const total = fields.length
-                            const percent = Math.round((finished / total) * 100)
-
-                            const startColor = { r: 160, g: 186, b: 116 }
-                            const endColor = { r: 34, g: 197, b: 94 }
-
-                            const interpolate = (start: number, end: number) =>
-                                Math.round(
-                                    start + ((end - start) * percent) / 100,
-                                )
-
-                            const r = interpolate(startColor.r, endColor.r)
-                            const g = interpolate(startColor.g, endColor.g)
-                            const b = interpolate(startColor.b, endColor.b)
-
-                            const barColor = `rgb(${r}, ${g}, ${b})`
-
-                            return (
-                                <div className="space-y-1">
-                                    <div className="w-full h-1.5 bg-gray-200 rounded overflow-hidden">
-                                        <div
-                                            className="h-full transition-all duration-500 ease-in-out"
-                                            style={{
-                                                width: `${percent}%`,
-                                                backgroundColor: barColor,
-                                            }}
-                                        />
-                                    </div>
-                                    <div className="text-xs text-muted-foreground text-right">
-                                        {"Bajarilgan:"} {percent}%
-                                    </div>
-                                </div>
-                            )
-                        })()}
-                </div>
-            ) : null}
+                    })()}
+            </div>
 
             {/* Images */}
-            {images.length || otherFiles.length || !task?.is_action ? (
-                <div className="space-y-2 border p-3 rounded-md">
-                    <div
-                        className={cn(
-                            "flex justify-between  items-center ",
-                            images?.length && "border-b pb-2 mb-2 items-end",
-                        )}
-                    >
-                        <label>{images?.length ? "Rasmlar" : "Fayllar"}</label>
-                        {!task?.is_action && (
-                            <Button
-                                disabled={task?.is_action}
-                                className="w-[115px]"
-                                type="button"
-                                onClick={() => fileInputRef.current?.click()}
-                            >
-                                <Paperclip className="min-w-4 max-w-4 h-4 mr-1" />{" "}
-                                {"Yuklash"}
-                            </Button>
-                        )}
-                    </div>
-                    <input
-                        disabled={task?.is_action}
-                        ref={fileInputRef}
-                        type="file"
-                        multiple
-                        onChange={handleFileUpload}
-                        className="hidden"
-                    />
-                    {images?.length ? (
-                        <div className="grid grid-cols-3 gap-2">
-                            {images.map((item, i) => (
-                                <div key={i} className="relative">
-                                    <SeeInView
-                                        url={
-                                            typeof item.file !== "string"
-                                                ? URL.createObjectURL(item.file)
-                                                : item.file
-                                        }
-                                        fullWidth
-                                        className="w-full lg:h-[200px]  object-cover rounded-md border"
-                                    />
-                                    {!task?.is_action && (
-                                        <Button
-                                            disabled={task?.is_action}
-                                            variant="destructive"
-                                            type="button"
-                                            className="bg-red-500 hover:bg-red-500/90 absolute text-white w-7 h-7 p-0 top-0 right-0 min-w-8"
-                                            onClick={() =>
-                                                handleDeleteFile(item)
-                                            }
-                                        >
-                                            <X className="w-4 h-4" />
-                                        </Button>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                    ) : null}
-
-                    {otherFiles?.length ? (
-                        <div className="flex flex-col gap-2  mb-4">
-                            {images.length ? (
-                                <label className="border-b pb-2">
-                                    {"Fayllar"}
-                                </label>
-                            ) : null}
-                            {otherFiles.map((item, i) => (
-                                <div
-                                    key={i}
-                                    className="col-span-3 flex items-center justify-between gap-3"
-                                >
-                                    <div className="w-full text-sm flex flex-col bg-secondary rounded-md px-3 py-[10px]">
-                                        <span
-                                            onClick={() => {
-                                                if (!item?.file) return
-
-                                                const link =
-                                                    document.createElement("a")
-                                                link.href =
-                                                    typeof item.file ===
-                                                    "string"
-                                                        ? item.file
-                                                        : item.file.url
-                                                link.download =
-                                                    typeof item.file ===
-                                                    "string"
-                                                        ? getFilenameFromMedia(
-                                                              item.file,
-                                                          )
-                                                        : item.file.name
-
-                                                document.body.appendChild(link)
-                                                link.click()
-                                                document.body.removeChild(link)
-                                            }}
-                                            className="line-clamp-1 break-all hover:text-primary cursor-pointer"
-                                        >
-                                            {i + 1}.{" "}
-                                            {typeof item.file === "string"
-                                                ? getFilenameFromMedia(
-                                                      item.file,
-                                                  )
-                                                : item.file.name}
-                                        </span>
-                                    </div>
-
-                                    {!task?.is_action && (
-                                        <Button
-                                            variant="destructive"
-                                            type="button"
-                                            disabled={task?.is_action}
-                                            onClick={() =>
-                                                handleDeleteFile(item)
-                                            }
-                                        >
-                                            <X className="w-4 h-4" />
-                                        </Button>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                    ) : null}
-                </div>
-            ) : null}
-
-            {/* Voice Notes */}
-            {form.watch("voiceNote")?.length || !task?.is_action ? (
-                <div className={"border p-3 rounded-md "}>
-                    <div
-                        className={cn(
-                            "flex justify-between items-center  ",
-                            form.watch("voiceNote")?.length &&
-                                "mb-4 border-b pb-2 ",
-                        )}
-                    >
-                        <label>{"Ovozli xabarlar"}</label>
-                        {!task?.is_action && (
-                            <Button
-                                disabled={!!task?.is_action}
-                                className={isRecording ? "w-max" : "w-[115px]"}
-                                type="button"
-                                onClick={
-                                    isRecording ? stopRecording : startRecording
-                                }
-                                color={isRecording ? "danger" : "default"}
-                            >
-                                {isRecording ? (
-                                    <>
-                                        <CirclePause className="min-w-5 max-w-5 h-5" />{" "}
-                                        {"To'xtatish"} (
-                                        {formatTime(recordingTime)})
-                                    </>
-                                ) : (
-                                    <>
-                                        <Disc className="min-w-4 max-w-4 h-4 mr-1" />{" "}
-                                        {"Yozish"}
-                                    </>
-                                )}
-                            </Button>
-                        )}
-                    </div>
-                    {form.watch("voiceNote")?.map((note, i) => (
-                        <div
-                            key={i}
-                            className="flex items-center gap-3 mb-2 w-full "
-                        >
-                            <span>{i + 1}.</span>
-                            <audio
-                                controls
-                                src={note}
-                                className="w-full h-11 "
-                            />
-                            {!task?.is_action && (
-                                <Button
-                                    disabled={task?.is_action}
-                                    type="button"
-                                    variant="destructive"
-                                    className="min-w-8"
-                                    onClick={() => {
-                                        const audioFiles =
-                                            task?.files?.filter(
-                                                (item) => item.type === "audio",
-                                            ) || []
-
-                                        const fileId = audioFiles[i]?.id
-
-                                        if (fileId) {
-                                            setDeletedItem((prev) => [
-                                                ...prev,
-                                                fileId,
-                                            ])
-                                        }
-
-                                        form.setValue(
-                                            "voiceNote",
-                                            form
-                                                .watch("voiceNote")
-                                                .filter((_, idx) => idx !== i),
-                                        )
-                                    }}
-                                >
-                                    <X className="w-5 h-5" />
-                                </Button>
-                            )}
-                        </div>
-                    ))}
-                </div>
-            ) : null}
-
-            {/* Submit */}
-            {(!task?.is_checked || !task?.is_action) && (
+            <div className="space-y-2 border p-3 rounded-md">
                 <div
                     className={cn(
-                        "flex absolute  lg:bottom-0 -bottom-1 left-0 px-3 py-2 dark:bg-zinc-900 bg-zinc-200 justify-end border-t dark:border-t-zinc-700 border-t-zinc-300 ",
-                        comment
-                            ? "lg:w-1/2 w-full lg:rounded-bl-md rounded-b-md"
-                            : "w-full rounded-b-md",
+                        "flex justify-between  items-center ",
+                        images?.length && "border-b pb-2 mb-2 items-end",
                     )}
                 >
+                    <label>{images?.length ? "Rasmlar" : "Fayllar"}</label>
                     <Button
-                        disabled={isPendingCreate || isPendingUpdate}
-                        loading={isPendingCreate || isPendingUpdate}
-                        type="submit"
-                        className="sm:w-[115px] w-full"
+                        className="w-[115px]"
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
                     >
-                        {"Saqlash"}
+                        <Paperclip className="min-w-4 max-w-4 h-4 mr-1" />{" "}
+                        {"Yuklash"}
                     </Button>
                 </div>
-            )}
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    multiple
+                    onChange={handleFileUpload}
+                    className="hidden"
+                />
+                {images?.length ? (
+                    <div className="grid grid-cols-3 gap-2">
+                        {images.map((item, i) => (
+                            <div key={i} className="relative">
+                                <SeeInView
+                                    url={
+                                        typeof item.file !== "string"
+                                            ? URL.createObjectURL(item.file)
+                                            : item.file
+                                    }
+                                    fullWidth
+                                    className="w-full lg:h-[200px]  object-cover rounded-md border"
+                                />
+                                <Button
+                                    variant="destructive"
+                                    type="button"
+                                    className="bg-red-500 hover:bg-red-500/90 absolute text-white w-7 h-7 p-0 top-0 right-0 min-w-8"
+                                    onClick={() => handleDeleteFile(item)}
+                                >
+                                    <X className="w-4 h-4" />
+                                </Button>
+                            </div>
+                        ))}
+                    </div>
+                ) : null}
+
+                {otherFiles?.length ? (
+                    <div className="flex flex-col gap-2  mb-4">
+                        {images.length ? (
+                            <label className="border-b pb-2">{"Fayllar"}</label>
+                        ) : null}
+                        {otherFiles.map((item, i) => (
+                            <div
+                                key={i}
+                                className="col-span-3 flex items-center justify-between gap-3"
+                            >
+                                <div className="w-full text-sm flex flex-col bg-secondary rounded-md px-3 py-[10px]">
+                                    <span
+                                        onClick={() => {
+                                            if (!item?.file) return
+
+                                            const link =
+                                                document.createElement("a")
+                                            link.href =
+                                                typeof item.file === "string"
+                                                    ? item.file
+                                                    : item.file.url
+                                            link.download =
+                                                typeof item.file === "string"
+                                                    ? getFilenameFromMedia(
+                                                          item.file,
+                                                      )
+                                                    : item.file.name
+
+                                            document.body.appendChild(link)
+                                            link.click()
+                                            document.body.removeChild(link)
+                                        }}
+                                        className="line-clamp-1 break-all hover:text-primary cursor-pointer"
+                                    >
+                                        {i + 1}.{" "}
+                                        {typeof item.file === "string"
+                                            ? getFilenameFromMedia(item.file)
+                                            : item.file.name}
+                                    </span>
+                                </div>
+
+                                <Button
+                                    variant="destructive"
+                                    type="button"
+                                    onClick={() => handleDeleteFile(item)}
+                                >
+                                    <X className="w-4 h-4" />
+                                </Button>
+                            </div>
+                        ))}
+                    </div>
+                ) : null}
+            </div>
+
+            {/* Voice Notes */}
+            <div className={"border p-3 rounded-md "}>
+                <div
+                    className={cn(
+                        "flex justify-between items-center  ",
+                        form.watch("voiceNote")?.length &&
+                            "mb-4 border-b pb-2 ",
+                    )}
+                >
+                    <label>{"Ovozli xabarlar"}</label>
+                    <Button
+                        className={isRecording ? "w-max" : "w-[115px]"}
+                        type="button"
+                        onClick={isRecording ? stopRecording : startRecording}
+                        color={isRecording ? "danger" : "default"}
+                    >
+                        {isRecording ? (
+                            <>
+                                <CirclePause className="min-w-5 max-w-5 h-5" />{" "}
+                                {"To'xtatish"} ({formatTime(recordingTime)})
+                            </>
+                        ) : (
+                            <>
+                                <Disc className="min-w-4 max-w-4 h-4 mr-1" />{" "}
+                                {"Yozish"}
+                            </>
+                        )}
+                    </Button>
+                </div>
+                {form.watch("voiceNote")?.map((note, i) => (
+                    <div
+                        key={i}
+                        className="flex items-center gap-3 mb-2 w-full "
+                    >
+                        <span>{i + 1}.</span>
+                        <audio controls src={note} className="w-full h-11 " />
+                        <Button
+                            type="button"
+                            variant="destructive"
+                            className="min-w-8"
+                            onClick={() => {
+                                const audioFiles =
+                                    task?.files?.filter(
+                                        (item) => item.type === "audio",
+                                    ) || []
+
+                                const fileId = audioFiles[i]?.id
+
+                                if (fileId) {
+                                    setDeletedItem((prev) => [...prev, fileId])
+                                }
+
+                                form.setValue(
+                                    "voiceNote",
+                                    form
+                                        .watch("voiceNote")
+                                        .filter((_, idx) => idx !== i),
+                                )
+                            }}
+                        >
+                            <X className="w-5 h-5" />
+                        </Button>
+                    </div>
+                ))}
+            </div>
+
+            {/* Submit */}
+            <div
+                className={cn(
+                    "flex absolute  bottom-0  left-0 px-3 py-2 dark:bg-zinc-900 bg-zinc-200 justify-end border-t dark:border-t-zinc-700 border-t-zinc-300 lg:rounded-bl-md  lg:w-1/2 w-full  ",
+                )}
+            >
+                <Button
+                    disabled={isPendingCreate || isPendingUpdate}
+                    loading={isPendingCreate || isPendingUpdate}
+                    type="submit"
+                    className="sm:w-[115px] w-full"
+                >
+                    {"Saqlash"}
+                </Button>
+            </div>
         </form>
     )
 }

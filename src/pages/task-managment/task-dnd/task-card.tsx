@@ -167,7 +167,6 @@ export default function TaskCard({ item, onDelete }: Props) {
                         >
                             <Copy size={16} className="text-primary" />
                         </button>
-                        {item.is_action && (
                             <button
                                 onClick={(e) => {
                                     e.stopPropagation()
@@ -178,7 +177,6 @@ export default function TaskCard({ item, onDelete }: Props) {
                             >
                                 <Trash size={14} />
                             </button>
-                        )}
                     </div>
                 </div>
             </CardContent>

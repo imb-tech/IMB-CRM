@@ -18,6 +18,7 @@ interface MessageInputProps {
     onCancelEdit: () => void
     selectedFiles: File[]
     setSelectedFiles: React.Dispatch<React.SetStateAction<File[]>>
+    isPending: boolean
 }
 
 export function MessageInput({
@@ -29,6 +30,7 @@ export function MessageInput({
     onCancelEdit,
     selectedFiles,
     setSelectedFiles,
+    isPending,
 }: MessageInputProps) {
     const [text, setText] = useState("")
     const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -140,12 +142,10 @@ export function MessageInput({
         }
     }, [isOpenChats])
 
-    console.log(text)
-
     return (
         <div
             className={
-                "border-t bg-[#18222C] border-t-[#213040] px-3 py-2.5  lg:rounded-br-md"
+                "border-t bg-[#18222C] border-t-[#213040] px-3 py-2.5   lg:rounded-br-md"
             }
         >
             {replyingTo && (
@@ -245,7 +245,9 @@ export function MessageInput({
                     <Button
                         type="submit"
                         variant={"ghost"}
-                        disabled={!text && selectedFiles.length === 0}
+                        disabled={
+                            !text && selectedFiles.length === 0 || isPending
+                        }
                         className="h-9 w-9 p-0 disabled:text-[#B1C3D4] text-[#2EA6FE]  hover:bg-transparent"
                     >
                         <Send className="rotate-45" size={22} />
