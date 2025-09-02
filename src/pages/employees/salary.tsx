@@ -25,7 +25,7 @@ const EmployeeSalaries = () => {
                         <h1 className="text-xl font-medium ">
                             {"Moashlar ro'yxati"}
                         </h1>
-                        <Badge className="text-sm">1</Badge>
+                        <Badge className="text-sm">{data?.count}</Badge>
                     </div>
                     <DataTable
                         columns={

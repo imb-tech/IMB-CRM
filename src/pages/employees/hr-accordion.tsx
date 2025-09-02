@@ -10,10 +10,11 @@ import { Dispatch, SetStateAction } from "react"
 type Props = {
     loading?: boolean
     users?: Employee[]
+    count?: number
     setCurrent: Dispatch<SetStateAction<Employee | null>>
 }
 
-function HrAccordion({ loading, users, setCurrent }: Props) {
+function HrAccordion({ loading, users, setCurrent,count }: Props) {
     const { data } = useGet<RoleOption[]>(OPTION_ROLES)
     const { openModal } = useModal(`${EMPLOYEE}-add`)
     const { openModal: openDelete } = useModal(`${EMPLOYEE}-delete`)
@@ -23,7 +24,7 @@ function HrAccordion({ loading, users, setCurrent }: Props) {
     return (
         <div className="overflow-x-auto hidden lg:block">
             <div className="w-full">
-                <EmployeesHeader allEmployes={data?.length} />
+                <EmployeesHeader allEmployes={count} />
 
                 <DataTable
                     numeration
