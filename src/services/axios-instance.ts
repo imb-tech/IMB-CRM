@@ -39,7 +39,10 @@ export function setupAxiosInterceptors() {
 
     axiosInstance.interceptors.response.use(
         function (response) {
+            console.log(response.config.url);
+            
             if (response.config.url === "/auth/profile/") {
+                const br = localStorage.getItem('branch')
                 const branches = response.data.branches
                 if (!branches?.length) {
                     localStorage.removeItem('token')
@@ -48,7 +51,9 @@ export function setupAxiosInterceptors() {
                         window.location.replace("/login")
                     }, 1000);
                 } else {
-                    setActiveBranch(branches[0].id)
+                    if (!br) {
+                        setActiveBranch(branches[0].id)
+                    }
                 }
             }
             return response
