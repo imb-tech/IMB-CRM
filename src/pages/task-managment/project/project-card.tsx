@@ -54,13 +54,13 @@ function ProjectCard({ handleItem, handleDelete, item, index }: Props) {
                 })
             }
             className={clsx(
-                "bg-background/80 bg-blend-overlay cursor-pointer min-h-[244px] h-full  bg-center bg-cover",
+                "dark:bg-background/80 bg-black/50 bg-blend-overlay cursor-pointer min-h-[244px] h-full  bg-center bg-cover",
             )}
             style={{
                 backgroundImage: `url(${item.background})`,
             }}
         >
-            <CardContent className="h-full flex justify-between flex-col gap-4">
+            <CardContent className="h-full text-white flex justify-between flex-col gap-4">
                 <div className="space-y-4">
                     <div className="flex justify-between  items-center gap-3">
                         <h1 className="font-semibold text-xl line-clamp-1 break-all ">
@@ -131,9 +131,7 @@ function ProjectCard({ handleItem, handleDelete, item, index }: Props) {
                                                         )}
                                                     </AvatarFallback>
                                                 </Avatar>
-                                                <p>
-                                                    {item?.full_name}
-                                                </p>
+                                                <p>{item?.full_name}</p>
                                             </div>
                                         ))}
                                     </div>
