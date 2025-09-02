@@ -29,7 +29,7 @@ export default function GroupFilter() {
                 hideSearch
                 label="Kunlar"
                 options={weekdays.map((d, i) => ({
-                    value: `${i + 1}`,
+                    value: `${i}`,
                     name: d,
                 }))}
                 labelKey="name"

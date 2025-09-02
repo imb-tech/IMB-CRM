@@ -1,8 +1,6 @@
-import { useGet } from "@/hooks/useGet"
 import { DataTable } from "@/components/ui/datatable"
-import { EMPLOYEE, OPTION_ROLES } from "@/constants/api-endpoints"
+import { EMPLOYEE } from "@/constants/api-endpoints"
 import { useEmployeeCols } from "./columns"
-import { Badge } from "@/components/ui/badge"
 import EmployeesHeader from "./employees-header"
 import { useModal } from "@/hooks/useModal"
 import { Dispatch, SetStateAction } from "react"
@@ -14,8 +12,7 @@ type Props = {
     setCurrent: Dispatch<SetStateAction<Employee | null>>
 }
 
-function HrAccordion({ loading, users, setCurrent,count }: Props) {
-    const { data } = useGet<RoleOption[]>(OPTION_ROLES)
+function HrAccordion({ loading, users, setCurrent, count }: Props) {
     const { openModal } = useModal(`${EMPLOYEE}-add`)
     const { openModal: openDelete } = useModal(`${EMPLOYEE}-delete`)
 
