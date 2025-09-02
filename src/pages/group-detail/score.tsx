@@ -92,7 +92,8 @@ export default function GroupScore() {
                                         {sector.map((day, i) => (
                                             <th
                                                 key={i}
-                                                className="text-center font-medium text-gray-700 min-w-[40px]"
+                                                className="text-center font-medium text-gray-700"
+                                                style={{ minWidth: 30 * (day.modules.length ?? 1) }}
                                             >
                                                 <Popover>
                                                     <PopoverTrigger asChild>
@@ -135,21 +136,37 @@ export default function GroupScore() {
                                                     </div>
                                                 </td>
                                                 {sector.map((day) => {
-                                                    const scr = student.modules.find(g => g.target_date === day.formatted_date)?.score ?? 0
+                                                    const scr = student.modules.filter(g => g.target_date === day.formatted_date)
                                                     return (
                                                         <td
                                                             key={day.day}
                                                             className="p-2 text-center border-r"
                                                         >
-                                                            <NumberInput
-                                                                className={cn(
-                                                                    "w-8 h-8 rounded-lg flex items-center text-center justify-center mx-auto border-none border-transparent shadow-none p-0",
-                                                                    scr == 0 ? "text-transparent" : ""
-                                                                )}
-                                                                max={9}
-                                                                defaultValue={scr}
-                                                                maxLength={1}
-                                                            />
+                                                            <div className="flex justify-around items-center" style={{ minWidth: 30, minHeight: 30 }}>
+                                                                {
+                                                                    scr.map(md => (
+                                                                        <NumberInput
+                                                                            key={md.id + day.day}
+                                                                            className={cn(
+                                                                                "w-8 h-8 rounded-lg flex items-center text-center justify-center mx-auto border-none border-transparent shadow-none p-0",
+                                                                                md.score == 0 ? "text-transparent" : ""
+                                                                            )}
+                                                                            max={9}
+                                                                            defaultValue={md.score}
+                                                                            maxLength={1}
+                                                                        />
+                                                                    ))
+                                                                }
+                                                                {/* <NumberInput
+                                                                    className={cn(
+                                                                        "w-8 h-8 rounded-lg flex items-center text-center justify-center mx-auto border-none border-transparent shadow-none p-0",
+                                                                        scr == 0 ? "text-transparent" : ""
+                                                                    )}
+                                                                    max={9}
+                                                                    defaultValue={scr}
+                                                                    maxLength={1}
+                                                                /> */}
+                                                            </div>
                                                         </td>
                                                     )
                                                 })}
