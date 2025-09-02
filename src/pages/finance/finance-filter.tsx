@@ -9,8 +9,9 @@ export default function FinanceFilter() {
     const { data, active_branch } = useMe()
 
     return (
-        <aside className="flex items-center gap-2 rounded-md">
-            <ParamDateRangePicker
+        <aside className="flex items-center gap-2 rounded-md w-full justify-between">
+           <div className="flex items-center gap-2">
+             <ParamDateRangePicker
                 itemClassName={buttonVariants({
                     variant: "ghost",
                     className:
@@ -60,6 +61,7 @@ export default function FinanceFilter() {
                     className: "!bg-background dark:!bg-secondary"
                 }}
             />
+           </div>
             <ExportAsExcel url="url" name="finance" />
         </aside>
     )
