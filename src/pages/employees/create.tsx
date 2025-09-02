@@ -13,7 +13,6 @@ import { usePost } from "@/hooks/usePost"
 import { handleFormError } from "@/lib/show-form-errors"
 import { generateUsername } from "@/lib/utils"
 import { useQueryClient } from "@tanstack/react-query"
-import { AxiosError } from "axios"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
@@ -75,9 +74,9 @@ const EmployeeCreate = ({ item }: Props) => {
             ...values,
             branches: values.branches_field?.join(","),
             photo:
-                !values.photo || typeof values.phone == "string" ?
+                !values.photo || typeof values.photo == "string" ?
                     undefined
-                :   values.phone,
+                :   values.photo,
         }
         if (item?.id) {
             mutateUpdate(`${EMPLOYEE}/${item.id}`, formFields)

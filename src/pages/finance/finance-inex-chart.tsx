@@ -20,12 +20,18 @@ type Data = {
 }
 
 const chartData: Data[] = [
-    { month: "January", Kirim: 186, Chiqim: 80 },
-    { month: "February", Kirim: 305, Chiqim: 200 },
-    { month: "March", Kirim: 237, Chiqim: 120 },
-    { month: "April", Kirim: 73, Chiqim: 190 },
+    { month: "Yanvar", Kirim: 186, Chiqim: 80 },
+    { month: "Fevral", Kirim: 305, Chiqim: 200 },
+    { month: "Mart", Kirim: 237, Chiqim: 120 },
+    { month: "Aprel", Kirim: 73, Chiqim: 190 },
     { month: "May", Kirim: 209, Chiqim: 130 },
-    { month: "June", Kirim: 214, Chiqim: 140 },
+    { month: "Iyun", Kirim: 214, Chiqim: 140 },
+    { month: "Iyul", Kirim: 180, Chiqim: 160 },
+    { month: "Avgust", Kirim: 195, Chiqim: 150 },
+    { month: "Sentabr", Kirim: 220, Chiqim: 170 },
+    { month: "Oktabr", Kirim: 240, Chiqim: 180 },
+    { month: "Noyabr", Kirim: 260, Chiqim: 190 },
+    { month: "Dekabr", Kirim: 300, Chiqim: 200 },
 ]
 
 const chartConfig = {
