@@ -22,6 +22,7 @@ import AddGroup from "@/pages/student-detail/main/groups/add-group"
 import StudentMessageCreate from "@/pages/student-detail/main/send-message/create"
 import StudentNotesCreate from "@/pages/student-detail/main/notes/create"
 import LeadsUpdateDepartment from "./leads-update-department"
+import useMe from "@/hooks/useMe"
 
 const LeadsDnd = () => {
     const search = useSearch({ strict: false })
@@ -29,13 +30,7 @@ const LeadsDnd = () => {
     const { store, remove } = useStore<LeadStatus>("status-data")
     const { store: student } = useStore<Lead>("lead-data")
     const { openModal } = useModal("create-status")
-    const { openModal: confirmDelete } = useModal("confirm-delete")
-
-    const { setStore } = useStore<{
-        id: number
-        type: "delete" | "success"
-        name: string
-    }>("conf-lead")
+    const { data: dataProfile } = useMe()
 
     const queryClient = useQueryClient()
 
@@ -58,24 +53,11 @@ const LeadsDnd = () => {
     const { mutate } = usePatch()
     const { mutate: orderMutation } = usePost()
 
-    const onDragEnd = (result: DropResult) => {
-        const originUsers =
-            queryClient.getQueryData<LeadFields[]>(queryKeyUsers)
 
+    const onDragEnd = (result: DropResult) => {
         const droppableId = result.destination?.droppableId
 
-        if (droppableId === "delete-zone" || droppableId === "success-zone") {
-            const drpId = Number(result.draggableId?.replace("user-", ""))
-            setStore({
-                type: droppableId === "delete-zone" ? "delete" : "success",
-                id: drpId,
-                name:
-                    originUsers?.find((usr) => usr.id == drpId)?.name ??
-                    "Bu Lid",
-            })
-            confirmDelete()
-            return
-        } else if (result.type === "card" && result.destination) {
+        if (result.type === "card" && result.destination) {
             const cfg = {
                 from: Number(result.source.droppableId?.replace("col-", "")),
                 to: Number(droppableId?.replace("col-", "")),
@@ -111,7 +93,12 @@ const LeadsDnd = () => {
                 const updatedFromUsers = moved.newSource
                 updatedToUsers = moved.newDestination.map((u) =>
                     u.id === cfg.item
-                        ? { ...u, status: cfg.to, updated_at: new Date() }
+                        ? {
+                              ...u,
+                              status: cfg.to,
+                              updated_at: new Date(),
+                              worker_name: dataProfile?.full_name || "",
+                          }
                         : u,
                 )
 
@@ -140,7 +127,7 @@ const LeadsDnd = () => {
                         )
                     },
                     onError() {
-                        queryClient.setQueryData(queryKeyUsers, originUsers)
+                        queryClient.setQueryData(queryKeyUsers, users)
                     },
                 },
             )

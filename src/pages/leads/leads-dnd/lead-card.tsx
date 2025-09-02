@@ -27,7 +27,8 @@ import axiosInstance from "@/services/axios-instance"
 import { format } from "date-fns"
 
 export default function LeadCard(props: Lead & { index: number }) {
-    const { id, name, source_icon, worker_name, get_main_contact, updated_at } = props
+    const { id, name, source_icon, worker_name, get_main_contact, updated_at } =
+        props
 
     const { id: sourceId } = useParams({ strict: false })
     const { pipeline } = useSearch({ strict: false })
@@ -45,7 +46,11 @@ export default function LeadCard(props: Lead & { index: number }) {
     const handleEdit = async () => {
         try {
             const resp = await axiosInstance.get<Lead>(`leads/crud/${id}/`)
-            setStore({ ...resp.data, contacts_list: resp.data?.contacts ?? [], contacts: undefined })
+            setStore({
+                ...resp.data,
+                contacts_list: resp.data?.contacts ?? [],
+                contacts: undefined,
+            })
             open.edit()
         } catch (err) {
             console.error(err)
@@ -60,7 +65,9 @@ export default function LeadCard(props: Lead & { index: number }) {
         },
         {
             label: "SMS yuborish",
-            icon: <MessageSquareText size={16} className="text-yellow-500 mr-2" />,
+            icon: (
+                <MessageSquareText size={16} className="text-yellow-500 mr-2" />
+            ),
             onClick: () => open.message(),
         },
         {
@@ -95,7 +102,7 @@ export default function LeadCard(props: Lead & { index: number }) {
             <Card className="group border rounded-lg overflow-hidden transition-all duration-300 bg-secondary dark:hover:shadow-slate-800/30">
                 <CardContent className="p-4">
                     <div className="flex justify-between items-start">
-                          <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
                                 <div>
                                     <div className="flex items-center gap-2">
@@ -113,7 +120,7 @@ export default function LeadCard(props: Lead & { index: number }) {
                                     </p>
                                 </div>
                             </div>
-                            </div>
+                        </div>
 
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -126,20 +133,25 @@ export default function LeadCard(props: Lead & { index: number }) {
                                     <MoreHorizontal className="h-4 w-4" />
                                 </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent align="center" className="w-48">
-                                {actions.map(({ label, icon, onClick, className }) => (
-                                    <DropdownMenuItem
-                                        key={label}
-                                        className={cn(className)}
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            setStore(props)
-                                            onClick()
-                                        }}
-                                    >
-                                        {icon} {label}
-                                    </DropdownMenuItem>
-                                ))}
+                            <DropdownMenuContent
+                                align="center"
+                                className="w-48"
+                            >
+                                {actions.map(
+                                    ({ label, icon, onClick, className }) => (
+                                        <DropdownMenuItem
+                                            key={label}
+                                            className={cn(className)}
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                setStore(props)
+                                                onClick()
+                                            }}
+                                        >
+                                            {icon} {label}
+                                        </DropdownMenuItem>
+                                    ),
+                                )}
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>
@@ -148,9 +160,7 @@ export default function LeadCard(props: Lead & { index: number }) {
                         <p className="text-xs dark:text-slate-300">
                             {format(updated_at, "yyyy-MM-dd HH:mm")}
                         </p>
-                        <Badge
-                            className="ml-auto text-xs font-normal bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary hover:bg-primary/20"
-                        >
+                        <Badge className="ml-auto text-xs font-normal bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary hover:bg-primary/20">
                             {worker_name}
                         </Badge>
                     </div>

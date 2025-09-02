@@ -4,7 +4,6 @@ import { useGet } from "@/hooks/useGet"
 import { useModal } from "@/hooks/useModal"
 import { useStorage } from "@/hooks/useStorage"
 import PageLayout from "@/layouts/page-layout"
-import LeadsMain from "@/pages/leads"
 import CreateDepartment from "@/pages/leads/create-department"
 import { pipelineUrl } from "@/pages/leads/lead-deal-selector"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
@@ -51,7 +50,6 @@ function RouteComponent() {
             navOnHeader={hasLeads}
             className={"overflow-x-auto !overflow-y-hidden px-1 sm:px-4 "}
         >
-            {hasLeads && <LeadsMain />}
 
             {isFetched && !hasLeads && (
                 <div
