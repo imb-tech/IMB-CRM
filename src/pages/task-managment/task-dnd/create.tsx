@@ -7,9 +7,7 @@ import { Button } from "@/components/ui/button"
 import SeeInView from "@/components/ui/see-in-view"
 import {
     OPTION_EMPLOYEES,
-    FILTER_TASKLY_USERS,
     PROJECTS_TASKS,
-    TASKLY_PROJECT_USERS,
     TASKS,
 } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
@@ -18,7 +16,7 @@ import { usePatch } from "@/hooks/usePatch"
 import { usePost } from "@/hooks/usePost"
 import { cn } from "@/lib/utils"
 import { useQueryClient } from "@tanstack/react-query"
-import { useSearch } from "@tanstack/react-router"
+import { useNavigate, useSearch } from "@tanstack/react-router"
 import { CirclePause, Disc, Flame, Paperclip, Plus, X } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
@@ -100,7 +98,8 @@ export default function CompleteTaskManager({
         },
     ]
 
-    const search = useSearch({ from: "/_main/project/$id" })
+    const navigate = useNavigate()
+    const search: any = useSearch({ from: "/_main/project/$id" })
     const { data: hrData, isLoading } = useGet<OptionEmployees[]>(
         OPTION_EMPLOYEES,
         {
@@ -168,6 +167,12 @@ export default function CompleteTaskManager({
                 closeModal()
                 form.reset()
                 setDeletedItem([])
+                navigate({
+                    search: {
+                        ...search,
+                        task: undefined,
+                    },
+                })
             },
         },
         {
@@ -199,6 +204,12 @@ export default function CompleteTaskManager({
                 closeModal()
                 form.reset()
                 setDeletedItem([])
+                navigate({
+                    search: {
+                        ...search,
+                        task: undefined,
+                    },
+                })
             },
         },
         {
