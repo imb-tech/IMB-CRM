@@ -83,7 +83,7 @@ export default function TaskBoard() {
     })
 
     const { data: dataStatus } = useGet<{ todo: number; finished: number }>(
-        `taskly/tasks-stats`,
+        `taskly/projects/overview`,
         { params: search },
     )
 

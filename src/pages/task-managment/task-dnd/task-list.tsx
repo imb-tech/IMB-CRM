@@ -12,7 +12,6 @@ const TaskList = ({ tasks, onDelete }: Props) => {
             key={item.id.toString()}
             draggableId={`task-${item.id}`}
             index={index}
-            isDragDisabled={!item?.is_action && item.is_checked}
         >
             {(provided) => (
                 <div

@@ -8,7 +8,7 @@ import { useDelete } from "@/hooks/useDelete"
 import { InfiniteData, useQueryClient } from "@tanstack/react-query"
 import { useInfinite } from "@/hooks/useInfite"
 import { ScrollToBottomButton } from "./scroll-bottom-button"
-import { useSearch } from "@tanstack/react-router"
+import { useNavigate, useParams, useSearch } from "@tanstack/react-router"
 import { cn } from "@/lib/utils"
 
 const config = {
@@ -17,7 +17,13 @@ const config = {
     },
 }
 
-export default function TaskChat() {
+export default function TaskChat({
+    currentId,
+}: {
+    currentId: number | undefined
+}) {
+    const navigate = useNavigate()
+    const { id } = useParams({ from: "/_main/project/$id" })
     const queryClient = useQueryClient()
     const search: any = useSearch({ from: "/_main/project/$id" })
     const [showScrollButton, setShowScrollButton] = useState(false)
@@ -43,12 +49,22 @@ export default function TaskChat() {
         params: {
             task_id: search.task,
         },
+        options: {
+            enabled: !!search.task,
+        },
     })
 
-    const { mutate: createMutate } = usePost(
+    const { mutate: createMutate, isPending } = usePost(
         {
-            onSuccess: () => {
+            onSuccess: (data) => {
                 refetch()
+                if (data?.task) {
+                    navigate({
+                        to: "/project/$id",
+                        params: { id },
+                        search: { task: data?.task },
+                    })
+                }
             },
         },
         config,
@@ -59,6 +75,14 @@ export default function TaskChat() {
             scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight
         }
     }
+
+    useEffect(() => {
+        if (!search.task) {
+            queryClient.removeQueries({
+                queryKey: [TASKLY_COMMENT],
+            })
+        }
+    }, [search.task])
 
     useEffect(() => {
         const el = scrollAreaRef.current
@@ -88,7 +112,8 @@ export default function TaskChat() {
         const formData = new FormData()
         if (text) formData.append("text", text)
         if (replyingTo?.id) formData.append("reply", String(replyingTo.id))
-        formData.append("task", search.task)
+        if (search?.task) formData.append("task", search.task)
+        if (currentId) formData.append("status", String(currentId))
         if (files && files.length)
             files.forEach((file) => formData.append("files", file))
 
@@ -209,7 +234,7 @@ export default function TaskChat() {
             onDrop={handleDrop}
             onPaste={handlePaste}
             className={cn(
-                "mx-auto max-w-6xl  h-[87vh] flex flex-col-reverse",
+                "mx-auto max-w-6xl  h-[90vh] flex flex-col-reverse",
                 isDragging && "relative",
             )}
         >
@@ -222,6 +247,7 @@ export default function TaskChat() {
                 onCancelEdit={cancelEdit}
                 selectedFiles={selectedFiles}
                 setSelectedFiles={setSelectedFiles}
+                isPending={isPending}
             />
             <div
                 className="relative  bg-[#213040] px-2 py-3 h-full scroll-smooth no-scrollbar-x overflow-y-auto rounded-tr-md flex flex-col-reverse"
