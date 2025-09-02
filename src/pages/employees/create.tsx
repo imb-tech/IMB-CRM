@@ -12,6 +12,7 @@ import { usePatch } from "@/hooks/usePatch"
 import { usePost } from "@/hooks/usePost"
 import { handleFormError } from "@/lib/show-form-errors"
 import { generateUsername } from "@/lib/utils"
+import apiRoles from "@/services/hooks/use-roles"
 import { useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -24,9 +25,7 @@ const EmployeeCreate = ({ item }: Props) => {
     const queryClient = useQueryClient()
     const { closeModal, isOpen } = useModal(`${EMPLOYEE}-add`)
 
-    const { data: roles } = useGet<RoleOption[]>(OPTION_ROLES, {
-        options: { enabled: isOpen },
-    })
+    const { data: roles } = apiRoles({ enabled: isOpen })
     const { data, active_branch } = useMe()
 
     const form = useForm<Employee>({
@@ -36,7 +35,7 @@ const EmployeeCreate = ({ item }: Props) => {
                     ...item,
                     branches_field: item.branches.map((f) => f.id),
                 }
-            :   {
+                : {
                     branches_field: active_branch ? [active_branch] : [],
                 },
     })
@@ -76,7 +75,7 @@ const EmployeeCreate = ({ item }: Props) => {
             photo:
                 !values.photo || typeof values.photo == "string" ?
                     undefined
-                :   values.photo,
+                    : values.photo,
         }
         if (item?.id) {
             mutateUpdate(`${EMPLOYEE}/${item.id}`, formFields)
@@ -132,7 +131,7 @@ const EmployeeCreate = ({ item }: Props) => {
             <FormSelect
                 control={form.control}
                 name="role"
-                options={roles ?? []}
+                options={roles}
                 valueKey="id"
                 label="Lavozim"
                 labelKey="name"

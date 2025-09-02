@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { EMPLOYEE, OPTION_ROLES } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import { useModal } from "@/hooks/useModal"
+import apiRoles from "@/services/hooks/use-roles"
 import { Plus } from "lucide-react"
 import { useMemo } from "react"
 
@@ -13,7 +14,7 @@ export default function EmployeesHeader({
 }: {
     allEmployes?: number
 }) {
-    const { data } = useGet<RoleOption[]>(OPTION_ROLES)
+    const { data } = apiRoles()
     const { openModal } = useModal(`${EMPLOYEE}-add`)
 
     const options = useMemo(() => {

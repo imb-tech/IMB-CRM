@@ -34,6 +34,7 @@ export default function ExamDetail() {
             },
         },
     )
+
     const { mutate } = usePatch()
 
     function clickAnswer(text: string) {
@@ -41,17 +42,32 @@ export default function ExamDetail() {
         setAnswer(text)
     }
 
-    function updateScore(id: number, score: string) {
-        const data = qc.getQueryData(queryKey)
+    function updateScore(i: number, score: string) {
+        const conf = {
+            score: Number(score),
+            is_scored: score !== "",
+        }
+        const data = qc.getQueryData<GroupModule>(queryKey)
+        const newData = {
+            ...data,
+            students: data?.students.map(st => {
+                if (st.id == i) {
+                    return {
+                        ...st,
+                        ...conf
+                    }
+                } else return st
+            })
+        }
         mutate(
-            `platform/group-students/modules/${id}`,
-            {
-                score: Number(score),
-                is_scored: score !== "",
-            },
+            `platform/group-students/modules/${i}`,
+            conf,
             {
                 onError() {
                     qc.setQueryData(queryKey, data)
+                },
+                onSuccess(data) {
+                    qc.setQueryData(queryKey, newData)
                 },
             },
         )
@@ -77,6 +93,7 @@ export default function ExamDetail() {
                         viewAll
                         className="max-w-full"
                         numeration
+                        key={detail?.id}
                         minRows={6}
                         onDelete={({ original }) => {
                             rs()

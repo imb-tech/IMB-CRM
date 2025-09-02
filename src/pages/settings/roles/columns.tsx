@@ -7,6 +7,9 @@ export const useRolesCols = () =>
             {
                 header: "Nomi",
                 accessorKey: "name",
+                cell({ row }) {
+                    return <span className="capitalize">{row.original.name}</span>
+                },
             },
             {
                 header: "Xodimlar soni",

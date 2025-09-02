@@ -15,6 +15,10 @@ export const useGroupCols = () =>
                 accessorKey: "course_name",
             },
             {
+                header: "O'qituvchi",
+                accessorKey: "teacher_name",
+            },
+            {
                 header: "Dars Kunlari",
                 cell({ row: { original } }) {
                     return (
@@ -39,17 +43,17 @@ export const useGroupCols = () =>
                                 <p className="text-primary bg-primary/20 px-2 rounded">
                                     {students_count.active}
                                 </p>
-                            :   ""}
+                                : ""}
                             {students_count.new ?
                                 <p className="text-orange-300 bg-orange-300/20 px-2 rounded">
                                     {students_count.new}
                                 </p>
-                            :   ""}
+                                : ""}
                             {students_count.frozen ?
                                 <p className="text-muted-foreground bg-muted-foreground/20 px-2 rounded">
                                     {students_count.frozen}
                                 </p>
-                            :   ""}
+                                : ""}
                         </div>
                     )
                 },

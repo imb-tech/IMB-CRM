@@ -22,7 +22,7 @@ export const useColumns = ({ openModal }: { openModal: () => void }) => {
                         onClick={() =>
                             navigate({
                                 to: "/groups/$id",
-                                params: { id: String(row.original.id) },
+                                params: { id: String(row.original.group_data.id) },
                             })
                         }
                         className="hover:text-primary cursor-pointer hover:underline"

@@ -29,6 +29,7 @@ type Student = {
     groups: StudentGroup[]
     status: string
     group_data: {
+        id: number
         status: number
         group: number | null
         name?: string
