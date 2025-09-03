@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import {
     Select,
     SelectContent,
@@ -18,8 +18,9 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Clock, Home } from "lucide-react"
 import generateTimeSlots from "@/lib/generate-time-slots"
 import ParamDatePicker from "../../components/as-params/date-picker"
-import { Link } from "@tanstack/react-router"
 import useHistoryNavigate from "@/hooks/use-history-navigate"
+import { useGet } from "@/hooks/useGet"
+import { ROOM } from "@/constants/api-endpoints"
 
 type Props = {
     work: WorkTime[]
@@ -28,15 +29,28 @@ type Props = {
     work_end_date: string
 }
 
+type DashRoom = {
+    id: number,
+    start_time: string
+    end_time: string
+    group: {
+        id: number
+        name: string
+        teacher: string
+    },
+    room_id: number
+}
+
 export default function FullCalendar({
-    rooms,
-    work,
     work_start_date,
     work_end_date,
 }: Props) {
     const [timeInterval, setTimeInterval] = useState("30")
     const [timeSlots, setTimeSlots] = useState<string[]>([])
     const [skipCells, setSkipCells] = useState<Record<string, boolean>>({})
+
+    const { data } = useGet<DashRoom[]>('platform/statistics/dashboard/group-shifts')
+    const { data: room_list } = useGet<ListResp<Room>>(ROOM)
 
     const { push } = useHistoryNavigate()
 
@@ -61,23 +75,24 @@ export default function FullCalendar({
         return Math.max(1, endIndex - startIndex)
     }
 
-    const getBookingForSlot = (
+    const getBookingForSlot = useCallback((
         roomId: number,
         timeSlot: string,
-    ): WorkTime | undefined => {
-        return work.find(
+    ): DashRoom | undefined => {
+        return data?.find(
             (booking) =>
-                booking.roomId === roomId &&
-                timeSlot >= booking.startTime &&
-                timeSlot < booking.endTime,
+                booking.room_id === roomId &&
+                timeSlot === booking.start_time?.slice(0, 5) &&
+                timeSlot < booking.end_time?.slice(0, 5),
         )
-    }
+        // return data?.groups[0]
+    }, [data])
 
-    const prepareTableData = () => {
+    const prepareTableData = useCallback(() => {
         const newSkipCells: Record<string, boolean> = {}
 
-        rooms.forEach((room) => {
-            let lastBookingId: string | null = null
+        room_list?.results?.forEach((room) => {
+            let lastBookingId: number | null = null
 
             timeSlots.forEach((slot) => {
                 const booking = getBookingForSlot(room.id, slot)
@@ -96,7 +111,7 @@ export default function FullCalendar({
         })
 
         setSkipCells(newSkipCells)
-    }
+    }, [room_list])
 
     useEffect(() => {
         if (timeSlots.length > 0) {
@@ -159,7 +174,7 @@ export default function FullCalendar({
                         </TableHeader>
 
                         <TableBody>
-                            {rooms.map((room) => (
+                            {data && room_list?.results?.map((room) => (
                                 <TableRow
                                     key={room.id}
                                     className="border-b-none"
@@ -194,7 +209,7 @@ export default function FullCalendar({
 
                                         const colSpan = calculateColSpan(
                                             timeSlot,
-                                            booking.endTime,
+                                            booking.end_time,
                                         )
 
                                         return (
@@ -204,26 +219,26 @@ export default function FullCalendar({
                                                 colSpan={colSpan}
                                             >
                                                 <div
-                                                    className={`text-xs min-h-[50px] rounded p-1  flex flex-col items-center justify-center font-extralight ${booking.color}`}
+                                                    className={`text-xs min-h-[50px] rounded p-1  flex flex-col items-center justify-center font-extralight bg-primary/10`}
                                                     onClick={() =>
                                                         push(
-                                                            "/groups/5/students",
+                                                            `/groups/${booking.group.id}/students`,
                                                         )
                                                     }
                                                 >
                                                     <div className="flex items-center whitespace-nowrap">
                                                         <span className="font-medium">
                                                             {
-                                                                booking.course_name
+                                                                booking.group.name
                                                             }
                                                         </span>
                                                         <span className="ml-1">
-                                                            ({booking.startTime}
-                                                            -{booking.endTime})
+                                                            ({booking.start_time?.slice(0, 5)}
+                                                            -{booking.end_time?.slice(0, 5)})
                                                         </span>
                                                     </div>
                                                     <span>
-                                                        {booking.teacher_name}
+                                                        {booking.group.teacher}
                                                     </span>
                                                 </div>
                                             </TableCell>
