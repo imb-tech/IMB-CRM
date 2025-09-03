@@ -50,6 +50,14 @@ function ProjectCreate({ item }: Props) {
         {
             onSuccess: () => {
                 queryClient.invalidateQueries({ queryKey: [TASKLY_PROJECT] })
+                if (item?.id) {
+                    queryClient.invalidateQueries({
+                        queryKey: [`${TASKLY_PROJECT}/${item?.id}`],
+                    })
+                    queryClient.invalidateQueries({
+                        queryKey: [OPTION_EMPLOYEES],
+                    })
+                }
                 toast.success("Muvaffaqiyatli yangilandi")
                 closeModal()
                 form.reset()
@@ -107,7 +115,7 @@ function ProjectCreate({ item }: Props) {
             form.reset({
                 name: item.name,
                 background: item.background,
-                employees: item.employees,
+                employees: item?.invited_users?.map((user) => user.empl_id),
             })
         }
     }, [form, item])

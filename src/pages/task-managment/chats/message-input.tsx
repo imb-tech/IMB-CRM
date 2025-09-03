@@ -145,7 +145,7 @@ export function MessageInput({
     return (
         <div
             className={
-                "border-t bg-[#18222C] border-t-[#213040] px-3 py-2.5   lg:rounded-br-md"
+                "border-t bg-[#18222C] translate-y-[0.5px] border-t-[#213040] px-3 py-2.5   lg:rounded-br-md"
             }
         >
             {replyingTo && (
@@ -222,7 +222,7 @@ export function MessageInput({
                             onChange={(e) => setText(e.target.value)}
                             onKeyPress={handleKeyPress}
                             placeholder={"Xabar yozing..."}
-                            className="min-h-[30px] placeholder:text-[#B1C3D5] no-scrollbar-x  resize-none border-none bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 "
+                            className="min-h-[30px] placeholder:text-[#B1C3D5] text-white  no-scrollbar-x  resize-none border-none bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 "
                             rows={1}
                         />
                     ) : (

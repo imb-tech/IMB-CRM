@@ -8,12 +8,11 @@ type QuoteCard = {
     id: number
     title: string
     middle_name: string
+    status_id: number
     desc: string
     priority: 1 | 2 | 3
     deadline: string
     subtasks: SubTask[]
-    files: { file: any; type: string; id?: number }[] | []
-    voiceNote: string[]
     users: number[]
     users_data: {
         id: number
@@ -22,7 +21,6 @@ type QuoteCard = {
     }[]
     todo: number
     finished: number
-    remind_at: string
     author: {
         id: number
         full_name: string
@@ -41,19 +39,19 @@ type Column = {
 
 type FormValues = {
     name: string
-    is_update: boolean
     background: string
     author?: string
     id: number
-    statuses: {
-        name: string
-        count: number
-    }[]
+    finished: number
+    processing: number
+    todo: number
     created_at: string
-    users: {
+    invited_users: {
         id: number
         photo: string
         full_name: string
+        is_creator: boolean
+        empl_id: number
     }[]
     employees: number[]
 }

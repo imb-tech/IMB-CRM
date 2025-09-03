@@ -13,21 +13,16 @@ import { cn } from "@/lib/utils"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useStore } from "@/hooks/use-store"
 
-const TaskManagment = () => {
+const TaskManagment = ({ users }: { users: FormValues["invited_users"] }) => {
     const search: any = useSearch({ from: "/_main/project/$id" })
     const navigate = useNavigate()
+    const { store } = useStore<number | undefined>("task-create")
     const { openModal, closeModal: closeTaskModal } = useModal("task-modal")
-    const {
-        data,
-        isSuccess,
-        onDragEnd,
-        handleAdd,
-        currentId,
-        onDelete,
-        params,
-        isLoading,
-    } = useTaskDndHandlers()
+    const { data, isSuccess, onDragEnd, handleAdd, params, isLoading } =
+        useTaskDndHandlers()
+
     const [activeTab, setActiveTab] = useState("task")
 
     const closeModal = () => {
@@ -46,14 +41,12 @@ const TaskManagment = () => {
         }
     }, [search?.task, isSuccess])
 
-    
     return (
         <div className="relative">
-            <TaskHeader />
+            <TaskHeader users={users} />
             <div className="max-w-full h-[83vh] 2xl:h-[87vh]  overflow-x-scroll no-scrollbar-x overflow-y-auto">
                 <TaskDnd
-                    currentId={currentId}
-                    onDelete={onDelete}
+                    currentId={store}
                     handleAdd={handleAdd}
                     data={data || []}
                     params={params}
@@ -64,29 +57,23 @@ const TaskManagment = () => {
             </div>
 
             <Modal
-                size={"max-w-[90%]"}
+                size={"max-w-6xl"}
                 modalKey="task-modal"
                 onClose={closeModal}
                 className={cn(
-                    "outline-none focus:outline-none   max-w-[100%]  !p-0 !pb-[1px] border-none lg:max-w-[90%] ",
+                    "outline-none focus:outline-none bg-transparent  max-w-[100%]  !p-0 !pb-[1px] border-none lg:max-w-6xl ",
                 )}
                 classNameIcon={
                     "lg:-right-8 lg:top-0 hidden lg:block lg:bg-[#18222C] lg:text-white  w-max"
                 }
             >
                 {/* DESKTOP */}
-                <div
-                    className={cn(
-                        "hidden lg:grid lg:grid-cols-2 overflow-hidden ",
-                    )}
-                >
-                    <CompleteTaskManager
-                        currentId={currentId}
-                        params={params}
-                    />
+                <div className={cn("hidden lg:flex ")}>
+                    <CompleteTaskManager currentId={store} params={params} />
 
-                    <div>
-                        <TaskChat  currentId={currentId} />
+                    {/* Buni ichida Form bor */}
+                    <div className="w-full lg:w-[55%]">
+                        <TaskChat currentId={store} />
                     </div>
                 </div>
 
@@ -97,37 +84,33 @@ const TaskManagment = () => {
                         value={activeTab}
                         onValueChange={setActiveTab}
                     >
-                        {search?.task && (
-                            <div className="flex justify-between items-center gap-2 p-2 ">
-                                <Button
-                                    className="min-w-4"
-                                    onClick={closeTaskModal}
-                                >
-                                    <ArrowLeft className="w-5 h-5" />
-                                </Button>
-                                <TabsList className="grid w-[85%] grid-cols-2 ">
-                                    <TabsTrigger value="task">
-                                        Vazifa
-                                    </TabsTrigger>
-                                    <TabsTrigger value="chat">Chat</TabsTrigger>
-                                </TabsList>
-                            </div>
-                        )}
+                        <div className="flex justify-between items-center gap-2 p-2 ">
+                            <Button
+                                className="min-w-4"
+                                onClick={closeTaskModal}
+                            >
+                                <ArrowLeft className="w-5 h-5" />
+                            </Button>
+                            <TabsList className="grid w-[85%] grid-cols-2 ">
+                                <TabsTrigger value="task">Vazifa</TabsTrigger>
+                                <TabsTrigger value="chat">Chat</TabsTrigger>
+                            </TabsList>
+                        </div>
                         <TabsContent className="mt-0" value="task">
                             <CompleteTaskManager
-                                currentId={currentId}
+                                currentId={store}
                                 params={params}
                             />
                         </TabsContent>
                         <TabsContent className="mt-0" value="chat">
-                            <TaskChat  currentId={currentId} />
+                            <TaskChat currentId={store} />
                         </TabsContent>
                     </Tabs>
                 </div>
             </Modal>
             <DeleteModal
                 modalKey="project-delete"
-                id={currentId}
+                id={store}
                 path={STATUSES}
                 refetchKeys={[`${PROJECTS_TASKS}/${params?.id}`]}
             />

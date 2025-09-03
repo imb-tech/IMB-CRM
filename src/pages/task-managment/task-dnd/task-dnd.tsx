@@ -8,8 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 type Props = {
     currentId: number | undefined
-    onDelete: (id: number) => void
-    handleAdd: (id: number) => void
+    handleAdd: () => void
     data: Column[]
     isSuccess: boolean
     onDragEnd: (result: DropResult) => void
@@ -22,13 +21,10 @@ const TaskDnd = ({
     data,
     handleAdd,
     isSuccess,
-    onDelete,
     onDragEnd,
     params,
     isLoading,
 }: Props) => {
-
-
     return (
         <div className="my-3 flex items-start gap-3 w-full">
             <DragDropContext onDragEnd={onDragEnd}>
@@ -50,7 +46,6 @@ const TaskDnd = ({
                                         column={col}
                                         index={index}
                                         handleAdd={handleAdd}
-                                        onDelete={onDelete}
                                     />
                                 ))}
                             {isLoading &&

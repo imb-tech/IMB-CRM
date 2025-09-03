@@ -4,10 +4,10 @@ import { FormMultiCombobox } from "@/components/form/multi-combobox"
 import { FormSelect } from "@/components/form/select"
 import FormTextarea from "@/components/form/textarea"
 import { Button } from "@/components/ui/button"
-import SeeInView from "@/components/ui/see-in-view"
 import {
     OPTION_EMPLOYEES,
     PROJECTS_TASKS,
+    TASKLY_COMMENT,
     TASKS,
 } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
@@ -17,14 +17,12 @@ import { usePost } from "@/hooks/usePost"
 import { cn } from "@/lib/utils"
 import { useQueryClient } from "@tanstack/react-query"
 import { useNavigate, useSearch } from "@tanstack/react-router"
-import { CirclePause, Disc, Flame, Paperclip, Plus, X } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import { Flame, Plus, X } from "lucide-react"
+import { useEffect } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { getPriorityColor } from "./task-card"
 import { FormDateTimePicker } from "@/components/form/form-datetime-picker"
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 type Props = {
@@ -32,67 +30,67 @@ type Props = {
     currentId: number | undefined
 }
 
-export default function CompleteTaskManager({ currentId, params }: Props) {
-    const options = [
-        {
-            label: (
-                <div className="flex items-center justify-center w-full gap-2">
-                    <span
-                        className={cn(
-                            "h-7 w-7 rounded-full flex items-center justify-center",
-                            getPriorityColor(1),
-                        )}
-                    >
-                        <Flame className="w-4 h-4" />
-                    </span>
-                    <span>
-                        {" "}
-                        <span>{"Past"}</span>
-                    </span>
-                </div>
-            ),
-            key: 1,
-        },
-        {
-            label: (
-                <div className="flex items-center justify-center w-full gap-2">
-                    <span
-                        className={cn(
-                            "h-7 w-7 rounded-full flex items-center justify-center",
-                            getPriorityColor(2),
-                        )}
-                    >
-                        <Flame className="w-5 h-5" />
-                    </span>
-                    <span>
-                        {" "}
-                        <span>{"O'rta"}</span>
-                    </span>
-                </div>
-            ),
-            key: 2,
-        },
-        {
-            label: (
-                <div className="flex items-center justify-center w-full gap-2">
-                    <span
-                        className={cn(
-                            "h-8 w-8 rounded-full flex items-center justify-center",
-                            getPriorityColor(3),
-                        )}
-                    >
-                        <Flame className="w-6 h-6" />
-                    </span>
-                    <span>
-                        {" "}
-                        <span>{"Yuqori"}</span>
-                    </span>
-                </div>
-            ),
-            key: 3,
-        },
-    ]
+const options = [
+    {
+        label: (
+            <div className="flex items-center justify-center w-full gap-2">
+                <span
+                    className={cn(
+                        "h-7 w-7 rounded-full flex items-center justify-center",
+                        getPriorityColor(1),
+                    )}
+                >
+                    <Flame className="w-4 h-4" />
+                </span>
+                <span>
+                    {" "}
+                    <span>{"Past"}</span>
+                </span>
+            </div>
+        ),
+        key: 1,
+    },
+    {
+        label: (
+            <div className="flex items-center justify-center w-full gap-2">
+                <span
+                    className={cn(
+                        "h-7 w-7 rounded-full flex items-center justify-center",
+                        getPriorityColor(2),
+                    )}
+                >
+                    <Flame className="w-5 h-5" />
+                </span>
+                <span>
+                    {" "}
+                    <span>{"O'rta"}</span>
+                </span>
+            </div>
+        ),
+        key: 2,
+    },
+    {
+        label: (
+            <div className="flex items-center justify-center w-full gap-2">
+                <span
+                    className={cn(
+                        "h-8 w-8 rounded-full flex items-center justify-center",
+                        getPriorityColor(3),
+                    )}
+                >
+                    <Flame className="w-6 h-6" />
+                </span>
+                <span>
+                    {" "}
+                    <span>{"Yuqori"}</span>
+                </span>
+            </div>
+        ),
+        key: 3,
+    },
+]
 
+export default function CompleteTaskManager({ currentId, params }: Props) {
     const navigate = useNavigate()
     const search: any = useSearch({ from: "/_main/project/$id" })
     const { data: hrData, isLoading } = useGet<OptionEmployees[]>(
@@ -116,11 +114,7 @@ export default function CompleteTaskManager({ currentId, params }: Props) {
             title: "",
             desc: "",
             priority: 1,
-            deadline: "",
-            remind_at: "",
             users: [],
-            files: [] as { file: File; type: string }[],
-            voiceNote: [],
             subtasks: [],
         },
     })
@@ -130,166 +124,53 @@ export default function CompleteTaskManager({ currentId, params }: Props) {
         name: "subtasks",
     })
 
-    const [isRecording, setIsRecording] = useState(false)
-    const [deletedItem, setDeletedItem] = useState<number[]>([])
-    const [recordingTime, setRecordingTime] = useState(0)
-    const [switchBol, setSwitchBol] = useState<boolean>(false)
-    const mediaRecorderRef = useRef<MediaRecorder | null>(null)
-    const recordingIntervalRef = useRef<NodeJS.Timeout | null>(null)
-    const fileInputRef = useRef<HTMLInputElement>(null)
     const queryClient = useQueryClient()
     const { closeModal } = useModal("task-modal")
 
-    const { mutate: mutateCreate, isPending: isPendingCreate } = usePost(
-        {
-            onSuccess: () => {
-                queryClient.invalidateQueries({
-                    queryKey: [`${PROJECTS_TASKS}/${params?.id}`],
-                })
-                queryClient.invalidateQueries({
-                    queryKey: [
-                        OPTION_EMPLOYEES,
-                        ...Object.values({
-                            users__user_tasks__status__project_id: params?.id,
-                        }),
-                    ],
-                })
-                queryClient.invalidateQueries({
-                    queryKey: [OPTION_EMPLOYEES],
-                })
-
-                toast.success("Muvaffaqiyatli qo'shildi")
-                closeModal()
-                form.reset()
-                setDeletedItem([])
-                navigate({
-                    search: {
-                        ...search,
-                        task: undefined,
-                    },
-                })
-            },
-        },
-        {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        },
-    )
-    const { mutate: mutateUpdate, isPending: isPendingUpdate } = usePatch(
-        {
-            onSuccess: () => {
-                queryClient.invalidateQueries({
-                    queryKey: [`${PROJECTS_TASKS}/${params?.id}`],
-                })
-
-                queryClient.invalidateQueries({
-                    queryKey: [
-                        OPTION_EMPLOYEES,
-                        ...Object.values({
-                            users__user_tasks__status__project_id: params?.id,
-                        }),
-                    ],
-                })
-                queryClient.invalidateQueries({
-                    queryKey: [OPTION_EMPLOYEES],
-                })
-
-                toast.success("Muvaffaqiyatli yangilandi")
-                closeModal()
-                form.reset()
-                setDeletedItem([])
-                navigate({
-                    search: {
-                        ...search,
-                        task: undefined,
-                    },
-                })
-            },
-        },
-        {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        },
-    )
-
-    const onSubmit = async (data: QuoteCard) => {
-        const formData = new FormData()
-        const currentFiles = form.watch("files")
-        const currentVoiceNotes = form.watch("voiceNote") || []
-
-        if (currentFiles?.length) {
-            currentFiles.forEach(({ file }) => {
-                const isNewFile = !task?.files?.some(
-                    (item) =>
-                        item.file?.name === file.name &&
-                        item.file?.size === file.size &&
-                        item.type === getFileType(file),
-                )
-
-                if (isNewFile && typeof file !== "string") {
-                    formData.append(getFileType(file), file)
-                }
-            })
-        }
-        const fetchPromises: Promise<void>[] = []
-
-        const backendAudios =
-            task?.files
-                ?.filter((item) => item.type === "audio")
-                ?.map((item) => item.file) || []
-
-        currentVoiceNotes.forEach((url: string, index: number) => {
-            const isNewAudio = !backendAudios.some((file: any) => {
-                if (!file) return false
-
-                return typeof file === "string" && file === url
-            })
-
-            if (isNewAudio) {
-                const promise = fetch(url)
-                    .then((res) => res.blob())
-                    .then((blob) => {
-                        formData.append("audio", blob, `voice-${index}.wav`)
-                    })
-                fetchPromises.push(promise)
-            }
-        })
-
-        await Promise.all(fetchPromises)
-
-        if (currentId) {
-            formData.append("status", currentId.toString())
-        }
-        formData.append("subtasks", JSON.stringify(data.subtasks))
-        formData.append("users", JSON.stringify(data.users))
-
-        if (deletedItem?.length > 0) {
-            formData.append("deleted_files", JSON.stringify(deletedItem))
-        }
-        if (switchBol) {
-            formData.append("remind_at", data.remind_at)
-        }
-        const skipKeys = [
-            "files",
-            "subtasks",
-            "voiceNote",
-            "users",
-            "remind_at",
-            "deleted_files",
-            "author",
-            "order",
+    const onSuccess = () => {
+        const queryKeysToInvalidate = [
+            [`${PROJECTS_TASKS}/${params?.id}`],
+            [
+                OPTION_EMPLOYEES,
+                ...Object.values({
+                    users__user_tasks__status__project_id: params?.id,
+                }),
+            ],
+            [OPTION_EMPLOYEES],
+            [TASKLY_COMMENT],
         ]
 
-        for (const [key, value] of Object.entries(data)) {
-            if (
-                !skipKeys.includes(key) &&
-                value !== null &&
-                value !== undefined
-            ) {
-                formData.append(key, String(value))
-            }
+        queryKeysToInvalidate.forEach((key) =>
+            queryClient.invalidateQueries({ queryKey: key }),
+        )
+
+        toast.success(
+            search?.task
+                ? "Muvaffaqiyatli yangilandi"
+                : "Muvaffaqiyatli qo'shildi",
+        )
+        closeModal()
+        form.reset()
+        navigate({
+            search: {
+                ...search,
+                task: undefined,
+            },
+        })
+    }
+
+    const { mutate: mutateCreate, isPending: isPendingCreate } = usePost({
+        onSuccess,
+    })
+
+    const { mutate: mutateUpdate, isPending: isPendingUpdate } = usePatch({
+        onSuccess,
+    })
+
+    const onSubmit = async (data: QuoteCard) => {
+        const formData = {
+            ...data,
+            status: currentId,
         }
 
         const url = task?.id ? `${TASKS}/${task.id}` : TASKS
@@ -297,108 +178,21 @@ export default function CompleteTaskManager({ currentId, params }: Props) {
         mutate(url, formData)
     }
 
-    const startRecording = async () => {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({
-                audio: true,
-            })
-            const mediaRecorder = new MediaRecorder(stream)
-            mediaRecorderRef.current = mediaRecorder
-
-            const audioChunks: BlobPart[] = []
-            mediaRecorder.ondataavailable = (event) =>
-                audioChunks.push(event.data)
-
-            mediaRecorder.onstop = () => {
-                const blob = new Blob(audioChunks, { type: "audio/wav" })
-                const url = URL.createObjectURL(blob)
-                const currentVoiceNotes = form.getValues("voiceNote")
-                form.setValue("voiceNote", [...currentVoiceNotes, url])
-                stream.getTracks().forEach((track) => track.stop())
-            }
-
-            mediaRecorder.start()
-            setIsRecording(true)
-            setRecordingTime(0)
-
-            recordingIntervalRef.current = setInterval(() => {
-                setRecordingTime((prev) => prev + 1)
-            }, 1000)
-        } catch (error) {
-            console.error("Mic error:", error)
-        }
-    }
-
-    const stopRecording = () => {
-        mediaRecorderRef.current?.stop()
-        setIsRecording(false)
-        clearInterval(recordingIntervalRef.current!)
-    }
-
-    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files
-        if (files) {
-            const currentFiles = form.getValues("files") || []
-
-            const newFiles = Array.from(files).map((file) => ({
-                file,
-                type: getFileType(file),
-            }))
-
-            form.setValue("files", [...currentFiles, ...newFiles])
-        }
-    }
-
-    const handleDeleteFile = (item: {
-        file: any
-        type: string
-        id?: number
-    }) => {
-        const currentFiles = form.watch("files")
-
-        const deletedFile: any = currentFiles.find((f) => f.file === item.file)
-        const fileId = deletedFile?.id
-        const updatedFiles = currentFiles.filter((f) => f.file !== item.file)
-        form.setValue("files", updatedFiles)
-
-        if (fileId) {
-            setDeletedItem((prev) => [...prev, fileId])
-        }
-        if (fileInputRef.current) {
-            fileInputRef.current.value = ""
-        }
-    }
-
     useEffect(() => {
         if (task?.id) {
-            if (task.remind_at) {
-                setSwitchBol(true)
-            }
-            form.reset({
-                ...task,
-                voiceNote: task.files
-                    ?.filter((item) => item.type === "audio")
-                    .map((item) => item.file),
-                files: task.files
-                    ?.filter((item) => item.type !== "audio")
-                    .map((item) => item),
-            })
+            form.reset(task)
         }
-    }, [form, task, search])
-
-    const files = form.watch("files") || []
-    const images = files.filter((f) => f.type === "image")
-    const otherFiles = files.filter((f) => f.type !== "image")
+    }, [form, task])
 
     return (
         <form
             onSubmit={form.handleSubmit(onSubmit)}
             className={cn(
-                "w-full h-[90vh]  overflow-y-auto space-y-5 p-3  pb-16    no-scrollbar-x",
+                "w-full lg:w-[45%] bg-gray-200  h-[90vh]  overflow-y-auto space-y-5 p-3  pb-16    no-scrollbar-x",
             )}
         >
             <div className="space-y-3">
-                {task?.author.full_name && (
+                {task?.author?.full_name && (
                     <div className="flex items-center gap-2 my-2">
                         <Avatar className="h-9 w-9">
                             <AvatarImage
@@ -429,36 +223,35 @@ export default function CompleteTaskManager({ currentId, params }: Props) {
                 name="desc"
                 label={"Tavsif"}
                 placeholder={"Vazifa haqida"}
+                rows={4}
             />
 
             {/* Priority & Deadline */}
-            <div className="grid sm:grid-cols-2 gap-4 items-end ">
-                <FormSelect
-                    label={"Muhimlik darajasi"}
-                    control={form.control}
-                    labelKey="label"
-                    valueKey="key"
-                    name="priority"
-                    options={options}
-                />
-                <FormDateTimePicker
-                    label={"Muddati"}
-                    placeholder={"Muddati"}
-                    name="deadline"
-                    control={form.control}
-                    addButtonProps={{
-                        variant: "secondary",
-                        className: "w-full flex justify-start",
-                    }}
-                    calendarProps={{
-                        fromDate: new Date(),
-                    }}
-                />
-            </div>
+            <FormSelect
+                label={"Muhimlik darajasi"}
+                control={form.control}
+                labelKey="label"
+                valueKey="key"
+                name="priority"
+                options={options}
+            />
+            <FormDateTimePicker
+                label={"Muddati"}
+                placeholder={"Muddati"}
+                name="deadline"
+                control={form.control}
+                addButtonProps={{
+                    variant: "secondary",
+                    className: "w-full flex justify-start",
+                }}
+                calendarProps={{
+                    fromDate: new Date(),
+                }}
+            />
 
             {/* Assigned To */}
-            <div className="grid sm:grid-cols-2 gap-4 items-end ">
-                <FormDateTimePicker
+            {/* <div className="grid sm:grid-cols-2 gap-4 items-end "> */}
+            {/* <FormDateTimePicker
                     label={
                         <div className="flex items-center space-x-2">
                             <Label htmlFor="airplane-mode">
@@ -482,17 +275,17 @@ export default function CompleteTaskManager({ currentId, params }: Props) {
                         fromDate: new Date(),
                         toDate: new Date(form.watch("deadline")),
                     }}
-                />
-                <FormMultiCombobox
-                    label={"Ma'sul xodim"}
-                    control={form.control}
-                    name="users"
-                    labelKey="full_name"
-                    valueKey="id"
-                    options={hrData}
-                    isLoading={isLoading}
-                />
-            </div>
+                /> */}
+            <FormMultiCombobox
+                label={"Ma'sul xodim"}
+                control={form.control}
+                name="users"
+                labelKey="full_name"
+                valueKey="id"
+                options={hrData}
+                isLoading={isLoading}
+            />
+            {/* </div> */}
 
             {/* Subtasks */}
             <div className={cn("space-y-2 border p-3 rounded-md")}>
@@ -587,181 +380,10 @@ export default function CompleteTaskManager({ currentId, params }: Props) {
                     })()}
             </div>
 
-            {/* Images */}
-            <div className="space-y-2 border p-3 rounded-md">
-                <div
-                    className={cn(
-                        "flex justify-between  items-center ",
-                        images?.length && "border-b pb-2 mb-2 items-end",
-                    )}
-                >
-                    <label>{images?.length ? "Rasmlar" : "Fayllar"}</label>
-                    <Button
-                        className="w-[115px]"
-                        type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                    >
-                        <Paperclip className="min-w-4 max-w-4 h-4 mr-1" />{" "}
-                        {"Yuklash"}
-                    </Button>
-                </div>
-                <input
-                    ref={fileInputRef}
-                    type="file"
-                    multiple
-                    onChange={handleFileUpload}
-                    className="hidden"
-                />
-                {images?.length ? (
-                    <div className="grid grid-cols-3 gap-2">
-                        {images.map((item, i) => (
-                            <div key={i} className="relative">
-                                <SeeInView
-                                    url={
-                                        typeof item.file !== "string"
-                                            ? URL.createObjectURL(item.file)
-                                            : item.file
-                                    }
-                                    fullWidth
-                                    className="w-full lg:h-[200px]  object-cover rounded-md border"
-                                />
-                                <Button
-                                    variant="destructive"
-                                    type="button"
-                                    className="bg-red-500 hover:bg-red-500/90 absolute text-white w-7 h-7 p-0 top-0 right-0 min-w-8"
-                                    onClick={() => handleDeleteFile(item)}
-                                >
-                                    <X className="w-4 h-4" />
-                                </Button>
-                            </div>
-                        ))}
-                    </div>
-                ) : null}
-
-                {otherFiles?.length ? (
-                    <div className="flex flex-col gap-2  mb-4">
-                        {images.length ? (
-                            <label className="border-b pb-2">{"Fayllar"}</label>
-                        ) : null}
-                        {otherFiles.map((item, i) => (
-                            <div
-                                key={i}
-                                className="col-span-3 flex items-center justify-between gap-3"
-                            >
-                                <div className="w-full text-sm flex flex-col bg-secondary rounded-md px-3 py-[10px]">
-                                    <span
-                                        onClick={() => {
-                                            if (!item?.file) return
-
-                                            const link =
-                                                document.createElement("a")
-                                            link.href =
-                                                typeof item.file === "string"
-                                                    ? item.file
-                                                    : item.file.url
-                                            link.download =
-                                                typeof item.file === "string"
-                                                    ? getFilenameFromMedia(
-                                                          item.file,
-                                                      )
-                                                    : item.file.name
-
-                                            document.body.appendChild(link)
-                                            link.click()
-                                            document.body.removeChild(link)
-                                        }}
-                                        className="line-clamp-1 break-all hover:text-primary cursor-pointer"
-                                    >
-                                        {i + 1}.{" "}
-                                        {typeof item.file === "string"
-                                            ? getFilenameFromMedia(item.file)
-                                            : item.file.name}
-                                    </span>
-                                </div>
-
-                                <Button
-                                    variant="destructive"
-                                    type="button"
-                                    onClick={() => handleDeleteFile(item)}
-                                >
-                                    <X className="w-4 h-4" />
-                                </Button>
-                            </div>
-                        ))}
-                    </div>
-                ) : null}
-            </div>
-
-            {/* Voice Notes */}
-            <div className={"border p-3 rounded-md "}>
-                <div
-                    className={cn(
-                        "flex justify-between items-center  ",
-                        form.watch("voiceNote")?.length &&
-                            "mb-4 border-b pb-2 ",
-                    )}
-                >
-                    <label>{"Ovozli xabarlar"}</label>
-                    <Button
-                        className={isRecording ? "w-max" : "w-[115px]"}
-                        type="button"
-                        onClick={isRecording ? stopRecording : startRecording}
-                        color={isRecording ? "danger" : "default"}
-                    >
-                        {isRecording ? (
-                            <>
-                                <CirclePause className="min-w-5 max-w-5 h-5" />{" "}
-                                {"To'xtatish"} ({formatTime(recordingTime)})
-                            </>
-                        ) : (
-                            <>
-                                <Disc className="min-w-4 max-w-4 h-4 mr-1" />{" "}
-                                {"Yozish"}
-                            </>
-                        )}
-                    </Button>
-                </div>
-                {form.watch("voiceNote")?.map((note, i) => (
-                    <div
-                        key={i}
-                        className="flex items-center gap-3 mb-2 w-full "
-                    >
-                        <span>{i + 1}.</span>
-                        <audio controls src={note} className="w-full h-11 " />
-                        <Button
-                            type="button"
-                            variant="destructive"
-                            className="min-w-8"
-                            onClick={() => {
-                                const audioFiles =
-                                    task?.files?.filter(
-                                        (item) => item.type === "audio",
-                                    ) || []
-
-                                const fileId = audioFiles[i]?.id
-
-                                if (fileId) {
-                                    setDeletedItem((prev) => [...prev, fileId])
-                                }
-
-                                form.setValue(
-                                    "voiceNote",
-                                    form
-                                        .watch("voiceNote")
-                                        .filter((_, idx) => idx !== i),
-                                )
-                            }}
-                        >
-                            <X className="w-5 h-5" />
-                        </Button>
-                    </div>
-                ))}
-            </div>
-
             {/* Submit */}
             <div
                 className={cn(
-                    "flex absolute  bottom-0  left-0 px-3 py-2 dark:bg-zinc-900 bg-zinc-200 justify-end border-t dark:border-t-zinc-700 border-t-zinc-300 lg:rounded-bl-md  lg:w-1/2 w-full  ",
+                    "flex absolute  bottom-0  left-0 px-3 py-2 dark:bg-zinc-900 bg-zinc-200 justify-end border-t dark:border-t-zinc-700 border-t-zinc-300 lg:rounded-bl-md  lg:w-[45%] w-full  ",
                 )}
             >
                 <Button
@@ -775,21 +397,4 @@ export default function CompleteTaskManager({ currentId, params }: Props) {
             </div>
         </form>
     )
-}
-
-const getFileType = (file: File): string => {
-    const mimeType = file?.type
-    if (mimeType?.startsWith("image/")) return "image"
-    return "file"
-}
-
-const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${mins}:${secs.toString().padStart(2, "0")}`
-}
-
-const getFilenameFromMedia = (url: string) => {
-    const index = url.indexOf("media/")
-    return index !== -1 ? url.slice(index + "media/".length) : url
 }
