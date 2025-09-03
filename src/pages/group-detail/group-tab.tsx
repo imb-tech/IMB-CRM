@@ -25,7 +25,7 @@ export default function GroupTabs({ refetch }: { refetch: () => void }) {
             : store ? store
                 : "topic",
     )
-    const { id: group } = useParams({ from: "/_main/groups/$id/_main/tasks/" })
+    const { id: group } = useParams({ strict: false })
 
     const { data } = useGet<Group>(GROUP + "/" + group)
     const { data: students } = useGet<GroupStudent[]>(GROUP_STUDENTS, {

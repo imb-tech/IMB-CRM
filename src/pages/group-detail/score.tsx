@@ -11,10 +11,20 @@ import useQueryParams from "@/hooks/use-query-params"
 import { getGroupSector, groupDefaultDate } from "./utils"
 import { useGet } from "@/hooks/useGet"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Plus } from "lucide-react"
+import { useModal } from "@/hooks/useModal"
+import { useStore } from "@/hooks/use-store"
+import GroupTabs from "./group-tab"
+import { Button } from "@/components/ui/button"
+import { moduleTypeLabel } from "./task-card"
 
 export default function GroupScore() {
     const { id } = useParams({ from: "/_main/groups/$id/_main/score" })
     const { date, is_active } = useSearch({ from: "/_main/groups/$id/_main/score" })
+
+    const { openModal } = useModal("day")
+    const { setStore: setType } = useStore<string>("day")
+    const { setStore } = useStore("item")
 
     const { updateParams } = useQueryParams()
 
@@ -35,7 +45,7 @@ export default function GroupScore() {
     const sector = getGroupSector(groupDays)
     const defaultOpt = groupDefaultDate(months)
 
-    const { data: scores } = useGet<StudentScore[]>(
+    const { data: scores, refetch } = useGet<StudentScore[]>(
         "platform/group-students/modules/" + id + "/" + date,
         {
             options: {
@@ -89,38 +99,72 @@ export default function GroupScore() {
                                         <th className="text-left p-4 font-medium  sticky left-0  bg-secondary min-w-[160px]">
                                             O'quvchi
                                         </th>
-                                        {sector.map((day, i) => (
-                                            <th
-                                                key={i}
-                                                className="text-center font-medium text-gray-700"
-                                                style={{ minWidth: 30 * (day.modules.length ?? 1) }}
-                                            >
-                                                <Popover>
-                                                    <PopoverTrigger asChild>
-                                                        <div className="flex flex-col items-center cursor-pointer dark:hover:bg-primary/20 hover:bg-card p-2 rounded-sm group">
-                                                            <span className="text-xs text-gray-500 group-hover:text-primary">
-                                                                {day.dayName}
-                                                            </span>
-                                                            <span
-                                                                className={`text-sm ${false ? "text-blue-600 font-semibold" : "text-gray-400"} group-hover:text-primary`}
-                                                            >
-                                                                {day?.day}
-                                                            </span>
-                                                        </div>
-                                                    </PopoverTrigger>
-                                                    <PopoverContent className="w-full max-w-[300px] bg-background">
-                                                        <div className="w-full min-w-[300px]">
-                                                            {
-                                                                day.modules.map(md => <p>{md.title}</p>)
-                                                            }
-                                                        </div>
-                                                    </PopoverContent>
-                                                </Popover>
-                                            </th>
-                                        ))}
-                                        <th className="text-center p-4 font-medium text-muted-foreground min-w-[100px]">
-                                            Statistika
-                                        </th>
+                                        {sector.map((day, i) => {
+                                            const modules = day.modules.filter(t => t.type !== "topic")
+                                            return (
+                                                <th
+                                                    key={i}
+                                                    className="text-center font-medium text-gray-700"
+                                                    style={{ minWidth: 30 * (day.modules.length ?? 1) }}
+                                                >
+                                                    <Popover>
+                                                        <PopoverTrigger asChild>
+                                                            <div className="flex flex-col items-center cursor-pointer dark:hover:bg-primary/20 hover:bg-card p-2 rounded-sm group">
+                                                                <span className="text-xs text-gray-500 group-hover:text-primary">
+                                                                    {day.dayName}
+                                                                </span>
+                                                                <span
+                                                                    className={`text-sm ${false ? "text-blue-600 font-semibold" : "text-gray-400"} group-hover:text-primary`}
+                                                                >
+                                                                    {day?.day}
+                                                                </span>
+                                                            </div>
+                                                        </PopoverTrigger>
+                                                        <PopoverContent className={cn("w-full bg-background", !modules.length && "px-1 py-2")}>
+                                                            <div className={cn("w-full min-w-[300px] max-w-[300px] flex flex-col gap-3", !modules.length && "min-w-12")}>
+                                                                {modules.map(md => (
+                                                                    <div key={md.id} className={"flex flex-col items-start"}>
+                                                                        <p
+                                                                            className={cn("text-primary/80 bg-primary/10 text-xs uppercase py-0.5 px-2 rounded-sm rounded-bl-none", md.type == "exam" && "text-sky-500/80 bg-sky-500/10")}
+                                                                        >
+                                                                            {moduleTypeLabel[md.type]}
+                                                                        </p>
+                                                                        <p className="font-extralight pl-2 border-l ml-[0.5px] text-sm">{md.title}</p>
+                                                                    </div>
+                                                                ))}
+                                                                <div
+                                                                    className={cn("flex items-center justify-center gap-2 flex-col w-full", modules.length && "flex-row justify-start")}
+                                                                >
+                                                                    <Button
+                                                                        onClick={() => {
+                                                                            setType("task")
+                                                                            setStore({ date: day.date })
+                                                                            openModal()
+                                                                        }}
+                                                                        size="sm"
+                                                                    >
+                                                                        <Plus size={18} />
+                                                                        <p className="text-xs">Vazifa</p>
+                                                                    </Button>
+                                                                    <Button
+                                                                        className="border-sky-500 bg-sky-500/20 text-sky-500 hover:bg-sky-500/30 hover:text-sky-500"
+                                                                        onClick={() => {
+                                                                            setType("exam")
+                                                                            setStore({ date: day.date })
+                                                                            openModal()
+                                                                        }}
+                                                                        size="sm"
+                                                                    >
+                                                                        <Plus size={18} />
+                                                                        <p className="text-xs">Imtixon</p>
+                                                                    </Button>
+                                                                </div>
+                                                            </div>
+                                                        </PopoverContent>
+                                                    </Popover>
+                                                </th>
+                                            )
+                                        })}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -130,7 +174,7 @@ export default function GroupScore() {
                                                 key={student.id}
                                                 className="border-b hover:bg-secondary/40"
                                             >
-                                                <td className="sticky left-0 border-r">
+                                                <td className="sticky left-0 border-r bg-card">
                                                     <div className="font-medium pl-2">
                                                         {student.full_name}
                                                     </div>
@@ -142,7 +186,7 @@ export default function GroupScore() {
                                                             key={day.day}
                                                             className="p-2 text-center border-r"
                                                         >
-                                                            <div className="flex justify-around items-center" style={{ minWidth: 30, minHeight: 30 }}>
+                                                            <div className="flex justify-around items-center gap-2" style={{ minWidth: 30, minHeight: 30 }}>
                                                                 {
                                                                     scr.map(md => (
                                                                         <NumberInput
@@ -179,6 +223,8 @@ export default function GroupScore() {
                     </CardContent>
                 </Card>
             </div>
+
+            <GroupTabs refetch={refetch} />
         </div>
     )
 }
