@@ -188,7 +188,7 @@ export default function CompleteTaskManager({ currentId, params }: Props) {
         <form
             onSubmit={form.handleSubmit(onSubmit)}
             className={cn(
-                "w-full lg:w-[45%] bg-gray-200  h-[90vh]  overflow-y-auto space-y-5 p-3  pb-16    no-scrollbar-x",
+                "w-full lg:w-[45%] bg-gray-200 dark:bg-zinc-900  h-[90vh]  overflow-y-auto space-y-5 p-3  pb-16    no-scrollbar-x",
             )}
         >
             <div className="space-y-3">
