@@ -5,7 +5,6 @@ import { FormSelect } from "@/components/form/select"
 import FormTextarea from "@/components/form/textarea"
 import { Button } from "@/components/ui/button"
 import {
-    OPTION_EMPLOYEES,
     PROJECTS_TASKS,
     TASKLY_COMMENT,
     TASKS,
@@ -28,6 +27,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 type Props = {
     params: { id: string }
     currentId: number | undefined
+    users: FormValues["invited_users"]
 }
 
 const options = [
@@ -90,18 +90,13 @@ const options = [
     },
 ]
 
-export default function CompleteTaskManager({ currentId, params }: Props) {
+export default function CompleteTaskManager({
+    currentId,
+    params,
+    users,
+}: Props) {
     const navigate = useNavigate()
     const search: any = useSearch({ from: "/_main/project/$id" })
-    const { data: hrData, isLoading } = useGet<OptionEmployees[]>(
-        OPTION_EMPLOYEES,
-        {
-            enabled: !!params.id,
-            params: {
-                project: params?.id,
-            },
-        },
-    )
 
     const { data: task } = useGet<QuoteCard>(`${TASKS}/${search?.task}`, {
         options: {
@@ -130,13 +125,6 @@ export default function CompleteTaskManager({ currentId, params }: Props) {
     const onSuccess = () => {
         const queryKeysToInvalidate = [
             [`${PROJECTS_TASKS}/${params?.id}`],
-            [
-                OPTION_EMPLOYEES,
-                ...Object.values({
-                    users__user_tasks__status__project_id: params?.id,
-                }),
-            ],
-            [OPTION_EMPLOYEES],
             [TASKLY_COMMENT],
         ]
 
@@ -282,8 +270,7 @@ export default function CompleteTaskManager({ currentId, params }: Props) {
                 name="users"
                 labelKey="full_name"
                 valueKey="id"
-                options={hrData}
-                isLoading={isLoading}
+                options={users}
             />
             {/* </div> */}
 

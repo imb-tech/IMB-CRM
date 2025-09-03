@@ -69,7 +69,7 @@ const TaskManagment = ({ users }: { users: FormValues["invited_users"] }) => {
             >
                 {/* DESKTOP */}
                 <div className={cn("hidden lg:flex ")}>
-                    <CompleteTaskManager currentId={store} params={params} />
+                    <CompleteTaskManager users={users} currentId={store} params={params} />
 
                     {/* Buni ichida Form bor */}
                     <div className="w-full lg:w-[55%]">
@@ -100,6 +100,7 @@ const TaskManagment = ({ users }: { users: FormValues["invited_users"] }) => {
                             <CompleteTaskManager
                                 currentId={store}
                                 params={params}
+                                users={users}
                             />
                         </TabsContent>
                         <TabsContent className="mt-0" value="chat">
