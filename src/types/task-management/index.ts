@@ -45,6 +45,7 @@ type FormValues = {
     finished: number
     processing: number
     todo: number
+    is_author: boolean
     created_at: string
     invited_users: {
         id: number

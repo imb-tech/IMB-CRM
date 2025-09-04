@@ -19,8 +19,10 @@ const config = {
 
 export default function TaskChat({
     currentId,
+    onSubmit,
 }: {
     currentId: number | undefined
+    onSubmit: (data: QuoteCard) => Promise<void>
 }) {
     const navigate = useNavigate()
     const { id } = useParams({ from: "/_main/project/$id" })
@@ -248,6 +250,7 @@ export default function TaskChat({
                 selectedFiles={selectedFiles}
                 setSelectedFiles={setSelectedFiles}
                 isPending={isPending}
+                onSubmit={onSubmit}
             />
 
             <div

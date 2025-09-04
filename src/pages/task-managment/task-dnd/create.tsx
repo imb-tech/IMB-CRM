@@ -14,20 +14,18 @@ import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
 import { usePost } from "@/hooks/usePost"
 import { cn } from "@/lib/utils"
-import { useQueryClient } from "@tanstack/react-query"
 import { useNavigate, useSearch } from "@tanstack/react-router"
 import { Flame, Plus, X } from "lucide-react"
 import { useEffect } from "react"
-import { useFieldArray, useForm } from "react-hook-form"
-import { toast } from "sonner"
+import { useFieldArray, useFormContext } from "react-hook-form"
 import { getPriorityColor } from "./task-card"
 import { FormDateTimePicker } from "@/components/form/form-datetime-picker"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 type Props = {
-    params: { id: string }
-    currentId: number | undefined
     users: FormValues["invited_users"]
+    onSubmit: (data: QuoteCard) => Promise<void>
+    isPending: boolean
 }
 
 const options = [
@@ -91,11 +89,10 @@ const options = [
 ]
 
 export default function CompleteTaskManager({
-    currentId,
-    params,
     users,
+    onSubmit,
+    isPending,
 }: Props) {
-    const navigate = useNavigate()
     const search: any = useSearch({ from: "/_main/project/$id" })
 
     const { data: task } = useGet<QuoteCard>(`${TASKS}/${search?.task}`, {
@@ -104,67 +101,12 @@ export default function CompleteTaskManager({
         },
     })
 
-    const form = useForm<QuoteCard>({
-        defaultValues: {
-            title: "",
-            desc: "",
-            priority: 1,
-            users: [],
-            subtasks: [],
-        },
-    })
+    const form = useFormContext<QuoteCard>()
 
     const { fields, append, remove } = useFieldArray({
         control: form.control,
         name: "subtasks",
     })
-
-    const queryClient = useQueryClient()
-    const { closeModal } = useModal("task-modal")
-
-    const onSuccess = () => {
-        const queryKeysToInvalidate = [
-            [`${PROJECTS_TASKS}/${params?.id}`],
-            [TASKLY_COMMENT],
-        ]
-
-        queryKeysToInvalidate.forEach((key) =>
-            queryClient.invalidateQueries({ queryKey: key }),
-        )
-
-        toast.success(
-            search?.task
-                ? "Muvaffaqiyatli yangilandi"
-                : "Muvaffaqiyatli qo'shildi",
-        )
-        closeModal()
-        form.reset()
-        navigate({
-            search: {
-                ...search,
-                task: undefined,
-            },
-        })
-    }
-
-    const { mutate: mutateCreate, isPending: isPendingCreate } = usePost({
-        onSuccess,
-    })
-
-    const { mutate: mutateUpdate, isPending: isPendingUpdate } = usePatch({
-        onSuccess,
-    })
-
-    const onSubmit = async (data: QuoteCard) => {
-        const formData = {
-            ...data,
-            status: currentId,
-        }
-
-        const url = task?.id ? `${TASKS}/${task.id}` : TASKS
-        const mutate = task?.id ? mutateUpdate : mutateCreate
-        mutate(url, formData)
-    }
 
     useEffect(() => {
         if (task?.id) {
@@ -374,8 +316,8 @@ export default function CompleteTaskManager({
                 )}
             >
                 <Button
-                    disabled={isPendingCreate || isPendingUpdate}
-                    loading={isPendingCreate || isPendingUpdate}
+                    disabled={isPending}
+                    loading={isPending}
                     type="submit"
                     className="sm:w-[115px] w-full"
                 >

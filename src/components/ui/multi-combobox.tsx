@@ -64,6 +64,9 @@ export function MultiCombobox<T extends Record<string, any>>({
             : (values || []).concat(newValue)
         setValues(updatedValues)
         setInputValue("")
+        if (onSearchChange) {
+            onSearchChange("")
+        }
     }
     const rf = useRef<NodeJS.Timeout>()
 

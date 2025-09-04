@@ -85,7 +85,8 @@ function ProjectCard({ handleItem, handleDelete, item, index }: Props) {
                                                 >
                                                     <AvatarImage
                                                         src={
-                                                            item?.photo || undefined
+                                                            item?.photo ||
+                                                            undefined
                                                         }
                                                         alt={item.full_name}
                                                     />
@@ -171,7 +172,7 @@ function ProjectCard({ handleItem, handleDelete, item, index }: Props) {
                 </div>
                 <div className="flex justify-between items-center gap-3">
                     <h1>{format(item?.created_at, "yyyy-MM-dd HH:mm")}</h1>
-                    {data?.id === item?.author ? (
+                    {item?.is_author ? (
                         <div className="flex items-center gap-2">
                             <Button
                                 onClick={(e) => {
