@@ -8,7 +8,6 @@ import { useAutoResize } from "@/hooks/useResize"
 import { useModal } from "@/hooks/useModal"
 import Modal from "@/components/custom/modal"
 import { cn } from "@/lib/utils"
-import { useFormContext } from "react-hook-form"
 
 interface MessageInputProps {
     onSendMessage: (text: string, files?: File[]) => void
@@ -20,7 +19,6 @@ interface MessageInputProps {
     selectedFiles: File[]
     setSelectedFiles: React.Dispatch<React.SetStateAction<File[]>>
     isPending: boolean
-    onSubmit: (data: QuoteCard) => Promise<void>
 }
 
 export function MessageInput({
@@ -33,7 +31,6 @@ export function MessageInput({
     selectedFiles,
     setSelectedFiles,
     isPending,
-    onSubmit,
 }: MessageInputProps) {
     const [text, setText] = useState("")
     const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -42,7 +39,6 @@ export function MessageInput({
     const { openModal, closeModal, isOpen: isOpenChats } = useModal("chats")
     useAutoResize(textareaRef, text, isOpenChats)
     useAutoResize(textareaRefModal, text)
-    const form = useFormContext<QuoteCard>()
 
     const { isOpen } = useModal("task-modal")
 
@@ -67,12 +63,6 @@ export function MessageInput({
     const handleSubmit = useCallback(
         (e: React.FormEvent) => {
             e.preventDefault()
-
-            const shouldSubmitForm = form.formState.isDirty
-
-            if (shouldSubmitForm) {
-                form.handleSubmit(onSubmit)
-            }
 
             if (!text.trim() && selectedFiles.length === 0) return
 

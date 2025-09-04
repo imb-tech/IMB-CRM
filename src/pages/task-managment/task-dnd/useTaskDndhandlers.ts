@@ -9,11 +9,12 @@ import { DropResult } from "react-beautiful-dnd"
 export const useTaskDndHandlers = () => {
     const params = useParams({ from: "/_main/project/$id" })
     const search = useSearch({ from: "/_main/project/$id" })
+    const { tabs, task, ...res } = search
     const { openModal: openModalCreate } = useModal("task-modal")
     const queryClient = useQueryClient()
 
     const { data, isSuccess, isLoading } = useGet<Column[]>(`${PROJECTS_TASKS}/${params?.id}`, {
-        params: search,
+        params: res,
         enabled: !!params?.id,
     })
 
