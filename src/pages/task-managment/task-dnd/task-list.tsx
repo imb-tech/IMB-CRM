@@ -3,10 +3,9 @@ import TaskCard from "./task-card"
 
 type Props = {
     tasks: QuoteCard[]
-    onDelete: (id: number) => void
 }
 
-const TaskList = ({ tasks, onDelete }: Props) => {
+const TaskList = ({ tasks }: Props) => {
     return tasks?.map((item, index) => (
         <Draggable
             key={item.id.toString()}
@@ -23,7 +22,7 @@ const TaskList = ({ tasks, onDelete }: Props) => {
                         ...provided.draggableProps.style,
                     }}
                 >
-                    <TaskCard item={item} onDelete={() => onDelete(item.id)} />
+                    <TaskCard item={item} />
                 </div>
             )}
         </Draggable>

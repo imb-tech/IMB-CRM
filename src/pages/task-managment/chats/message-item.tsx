@@ -12,12 +12,7 @@ interface MessageItemProps {
     onReply: (message: Message) => void
 }
 
-export function MessageItem({
-    message,
-    onReply,
-
-    ...props
-}: MessageItemProps) {
+export function MessageItem({ message, onReply, ...props }: MessageItemProps) {
     const doubleClickTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
     const isMyMessage = message.is_self
@@ -61,6 +56,10 @@ export function MessageItem({
     const otherFiles =
         message.files?.filter((file) => !file.type.startsWith("image")) || []
 
+    const isEmojiOnly =
+        /^[\u{1F300}-\u{1FAFF}]+$/u.test(message.text?.trim() || "") &&
+        !message.files?.length
+
     return (
         <div
             id={`message-${message.id}`}
@@ -92,11 +91,7 @@ export function MessageItem({
                             isMyMessage
                                 ? "bg-[#3E6A97] text-white"
                                 : "bg-[#213040]",
-                            !message.files?.length &&
-                                /^[\u{1F300}-\u{1FAFF}]+$/u.test(
-                                    message.text?.trim() || "",
-                                ) &&
-                                "bg-transparent shadow-none",
+                            isEmojiOnly && "bg-transparent shadow-none",
                         )}
                     >
                         {!isMyMessage && (
@@ -233,11 +228,7 @@ export function MessageItem({
                                     : "justify-end",
                             )}
                         >
-                            {message.text &&
-                            /^[\u{1F300}-\u{1FAFF}]+$/u.test(
-                                message.text.trim(),
-                            ) &&
-                            !message.files?.length ? (
+                            {isEmojiOnly ? (
                                 <p className="text-[64px] whitespace-pre-wrap break-words">
                                     {message.text}
                                 </p>

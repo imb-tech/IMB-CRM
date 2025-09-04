@@ -11,6 +11,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { useStore } from "@/hooks/use-store"
 import { useModal } from "@/hooks/useModal"
 import { cn } from "@/lib/utils"
 import { useNavigate, useParams, useSearch } from "@tanstack/react-router"
@@ -32,16 +33,16 @@ export const getPriorityColor = (priority: number) => {
 }
 
 type Props = {
-    onDelete: (id: number) => void
     item: QuoteCard
 }
 
-export default function TaskCard({ item, onDelete }: Props) {
+export default function TaskCard({ item }: Props) {
     const params = useParams({ strict: false })
     const { openModal: openModalView } = useModal("task-modal")
     const { openModal: openModalDelete } = useModal("task-delete")
     const navigate = useNavigate()
     const search: any = useSearch({ from: "/_main" })
+    const { setStore } = useStore<number | undefined>("task-create")
 
     const handleItem = (id: number) => {
         if (id) {
@@ -70,7 +71,10 @@ export default function TaskCard({ item, onDelete }: Props) {
 
     return (
         <Card
-            onClick={() => handleItem(item.id)}
+            onClick={() => {
+                handleItem(item.id)
+                setStore(Number(item.status_id))
+            }}
             className={cn(
                 "hover:shadow-md transition-shadow border-[1.5px] dark:bg-[#22272B]",
                 item.priority == 3
@@ -157,6 +161,7 @@ export default function TaskCard({ item, onDelete }: Props) {
                             </div>
                         ) : null}
                     </div>
+
                     <div className="flex items-center">
                         <button
                             onClick={(e) => {
@@ -167,16 +172,16 @@ export default function TaskCard({ item, onDelete }: Props) {
                         >
                             <Copy size={16} className="text-primary" />
                         </button>
-                            <button
-                                onClick={(e) => {
-                                    e.stopPropagation()
-                                    onDelete(item.id)
-                                    openModalDelete()
-                                }}
-                                className="p-2 rounded-md  hover:bg-red-500/20 hover:text-red-500"
-                            >
-                                <Trash size={14} />
-                            </button>
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                setStore(item?.id)
+                                openModalDelete()
+                            }}
+                            className="p-2 rounded-md  hover:bg-red-500/20 hover:text-red-500"
+                        >
+                            <Trash size={14} />
+                        </button>
                     </div>
                 </div>
             </CardContent>

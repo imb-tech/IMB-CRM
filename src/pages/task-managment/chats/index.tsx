@@ -234,7 +234,7 @@ export default function TaskChat({
             onDrop={handleDrop}
             onPaste={handlePaste}
             className={cn(
-                "mx-auto max-w-6xl  h-[90vh] flex flex-col-reverse",
+                "w-full  h-[90vh] flex flex-col-reverse",
                 isDragging && "relative",
             )}
         >
@@ -249,6 +249,7 @@ export default function TaskChat({
                 setSelectedFiles={setSelectedFiles}
                 isPending={isPending}
             />
+
             <div
                 className="relative  bg-[#213040] px-2 py-3 h-full scroll-smooth no-scrollbar-x overflow-y-auto rounded-tr-md flex flex-col-reverse"
                 ref={scrollAreaRef}

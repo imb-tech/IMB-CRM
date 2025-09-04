@@ -4,13 +4,11 @@ import { usePost } from "@/hooks/usePost"
 import { useQueryClient } from "@tanstack/react-query"
 import { useModal } from "@/hooks/useModal"
 import { MOVE_TASK, PROJECTS_TASKS, STATUSES_MOVE, TASKLY_PROJECT } from "@/constants/api-endpoints"
-import { useState } from "react"
 import { DropResult } from "react-beautiful-dnd"
 
 export const useTaskDndHandlers = () => {
     const params = useParams({ from: "/_main/project/$id" })
     const search = useSearch({ from: "/_main/project/$id" })
-    const [currentId, setCurrentId] = useState<number>()
     const { openModal: openModalCreate } = useModal("task-modal")
     const queryClient = useQueryClient()
 
@@ -23,14 +21,10 @@ export const useTaskDndHandlers = () => {
 
     const { mutate: mutateColumn } = usePost()
 
-    const handleAdd = (id: number) => {
+    const handleAdd = () => {
         openModalCreate();
-        setCurrentId(id)
     }
 
-    const onDelete = (id: number) => {
-        setCurrentId(id)
-    }
 
     const onDragEnd = (result: DropResult) => {
         const { destination, source, draggableId, type } = result
@@ -152,13 +146,12 @@ export const useTaskDndHandlers = () => {
 
     };
 
+
     return {
         data,
         isSuccess,
         onDragEnd,
         handleAdd,
-        currentId,
-        onDelete,
         params,
         isLoading,
     }
