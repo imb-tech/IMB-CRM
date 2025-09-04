@@ -8,6 +8,7 @@ import { useAutoResize } from "@/hooks/useResize"
 import { useModal } from "@/hooks/useModal"
 import Modal from "@/components/custom/modal"
 import { cn } from "@/lib/utils"
+import { useFormContext } from "react-hook-form"
 
 interface MessageInputProps {
     onSendMessage: (text: string, files?: File[]) => void
@@ -18,6 +19,8 @@ interface MessageInputProps {
     onCancelEdit: () => void
     selectedFiles: File[]
     setSelectedFiles: React.Dispatch<React.SetStateAction<File[]>>
+    isPending: boolean
+    onSubmit: (data: QuoteCard) => Promise<void>
 }
 
 export function MessageInput({
@@ -29,6 +32,8 @@ export function MessageInput({
     onCancelEdit,
     selectedFiles,
     setSelectedFiles,
+    isPending,
+    onSubmit,
 }: MessageInputProps) {
     const [text, setText] = useState("")
     const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -37,6 +42,7 @@ export function MessageInput({
     const { openModal, closeModal, isOpen: isOpenChats } = useModal("chats")
     useAutoResize(textareaRef, text, isOpenChats)
     useAutoResize(textareaRefModal, text)
+    const form = useFormContext<QuoteCard>()
 
     const { isOpen } = useModal("task-modal")
 
@@ -61,6 +67,12 @@ export function MessageInput({
     const handleSubmit = useCallback(
         (e: React.FormEvent) => {
             e.preventDefault()
+
+            const shouldSubmitForm = form.formState.isDirty
+
+            if (shouldSubmitForm) {
+                form.handleSubmit(onSubmit)
+            }
 
             if (!text.trim() && selectedFiles.length === 0) return
 
@@ -140,12 +152,10 @@ export function MessageInput({
         }
     }, [isOpenChats])
 
-    console.log(text)
-
     return (
         <div
             className={
-                "border-t bg-[#18222C] border-t-[#213040] px-3 py-2.5  lg:rounded-br-md"
+                "border-t bg-[#18222C] translate-y-[0.5px] border-t-[#213040] px-3 py-2.5   lg:rounded-br-md"
             }
         >
             {replyingTo && (
@@ -222,7 +232,7 @@ export function MessageInput({
                             onChange={(e) => setText(e.target.value)}
                             onKeyPress={handleKeyPress}
                             placeholder={"Xabar yozing..."}
-                            className="min-h-[30px] placeholder:text-[#B1C3D5] no-scrollbar-x  resize-none border-none bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 "
+                            className="min-h-[30px] placeholder:text-[#B1C3D5] text-white  no-scrollbar-x  resize-none border-none bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 "
                             rows={1}
                         />
                     ) : (
@@ -245,7 +255,9 @@ export function MessageInput({
                     <Button
                         type="submit"
                         variant={"ghost"}
-                        disabled={!text && selectedFiles.length === 0}
+                        disabled={
+                            (!text && selectedFiles.length === 0) || isPending
+                        }
                         className="h-9 w-9 p-0 disabled:text-[#B1C3D4] text-[#2EA6FE]  hover:bg-transparent"
                     >
                         <Send className="rotate-45" size={22} />

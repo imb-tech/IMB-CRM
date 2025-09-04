@@ -55,6 +55,7 @@ export function MultiCombobox<T extends Record<string, any>>({
     isSearch = true,
 }: ComboboxProps<T>) {
     const [open, setOpen] = useState(false)
+    const [inputValue, setInputValue] = useState("")
 
     const handleSelect = (option: T) => {
         const newValue = option[valueKey]
@@ -62,6 +63,10 @@ export function MultiCombobox<T extends Record<string, any>>({
             ? values?.filter((v) => v !== newValue)
             : (values || []).concat(newValue)
         setValues(updatedValues)
+        setInputValue("")
+        if (onSearchChange) {
+            onSearchChange("")
+        }
     }
     const rf = useRef<NodeJS.Timeout>()
 
@@ -82,6 +87,7 @@ export function MultiCombobox<T extends Record<string, any>>({
     }
 
     function onValueChange(v: string) {
+        setInputValue(v)
         if (onSearchChange) {
             if (rf.current) {
                 clearTimeout(rf.current)
@@ -153,6 +159,7 @@ export function MultiCombobox<T extends Record<string, any>>({
                 <Command shouldFilter={onSearchChange ? false : true}>
                     {isSearch && (
                         <CommandInput
+                            value={inputValue}
                             onValueChange={onValueChange}
                             placeholder={label}
                             className="h-10"

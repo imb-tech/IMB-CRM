@@ -8,7 +8,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { useParams, useSearch } from "@tanstack/react-router"
 import { Badge } from "@/components/ui/badge"
 import { Trash } from "lucide-react"
-
+import { useStore } from "@/hooks/use-store"
 
 interface FormValue {
     name: string
@@ -16,21 +16,20 @@ interface FormValue {
 
 type Props = {
     column: Column
-    onDelete: (id: number) => void
 }
 
-function TaskColumnHeader({ column, onDelete }: Props) {
-
+function TaskColumnHeader({ column }: Props) {
     const [state, setState] = useState<"input" | "text">("text")
     const { openModal: openModalDelete } = useModal("project-delete")
     const queryClient = useQueryClient()
     const params = useParams({ from: "/_main/project/$id" })
     const search = useSearch({ from: "/_main/project/$id" })
     const form = useForm<FormValue>()
+    const { setStore } = useStore<number | undefined>("task-create")
 
     const handleDeleteItem = (id: number) => {
         openModalDelete()
-        onDelete(id)
+        setStore(id)
     }
 
     const { mutate: mutateCreate } = usePatch({
@@ -70,10 +69,10 @@ function TaskColumnHeader({ column, onDelete }: Props) {
     const onSubmit = (value: FormValue) => {
         mutateCreate(`${STATUSES}/${column?.id}`, value)
     }
- 
+
     return (
         <div className="mb-2 w-full flex justify-between items-center gap-2">
-            {state === "input" && column.is_author ? (
+            {state === "input" && column.has_delete ? (
                 <form className="w-full" onSubmit={(e) => e.preventDefault()}>
                     <FormInput
                         className="h-8 placeholder:text-[13px] 2xl:placeholder:text-sm"
@@ -85,7 +84,7 @@ function TaskColumnHeader({ column, onDelete }: Props) {
                         autoFocus
                     />
                 </form>
-            ) : ( 
+            ) : (
                 <h1
                     className="p-1 cursor-pointer line-clamp-1 break-all w-full 2xl:text-sm text-[14px] "
                     onClick={() => {
@@ -93,7 +92,11 @@ function TaskColumnHeader({ column, onDelete }: Props) {
                         form.setValue("name", column.name)
                     }}
                 >
-                    {column.name}
+                    {column.name === "Todo"
+                        ? "Bajarilishi kerak"
+                        : column.name === "Finished"
+                        ? "Yakunlanganlar"
+                        : column.name}
                     {column.count > 0 ? (
                         <Badge className="ml-1 text-xs">{column.count}</Badge>
                     ) : (
@@ -101,7 +104,7 @@ function TaskColumnHeader({ column, onDelete }: Props) {
                     )}
                 </h1>
             )}
-            {column.has_delete && column.is_author && (
+            {column.has_delete && column.has_delete && (
                 <button
                     onClick={() => {
                         handleDeleteItem(Number(column.id))

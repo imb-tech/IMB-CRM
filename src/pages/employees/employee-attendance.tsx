@@ -100,7 +100,7 @@ export default function AnimatedCalendar() {
                             <div className="w-full">
                                 <div className="!h-[37px]">
                                     <p className="text-muted-foreground text-xl">
-                                        Hodimlar
+                                        Xodimlar
                                     </p>
                                 </div>
                                 {data.result.map((employe) => (

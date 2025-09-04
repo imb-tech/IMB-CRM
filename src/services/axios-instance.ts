@@ -11,10 +11,10 @@ import { toast } from "sonner"
 
 const devURL = import.meta.env.VITE_DEFAULT_URL
 const urlPART = import.meta.env.VITE_PART_URL
-const tenant = window.location.hostname.match(/^([a-z0-9-]+)\.reactgo\.uz/i)?.[1]
+const tenant = window.location.hostname.match(/^([a-z0-9-]+)\.imbedu\.uz/i)?.[1]
 
-// export const baseURL = import.meta.env.DEV ? devURL : 'https://' + tenant + urlPART
-export const baseURL = import.meta.env.DEV ? devURL : 'https://demo.xamidovcoder.uz/api/v1/'
+export const baseURL = import.meta.env.DEV ? devURL : 'https://' + tenant + urlPART
+// export const baseURL = import.meta.env.DEV ? devURL : 'https://demo.xamidovcoder.uz/api/v1/'
 
 const axiosInstance = axios.create({
     baseURL,
@@ -40,6 +40,7 @@ export function setupAxiosInterceptors() {
     axiosInstance.interceptors.response.use(
         function (response) {
             if (response.config.url === "/auth/profile/") {
+                const br = localStorage.getItem('branch')
                 const branches = response.data.branches
                 if (!branches?.length) {
                     localStorage.removeItem('token')
@@ -48,7 +49,9 @@ export function setupAxiosInterceptors() {
                         window.location.replace("/login")
                     }, 1000);
                 } else {
-                    setActiveBranch(branches[0].id)
+                    if (!br) {
+                        setActiveBranch(branches[0].id)
+                    }
                 }
             }
             return response

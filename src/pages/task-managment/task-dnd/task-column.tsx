@@ -2,21 +2,18 @@ import { Draggable, Droppable } from "react-beautiful-dnd"
 import TaskList from "./task-list"
 import AddTaskButton from "./add-task-button"
 import TaskColumnHeader from "./task-column-header"
+import { useStore } from "@/hooks/use-store"
 
 type Props = {
     column: Column
     index: number
-    handleAdd: (id: number) => void
-    onDelete: (id: number) => void
+    handleAdd: () => void
 }
 
-const TaskColumn = ({ column, index, handleAdd, onDelete }: Props) => {
+const TaskColumn = ({ column, index, handleAdd }: Props) => {
+    const { setStore } = useStore<number | undefined>("task-create")
     return (
-        <Draggable
-            draggableId={`column-${column.id}`}
-            index={index}
-            isDragDisabled={!column.is_author}
-        >
+        <Draggable draggableId={`column-${column.id}`} index={index}>
             {(provided) => (
                 <div
                     ref={provided.innerRef}
@@ -27,7 +24,7 @@ const TaskColumn = ({ column, index, handleAdd, onDelete }: Props) => {
                         {...provided.dragHandleProps}
                         className="dark:bg-[#0c0d03] bg-zinc-200 p-2 rounded-lg min-w-64 max-w-64"
                     >
-                        <TaskColumnHeader onDelete={onDelete} column={column} />
+                        <TaskColumnHeader column={column} />
 
                         <Droppable
                             droppableId={`column-${column.id}`}
@@ -41,14 +38,14 @@ const TaskColumn = ({ column, index, handleAdd, onDelete }: Props) => {
                                 >
                                     <TaskList
                                         tasks={column.tasks}
-                                        onDelete={onDelete}
                                     />
                                     {dropProvided.placeholder}
                                     <div className="sticky bottom-0 bg-zinc-200 dark:bg-[#0c0d03]">
                                         <AddTaskButton
-                                            onClick={() =>
-                                                handleAdd(Number(column.id))
-                                            }
+                                            onClick={() => {
+                                                handleAdd()
+                                                setStore(Number(column.id))
+                                            }}
                                         />
                                     </div>
                                 </div>

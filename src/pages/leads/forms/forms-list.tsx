@@ -33,6 +33,7 @@ export default function FormsList() {
             <Card>
                 <CardContent>
                     <DataTable
+                        numeration
                         loading={isFetching}
                         data={data?.results}
                         columns={useLeadFormCols()}

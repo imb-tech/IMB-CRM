@@ -16,6 +16,7 @@ import { cn, getActiveBranch, setActiveBranch } from "@/lib/utils"
 import HeaderLinks from "./header-links"
 import FullScreenToggle from "../shared/full-screen"
 import LeadDealSelector from "@/pages/leads/lead-deal-selector"
+import { makeAvatar } from "@/lib/make-avatar"
 
 type Props = {
     title?: string
@@ -39,6 +40,7 @@ const Header = ({ rigthChildren, leftChildren, navOnHeader }: Props) => {
     function changeBranch(v: string) {
         setBranch(Number(v))
         setActiveBranch(v)
+        window.location.reload()
     }
 
     return (
@@ -91,7 +93,7 @@ const Header = ({ rigthChildren, leftChildren, navOnHeader }: Props) => {
                                     alt="user img"
                                     className="object-cover"
                                 />
-                                <AvatarFallback>IMB</AvatarFallback>
+                                <AvatarFallback>{makeAvatar(data?.full_name)}</AvatarFallback>
                             </Avatar>
                         </DropdownMenuTrigger>
                     </div>
@@ -101,7 +103,7 @@ const Header = ({ rigthChildren, leftChildren, navOnHeader }: Props) => {
                             asChild
                         >
                             <Link to="/">
-                                <User width={16} /> IMB CEO
+                                <User width={16} /> {data?.full_name}
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem

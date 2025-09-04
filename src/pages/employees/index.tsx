@@ -21,13 +21,13 @@ const EmployeesMain = () => {
             <Card className="rounded-lg">
                 <CardContent>
                     {/* <Button onClick={openModal}>Yaratish</Button> */}
-                    <HrAccordion loading={isFetching} users={data?.results} setCurrent={setCurrent} />
+                    <HrAccordion loading={isFetching} users={data?.results} setCurrent={setCurrent} count={data?.count} />
                 </CardContent>
             </Card>
             <Modal
                 size="max-w-lg"
                 modalKey={`${EMPLOYEE}-add`}
-                title={`Hodim ${current?.id ? "tahrirlash" : "yaratish"}`}
+                title={`Xodim ${current?.id ? "tahrirlash" : "yaratish"}`}
                 onClose={() => setCurrent(null)}
             >
                 <EmployeeCreate item={current} />

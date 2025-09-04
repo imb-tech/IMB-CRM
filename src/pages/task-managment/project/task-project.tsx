@@ -83,7 +83,7 @@ export default function TaskBoard() {
     })
 
     const { data: dataStatus } = useGet<{ todo: number; finished: number }>(
-        `taskly/tasks-stats`,
+        `taskly/projects/overview`,
         { params: search },
     )
 
@@ -158,7 +158,7 @@ export default function TaskBoard() {
     }
 
     return (
-        <div className="w-full space-y-6">
+        <div className="w-full space-y-6 pb-4">
             <div className="flex items-center gap-4 overflow-x-auto no-scrollbar">
                 <ParamMultiCombobox
                     labelKey="full_name"
@@ -239,7 +239,7 @@ export default function TaskBoard() {
                             ))}
                         <Card
                             onClick={handleAdd}
-                            className="cursor-pointer shadow-lg min-h-[244px]"
+                            className="cursor-pointer shadow min-h-[244px]"
                         >
                             <CardContent className="flex text-2xl items-center justify-center gap-2 h-full">
                                 <CirclePlus size={30} />

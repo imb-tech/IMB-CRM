@@ -1,3 +1,4 @@
+import Modal from "@/components/custom/modal"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
     Tooltip,
@@ -5,64 +6,53 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
-import {
-    OPTION_EMPLOYEES,
-    TASKLY_PROJECT,
-} from "@/constants/api-endpoints"
+import { TASKLY_PROJECT } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
+import { useModal } from "@/hooks/useModal"
 import PageLayout from "@/layouts/page-layout"
 import { cn } from "@/lib/utils"
+import ProjectCreate from "@/pages/task-managment/project/create"
 import TaskManagment from "@/pages/task-managment/task-board"
 import { createFileRoute, useParams } from "@tanstack/react-router"
+import { Plus } from "lucide-react"
 
 export const Route = createFileRoute("/_main/project/$id")({
     component: RouteComponent,
 })
 
 function RouteComponent() {
+    const { openModal } = useModal("project-create")
     const params = useParams({ from: "/_main/project/$id" })
-    const { data } = useGet<{
-        background: string
-    }>(`${TASKLY_PROJECT}/${params?.id}`, {
+    const { data } = useGet<FormValues>(`${TASKLY_PROJECT}/${params?.id}`, {
         enabled: !!params?.id,
-    })
-    const { data: dataUsers, isSuccess } = useGet<
-        {
-            full_name: string
-            photo: string
-            id: number
-        }[]
-    >(OPTION_EMPLOYEES, {
-        enabled: !!params?.id,
-        params: {
-            project: params?.id,
-        },
     })
 
     return (
         <PageLayout
             className={cn(
                 "bg-cover relative bg-center overflow-x-auto !overflow-y-hidden px-1  ",
-                !!dataUsers?.length && "md:pl-2 md:pr-16",
+                !!data?.background && "md:pl-2 md:pr-16",
             )}
             style={{
                 backgroundImage: `url(${data?.background})`,
             }}
         >
-            <TaskManagment />
+            <TaskManagment users={data?.invited_users || []} />
 
-            {isSuccess && !!dataUsers?.length && (
-                <div className="hidden md:flex flex-col gap-2 fixed top-0  right-0 py-20  pb-2 px-2 h-full backdrop-blur-sm bg-white/5">
-                    {dataUsers?.map((item, index) => (
+            <div className="hidden md:flex flex-col gap-2 fixed top-0  right-0 py-20  pb-2 px-2 h-full backdrop-blur-sm bg-white/5">
+                {!!data?.invited_users?.length &&
+                    data?.invited_users?.map((item, index) => (
                         <TooltipProvider key={index} delayDuration={1}>
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <Avatar
-                                        className="h-10 w-10 hover:scale-110 hover:border hover:border-blue-500 cursor-pointer"
+                                        className="h-10 w-10 hover:scale-110 hover:border hover:green-blue-500 cursor-pointer"
                                         key={index}
                                     >
                                         <AvatarImage
-                                            src={item.photo || undefined}
+                                            src={
+                                                item?.photo || undefined
+                                            }
                                             alt={item.full_name}
                                         />
                                         <AvatarFallback
@@ -85,7 +75,9 @@ function RouteComponent() {
                                     >
                                         <Avatar className="h-10 w-10">
                                             <AvatarImage
-                                                src={item.photo || undefined}
+                                                src={
+                                                    item?.photo || undefined
+                                                }
                                                 alt={item.full_name}
                                             />
                                             <AvatarFallback
@@ -102,8 +94,19 @@ function RouteComponent() {
                             </Tooltip>
                         </TooltipProvider>
                     ))}
+                <div
+                    onClick={openModal}
+                    className="h-10 w-10 bg-primary/10 border border-primary/60 cursor-pointer hover:bg-primary/15 text-primary rounded-full flex justify-center items-center hover:scale-105"
+                >
+                    <Plus />
                 </div>
-            )}
+            </div>
+
+            <Modal title={"Loyihani tahrirlash"} modalKey="project-create">
+                <div className="w-full overflow-hidden px-1">
+                    <ProjectCreate item={data || undefined} />
+                </div>
+            </Modal>
         </PageLayout>
     )
 }

@@ -6,12 +6,19 @@ import { useGet } from "@/hooks/useGet"
 import { formatPhoneNumber } from "@/lib/format-phone-number"
 import { AttendanceSelect } from "./attendance-select"
 import AttendanceFooter from "./attendance-footer"
-import { formatDateToUz } from "@/lib/utils"
+import { cn, formatDateToUz } from "@/lib/utils"
 import ParamSwtich from "@/components/as-params/switch"
 import useQueryParams from "@/hooks/use-query-params"
 import MonthNavigator from "@/components/as-params/month-navigator"
 import { apiGroupDays, useGroupMonths } from "@/services/hooks/use-group-students"
 import { getGroupSector, groupDefaultDate } from "./utils"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { moduleTypeLabel } from "./task-card"
+import { Button } from "@/components/ui/button"
+import { Plus } from "lucide-react"
+import { useModal } from "@/hooks/useModal"
+import { useStore } from "@/hooks/use-store"
+import GroupTabs from "./group-tab"
 
 export default function GroupAttendance() {
     const { id } = useParams({
@@ -21,6 +28,10 @@ export default function GroupAttendance() {
     const { date, is_active } = useSearch({
         strict: false,
     })
+
+    const { openModal } = useModal("day")
+    const { setStore: setType } = useStore<string>("day")
+    const { setStore } = useStore("item")
 
     const { data: options } = useGroupMonths(id)
 
@@ -47,7 +58,7 @@ export default function GroupAttendance() {
     )
 
     const defaultOpt = groupDefaultDate(months)
-    const { data: days } = apiGroupDays(id, date)
+    const { data: days, refetch } = apiGroupDays(id, date)
     const sector = getGroupSector(days)
 
     useEffect(() => {
@@ -92,24 +103,60 @@ export default function GroupAttendance() {
                                     <th className="text-left pl-2 font-medium sticky left-0 bg-secondary min-w-[160px] w-[160px] border-b border-b-background">
                                         O'quvchi
                                     </th>
-                                    {sector.map((day, i) => (
-                                        <th
-                                            key={i}
-                                            className="text-center p-2 font-medium text-gray-700 min-w-[40px]"
-                                        >
-                                            <div className="flex flex-col items-center">
-                                                <span className="text-xs text-gray-500">
-                                                    {day.dayName}
-                                                </span>
-                                                <span
-                                                    className={`text-sm ${false ? "text-blue-600 font-semibold" : "text-gray-400"}`}
-                                                >
-                                                    {day?.day}
-                                                </span>
-                                            </div>
-                                        </th>
-                                    ))}
-                                    <th className="text-center p-4 font-medium text-muted-foreground min-w-[100px]">
+                                    {sector.map((day, i) => {
+                                        const theme = day.modules.filter(t => t.type == "topic")
+                                        return (
+                                            <th
+                                                key={i}
+                                                className="text-center font-medium text-gray-700 min-w-[40px]"
+                                            >
+                                                <Popover>
+                                                    <PopoverTrigger asChild>
+                                                        <div className="flex flex-col items-center cursor-pointer dark:hover:bg-primary/20 hover:bg-card p-2 rounded-sm group">
+                                                            <span className="text-xs text-gray-500 group-hover:text-primary">
+                                                                {day.dayName}
+                                                            </span>
+                                                            <span
+                                                                className={`text-sm ${false ? "text-blue-600 font-semibold" : "text-gray-400"} group-hover:text-primary`}
+                                                            >
+                                                                {day?.day}
+                                                            </span>
+                                                        </div>
+                                                    </PopoverTrigger>
+                                                    <PopoverContent className={cn("w-full bg-background", !theme.length && "px-1 py-2")}>
+                                                        <div className={cn("w-full min-w-[300px] max-w-[300px] flex flex-col gap-3", !theme.length && "min-w-12")}>
+                                                            {theme.map(md => (
+                                                                <div key={md.id} className={"flex flex-col items-start"}>
+                                                                    <p
+                                                                        className={cn("text-primary/80 bg-primary/10 text-xs uppercase py-0.5 px-2 rounded-sm rounded-bl-none", md.type == "exam" && "text-sky-500/80 bg-sky-500/10")}
+                                                                    >
+                                                                        {moduleTypeLabel[md.type]}
+                                                                    </p>
+                                                                    <p className="font-extralight pl-2 border-l ml-[0.5px] text-sm">{md.title}</p>
+                                                                </div>
+                                                            ))}
+                                                            <div
+                                                                className={cn("flex items-center justify-center gap-2 flex-col w-full", theme.length && "flex-row justify-start")}
+                                                            >
+                                                                <Button
+                                                                    onClick={() => {
+                                                                        setType("topic")
+                                                                        setStore({ date: day.date })
+                                                                        openModal()
+                                                                    }}
+                                                                    size="sm"
+                                                                >
+                                                                    <Plus size={18} />
+                                                                    <p className="text-xs">Mavzu</p>
+                                                                </Button>
+                                                            </div>
+                                                        </div>
+                                                    </PopoverContent>
+                                                </Popover>
+                                            </th>
+                                        )
+                                    })}
+                                    <th className="text-center p-4 font-medium text-muted-foreground min-w-[100px] sticky right-0 bg-secondary">
                                         Statistika
                                     </th>
                                 </tr>
@@ -161,7 +208,7 @@ export default function GroupAttendance() {
                                                     </td>
                                                 )
                                             })}
-                                            <td className="p-1 text-center">
+                                            <td className="p-1 text-center sticky right-0 bg-card">
                                                 <div className="space-y-1">
                                                     <div className="text-sm font-semibold">
                                                         {statistics?.all}
@@ -189,6 +236,8 @@ export default function GroupAttendance() {
             </Card>
 
             <AttendanceFooter />
+
+            <GroupTabs refetch={refetch} />
         </div>
     )
 }

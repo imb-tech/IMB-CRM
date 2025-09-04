@@ -170,7 +170,7 @@ const StudnetPaymentMain = () => {
                 modalKey="payment-update"
                 title={payment?.id ? "To'lovni tahrirlash" : "To'lov qo'shish"}
             >
-                <PaymentUpdate current={payment} student_id={id} />
+                <PaymentUpdate current={payment} />
             </Modal>
 
             <DeleteModal

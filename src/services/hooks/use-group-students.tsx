@@ -9,7 +9,7 @@ export default function apiGroupStudents(group?: number | string, freeze = false
         {
             params: freeze ? { group } : { group, ...search },
             options: {
-                queryKey: freeze ? undefined : [GROUP_STUDENTS, search],
+                queryKey: freeze ? undefined : [GROUP_STUDENTS, search, group],
                 refetchOnMount: true,
                 enabled: !!group
             },

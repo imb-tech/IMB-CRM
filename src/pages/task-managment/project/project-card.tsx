@@ -21,6 +21,8 @@ import { format } from "date-fns"
 import { useGet } from "@/hooks/useGet"
 import { TASKS_EXCEL } from "@/constants/api-endpoints"
 import { downloadExcel } from "@/lib/download-excel"
+import useMe from "@/hooks/useMe"
+import { formatMoney } from "@/lib/format-money"
 
 type Props = {
     handleItem: (item: FormValues) => void
@@ -30,6 +32,7 @@ type Props = {
 }
 
 function ProjectCard({ handleItem, handleDelete, item, index }: Props) {
+    const { data } = useMe()
     const navigate = useNavigate()
     const { isLoading, refetch } = useGet(`${TASKS_EXCEL}/${item.id}`, {
         enabled: false,
@@ -54,13 +57,13 @@ function ProjectCard({ handleItem, handleDelete, item, index }: Props) {
                 })
             }
             className={clsx(
-                "bg-background/80 bg-blend-overlay cursor-pointer min-h-[244px] h-full  bg-center bg-cover",
+                "dark:bg-background/80 bg-black/50 bg-blend-overlay cursor-pointer min-h-[244px] h-full  bg-center bg-cover",
             )}
             style={{
                 backgroundImage: `url(${item.background})`,
             }}
         >
-            <CardContent className="h-full flex justify-between flex-col gap-4">
+            <CardContent className="h-full text-white flex justify-between flex-col gap-4">
                 <div className="space-y-4">
                     <div className="flex justify-between  items-center gap-3">
                         <h1 className="font-semibold text-xl line-clamp-1 break-all ">
@@ -71,47 +74,15 @@ function ProjectCard({ handleItem, handleDelete, item, index }: Props) {
                                 <TooltipTrigger asChild>
                                     <AvatarGroup
                                         max={5}
-                                        total={item?.users?.length - 5}
+                                        total={item?.invited_users?.length - 5}
                                         countClass="h-10 w-10 "
                                     >
-                                        {item?.users.map((item, index) => (
-                                            <Avatar
-                                                className="h-10 w-10"
-                                                key={index}
-                                            >
-                                                <AvatarImage
-                                                    src={
-                                                        item?.photo || undefined
-                                                    }
-                                                    alt={item.full_name}
-                                                />
-                                                <AvatarFallback
-                                                    className={cn(
-                                                        "uppercase !bg-secondary !text-muted-foreground",
-                                                        getPriorityColor(2),
-                                                    )}
+                                        {item?.invited_users?.map(
+                                            (item, index) => (
+                                                <Avatar
+                                                    className="h-10 w-10"
+                                                    key={index}
                                                 >
-                                                    {item?.full_name?.slice(
-                                                        0,
-                                                        2,
-                                                    )}
-                                                </AvatarFallback>
-                                            </Avatar>
-                                        ))}
-                                    </AvatarGroup>
-                                </TooltipTrigger>
-                                <TooltipContent
-                                    side="bottom"
-                                    align="end"
-                                    className="bg-card transition-all duration-200"
-                                >
-                                    <div className="flex flex-col gap-2  max-h-[400px] overflow-y-auto">
-                                        {item?.users.map((item, index) => (
-                                            <div
-                                                key={index}
-                                                className="flex items-center gap-2"
-                                            >
-                                                <Avatar className="h-10 w-10">
                                                     <AvatarImage
                                                         src={
                                                             item?.photo ||
@@ -131,33 +102,77 @@ function ProjectCard({ handleItem, handleDelete, item, index }: Props) {
                                                         )}
                                                     </AvatarFallback>
                                                 </Avatar>
-                                                <p>
-                                                    {item?.full_name}
-                                                </p>
-                                            </div>
-                                        ))}
+                                            ),
+                                        )}
+                                    </AvatarGroup>
+                                </TooltipTrigger>
+                                <TooltipContent
+                                    side="bottom"
+                                    align="end"
+                                    className="bg-card transition-all duration-200"
+                                >
+                                    <div className="flex flex-col gap-2  max-h-[400px] overflow-y-auto">
+                                        {item?.invited_users?.map(
+                                            (item, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="flex items-center gap-2"
+                                                >
+                                                    <Avatar className="h-10 w-10">
+                                                        <AvatarImage
+                                                            src={
+                                                                item?.photo ||
+                                                                undefined
+                                                            }
+                                                            alt={item.full_name}
+                                                        />
+                                                        <AvatarFallback
+                                                            className={cn(
+                                                                "uppercase !bg-secondary !text-muted-foreground",
+                                                                getPriorityColor(
+                                                                    2,
+                                                                ),
+                                                            )}
+                                                        >
+                                                            {item?.full_name?.slice(
+                                                                0,
+                                                                2,
+                                                            )}
+                                                        </AvatarFallback>
+                                                    </Avatar>
+                                                    <p>{item?.full_name}</p>
+                                                </div>
+                                            ),
+                                        )}
                                     </div>
                                 </TooltipContent>
                             </Tooltip>
                         </TooltipProvider>
                     </div>
                     <ul className="flex flex-col  gap-2 mb-3">
-                        {item?.statuses?.map((item, index) => (
-                            <li
-                                key={index}
-                                className="flex items-center justify-between"
-                            >
-                                <span>{item?.name}:</span>
-                                <span>
-                                    {item?.count} {"vazifalar"}
-                                </span>
-                            </li>
-                        ))}
+                        <li className="flex items-center justify-between">
+                            <span>Bajarilishi kerak:</span>
+                            <span>
+                                {formatMoney(item?.todo)} {"vazifalar"}
+                            </span>
+                        </li>
+                        <li className="flex items-center justify-between">
+                            <span>Jarayondagilar:</span>
+                            <span>
+                                {formatMoney(item?.processing)} {"vazifalar"}
+                            </span>
+                        </li>
+                        <li className="flex items-center justify-between">
+                            <span>Yakunlanganlar:</span>
+                            <span>
+                                {formatMoney(item?.finished)} {"vazifalar"}
+                            </span>
+                        </li>
                     </ul>
                 </div>
                 <div className="flex justify-between items-center gap-3">
-                    <h1>{format(item?.created_at, "yyyy-MM-dd")}</h1>
-                    {item?.is_update ? (
+                    <h1>{format(item?.created_at, "yyyy-MM-dd HH:mm")}</h1>
+                    {item?.is_author ? (
                         <div className="flex items-center gap-2">
                             <Button
                                 onClick={(e) => {

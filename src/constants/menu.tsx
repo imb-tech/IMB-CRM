@@ -45,7 +45,7 @@ export const menuItems = [
                 to: "/leads/varonka",
             }),
             linkOptions({
-                title: "Guruhga qo'shilganlar",
+                title: "Guruhga Qo'shilganlar",
                 to: "/leads/lesson-test-students",
             }),
 
@@ -100,13 +100,13 @@ export const menuItems = [
         ],
     }),
     linkOptions({
-        title: "Hodimlar",
+        title: "Xodimlar",
         icon: <Users2 width={20} />,
         to: "/employees",
         enabled: true,
         items: [
             linkOptions({
-                title: "Hodimlar",
+                title: "Xodimlar",
                 to: "/employees/hr",
                 enabled: true,
                 items: [],
@@ -139,13 +139,13 @@ export const menuItems = [
         enabled: false,
         items: [
             linkOptions({
-                title: "Guruhlar davomati",
+                title: "Guruhlar Davomati",
                 to: "/attendance/students",
                 enabled: true,
                 items: [],
             }),
             linkOptions({
-                title: "Xodimlar davomati",
+                title: "Xodimlar Davomati",
                 to: "/attendance/employees",
                 enabled: true,
                 items: [],
@@ -166,28 +166,28 @@ export const menuItems = [
         enabled: true,
         items: [
             linkOptions({
-                title: "O'quvchilar to'lovi",
+                title: "O'quvchilar To'lovi",
                 to: "/reports",
                 search: {
                     tabs: "student_payments",
                 },
             }),
             linkOptions({
-                title: "O'quvchilar davomati",
+                title: "O'quvchilar Davomati",
                 to: "/reports",
                 search: {
                     tabs: "attendance",
                 },
             }),
             linkOptions({
-                title: "Hodimlar davomati",
+                title: "Xodimlar Davomati",
                 to: "/reports",
                 search: {
                     tabs: "attendance_emp",
                 },
             }),
             linkOptions({
-                title: "Lidlar hisoboti",
+                title: "CRM Hisoboti",
                 to: "/reports",
                 search: {
                     tabs: "leads_statistic",
@@ -208,13 +208,13 @@ export const menuItems = [
                 items: [],
             }),
             linkOptions({
-                title: "To'lov turlari",
+                title: "To'lov Turlari",
                 to: "/settings/payment-type",
                 enabled: true,
                 items: [],
             }),
             linkOptions({
-                title: "Ta'til kunlari",
+                title: "Ta'til Kunlari",
                 to: "/settings/holidays",
                 enabled: true,
                 items: [],

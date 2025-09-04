@@ -4,6 +4,7 @@ import { FormMultiCombobox } from "@/components/form/multi-combobox"
 import { Button } from "@/components/ui/button"
 import { OPTION_EMPLOYEES, TASKLY_PROJECT } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
+import useMe from "@/hooks/useMe"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
 import { usePost } from "@/hooks/usePost"
@@ -19,6 +20,7 @@ type Props = {
 }
 
 function ProjectCreate({ item }: Props) {
+    const { active_branch } = useMe()
     const queryClient = useQueryClient()
     const { closeModal } = useModal("project-create")
     const form = useForm<FormValues>()
@@ -50,6 +52,14 @@ function ProjectCreate({ item }: Props) {
         {
             onSuccess: () => {
                 queryClient.invalidateQueries({ queryKey: [TASKLY_PROJECT] })
+                if (item?.id) {
+                    queryClient.invalidateQueries({
+                        queryKey: [`${TASKLY_PROJECT}/${item?.id}`],
+                    })
+                    queryClient.invalidateQueries({
+                        queryKey: [OPTION_EMPLOYEES],
+                    })
+                }
                 toast.success("Muvaffaqiyatli yangilandi")
                 closeModal()
                 form.reset()
@@ -74,6 +84,7 @@ function ProjectCreate({ item }: Props) {
         if (!backgroundValue) {
             backgroundValue = getRandomImage()
         }
+        if (active_branch) formData.append("branch", String(active_branch))
 
         const isUpdate = Boolean(item?.id)
 
@@ -107,7 +118,7 @@ function ProjectCreate({ item }: Props) {
             form.reset({
                 name: item.name,
                 background: item.background,
-                employees: item.employees,
+                employees: item?.invited_users?.map((user) => user.empl_id),
             })
         }
     }, [form, item])

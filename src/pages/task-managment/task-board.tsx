@@ -4,7 +4,12 @@ import CompleteTaskManager from "./task-dnd/create"
 import Modal from "@/components/custom/modal"
 import { useNavigate, useSearch } from "@tanstack/react-router"
 import { useModal } from "@/hooks/useModal"
-import { PROJECTS_TASKS, STATUSES } from "@/constants/api-endpoints"
+import {
+    PROJECTS_TASKS,
+    STATUSES,
+    TASKLY_COMMENT,
+    TASKS,
+} from "@/constants/api-endpoints"
 import DeleteModal from "@/components/custom/delete-modal"
 import TaskDnd from "./task-dnd/task-dnd"
 import { useTaskDndHandlers } from "./task-dnd/useTaskDndhandlers"
@@ -13,21 +18,33 @@ import { cn } from "@/lib/utils"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useStore } from "@/hooks/use-store"
+import { FormProvider, useForm } from "react-hook-form"
+import { usePost } from "@/hooks/usePost"
+import { usePatch } from "@/hooks/usePatch"
+import { useQueryClient } from "@tanstack/react-query"
+import { toast } from "sonner"
 
-const TaskManagment = () => {
+const TaskManagment = ({ users }: { users: FormValues["invited_users"] }) => {
+    const queryClient = useQueryClient()
+
     const search: any = useSearch({ from: "/_main/project/$id" })
+    const { task } = search
     const navigate = useNavigate()
+    const { store } = useStore<number | undefined>("task-create")
     const { openModal, closeModal: closeTaskModal } = useModal("task-modal")
-    const {
-        data,
-        isSuccess,
-        onDragEnd,
-        handleAdd,
-        currentId,
-        onDelete,
-        params,
-        isLoading,
-    } = useTaskDndHandlers()
+    const form = useForm<QuoteCard>({
+        defaultValues: {
+            title: "",
+            desc: "",
+            priority: 1,
+            users: [],
+            subtasks: [],
+        },
+    })
+    const { data, isSuccess, onDragEnd, handleAdd, params, isLoading } =
+        useTaskDndHandlers()
+
     const [activeTab, setActiveTab] = useState("task")
 
     const closeModal = () => {
@@ -40,19 +57,54 @@ const TaskManagment = () => {
         })
     }
 
+    const onSuccess = () => {
+        const queryKeysToInvalidate = [
+            [`${PROJECTS_TASKS}/${params?.id}`],
+            [TASKLY_COMMENT],
+        ]
+
+        queryKeysToInvalidate.forEach((key) =>
+            queryClient.invalidateQueries({ queryKey: key }),
+        )
+
+        toast.success(
+            task ? "Muvaffaqiyatli yangilandi" : "Muvaffaqiyatli qo'shildi",
+        )
+        closeModal()
+        form.reset()
+    }
+
+    const { mutate: mutateCreate, isPending: isPendingCreate } = usePost({
+        onSuccess,
+    })
+
+    const { mutate: mutateUpdate, isPending: isPendingUpdate } = usePatch({
+        onSuccess,
+    })
+
+    const onSubmit = async (data: QuoteCard) => {
+        const formData = {
+            ...data,
+            status: store,
+        }
+
+        const url = task ? `${TASKS}/${task}` : TASKS
+        const mutate = task ? mutateUpdate : mutateCreate
+        mutate(url, formData)
+    }
+
     useEffect(() => {
-        if (search?.task && isSuccess) {
+        if (task && isSuccess) {
             openModal()
         }
-    }, [search?.task, isSuccess])
+    }, [task, isSuccess])
 
     return (
         <div className="relative">
-            <TaskHeader />
+            <TaskHeader users={users} />
             <div className="max-w-full h-[83vh] 2xl:h-[87vh]  overflow-x-scroll no-scrollbar-x overflow-y-auto">
                 <TaskDnd
-                    currentId={currentId}
-                    onDelete={onDelete}
+                    currentId={store}
                     handleAdd={handleAdd}
                     data={data || []}
                     params={params}
@@ -63,50 +115,41 @@ const TaskManagment = () => {
             </div>
 
             <Modal
-                size={search?.task ? "max-w-[90%]" : "max-w-3xl"}
-                title={
-                    <span className="opacity-0">{"Vazifalar qo'shish"}</span>
-                }
+                size={"max-w-6xl"}
                 modalKey="task-modal"
                 onClose={closeModal}
                 className={cn(
-                    "lg:max-h-[90vh] outline-none focus:outline-none  max-h-screen  max-w-[100%] lg:max-w-3xl lg:top-[50%] lg:translate-y-[-50%] top-[100%] translate-y-[-100%] ",
-                    search?.task && "!p-0 border-none lg:max-w-[90%]",
+                    "outline-none focus:outline-none bg-transparent  max-w-[100%]  !p-0 !pb-[1px] border-none lg:max-w-6xl ",
                 )}
-                classNameTitle={search?.task && "hidden"}
                 classNameIcon={
-                    search?.task &&
                     "lg:-right-8 lg:top-0 hidden lg:block lg:bg-[#18222C] lg:text-white  w-max"
                 }
             >
                 {/* DESKTOP */}
-                <div
-                    className={cn(
-                        "hidden lg:block",
-                        search?.task && " lg:grid lg:grid-cols-2 gap-3 ",
-                    )}
-                >
-                    <CompleteTaskManager
-                        currentId={currentId}
-                        params={params}
-                        comment={search?.task}
-                    />
-                    {search?.task && (
-                        <div>
-                            <TaskChat />
+                <FormProvider {...form}>
+                    <div className={cn("hidden lg:flex ")}>
+                        <CompleteTaskManager
+                            users={users}
+                            isPending={isPendingCreate || isPendingUpdate}
+                            onSubmit={onSubmit}
+                        />
+
+                        {/* Buni ichida Form bor */}
+                        <div className="w-full lg:w-[55%]">
+                            <TaskChat onSubmit={onSubmit} currentId={store} />
                         </div>
-                    )}
-                </div>
+                    </div>
+                </FormProvider>
 
                 {/* MOBILE - TABS */}
-                <div className="block lg:hidden ">
-                    <Tabs
-                        defaultValue="task"
-                        value={activeTab}
-                        onValueChange={setActiveTab}
-                    >
-                        {search?.task && (
-                            <div className="flex justify-between items-center gap-2 px-2 ">
+                <FormProvider {...form}>
+                    <div className="block lg:hidden ">
+                        <Tabs
+                            defaultValue="task"
+                            value={activeTab}
+                            onValueChange={setActiveTab}
+                        >
+                            <div className="flex justify-between items-center gap-2 p-2 ">
                                 <Button
                                     className="min-w-4"
                                     onClick={closeTaskModal}
@@ -120,25 +163,30 @@ const TaskManagment = () => {
                                     <TabsTrigger value="chat">Chat</TabsTrigger>
                                 </TabsList>
                             </div>
-                        )}
-                        <TabsContent className="mt-0" value="task">
-                            <CompleteTaskManager
-                                currentId={currentId}
-                                params={params}
-                                comment={search?.task}
-                            />
-                        </TabsContent>
-                        <TabsContent className="mt-0" value="chat">
-                            <TaskChat />
-                        </TabsContent>
-                    </Tabs>
-                </div>
+                            <TabsContent className="mt-0" value="task">
+                                <CompleteTaskManager
+                                    isPending={
+                                        isPendingCreate || isPendingUpdate
+                                    }
+                                    onSubmit={onSubmit}
+                                    users={users}
+                                />
+                            </TabsContent>
+                            <TabsContent className="mt-0" value="chat">
+                                <TaskChat
+                                    onSubmit={onSubmit}
+                                    currentId={store}
+                                />
+                            </TabsContent>
+                        </Tabs>
+                    </div>
+                </FormProvider>
             </Modal>
             <DeleteModal
                 modalKey="project-delete"
-                id={currentId}
+                id={store}
                 path={STATUSES}
-                refetchKeys={[`${PROJECTS_TASKS}/${params?.id}`,]}
+                refetchKeys={[`${PROJECTS_TASKS}/${params?.id}`]}
             />
         </div>
     )

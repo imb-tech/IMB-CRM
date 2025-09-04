@@ -66,7 +66,7 @@ const AttachSalary = () => {
                 methods={form}
                 name="full_name"
                 autoComplete="off"
-                label="Hodim"
+                label="Xodim"
                 disabled
             />
             <FormNumberInput

@@ -22,6 +22,6 @@ type Message = {
     text: string
     updated_at: string
     user: UserChat
-    is_self:boolean
+    is_self: boolean
     edited?: boolean
 }

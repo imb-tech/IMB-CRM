@@ -22,10 +22,10 @@ export default function GroupTabs({ refetch }: { refetch: () => void }) {
     const { store: item, remove: clear } = useStore<GroupModule>("item")
     const [tab, setTab] = useState(
         item?.type ? item.type
-        : store ? store
-        : "topic",
+            : store ? store
+                : "topic",
     )
-    const { id: group } = useParams({ from: "/_main/groups/$id/_main/tasks/" })
+    const { id: group } = useParams({ strict: false })
 
     const { data } = useGet<Group>(GROUP + "/" + group)
     const { data: students } = useGet<GroupStudent[]>(GROUP_STUDENTS, {
@@ -54,6 +54,8 @@ export default function GroupTabs({ refetch }: { refetch: () => void }) {
         remove()
         closeModal()
         refetch()
+        clear()
+        form.reset({ type: tab as GroupModuleType })
     }
 
     const { mutate, isPending } = usePost({ onSuccess }, { headers })
@@ -136,9 +138,9 @@ export default function GroupTabs({ refetch }: { refetch: () => void }) {
             modalKey="day"
             size={
                 isEdit ? "max-w-xl"
-                : tab == "topic" ?
-                    "max-w-2xl"
-                :   "max-w-4xl"
+                    : tab == "topic" ?
+                        "max-w-2xl"
+                        : "max-w-4xl"
             }
             onClose={() => {
                 clear()
@@ -151,7 +153,7 @@ export default function GroupTabs({ refetch }: { refetch: () => void }) {
                         <Tabs value={tab} onValueChange={(v) => setTab(v)}>
                             {isEdit ?
                                 ""
-                            :   <Select
+                                : <Select
                                     className="w-40 h-8 sm:h-10"
                                     label=""
                                     options={[
@@ -179,7 +181,7 @@ export default function GroupTabs({ refetch }: { refetch: () => void }) {
                         </Tabs>
                     </form>
                 </FormProvider>
-            :   <div className="w-full py-10 flex justify-center">
+                : <div className="w-full py-10 flex justify-center">
                     <Spinner />
                 </div>
             }

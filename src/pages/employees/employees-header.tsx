@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { EMPLOYEE, OPTION_ROLES } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
 import { useModal } from "@/hooks/useModal"
-import { useSearch } from "@tanstack/react-router"
+import apiRoles from "@/services/hooks/use-roles"
 import { Plus } from "lucide-react"
 import { useMemo } from "react"
 
@@ -14,23 +14,17 @@ export default function EmployeesHeader({
 }: {
     allEmployes?: number
 }) {
-    const { data } = useGet<RoleOption[]>(OPTION_ROLES)
+    const { data } = apiRoles()
     const { openModal } = useModal(`${EMPLOYEE}-add`)
-
-    const { role } = useSearch({ strict: false })
-
-    const usersCount =
-        data?.reduce((acc, curr) => acc + curr.employees_count, 0) ?? 0
 
     const options = useMemo(() => {
         return [
             ...(data ?? [])?.map((usr) => ({
                 id: usr.id,
-                name: `${usr.name} ${
-                    usr.employees_count > 0
-                        ? "(" + usr.employees_count + ")"
-                        : ""
-                }`,
+                name: `${usr.name} ${usr.employees_count > 0
+                    ? "(" + usr.employees_count + ")"
+                    : ""
+                    }`,
                 count: usr.employees_count,
             })),
         ]
@@ -39,11 +33,9 @@ export default function EmployeesHeader({
     return (
         <div className="flex items-center flex-col mt-1 md:justify-between md:flex-row gap-2 mb-2">
             <div className="flex items-center gap-3">
-                <h1 className="text-xl font-medium ">{"Hodimlar ro'yxati"}</h1>
+                <h1 className="text-xl font-medium ">{"Xodimlar ro'yxati"}</h1>
                 <Badge className="text-sm">
-                    {role
-                        ? data?.find((r) => r.id === role)?.employees_count
-                        : allEmployes}
+                    {allEmployes}
                 </Badge>
             </div>
             <div className="flex items-center gap-2 justify-end md:w-1/2 w-full">
@@ -60,7 +52,7 @@ export default function EmployeesHeader({
                     label="Rol"
                     isSearch={false}
                     addButtonProps={{
-                        className:"sm:w-1/2 w-full"
+                        className: "sm:w-1/2 w-full"
                     }}
                 />
                 <Button className="!h-10" onClick={openModal}>

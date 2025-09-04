@@ -12,7 +12,7 @@ export default function ReportsFilter() {
     const { data, active_branch } = useMe()
 
     return (
-        <aside className="flex items-center gap-2 rounded-md">
+        <aside className="flex items-center gap-2 rounded-md ">
             <ParamCombobox
                 dontAllowClear
                 paramName="month"
@@ -23,7 +23,7 @@ export default function ReportsFilter() {
                 label="Oy"
                 className="w-full"
                 addButtonProps={{
-                    className: "!bg-background dark:!bg-secondary"
+                    className: "!bg-background dark:!bg-secondary",
                 }}
             />
             <ParamCombobox
@@ -34,14 +34,14 @@ export default function ReportsFilter() {
                 label="Yil"
                 className="w-full"
                 addButtonProps={{
-                    className: "!bg-background dark:!bg-secondary"
+                    className: "!bg-background dark:!bg-secondary",
                 }}
             />
             <ParamDateRangePicker
                 itemClassName={buttonVariants({
                     variant: "ghost",
                     className:
-                        "rounded-sm gap-2 !bg-background dark:!bg-secondary",
+                        "rounded-sm gap-2 dark:text-gray-400 text-gray-500 !bg-background dark:!bg-secondary",
                 })}
                 placeholder="Sana bo'yicha"
                 className="p-0"
@@ -60,8 +60,9 @@ export default function ReportsFilter() {
                 valueKey="id"
                 isSearch={false}
                 label="Filial"
+                className="whitespace-nowrap"
                 addButtonProps={{
-                    className: "!bg-background dark:!bg-secondary"
+                    className: "!bg-background dark:!bg-secondary",
                 }}
             />
             {tabs === "leads_statistic" && <LeadsDepartmentFilter />}

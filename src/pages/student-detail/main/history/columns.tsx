@@ -25,7 +25,7 @@ export const useColumns = () =>
                     "Sinov darsi uchun guruhga qo'shilgan o'quvchi",
             },
             {
-                header: "Hodim",
+                header: "Xodim",
                 accessorKey: "branch",
                 enableSorting: true,
                 cell: ({ row }) => "Abidsamatov Ozodbek",

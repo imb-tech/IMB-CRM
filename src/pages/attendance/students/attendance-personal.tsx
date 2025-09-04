@@ -166,7 +166,7 @@ const columns = () => {
                 accessorKey: "reason",
             },
             {
-                header: "Hodim",
+                header: "Xodim",
                 accessorKey: "employee",
             },
         ],
