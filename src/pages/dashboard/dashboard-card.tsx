@@ -27,6 +27,13 @@ const statsData: {
             icon: GraduationCap,
             label: "Talabalar",
             key: "students",
+            bgColor: "bg-sky-50 dark:bg-sky-900/10",
+            iconColor: "text-sky-600 dark:text-sky-400",
+        },
+        {
+            icon: GraduationCap,
+            label: "Faol",
+            key: "active_students",
             bgColor: "bg-green-50 dark:bg-green-900/10",
             iconColor: "text-green-600 dark:text-green-400",
         },
@@ -99,6 +106,7 @@ type DashboardStatTypes = {
     students_due_soon_count: number,
     groups: number,
     teachers: number
+    active_students: number
 }
 
 export default function DashboardCard() {
@@ -111,7 +119,7 @@ export default function DashboardCard() {
                 <h3 className="text-lg font-semibold mb-4">
                     Umumiy Ko'rsatkichlar
                 </h3>
-                <div className="grid xl:grid-cols-9 gap-y-3 lg:grid-cols-4  sm:grid-cols-3  grid-cols-2">
+                <div className="grid xl:grid-cols-10 gap-y-3 lg:grid-cols-5  sm:grid-cols-3  grid-cols-2">
                     {statsData.map(
                         (
                             { icon: Icon, label, bgColor, iconColor, key },
@@ -123,7 +131,7 @@ export default function DashboardCard() {
                                 key={index}
                                 className={cn(
                                     "px-2  transition-all cursor-pointer ",
-                                    index === 3 || index == 6
+                                    [0, 4, 7].includes(index)
                                         ? "xl:border-r"
                                         : "",
                                 )}
@@ -138,8 +146,8 @@ export default function DashboardCard() {
                                     <p className="text-sm whitespace-nowrap text-gray-500 dark:text-gray-400">
                                         {label}
                                     </p>
-                                    <p className="text-lg font-semibold">
-                                        {formatMoney(data?.[key])}
+                                    <p className="text-lg font-medium">
+                                        {formatMoney(data?.[key], Number(data?.[key]) < -999_999 ? "text-xs" : "")}
                                     </p>
                                 </div>
                             </Link>

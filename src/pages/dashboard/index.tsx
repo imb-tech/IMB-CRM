@@ -1,6 +1,7 @@
 import FullCalendar from "@/pages/dashboard/full-calendar"
 
 import DashboardCard from "./dashboard-card"
+import DashboardCalendar from "./dashboard-calendar"
 
 const data: TCalendar = {
     room_list: [
@@ -687,12 +688,13 @@ const DashboardMain = () => {
     return (
         <div className="space-y-4 w-full">
             <DashboardCard />
-            <FullCalendar
+            <DashboardCalendar />
+            {/* <FullCalendar
                 rooms={data.room_list}
                 work={data.work_time}
                 work_start_date={data.work_start_date}
                 work_end_date={data.work_end_date}
-            />
+            /> */}
         </div>
     )
 }

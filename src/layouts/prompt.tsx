@@ -36,7 +36,7 @@ export const PromptProvider: React.FC<{ children: ReactNode }> = ({
         setDialogTitle(title)
         if (defaultValue) {
             form.setValue('text', defaultValue)
-            setDefV(defaultv)
+            setDefV(defaultValue)
         }
         setIsOpen(true)
         return new Promise<string | null>((resolve) => {
@@ -82,7 +82,7 @@ export const PromptProvider: React.FC<{ children: ReactNode }> = ({
                         </VisuallyHidden>
                     </DialogHeader>
                     <form onSubmit={form.handleSubmit(handleConfirm)} className="flex flex-col">
-                        <FormDatePicker
+                        {defaultv && <FormDatePicker
                             fullWidth
                             required
                             placeholder={dialogTitle || "Sabab?"}
@@ -90,11 +90,11 @@ export const PromptProvider: React.FC<{ children: ReactNode }> = ({
                             className='min-w-full mb-3'
                             name="text"
                             calendarProps={{
-                                fromDate: defaultv ? new Date(defaultv) : undefined
+                                toDate: defaultv ? new Date(defaultv) : undefined
                             }}
-                        />
+                        />}
                         <DialogFooter className="!flex !flex-row items-center gap-4">
-                            <Button onClick={handleCancel} variant="destructive">
+                            <Button type="button" onClick={handleCancel} variant="destructive">
                                 Bekor qilish
                             </Button>
                             <Button>Tasdiqlash</Button>
