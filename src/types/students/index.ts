@@ -221,7 +221,7 @@ type StudentDiscount = {
     id: number
     group_student: number
     date: string
-    count: number
+    count?: number
     reason: string
     author_name: string
     created_at: string

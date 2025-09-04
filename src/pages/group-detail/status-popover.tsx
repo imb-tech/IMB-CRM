@@ -12,6 +12,8 @@ import { useQueryClient } from "@tanstack/react-query"
 import { GROUP_STUDENTS } from "@/constants/api-endpoints"
 import { usePost } from "@/hooks/usePost"
 import { usePrompt } from "@/hooks/usePrompt"
+import { toast } from "sonner"
+import { formatDate } from "date-fns"
 
 type Props = {
     allowed_statuses: number[]
@@ -33,7 +35,12 @@ export function StatusPopover({
     async function handleChange(d: number) {
         let activated_date = undefined
         if (d === 1) {
-            activated_date = await prompt("Aktivlashtirish sanasi", date)
+            activated_date = await prompt("Aktivlashtirish sanasi", formatDate(new Date().toISOString(), 'yyyy-MM-dd'))
+            if (!activated_date) {
+                toast.error("Sanani tanlang")
+                handleChange(d)
+                return
+            }
         }
 
         mutate(

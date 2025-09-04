@@ -172,19 +172,11 @@ const GroupCreate = ({ item }: Props) => {
                         hideError
                     />
 
-                    <div className="grid grid-cols-2 gap-2 items-start">
+                    <div className="grid grid-cols-1 gap-2 items-start">
                         <FormDatePicker
                             control={form.control}
                             name="start_date"
                             label="Boshlanish sanasi"
-                            className="md:w-auto"
-                            required
-                        />
-
-                        <FormDatePicker
-                            control={form.control}
-                            name="end_date"
-                            label="Tugash sanasi"
                             className="md:w-auto"
                             required
                         />

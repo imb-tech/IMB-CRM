@@ -76,7 +76,7 @@ export default function GroupSale() {
                 numeration
                 onEdit={({ original }) => {
                     form.setValue("amount", Number(original.amount))
-                    form.setValue("count", Number(original.count))
+                    form.setValue("count", original.count ? Number(original.count) : undefined)
                     form.setValue("reason", original.reason ?? "")
                     form.setValue(
                         "group_student",
