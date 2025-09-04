@@ -1,4 +1,4 @@
-import ParamTabList, { ParamTabProvider } from "@/components/as-params/tab"
+import { ParamTabProvider } from "@/components/as-params/tab"
 import { TabsContent } from "@/components/ui/tabs"
 import { lazy } from "react"
 import StudentsAttendanceMain from "../attendance/students"

@@ -79,7 +79,7 @@ const StudnetPaymentMain = () => {
             navigate({ to: "/students/$id/payments", params: { id } })
         },
         [navigate, id],
-    )
+    ) 
 
     const renderAccordionList = useMemo(() => {
         if (!studentGroups?.results) return null
