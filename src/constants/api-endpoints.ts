@@ -60,7 +60,14 @@ export const STATUSES_MOVE = 'taskly/move-status'
 export const MOVE_TASK = 'taskly/move-task'
 export const OPTION_EMPLOYEES = 'option/employees'
 export const TASKLY_FILES = 'taskly/files'
-export const TASKLY_COMMENT= 'taskly/comments'
+export const TASKLY_COMMENT = 'taskly/comments'
 export const TASKS = 'taskly/tasks'
 export const TASKS_EXCEL = 'taskly/project-excel-report'
-export const FILTER_TASKLY_USERS =  'task-users'
+export const FILTER_TASKLY_USERS = 'task-users'
+
+
+
+// REPORT ATTENDANCE DEPARTMENT APIS
+
+export const ATTENDANCE_STATIS = "reports/attendance"
+export const ATTENDANCE_STATIS_STUDENTS = "reports/attendance/students"

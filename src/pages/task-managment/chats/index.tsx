@@ -8,7 +8,7 @@ import { useDelete } from "@/hooks/useDelete"
 import { InfiniteData, useQueryClient } from "@tanstack/react-query"
 import { useInfinite } from "@/hooks/useInfite"
 import { ScrollToBottomButton } from "./scroll-bottom-button"
-import { useNavigate, useParams, useSearch } from "@tanstack/react-router"
+import { useSearch } from "@tanstack/react-router"
 import { cn } from "@/lib/utils"
 
 const config = {
@@ -19,13 +19,9 @@ const config = {
 
 export default function TaskChat({
     currentId,
-    onSubmit,
 }: {
     currentId: number | undefined
-    onSubmit: (data: QuoteCard) => Promise<void>
 }) {
-    const navigate = useNavigate()
-    const { id } = useParams({ from: "/_main/project/$id" })
     const queryClient = useQueryClient()
     const search: any = useSearch({ from: "/_main/project/$id" })
     const [showScrollButton, setShowScrollButton] = useState(false)
@@ -58,15 +54,8 @@ export default function TaskChat({
 
     const { mutate: createMutate, isPending } = usePost(
         {
-            onSuccess: (data) => {
+            onSuccess: () => {
                 refetch()
-                if (data?.task) {
-                    navigate({
-                        to: "/project/$id",
-                        params: { id },
-                        search: { task: data?.task },
-                    })
-                }
             },
         },
         config,
@@ -250,7 +239,6 @@ export default function TaskChat({
                 selectedFiles={selectedFiles}
                 setSelectedFiles={setSelectedFiles}
                 isPending={isPending}
-                onSubmit={onSubmit}
             />
 
             <div

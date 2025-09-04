@@ -4,19 +4,8 @@ import { FormMultiCombobox } from "@/components/form/multi-combobox"
 import { FormSelect } from "@/components/form/select"
 import FormTextarea from "@/components/form/textarea"
 import { Button } from "@/components/ui/button"
-import {
-    PROJECTS_TASKS,
-    TASKLY_COMMENT,
-    TASKS,
-} from "@/constants/api-endpoints"
-import { useGet } from "@/hooks/useGet"
-import { useModal } from "@/hooks/useModal"
-import { usePatch } from "@/hooks/usePatch"
-import { usePost } from "@/hooks/usePost"
 import { cn } from "@/lib/utils"
-import { useNavigate, useSearch } from "@tanstack/react-router"
 import { Flame, Plus, X } from "lucide-react"
-import { useEffect } from "react"
 import { useFieldArray, useFormContext } from "react-hook-form"
 import { getPriorityColor } from "./task-card"
 import { FormDateTimePicker } from "@/components/form/form-datetime-picker"
@@ -24,8 +13,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 type Props = {
     users: FormValues["invited_users"]
-    onSubmit: (data: QuoteCard) => Promise<void>
+    onSubmit: (data: QuoteCard) => void
     isPending: boolean
+    task: QuoteCard | undefined
+    taskId: number
 }
 
 const options = [
@@ -92,15 +83,9 @@ export default function CompleteTaskManager({
     users,
     onSubmit,
     isPending,
+    task,
+    taskId,
 }: Props) {
-    const search: any = useSearch({ from: "/_main/project/$id" })
-
-    const { data: task } = useGet<QuoteCard>(`${TASKS}/${search?.task}`, {
-        options: {
-            enabled: !!search?.task,
-        },
-    })
-
     const form = useFormContext<QuoteCard>()
 
     const { fields, append, remove } = useFieldArray({
@@ -108,17 +93,12 @@ export default function CompleteTaskManager({
         name: "subtasks",
     })
 
-    useEffect(() => {
-        if (task?.id) {
-            form.reset(task)
-        }
-    }, [form, task])
-
     return (
         <form
             onSubmit={form.handleSubmit(onSubmit)}
             className={cn(
-                "w-full lg:w-[45%] bg-gray-200 dark:bg-zinc-900  h-[90vh]  overflow-y-auto space-y-5 p-3  pb-16    no-scrollbar-x",
+                "w-full  bg-gray-200 dark:bg-zinc-900 lg:rounded-md  h-[90vh]  overflow-y-auto space-y-5 p-4  pb-16    no-scrollbar-x",
+                taskId && "lg:w-[45%] p-3 lg:rounded-none lg:rounded-l-md ",
             )}
         >
             <div className="space-y-3">
@@ -312,7 +292,8 @@ export default function CompleteTaskManager({
             {/* Submit */}
             <div
                 className={cn(
-                    "flex absolute  bottom-0  left-0 px-3 py-2 dark:bg-zinc-900 bg-zinc-200 justify-end border-t dark:border-t-zinc-700 border-t-zinc-300 lg:rounded-bl-md  lg:w-[45%] w-full  ",
+                    "flex absolute  bottom-0 lg:rounded-b-md  left-0 px-3 py-2 dark:bg-zinc-900 bg-zinc-200 justify-end border-t dark:border-t-zinc-700 border-t-zinc-300    w-full  ",
+                    taskId && "lg:w-[45%] lg:rounded-bl-md",
                 )}
             >
                 <Button

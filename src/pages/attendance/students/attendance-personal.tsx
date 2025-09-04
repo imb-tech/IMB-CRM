@@ -1,99 +1,23 @@
 import { Button } from "@/components/ui/button"
 import { DataTable } from "@/components/ui/datatable"
-import { useStore } from "@/hooks/use-store"
 import { useModal } from "@/hooks/useModal"
 import { cn } from "@/lib/utils"
 import {
     getStatusColor,
     getStatusIcon,
 } from "@/pages/group-detail/attendance-select"
+import { useNavigate } from "@tanstack/react-router"
 import { ColumnDef } from "@tanstack/react-table"
 import { PanelRightClose } from "lucide-react"
 import { useMemo } from "react"
 
-type PersonalAttendance = {
-    id: number
-    date: string
-    status: "present" | "absent" | "late"
-    reason: string
-    employee: string
+type Props = {
+    data: ListResp<AttendanceRecord> | undefined
 }
 
-export function SheetDemo() {
+export function SheetDemo({ data }: Props) {
+    const navigate = useNavigate()
     const { isOpen, closeModal } = useModal()
-    const { store } = useStore<{ name: string }>("personal")
-    const data: PersonalAttendance[] = [
-        {
-            id: 1,
-            date: "12.08",
-            status: "absent",
-            reason: "Tishi og'rib qopti",
-            employee: "Shohjahon Xamidov",
-        },
-        {
-            id: 2,
-            date: "12.08",
-            status: "present",
-            reason: "",
-            employee: "Dilshod Karimov",
-        },
-        {
-            id: 3,
-            date: "12.08",
-            status: "late",
-            reason: "Yo‘l tirbandligi",
-            employee: "Gulbahor Qodirova",
-        },
-        {
-            id: 4,
-            date: "12.08",
-            status: "present",
-            reason: "",
-            employee: "Otabek Yo‘ldoshev",
-        },
-        {
-            id: 5,
-            date: "12.08",
-            status: "absent",
-            reason: "Oilaviy sabablarga ko‘ra",
-            employee: "Zarina Murodova",
-        },
-        {
-            id: 6,
-            date: "12.08",
-            status: "present",
-            reason: "",
-            employee: "Akmal Rasulov",
-        },
-        {
-            id: 7,
-            date: "12.08",
-            status: "late",
-            reason: "Avtobus kechikdi",
-            employee: "Malika Tursunova",
-        },
-        {
-            id: 8,
-            date: "12.08",
-            status: "present",
-            reason: "",
-            employee: "Bekzod Usmonov",
-        },
-        {
-            id: 9,
-            date: "12.08",
-            status: "absent",
-            reason: "Kasal bo‘lib qoldi",
-            employee: "Diyorbek Raxmatov",
-        },
-        {
-            id: 10,
-            date: "12.08",
-            status: "present",
-            reason: "",
-            employee: "Saida Karimova",
-        },
-    ]
 
     return (
         <div>
@@ -104,25 +28,34 @@ export function SheetDemo() {
                 )}
             >
                 <Button
-                    variant="secondary"
                     className="mb-4"
-                    onClick={closeModal}
+                    onClick={() => {
+                        closeModal()
+                        navigate({
+                            to: "/reports",
+                            search: (prev) => ({
+                                ...prev,
+                                group_student: undefined,
+                            }),
+                        })
+                    }}
                 >
                     <PanelRightClose />
                 </Button>
                 <h1>
-                    {store?.name} ning 10.07.2025 - 10.08.2025 oraliqdagi
-                    davomat statistikasi
+                    {data?.results?.[0]?.student}ning 10.07.2025 - 10.08.2025
+                    oraliqdagi davomat statistikasi
                 </h1>
 
                 <DataTable
                     columns={columns()}
-                    viewAll
-                    data={data}
+                    data={data?.results || []}
                     className="w-full"
                     wrapperClassName="mt-3"
-                    minRows={14}
                     numeration
+                    paginationProps={{
+                        totalPages: data?.total_pages,
+                    }}
                 />
             </div>
         </div>
@@ -130,7 +63,14 @@ export function SheetDemo() {
 }
 
 const columns = () => {
-    return useMemo<ColumnDef<PersonalAttendance>[]>(
+    const statusKey: { [key: string]: string } = {
+        "-1": "absent",
+        "0": "unmarked",
+        "1": "present",
+        "2": "late",
+    }
+
+    return useMemo<ColumnDef<AttendanceRecord>[]>(
         () => [
             {
                 header: "Sana",
@@ -141,23 +81,30 @@ const columns = () => {
                 accessorKey: "status",
                 cell({ row }) {
                     return (
-                        <p
+                        <div
                             className={cn(
-                                getStatusColor(row.original.status, "text"),
+                                getStatusColor(
+                                   statusKey[String(row.original.status)],
+                                    "text",
+                                ),
                                 "p-2 rounded-lg flex items-center gap-2",
                             )}
                         >
-                            {getStatusIcon(row.original.status, 14)}
+                            {getStatusIcon(
+                                statusKey[String(row.original.status)],
+                                18,
+                            )}
                             <span>
                                 {
                                     {
-                                        present: "Keldi",
-                                        late: "Kechikdi",
-                                        absent: "Kelmadi",
-                                    }[row.original.status]
+                                        "-1": "Darsga qatnashmagan",
+                                        "0": "Davomat qilinmagan",
+                                        "1": "Vaqtida kelgan",
+                                        "2": "Kech qoldi",
+                                    }[String(row.original.status)]
                                 }
                             </span>
-                        </p>
+                        </div>
                     )
                 },
             },
@@ -167,7 +114,7 @@ const columns = () => {
             },
             {
                 header: "Xodim",
-                accessorKey: "employee",
+                accessorKey: "teacher",
             },
         ],
         [],

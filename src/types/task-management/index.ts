@@ -6,9 +6,10 @@ type SubTask = {
 
 type QuoteCard = {
     id: number
+    status_id:number
     title: string
     middle_name: string
-    status_id: number
+    status: number
     desc: string
     priority: 1 | 2 | 3
     deadline: string

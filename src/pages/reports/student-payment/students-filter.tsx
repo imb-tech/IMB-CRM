@@ -13,30 +13,34 @@ export default function ReportsFilter() {
 
     return (
         <aside className="flex items-center gap-2 rounded-md ">
-            <ParamCombobox
-                dontAllowClear
-                paramName="month"
-                options={months}
-                isSearch={false}
-                valueKey="key"
-                labelKey="name"
-                label="Oy"
-                className="w-full"
-                addButtonProps={{
-                    className: "!bg-background dark:!bg-secondary",
-                }}
-            />
-            <ParamCombobox
-                dontAllowClear
-                paramName="year"
-                options={optionYears()}
-                isSearch={false}
-                label="Yil"
-                className="w-full"
-                addButtonProps={{
-                    className: "!bg-background dark:!bg-secondary",
-                }}
-            />
+            {tabs !== "attendance" && (
+                <>
+                    <ParamCombobox
+                        dontAllowClear
+                        paramName="month"
+                        options={months}
+                        isSearch={false}
+                        valueKey="key"
+                        labelKey="name"
+                        label="Oy"
+                        className="w-full"
+                        addButtonProps={{
+                            className: "!bg-background dark:!bg-secondary",
+                        }}
+                    />
+                    <ParamCombobox
+                        dontAllowClear
+                        paramName="year"
+                        options={optionYears()}
+                        isSearch={false}
+                        label="Yil"
+                        className="w-full"
+                        addButtonProps={{
+                            className: "!bg-background dark:!bg-secondary",
+                        }}
+                    />
+                </>
+            )}
             <ParamDateRangePicker
                 itemClassName={buttonVariants({
                     variant: "ghost",

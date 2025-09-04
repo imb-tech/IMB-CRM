@@ -50,6 +50,7 @@ export default function TaskCard({ item }: Props) {
                 search: {
                     ...search,
                     task: id,
+                    tabs: undefined,
                 },
             })
             openModalView()
