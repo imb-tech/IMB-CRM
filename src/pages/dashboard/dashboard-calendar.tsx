@@ -25,11 +25,12 @@ export default function DashboardCalendar() {
     const [interval, setTimeInterval] = useState(30) // 15 | 30 | 60 daqiqali slotlar
     const { date } = useSearch({ strict: false })
     const today = new Date().getDay()
+
     const { updateParams } = useQueryParams()
 
     const { data: lessons } = useGet<DashRoom[]>(
         "platform/statistics/dashboard/group-shifts",
-        { params: { day_of_week: date ?? today } }
+        { params: { day_of_week: date ? date : today - 1 } }
     )
     const { data: rooms } = useGet<Room[]>(OPTION_ROOMS)
 
