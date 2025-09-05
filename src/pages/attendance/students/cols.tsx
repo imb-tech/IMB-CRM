@@ -5,18 +5,18 @@ import { useMemo } from "react"
 export const useCols = () =>
     useMemo<ColumnDef<AttendancGroupDetail>[]>(
         () => [
-            {
+            { 
                 header: "Ism",
                 accessorKey: "full_name",
                 cell: ({ row }) => formatMoney(row.original.full_name),
             },
             {
-                header: "Qatnashgan",
+                header: "Qatnashishlar",
                 accessorKey: "present",
                 cell: ({ row }) => formatMoney(row.original.present),
             },
             {
-                header: "Qatnashmagan",
+                header: "Dars qoldirishlar",
                 accessorKey: "absent",
                 cell: ({ row }) => formatMoney(row.original.absent),
             },
@@ -26,7 +26,7 @@ export const useCols = () =>
                 cell: ({ row }) => formatMoney(row.original.late),
             },
             {
-                header: "Davomat qilinmadi",
+                header: "Qilinmagan davomatlar",
                 accessorKey: "unmarked",
                 cell: ({ row }) => formatMoney(row.original.unmarked),
             },

@@ -59,7 +59,7 @@ export default function StudentsAttendanceMain() {
             })
         },
         [navigate],
-    )
+    ) 
 
     const columns = useCols()
 
