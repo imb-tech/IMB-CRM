@@ -3,7 +3,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import StudentAttendance from "./stats"
 import { SheetDemo } from "./attendance-personal"
 import { useModal } from "@/hooks/useModal"
-import { useStore } from "@/hooks/use-store"
 import { useGet } from "@/hooks/useGet"
 import {
     ATTENDANCE_STATIS,
@@ -67,9 +66,9 @@ export default function StudentsAttendanceMain() {
     return (
         <div className="w-full flex flex-col gap-3">
             {/* Main Cards */}
-            {/* <div className="bg-background p-3 rounded-md dark:bg-card">
+            <div className="bg-background p-3 rounded-md dark:bg-card">
                 <StudentAttendance cards={attendanceData?.main_cards} />
-            </div> */}
+            </div>
 
             {/* Group Accordion */}
             <Card>
