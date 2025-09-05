@@ -39,8 +39,9 @@ export function ColorfulCourseCard({ item, onDelete }: Props) {
         status,
         start_date: start_date_students,
         deleted_at,
+        id,
     } = item
-    const { start_date, end_date, name, teacher, id, branch } = group_data
+    const { start_date, end_date, name, teacher,  branch } = group_data
     return (
         <Card className="overflow-hidden border-0 shadow bg-muted ">
             <CardContent className="space-y-3">
