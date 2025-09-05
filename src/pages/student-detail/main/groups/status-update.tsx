@@ -10,37 +10,35 @@ import { ChevronDown } from "lucide-react"
 import { useQueryClient } from "@tanstack/react-query"
 import { STUDENT_GROUP } from "@/constants/api-endpoints"
 import { usePost } from "@/hooks/usePost"
-import { usePrompt } from "@/hooks/usePrompt"
-import { toast } from "sonner"
-import { formatDate } from "date-fns"
-import StudentStatus, { studentStatusKeys } from "@/pages/students/student-status"
+import StudentStatus, {
+    studentStatusKeys,
+} from "@/pages/students/student-status"
+import { useModal } from "@/hooks/useModal"
+import { useStore } from "@/hooks/use-store"
 
 type Props = {
     allowed_statuses: number[]
     status: number
-    student: number
-    date?: string
+    group: number
+    student: Student
 }
 
 export function StatusPopoverStudent({
     status,
     allowed_statuses = [],
-    student,
-    date
+    group,
+    student
 }: Props) {
     const qC = useQueryClient()
     const { mutate } = usePost()
-    const prompt = usePrompt()
+    const { openModal } = useModal('activate')
+    const { setStore } = useStore('student-data')
 
     async function handleChange(d: number) {
-        let activated_date = undefined
         if (d === 1) {
-            activated_date = await prompt("Aktivlashtirish sanasi", formatDate(new Date().toISOString(), 'yyyy-MM-dd'))
-            if (!activated_date) {
-                toast.error("Sanani tanlang")
-                handleChange(d)
-                return
-            }
+            setStore(student)
+            openModal()
+            return
         }
 
         mutate(
@@ -48,7 +46,6 @@ export function StatusPopoverStudent({
             {
                 status: d,
                 group_student: student,
-                activated_date
             },
             {
                 onSuccess() {
@@ -72,7 +69,6 @@ export function StatusPopoverStudent({
                                     : status == 2
                                         ? "bg-sky-500/10  text-sky-500"
                                         : "bg-green-500/10 text-green-500",
-                            "w-[80px]",
                         )}
                     >
                         {studentStatusKeys[status.toString()]}

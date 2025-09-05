@@ -68,10 +68,10 @@ export function ColorfulCourseCard({ item, onDelete }: Props) {
                                 {name}
                             </h3>
                             <StatusPopoverStudent
-                                student={id}
+                                student={item}
                                 allowed_statuses={allowed_statuses}
                                 status={Number(status)}
-                                date={start_date_students}
+                                group={item.id}
                             />
                         </div>
                     </div>

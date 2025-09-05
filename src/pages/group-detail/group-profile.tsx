@@ -114,7 +114,7 @@ export default function GroupProfile() {
                         <div className="flex items-center gap-4">
                             <div
                                 className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center"
-                                onClick={back}
+                                onClick={() => back({ from: `/groups/${id}`, fallBack: '/groups' })}
                             >
                                 <ArrowLeft className="w-4 h-4" />
                             </div>

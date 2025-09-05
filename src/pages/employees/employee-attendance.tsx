@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import generateTimeSlots from "@/lib/generate-time-slots"
@@ -13,6 +13,7 @@ import { usePost } from "@/hooks/usePost"
 import { useForm } from "react-hook-form"
 import FormTimeInput from "@/components/form/time-input"
 import { cn } from "@/lib/utils"
+import useMe from "@/hooks/useMe"
 
 type EWorkDuration = {
     id: number
@@ -36,29 +37,27 @@ type AttendFields = {
 }
 
 export default function AnimatedCalendar() {
-    const [timeSlots, setTimeSlots] = useState<string[]>([])
     const [interval, setInterval] = useState<number>(30) // default 30 min
     const { openModal, closeModal } = useModal()
+    const { branch_data } = useMe()
 
     const { data: users, refetch } = useGet<EWorked[]>('employees/worked-times')
 
-    useEffect(() => {
-        const newTimeSlots = generateTimeSlots(
-            dailyData.work_start_date,
-            dailyData.work_end_date,
-            interval,
-        )
-        setTimeSlots(newTimeSlots)
-    }, [interval])
+    const timeSlots = useMemo(() => {
+        if (branch_data) {
+            return generateTimeSlots(branch_data?.start_time, branch_data?.end_time, interval)
+        } else return []
+    }, [branch_data, interval])
 
     const toMinutes = (hm: string) => {
         const [h, m] = hm.split(":").map(Number)
         return h * 60 + m
     }
 
-    const startMinutes = toMinutes(dailyData.work_start_date)
-    const endMinutes = toMinutes(dailyData.work_end_date)
+    const startMinutes = useMemo(() => branch_data ? toMinutes(branch_data?.start_time) : 0, [branch_data, interval])
+    const endMinutes = useMemo(() => branch_data ? toMinutes(branch_data?.end_time) : 0, [branch_data, interval])
     const totalMinutes = endMinutes - startMinutes
+
 
     const slotWidth = 80
     const totalWidth = (totalMinutes / interval) * slotWidth
@@ -165,7 +164,7 @@ export default function AnimatedCalendar() {
                                                     {/* bookings */}
                                                     {lsns.map((booking, i) => {
                                                         const startTime = booking.check_in?.slice(0, 5)
-                                                        const endTime = (booking.check_out ?? '20:00')?.slice(0, 5)
+                                                        const endTime = (booking.check_out ?? branch_data?.end_time)?.slice(0, 5)
                                                         const start = toMinutes(startTime) - startMinutes
                                                         const end = toMinutes(endTime) - startMinutes
 
@@ -187,14 +186,14 @@ export default function AnimatedCalendar() {
                                                                     <div
                                                                         className={cn("text-xs min-h-[30px] p-1 flex items-center justify-center font-extralight bg-primary/20 w-full rounded", !booking.check_out && "bg-orange-400/10")}
                                                                     >
-                                                                        <div className="flex items-start justify-between text-[14px] whitespace-nowrap w-full px-2 gap-1">
+                                                                        {width > 10 && <div className="flex items-start justify-between text-[14px] whitespace-nowrap w-full px-2 gap-1">
                                                                             <span>
                                                                                 {startTime}
                                                                             </span>
                                                                             {booking.check_out && <span>
                                                                                 {endTime}
                                                                             </span>}
-                                                                        </div>
+                                                                        </div>}
                                                                     </div>
                                                                 </div>
                                                             </div>

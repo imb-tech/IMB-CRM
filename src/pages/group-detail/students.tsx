@@ -18,6 +18,7 @@ import PaymentUpdate from "../student-detail/main/payment/payment-update"
 import ExportStudent from "./export-student"
 import apiGroupStudents from "@/services/hooks/use-group-students"
 import StudentNotesCreate from "../student-detail/main/notes/create"
+import { ActivatedDateModal } from "../student-detail/main/groups/activated-date-modal"
 
 export default function GroupStudents() {
     const { id: group } = useParams({
@@ -115,6 +116,10 @@ export default function GroupStudents() {
 
             <Modal title="Boshqa guruhga ko'chirish" modalKey="export-student" size="max-w-md">
                 <ExportStudent onSuccess={refetch} />
+            </Modal>
+
+            <Modal modalKey="activate" title="Aktivlashtirish sanasi">
+                <ActivatedDateModal />
             </Modal>
         </div>
     )

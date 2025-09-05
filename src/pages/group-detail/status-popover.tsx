@@ -11,36 +11,36 @@ import { ChevronDown } from "lucide-react"
 import { useQueryClient } from "@tanstack/react-query"
 import { GROUP_STUDENTS } from "@/constants/api-endpoints"
 import { usePost } from "@/hooks/usePost"
-import { usePrompt } from "@/hooks/usePrompt"
-import { toast } from "sonner"
-import { formatDate } from "date-fns"
+import { useModal } from "@/hooks/useModal"
+import { useStore } from "@/hooks/use-store"
 
 type Props = {
     allowed_statuses: number[]
     status: number
     student: number
-    date?: string
+    studentData?: Student
 }
 
 export function StatusPopover({
     status,
     allowed_statuses = [],
     student,
-    date
+    studentData
 }: Props) {
     const qC = useQueryClient()
     const { mutate } = usePost()
-    const prompt = usePrompt()
+
+    const { openModal } = useModal('activate')
+    const { setStore } = useStore('student-data')
 
     async function handleChange(d: number) {
-        let activated_date = undefined
         if (d === 1) {
-            activated_date = await prompt("Aktivlashtirish sanasi", formatDate(new Date().toISOString(), 'yyyy-MM-dd'))
-            if (!activated_date) {
-                toast.error("Sanani tanlang")
-                handleChange(d)
-                return
-            }
+            setStore({
+                ...studentData,
+                activated_date: studentData?.activated_date
+            })
+            openModal()
+            return
         }
 
         mutate(
@@ -48,7 +48,6 @@ export function StatusPopover({
             {
                 status: d,
                 group_student: student,
-                activated_date
             },
             {
                 onSuccess() {

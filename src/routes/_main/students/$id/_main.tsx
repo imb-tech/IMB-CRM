@@ -3,6 +3,7 @@ import MobileHeaderLinks from "@/components/header/mobile-header-links"
 import { Button } from "@/components/ui/button"
 import { STUDENT } from "@/constants/api-endpoints"
 import { studentDetailNav } from "@/constants/menu"
+import useHistoryNavigate from "@/hooks/use-history-navigate"
 import { useStore } from "@/hooks/use-store"
 import { useGet } from "@/hooks/useGet"
 import { useModal } from "@/hooks/useModal"
@@ -27,6 +28,8 @@ export const Route = createFileRoute("/_main/students/$id/_main")({
         })
         const items = studentDetailNav(id?.toString() ?? "")
         const navigate = useNavigate()
+        const { back } = useHistoryNavigate()
+
         return (
             <PageLayout>
                 <div className="flex flex-col gap-3 ">
@@ -35,7 +38,10 @@ export const Route = createFileRoute("/_main/students/$id/_main")({
                             <Button
                                 className="min-w-4"
                                 onClick={() => {
-                                    navigate({ to: "/students" })
+                                    back({
+                                        from: `/students/${id}/groups`,
+                                        fallBack: '/students'
+                                    })
                                 }}
                             >
                                 <ArrowLeft size={18} />

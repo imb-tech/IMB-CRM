@@ -19,6 +19,11 @@ export const useRoomsCols = () =>
                 },
             },
             {
+                header: "O'quvchi sig'imi",
+                accessorKey: "limit",
+                enableSorting: true,
+            },
+            {
                 header: "Filail",
                 accessorKey: "branch_name",
                 enableSorting: true,

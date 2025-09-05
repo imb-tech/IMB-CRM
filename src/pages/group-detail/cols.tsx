@@ -12,6 +12,7 @@ import { Button, buttonVariants } from "@/components/ui/button"
 import { formatDate } from "@/lib/utils"
 import ActionDropdown from "@/components/elements/action-dropdown"
 import { Link } from "@tanstack/react-router"
+import useHistoryNavigate from "@/hooks/use-history-navigate"
 
 export const useGroupStudentCols = () => {
     const { openModal } = useModal("update")
@@ -20,6 +21,7 @@ export const useGroupStudentCols = () => {
     const { openModal: pay } = useModal("payment-update")
     const { openModal: exportStudent } = useModal("export-student")
     const { openModal: note } = useModal("notes-add")
+    const { push } = useHistoryNavigate()
 
     return useMemo<ColumnDef<GroupStudent>[]>(
         () => [
@@ -28,7 +30,10 @@ export const useGroupStudentCols = () => {
                 accessorKey: "student_name",
                 enableSorting: true,
                 cell: ({ row: { original: { student_name, student } } }) => {
-                    return <Link to="/students/$id/groups" className="hover:text-primary" params={{ id: student.toString() }}>{student_name}</Link>
+                    return <span
+                        onClick={() => push(`/students/${student}/groups`)}
+                        className="hover:text-primary cursor-pointer"
+                    >{student_name}</span>
                 },
             },
             {
@@ -44,15 +49,15 @@ export const useGroupStudentCols = () => {
                 enableSorting: true,
                 cell({
                     row: {
-                        original: { status, allowed_statuses, id, start_date },
+                        original,
                     },
                 }) {
                     return (
                         <StatusPopover
-                            student={id}
-                            allowed_statuses={allowed_statuses}
-                            status={status}
-                            date={start_date}
+                            student={original.id}
+                            allowed_statuses={original.allowed_statuses}
+                            status={original.status}
+                            studentData={original as any}
                         />
                     )
                 },
@@ -64,6 +69,10 @@ export const useGroupStudentCols = () => {
             {
                 header: "Aktivlashgan sana",
                 accessorKey: "activated_date"
+            },
+            {
+                header: "Keyingi to'lov",
+                accessorKey: "payment_date"
             },
             {
                 header: "Balans",

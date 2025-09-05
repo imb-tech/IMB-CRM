@@ -14,6 +14,7 @@ import { formatMoney } from "@/lib/format-money"
 import { useStore } from "@/hooks/use-store"
 import AddGroup from "./add-group"
 import { ColorfulCourseCard } from "./cards"
+import { ActivatedDateModal } from "./activated-date-modal"
 
 function StudentGroupMain() {
     const { id } = useParams({ from: "/_main/students/$id/_main/groups" })
@@ -76,6 +77,10 @@ function StudentGroupMain() {
                 path={GROUP_STUDENTS}
                 refetchKeys={[STUDENT_GROUP]}
             />
+
+            <Modal modalKey="activate" title="Aktivlashtirish sanasi">
+                <ActivatedDateModal />
+            </Modal>
         </div>
     )
 }
