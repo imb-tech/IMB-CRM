@@ -13,6 +13,7 @@ type Student = {
     payment_date?: string
     username: string
     photo: string
+    activated_date: string
     allowed_statuses: number[]
     password: string
     birth_date: string

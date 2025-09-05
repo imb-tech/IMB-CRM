@@ -40,8 +40,9 @@ export function ColorfulCourseCard({ item, onDelete }: Props) {
         start_date: start_date_students,
         deleted_at,
         id,
+        activated_date,
     } = item
-    const { start_date, end_date, name, teacher,  branch } = group_data
+    const { start_date, end_date, name, teacher, branch } = group_data
     return (
         <Card className="overflow-hidden border-0 shadow bg-muted ">
             <CardContent className="space-y-3">
@@ -96,15 +97,7 @@ export function ColorfulCourseCard({ item, onDelete }: Props) {
                 <div className="grid grid-cols-2 gap-3">
                     <div className="bg-card/60 p-3 rounded-lg">
                         <div className="flex items-center gap-2 mb-1">
-                            <User className="w-4 h-4 " />
-                            <p className="text-xs font-medium ">O'qituvchi</p>
-                        </div>
-                        <p className="text-foreground">{teacher}</p>
-                    </div>
-
-                    <div className="bg-card/60 p-3 rounded-lg">
-                        <div className="flex items-center gap-2 mb-1">
-                            <Calendar className="w-4 h-4 " />
+                            <Calendar className="w-4 h-4 text-primary" />
                             <p className="text-xs font-medium ">Dars kunlari</p>
                         </div>
                         <p className="text-foreground">
@@ -113,25 +106,38 @@ export function ColorfulCourseCard({ item, onDelete }: Props) {
                                 ?.join(", ")}
                         </p>
                     </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-card/60 p-3 rounded-lg">
-                        <div className="flex items-center gap-2 mb-1">
-                            <MapPin className="w-4 h-4 " />
-                            <p className="text-xs font-medium ">Filial</p>
-                        </div>
-                        <p className=" text-foreground">{branch}</p>
-                    </div>
 
                     <div className="bg-card/60 p-3 rounded-lg">
                         <div className="flex items-center gap-2 mb-1">
-                            <CreditCard className="w-4 h-4 " />
+                            <CreditCard className="w-4 h-4 text-sky-500" />
                             <p className="text-xs font-medium ">
                                 Keyingi to'lov
                             </p>
                         </div>
                         <p className=" text-foreground">{payment_date}</p>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-card/60 p-3 rounded-lg">
+                        <div className="flex items-center gap-2 mb-1">
+                            <Clock className="w-4 h-4 text-yellow-500" />
+                            <p className="text-xs font-medium ">
+                                Qo'shilgan sana
+                            </p>
+                        </div>
+                        <p className=" text-foreground">
+                            {start_date_students}
+                        </p>
+                    </div>
+                    <div className="bg-card/60 p-3 rounded-lg">
+                        <div className="flex items-center gap-2 mb-1">
+                            <Clock className="w-4 h-4 text-orange-500" />
+                            <p className="text-xs font-medium ">
+                                Aktivlashtirilgan sana
+                            </p>
+                        </div>
+                        <p className=" text-foreground">{activated_date}</p>
                     </div>
                 </div>
 
@@ -148,25 +154,37 @@ export function ColorfulCourseCard({ item, onDelete }: Props) {
                             <ul className="flex flex-col gap-2 bg-card/60 p-3 mt-2 rounded-md">
                                 <li className="flex justify-between items-center gap-3 text-sm">
                                     <div className="flex items-center gap-2">
-                                        <Clock
+                                        <MapPin
                                             size={16}
                                             className="text-orange-500"
+                                        />
+                                        <span>Filial:</span>
+                                    </div>
+                                    <span>{branch}</span>
+                                </li>
+
+                                <li className="flex justify-between items-center gap-3 text-sm">
+                                    <div className="flex items-center gap-2">
+                                        <User
+                                            size={16}
+                                            className="text-primary"
+                                        />
+                                        <span>O'qituvchi:</span>
+                                    </div>
+                                    <span>{teacher}</span>
+                                </li>
+
+                                <li className="flex justify-between items-center gap-3 text-sm">
+                                    <div className="flex items-center gap-2">
+                                        <Clock
+                                            size={16}
+                                            className="text-yellow-500"
                                         />
                                         <span>Davomiyligi:</span>
                                     </div>
                                     <span>
                                         {start_date} - {end_date}
                                     </span>
-                                </li>
-                                <li className="flex justify-between items-center gap-3 text-sm">
-                                    <div className="flex items-center gap-2">
-                                        <Clock
-                                            className="text-green-500"
-                                            size={16}
-                                        />
-                                        <span>Qo'shilgan sana:</span>
-                                    </div>
-                                    <span>{start_date_students}</span>
                                 </li>
                                 <li className="flex justify-between items-center gap-3 text-sm">
                                     <div className="flex items-center gap-2">
