@@ -50,6 +50,9 @@ export default function ExamForm({ loading }: { loading?: boolean }) {
                             className: "bg-secondary text-start justify-start",
                         }}
                         required
+                        calendarProps={{
+                            fromDate: new Date()
+                        }}
                     />
 
                     <FormNumberInput
@@ -106,7 +109,7 @@ export default function ExamForm({ loading }: { loading?: boolean }) {
                                 />
                                 {st.status == "Aktiv" ?
                                     ""
-                                :   <p className="lowercase text-muted-foreground text-sm">{`( ${st.status} )`}</p>
+                                    : <p className="lowercase text-muted-foreground text-sm">{`( ${st.status} )`}</p>
                                 }
                             </div>
                         ))}

@@ -1,20 +1,28 @@
 import { FormDatePicker } from "@/components/form/date-picker"
 import { Button } from "@/components/ui/button"
-import { GROUP_STUDENTS } from "@/constants/api-endpoints"
+import { GROUP, GROUP_STUDENTS } from "@/constants/api-endpoints"
 import { useStore } from "@/hooks/use-store"
 import { useModal } from "@/hooks/useModal"
 import { usePatch } from "@/hooks/usePatch"
+import { handleFormError } from "@/lib/show-form-errors"
 import { useQueryClient } from "@tanstack/react-query"
+import { useParams } from "@tanstack/react-router"
 import { TriangleAlert } from "lucide-react"
+import { useMemo } from "react"
 import { useForm } from "react-hook-form"
 
 export default function UpdateStudent() {
     const { store: current, remove } = useStore<GroupStudent>("student-data")
+    const { id } = useParams({ strict: false })
     const { closeModal } = useModal("update")
+
     const form = useForm<GroupStudent>({
         defaultValues: current,
     })
     const qc = useQueryClient()
+
+    const data = useMemo(() => qc.getQueryData<Group>([GROUP + "/" + id]), [id])
+    const wd = form.watch()
 
     const { mutate, isPending } = usePatch()
 
@@ -30,6 +38,9 @@ export default function UpdateStudent() {
                     remove()
                     qc.removeQueries({ queryKey: [GROUP_STUDENTS] })
                     closeModal()
+                },
+                onError(error) {
+                    handleFormError(error, form)
                 },
             },
         )
@@ -51,6 +62,10 @@ export default function UpdateStudent() {
                 name="start_date"
                 fullWidth
                 className="!w-full"
+                calendarProps={{
+                    fromDate: new Date(data?.start_date as string),
+                    toDate: new Date(data?.end_date as string)
+                }}
             />
 
             <FormDatePicker
@@ -59,6 +74,11 @@ export default function UpdateStudent() {
                 name="activated_date"
                 fullWidth
                 className="!w-full"
+                disabled={!wd.start_date}
+                calendarProps={{
+                    fromDate: new Date(wd.start_date),
+                    toDate: new Date(data?.end_date as string)
+                }}
             />
 
             <Button className="w-full mt-4" loading={isPending}>

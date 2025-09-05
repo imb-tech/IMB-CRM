@@ -24,6 +24,7 @@ type SearchParams = {
     project?: string
     tabs?: string
     date?: string
+    back?: string
 }
 
 

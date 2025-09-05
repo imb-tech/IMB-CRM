@@ -8,10 +8,12 @@ import { Pencil } from "lucide-react"
 import { formatMoney } from "@/lib/format-money"
 import { cn } from "@/lib/utils"
 import { useStore } from "@/hooks/use-store"
+import useHistoryNavigate from "@/hooks/use-history-navigate"
 
 export const useColumns = ({ openModal }: { openModal: () => void }) => {
     const { setStore } = useStore<Student | null>("student-groups-add")
-    const navigate = useNavigate()
+    const { push } = useHistoryNavigate()
+
     return useMemo<ColumnDef<Student>[]>(
         () => [
             {
@@ -20,10 +22,14 @@ export const useColumns = ({ openModal }: { openModal: () => void }) => {
                 cell: ({ row }) => (
                     <span
                         onClick={() =>
-                            navigate({
-                                to: "/groups/$id",
-                                params: { id: String(row.original.group_data.id) },
-                            })
+                            // navigate({
+                            // to: "/groups/$id",
+                            // params: { id: String(row.original.group_data.id) },
+                            // search: {
+                            //     back: `/students/${row.original.id}/groups`
+                            // }
+                            // })
+                            push(`/groups/${row.original.group_data.id}`)
                         }
                         className="hover:text-primary cursor-pointer hover:underline"
                     >
@@ -37,14 +43,15 @@ export const useColumns = ({ openModal }: { openModal: () => void }) => {
                 enableSorting: true,
                 cell({
                     row: {
-                        original: { status, id, allowed_statuses },
+                        original,
                     },
                 }) {
                     return (
                         <StatusPopoverStudent
-                            group={id}
-                            allowed_statuses={allowed_statuses}
-                            status={Number(status)}
+                            group={original.id}
+                            allowed_statuses={original.allowed_statuses}
+                            status={Number(original.status)}
+                            student={original}
                         />
                     )
                 },

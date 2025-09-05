@@ -24,6 +24,7 @@ type Student = {
     avg_exam_score: number
     avg_score: number
     start_date: string
+    activated_date: string
     branches: number[]
     branches_data: Branch[]
     groups: StudentGroup[]

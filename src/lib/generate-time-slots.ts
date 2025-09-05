@@ -18,7 +18,7 @@ export default function generateTimeSlots(
 
     while (
         currentHour < endHour ||
-        (currentHour === endHour && currentMinute < endMinute)
+        (currentHour === endHour && currentMinute <= endMinute)
     ) {
         timeSlots.push(
             `${currentHour.toString().padStart(2, "0")}:${currentMinute.toString().padStart(2, "0")}`,

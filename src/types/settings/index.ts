@@ -17,7 +17,7 @@ type Room = {
     branch_name: string
     created_at: string
     branch: number
-    user_limit: number
+    limit: number
 }
 
 type Course = {

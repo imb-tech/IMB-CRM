@@ -26,6 +26,17 @@ export const getDaysInMonth = (date: Date) => {
     return days
 }
 
+export const weekNames: Record<string, string> = {
+    Sun: "Ya",
+    Mon: "Du",
+    Tue: "Se",
+    Wed: "Ch",
+    Thu: "Pa",
+    Fri: "Ju",
+    Sat: "Sh",
+};
+
+
 export function getGroupSector(groupDays?: {
     date: string
     values: GroupModule[]
@@ -34,7 +45,7 @@ export function getGroupSector(groupDays?: {
         const dt = new Date(d.date)
         return {
             date: dt,
-            dayName: dt.toString().slice(0, 3),
+            dayName: weekNames[dt.toString().slice(0, 3)],
             formatted_date: d.date,
             day: dt.getDate(),
             modules: d.values

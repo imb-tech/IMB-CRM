@@ -1,12 +1,14 @@
 import MonthNavigator from "@/components/as-params/month-navigator"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select2"
 import { OPTION_ROOMS } from "@/constants/api-endpoints"
+import useHistoryNavigate from "@/hooks/use-history-navigate"
 import useQueryParams from "@/hooks/use-query-params"
 import { useGet } from "@/hooks/useGet"
+import useMe from "@/hooks/useMe"
 import generateTimeSlots from "@/lib/generate-time-slots"
 import { weekdays } from "@/lib/utils"
 import { useSearch } from "@tanstack/react-router"
-import { useEffect, useState } from "react"
+import { useMemo, useState } from "react"
 
 type DashRoom = {
     id: number
@@ -20,11 +22,17 @@ type DashRoom = {
     room_id: number
 }
 
+type Room = {
+    id: number
+    name: string
+}
+
 export default function DashboardCalendar() {
-    const [timeSlots, setTimeSlots] = useState<string[]>([])
     const [interval, setTimeInterval] = useState(30) // 15 | 30 | 60 daqiqali slotlar
     const { date } = useSearch({ strict: false })
     const today = new Date().getDay()
+    const { branch_data } = useMe()
+    const { push } = useHistoryNavigate()
 
     const { updateParams } = useQueryParams()
 
@@ -34,23 +42,64 @@ export default function DashboardCalendar() {
     )
     const { data: rooms } = useGet<Room[]>(OPTION_ROOMS)
 
-    useEffect(() => {
-        const newTimeSlots = generateTimeSlots("08:00", "20:00", interval)
-        setTimeSlots(newTimeSlots)
-    }, [interval])
+    const timeSlots = useMemo(() => {
+        if (branch_data) {
+            return generateTimeSlots(branch_data?.start_time, branch_data?.end_time, interval)
+        } else return []
+    }, [branch_data, interval])
 
     const toMinutes = (hm: string) => {
         const [h, m] = hm.split(":").map(Number)
         return h * 60 + m
     }
 
-    const startMinutes = toMinutes("08:00")
-    const endMinutes = toMinutes("20:00")
+    const startMinutes = useMemo(() => branch_data ? toMinutes(branch_data?.start_time) : 0, [branch_data, interval])
+    const endMinutes = useMemo(() => branch_data ? toMinutes(branch_data?.end_time) : 0, [branch_data, interval])
     const totalMinutes = endMinutes - startMinutes
 
-    const slotWidth = 80 // har bir slotning px kengligi
+    const slotWidth = 80
     const totalWidth = (totalMinutes / interval) * slotWidth
-    const rowHeight = 64 // har bir lesson uchun balandlik
+    const rowHeight = 64
+
+    function layoutByOverlap(lsns: DashRoom[]) {
+        if (!lsns?.length) return { placed: [] as (DashRoom & { row: number })[], rowCount: 0 }
+
+        const sorted = [...lsns].sort((a, b) => {
+            const sa = toMinutes(a.start_time)
+            const sb = toMinutes(b.start_time)
+            if (sa !== sb) return sa - sb
+            return toMinutes(a.end_time) - toMinutes(b.end_time)
+        })
+
+        const rowEnds: number[] = []
+
+        const placed = sorted.map((item) => {
+            const s = toMinutes(item.start_time)
+            const e = toMinutes(item.end_time)
+
+            let rowIndex = rowEnds.findIndex((end) => end <= s)
+
+            if (rowIndex === -1) {
+                rowIndex = rowEnds.length
+                rowEnds.push(e)
+            } else {
+                rowEnds[rowIndex] = e
+            }
+
+            return { ...item, row: rowIndex }
+        })
+
+        return { placed, rowCount: rowEnds.length }
+    }
+
+    const layoutPerRoom = useMemo(() => {
+        const map = new Map<number, { placed: (DashRoom & { row: number })[], rowCount: number }>()
+        rooms?.forEach((r) => {
+            const lsns = (lessons ?? []).filter((l) => l.room_id === r.id)
+            map.set(r.id, layoutByOverlap(lsns))
+        })
+        return map
+    }, [rooms, lessons])
 
     return (
         <div className="bg-background p-3 rounded-md">
@@ -81,6 +130,7 @@ export default function DashboardCalendar() {
                     </Select>
                 </div>
             </div>
+
             <div className="overflow-x-auto no-scrollbar">
                 {/* Header row */}
                 <div className="flex">
@@ -105,12 +155,13 @@ export default function DashboardCalendar() {
                     {/* Rooms list */}
                     <div className="flex flex-col min-w-[140px]">
                         {rooms?.map((r) => {
-                            const lsns = lessons?.filter((l) => l.room_id === r.id) ?? []
+                            const layout = layoutPerRoom.get(r.id)
+                            const rows = layout?.rowCount ?? 0
                             return (
                                 <div
                                     key={r.id}
                                     className="p-2 border-t border-gray-400/20 flex items-center h-full"
-                                    style={{ height: lsns.length ? rowHeight * lsns.length : rowHeight }}
+                                    style={{ height: (rows > 0 ? rows : 1) * rowHeight }}
                                 >
                                     {r.name}
                                 </div>
@@ -121,13 +172,15 @@ export default function DashboardCalendar() {
                     {/* Lessons per room */}
                     <div className="flex-1 w-full" style={{ minWidth: totalWidth, maxWidth: totalWidth }}>
                         {rooms?.map((r) => {
-                            const lsns = lessons?.filter((l) => l.room_id === r.id) ?? []
+                            const layout = layoutPerRoom.get(r.id)
+                            const rows = layout?.rowCount ?? 0
+                            const placed = layout?.placed ?? []
 
                             return (
                                 <div
                                     key={r.id}
                                     className="relative min-w-full border-t border-gray-400/20"
-                                    style={{ height: lsns.length ? rowHeight * lsns.length : rowHeight }}
+                                    style={{ height: (rows > 0 ? rows : 1) * rowHeight }}
                                 >
                                     {/* Vertical grid lines */}
                                     {timeSlots.map((t, idx) => (
@@ -139,25 +192,33 @@ export default function DashboardCalendar() {
                                     ))}
 
                                     {/* Lessons */}
-                                    {lsns.map((lesson, i) => (
-                                        <div
-                                            key={lesson.id}
-                                            className="absolute text-xs p-1 z-10"
-                                            style={{
-                                                left: `${(toMinutes(lesson.start_time) - startMinutes) / totalMinutes * totalWidth}px`,
-                                                width: `${(toMinutes(lesson.end_time) - toMinutes(lesson.start_time)) / totalMinutes * totalWidth}px`,
-                                                top: `${rowHeight * i}px`,
-                                                height: `${rowHeight}px`,
-                                            }}
-                                        >
-                                            <div className="text-white p-1 rounded bg-sky-400 dark:bg-sky-400/30 w-full h-full">
-                                                <p className="font-semibold">{lesson.group.name}</p>
-                                                <p className="opacity-75">
-                                                    {lesson.group.teacher} ({lesson.start_time.slice(0, 5)}–{lesson.end_time.slice(0, 5)})
-                                                </p>
+                                    {placed.map((lesson) => {
+                                        const left =
+                                            ((toMinutes(lesson.start_time) - startMinutes) / totalMinutes) * totalWidth
+                                        const width =
+                                            ((toMinutes(lesson.end_time) - toMinutes(lesson.start_time)) / totalMinutes) * totalWidth
+
+                                        return (
+                                            <div
+                                                key={lesson.id}
+                                                className="absolute text-xs p-1 z-10"
+                                                style={{
+                                                    left: `${left}px`,
+                                                    width: `${width}px`,
+                                                    top: `${rowHeight * lesson.row}px`,
+                                                    height: `${rowHeight}px`,
+                                                }}
+                                                onClick={() => push(`/groups/${lesson.group.id}`)}
+                                            >
+                                                <div className="text-white p-1 rounded bg-sky-400 dark:bg-sky-400/30 w-full h-full">
+                                                    <p className="font-semibold">{lesson.group.name}</p>
+                                                    <p className="opacity-75">
+                                                        {lesson.group.teacher} ({lesson.start_time.slice(0, 5)}–{lesson.end_time.slice(0, 5)})
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        )
+                                    })}
                                 </div>
                             )
                         })}

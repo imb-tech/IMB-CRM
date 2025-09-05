@@ -53,6 +53,9 @@ export default function TaskForm({ loading }: { loading?: boolean }) {
                             className:
                                 "!w-full !h-12 bg-secondary !flex hover:bg-background !justify-start bg-background border-none",
                         }}
+                        calendarProps={{
+                            fromDate: new Date()
+                        }}
                     />
 
                     <FormTextarea
