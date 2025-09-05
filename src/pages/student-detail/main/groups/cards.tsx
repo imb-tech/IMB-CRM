@@ -9,7 +9,6 @@ import {
     Trash,
 } from "lucide-react"
 import { daysMap } from "@/lib/shift-groupped"
-import { StatusPopoverStudent } from "./status-update"
 import { formatMoney } from "@/lib/format-money"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
@@ -21,6 +20,7 @@ import {
 } from "@/components/ui/accordion"
 import { useNavigate } from "@tanstack/react-router"
 import { Button } from "@/components/ui/button"
+import { StatusPopoverStudent } from "./status-update"
 
 type Props = {
     item: Student
@@ -65,9 +65,10 @@ export function ColorfulCourseCard({ item, onDelete }: Props) {
                                 {name}
                             </h3>
                             <StatusPopoverStudent
-                                group={id}
+                                student={id}
                                 allowed_statuses={allowed_statuses}
                                 status={Number(status)}
+                                date={start_date_students}
                             />
                         </div>
                     </div>

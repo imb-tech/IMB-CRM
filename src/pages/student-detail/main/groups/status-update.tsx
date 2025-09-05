@@ -10,30 +10,45 @@ import { ChevronDown } from "lucide-react"
 import { useQueryClient } from "@tanstack/react-query"
 import { STUDENT_GROUP } from "@/constants/api-endpoints"
 import { usePost } from "@/hooks/usePost"
-import StudentStatus, {
-    studentStatusKeys,
-} from "@/pages/students/student-status"
+import { usePrompt } from "@/hooks/usePrompt"
+import { toast } from "sonner"
+import { formatDate } from "date-fns"
+import StudentStatus, { studentStatusKeys } from "@/pages/students/student-status"
 
 type Props = {
     allowed_statuses: number[]
     status: number
-    group: number
+    student: number
+    date?: string
 }
 
 export function StatusPopoverStudent({
     status,
     allowed_statuses = [],
-    group,
+    student,
+    date
 }: Props) {
     const qC = useQueryClient()
     const { mutate } = usePost()
+    const prompt = usePrompt()
 
-    function handleChange(d: number) {
+    async function handleChange(d: number) {
+        let activated_date = undefined
+        if (d === 1) {
+            activated_date = await prompt("Aktivlashtirish sanasi", formatDate(new Date().toISOString(), 'yyyy-MM-dd'))
+            if (!activated_date) {
+                toast.error("Sanani tanlang")
+                handleChange(d)
+                return
+            }
+        }
+
         mutate(
             "platform/group-students/change-status",
             {
                 status: d,
-                group_student: group,
+                group_student: student,
+                activated_date
             },
             {
                 onSuccess() {
@@ -53,11 +68,11 @@ export function StatusPopoverStudent({
                             status == 3
                                 ? "bg-red-500/10 text-red-500"
                                 : status == 0
-                                ? "bg-yellow-500/10 text-yellow-500 "
-                                : status == 2
-                                ? "bg-sky-500/10  text-sky-500"
-                                : "bg-green-500/10 text-green-500",
-                           
+                                    ? "bg-yellow-500/10 text-yellow-500 "
+                                    : status == 2
+                                        ? "bg-sky-500/10  text-sky-500"
+                                        : "bg-green-500/10 text-green-500",
+                            "w-[80px]",
                         )}
                     >
                         {studentStatusKeys[status.toString()]}
@@ -70,8 +85,8 @@ export function StatusPopoverStudent({
                 align="center"
             >
                 <div className="flex flex-col gap-1 items-start">
-                    {allowed_statuses?.map((d, index) => (
-                        <PopoverClose key={index}>
+                    {allowed_statuses?.map((d) => (
+                        <PopoverClose>
                             <span
                                 onClick={() => handleChange(d)}
                                 key={d}
