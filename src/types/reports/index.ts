@@ -20,12 +20,13 @@ type AttendancGroupDetail = {
 };
 
 type AttendanceRecord = {
-    id: number
-    date: string
-    student: string
-    teacher: string
-    reason: string | null
-    status: number
+  id: number
+  date: string
+  student: string
+  teacher: string
+  reason: string | null
+  status: number
+  group_name: string
 }
 
 type AttendancGroup = {

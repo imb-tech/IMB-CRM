@@ -50,6 +50,7 @@ import { Route as MainGroupsIdMainImport } from './routes/_main/groups/$id/_main
 import { Route as MainEmployeesMainSalaryImport } from './routes/_main/employees/_main/salary'
 import { Route as MainEmployeesMainHrImport } from './routes/_main/employees/_main/hr'
 import { Route as MainAttendanceMainStudentsImport } from './routes/_main/attendance/_main/students'
+import { Route as MainAttendanceMainStaticsImport } from './routes/_main/attendance/_main/statics'
 import { Route as MainAttendanceMainEmployeesImport } from './routes/_main/attendance/_main/employees'
 import { Route as MainLeadsVaronkaIdIndexImport } from './routes/_main/leads/varonka/$id/index'
 import { Route as MainGroupsIdMainIndexImport } from './routes/_main/groups/$id/_main/index'
@@ -350,6 +351,12 @@ const MainAttendanceMainStudentsRoute = MainAttendanceMainStudentsImport.update(
   } as any,
 )
 
+const MainAttendanceMainStaticsRoute = MainAttendanceMainStaticsImport.update({
+  id: '/statics',
+  path: '/statics',
+  getParentRoute: () => MainAttendanceMainRoute,
+} as any)
+
 const MainAttendanceMainEmployeesRoute =
   MainAttendanceMainEmployeesImport.update({
     id: '/employees',
@@ -649,6 +656,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainAttendanceMainEmployeesImport
       parentRoute: typeof MainAttendanceMainImport
     }
+    '/_main/attendance/_main/statics': {
+      id: '/_main/attendance/_main/statics'
+      path: '/statics'
+      fullPath: '/attendance/statics'
+      preLoaderRoute: typeof MainAttendanceMainStaticsImport
+      parentRoute: typeof MainAttendanceMainImport
+    }
     '/_main/attendance/_main/students': {
       id: '/_main/attendance/_main/students'
       path: '/students'
@@ -939,12 +953,14 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface MainAttendanceMainRouteChildren {
   MainAttendanceMainEmployeesRoute: typeof MainAttendanceMainEmployeesRoute
+  MainAttendanceMainStaticsRoute: typeof MainAttendanceMainStaticsRoute
   MainAttendanceMainStudentsRoute: typeof MainAttendanceMainStudentsRoute
   MainAttendanceMainIndexRoute: typeof MainAttendanceMainIndexRoute
 }
 
 const MainAttendanceMainRouteChildren: MainAttendanceMainRouteChildren = {
   MainAttendanceMainEmployeesRoute: MainAttendanceMainEmployeesRoute,
+  MainAttendanceMainStaticsRoute: MainAttendanceMainStaticsRoute,
   MainAttendanceMainStudentsRoute: MainAttendanceMainStudentsRoute,
   MainAttendanceMainIndexRoute: MainAttendanceMainIndexRoute,
 }
@@ -1179,6 +1195,7 @@ export interface FileRoutesByFullPath {
   '/project': typeof MainProjectIndexRoute
   '/students': typeof MainStudentsIndexRoute
   '/attendance/employees': typeof MainAttendanceMainEmployeesRoute
+  '/attendance/statics': typeof MainAttendanceMainStaticsRoute
   '/attendance/students': typeof MainAttendanceMainStudentsRoute
   '/employees/hr': typeof MainEmployeesMainHrRoute
   '/employees/salary': typeof MainEmployeesMainSalaryRoute
@@ -1239,6 +1256,7 @@ export interface FileRoutesByTo {
   '/project': typeof MainProjectIndexRoute
   '/students': typeof MainStudentsIndexRoute
   '/attendance/employees': typeof MainAttendanceMainEmployeesRoute
+  '/attendance/statics': typeof MainAttendanceMainStaticsRoute
   '/attendance/students': typeof MainAttendanceMainStudentsRoute
   '/employees/hr': typeof MainEmployeesMainHrRoute
   '/employees/salary': typeof MainEmployeesMainSalaryRoute
@@ -1300,6 +1318,7 @@ export interface FileRoutesById {
   '/_main/project/': typeof MainProjectIndexRoute
   '/_main/students/': typeof MainStudentsIndexRoute
   '/_main/attendance/_main/employees': typeof MainAttendanceMainEmployeesRoute
+  '/_main/attendance/_main/statics': typeof MainAttendanceMainStaticsRoute
   '/_main/attendance/_main/students': typeof MainAttendanceMainStudentsRoute
   '/_main/employees/_main/hr': typeof MainEmployeesMainHrRoute
   '/_main/employees/_main/salary': typeof MainEmployeesMainSalaryRoute
@@ -1364,6 +1383,7 @@ export interface FileRouteTypes {
     | '/project'
     | '/students'
     | '/attendance/employees'
+    | '/attendance/statics'
     | '/attendance/students'
     | '/employees/hr'
     | '/employees/salary'
@@ -1423,6 +1443,7 @@ export interface FileRouteTypes {
     | '/project'
     | '/students'
     | '/attendance/employees'
+    | '/attendance/statics'
     | '/attendance/students'
     | '/employees/hr'
     | '/employees/salary'
@@ -1482,6 +1503,7 @@ export interface FileRouteTypes {
     | '/_main/project/'
     | '/_main/students/'
     | '/_main/attendance/_main/employees'
+    | '/_main/attendance/_main/statics'
     | '/_main/attendance/_main/students'
     | '/_main/employees/_main/hr'
     | '/_main/employees/_main/salary'
@@ -1616,6 +1638,7 @@ export const routeTree = rootRoute
       "parent": "/_main/attendance",
       "children": [
         "/_main/attendance/_main/employees",
+        "/_main/attendance/_main/statics",
         "/_main/attendance/_main/students",
         "/_main/attendance/_main/"
       ]
@@ -1703,6 +1726,10 @@ export const routeTree = rootRoute
     },
     "/_main/attendance/_main/employees": {
       "filePath": "_main/attendance/_main/employees.tsx",
+      "parent": "/_main/attendance/_main"
+    },
+    "/_main/attendance/_main/statics": {
+      "filePath": "_main/attendance/_main/statics.tsx",
       "parent": "/_main/attendance/_main"
     },
     "/_main/attendance/_main/students": {

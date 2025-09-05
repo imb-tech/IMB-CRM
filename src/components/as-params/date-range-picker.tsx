@@ -65,8 +65,15 @@ export default function ParamDateRangePicker({
         | "month"
         | undefined
 
-    const fromDate = fromDateString ? new Date(fromDateString) : undefined
-    const toDate = toDateString ? new Date(toDateString) : undefined
+    const fromDate =
+        typeof fromDateString === "string" || typeof fromDateString === "number"
+            ? new Date(fromDateString)
+            : undefined
+
+    const toDate =
+        typeof toDateString === "string" || typeof toDateString === "number"
+            ? new Date(toDateString)
+            : undefined
 
     const [selectedRange, setSelectedRange] = useState<DateRange | undefined>(
         fromDate && toDate && !presetParam
@@ -167,7 +174,6 @@ export default function ParamDateRangePicker({
 
         updateSearchParams(range.from, range.to, preset)
     }
-    
 
     return (
         <div

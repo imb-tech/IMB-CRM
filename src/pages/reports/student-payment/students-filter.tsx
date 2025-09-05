@@ -1,6 +1,5 @@
 import { ParamCombobox } from "@/components/as-params/combobox"
 import ParamDateRangePicker from "@/components/as-params/date-range-picker"
-import ExportAsExcel from "@/components/custom/export-excel"
 import { buttonVariants } from "@/components/ui/button"
 import useMe from "@/hooks/useMe"
 import { months, optionYears } from "@/lib/utils"
@@ -49,6 +48,8 @@ export default function ReportsFilter() {
                 })}
                 placeholder="Sana bo'yicha"
                 className="p-0"
+                fromParamName={"start_date"}
+                toParamName={"end_date"}
             />
 
             <ParamCombobox
@@ -58,7 +59,7 @@ export default function ReportsFilter() {
                     name: data?.branches?.find((b) => b.id == active_branch)
                         ?.name,
                 }}
-                paramName="date"
+                paramName="branch"
                 options={data?.branches ?? []}
                 labelKey="name"
                 valueKey="id"
@@ -70,7 +71,7 @@ export default function ReportsFilter() {
                 }}
             />
             {tabs === "leads_statistic" && <LeadsDepartmentFilter />}
-            <ExportAsExcel url="url" name="reports" />
+            {/* <ExportAsExcel url="url" name="reports" /> */}
         </aside>
     )
 }
