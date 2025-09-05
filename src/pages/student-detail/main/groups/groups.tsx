@@ -1,5 +1,4 @@
 import { DataTable } from "@/components/ui/datatable"
-import { useColumns } from "./columns"
 import { useGet } from "@/hooks/useGet"
 import { GROUP_STUDENTS, STUDENT_GROUP } from "@/constants/api-endpoints"
 import { Badge } from "@/components/ui/badge"
@@ -11,21 +10,20 @@ import { useCallback } from "react"
 
 import { useParams } from "@tanstack/react-router"
 import DeleteModal from "@/components/custom/delete-modal"
-import UpdateStudentDate from "./update-date"
 import { formatMoney } from "@/lib/format-money"
 import { useStore } from "@/hooks/use-store"
 import AddGroup from "./add-group"
+import { ColorfulCourseCard } from "./cards"
 
 function StudentGroupMain() {
     const { id } = useParams({ from: "/_main/students/$id/_main/groups" })
     const { openModal: openDelete } = useModal("delete-student-group")
     const { openModal } = useModal("student-groups-add")
-    const { openModal: openModalUpdate } = useModal("student-groups-update")
     const { store: current, setStore } = useStore<Student | null>(
         "student-groups-add",
     )
 
-    const { data: studentGroups, isLoading } = useGet<ListResp<Student>>(
+    const { data: studentGroups } = useGet<ListResp<Student>>(
         STUDENT_GROUP,
         {
             params: { student: id },
@@ -40,10 +38,6 @@ function StudentGroupMain() {
         },
         [openDelete],
     )
-
-    const columns = useColumns({
-        openModal: openModalUpdate,
-    })
 
     return (
         <div className="mt-1">
@@ -64,23 +58,12 @@ function StudentGroupMain() {
                 </Button>
             </div>
 
-            <DataTable
-                columns={columns}
-                data={studentGroups?.results}
-                loading={isLoading}
-                onDelete={(item) => handleDelete(item.original)}
-                numeration
-                viewAll
-            />
+            <div className="grid lg:grid-cols-3 2xl:grid-cols-4 md:grid-cols-2 items-start  gap-4">
+                {studentGroups?.results?.map((item) => (
+                <ColorfulCourseCard onDelete={handleDelete} key={item.id} item={item} />
+            ))}
+            </div>
 
-            {/* Update Group Modal */}
-            <Modal
-                modalKey="student-groups-update"
-                title="Tahrirlash"
-                size="max-w-md"
-            >
-                <UpdateStudentDate />
-            </Modal>
             {/* Add Group modal */}
             <Modal title="Guruhga qo'shish" modalKey="student-groups-add">
                 <AddGroup id={id} />
