@@ -150,7 +150,7 @@ export default function DashboardCalendar() {
                                                 height: `${rowHeight}px`,
                                             }}
                                         >
-                                            <div className="text-white p-1 rounded bg-sky-400 w-full h-full">
+                                            <div className="text-white p-1 rounded bg-sky-400 dark:bg-sky-400/30 w-full h-full">
                                                 <p className="font-semibold">{lesson.group.name}</p>
                                                 <p className="opacity-75">
                                                     {lesson.group.teacher} ({lesson.start_time.slice(0, 5)}–{lesson.end_time.slice(0, 5)})
