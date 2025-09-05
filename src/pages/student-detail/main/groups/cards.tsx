@@ -7,6 +7,8 @@ import {
     Layers,
     Clock,
     Trash,
+    RefreshCcw,
+    UserPlus,
 } from "lucide-react"
 import { daysMap } from "@/lib/shift-groupped"
 import { formatMoney } from "@/lib/format-money"
@@ -121,7 +123,7 @@ export function ColorfulCourseCard({ item, onDelete }: Props) {
                 <div className="grid grid-cols-2 gap-3">
                     <div className="bg-card/60 p-3 rounded-lg">
                         <div className="flex items-center gap-2 mb-1">
-                            <Clock className="w-4 h-4 text-yellow-500" />
+                            <UserPlus className="w-4 h-4 text-yellow-500" />
                             <p className="text-xs font-medium ">
                                 Qo'shilgan sana
                             </p>
@@ -132,7 +134,7 @@ export function ColorfulCourseCard({ item, onDelete }: Props) {
                     </div>
                     <div className="bg-card/60 p-3 rounded-lg">
                         <div className="flex items-center gap-2 mb-1">
-                            <Clock className="w-4 h-4 text-orange-500" />
+                            <RefreshCcw className="w-4 h-4 text-orange-500" />
                             <p className="text-xs font-medium ">
                                 Aktivlashtirilgan sana
                             </p>
