@@ -91,10 +91,10 @@ export function ColorfulCourseCard({ item, onDelete }: Props) {
     ]
 
     return (
-        <Card className="overflow-hidden border-0 shadow bg-muted">
+        <Card className={cn("overflow-hidden border-0 shadow bg-muted ")}>
             <CardContent className="space-y-3">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
+                <div className="flex items-start justify-between">
+                    <div className="flex items-start gap-3">
                         <div className="p-3 bg-primary/10 rounded-full">
                             <Layers className="w-5 h-5 text-primary" />
                         </div>
@@ -110,13 +110,15 @@ export function ColorfulCourseCard({ item, onDelete }: Props) {
                             {name}
                         </h3>
                     </div>
-                    <Button
-                        onClick={() => onDelete(item)}
-                        variant="destructive"
-                        size="sm"
-                    >
-                        <Trash size={16} />
-                    </Button>
+                    {Number(status) !== 3 && (
+                        <Button
+                            onClick={() => onDelete(item)}
+                            variant="destructive"
+                            size="sm"
+                        >
+                            <Trash size={16} />
+                        </Button>
+                    )}
                 </div>
 
                 <div className="w-full flex items-center justify-between gap-3">
@@ -128,11 +130,11 @@ export function ColorfulCourseCard({ item, onDelete }: Props) {
                     >
                         {formatMoney(balance)} so'm
                     </p>
+
                     <StatusPopoverStudent
                         student={item}
                         allowed_statuses={allowed_statuses}
                         status={Number(status)}
-                        group={id}
                     />
                 </div>
 
@@ -140,7 +142,7 @@ export function ColorfulCourseCard({ item, onDelete }: Props) {
                     {infoItems.map(({ icon, label, value }, idx) => (
                         <li
                             key={idx}
-                            className="flex justify-between items-center gap-3"
+                            className="flex justify-between border-b pb-1 items-center gap-3"
                         >
                             <div className="flex items-center gap-2">
                                 {icon}
@@ -166,7 +168,7 @@ export function ColorfulCourseCard({ item, onDelete }: Props) {
                                     ({ icon, label, value }, idx) => (
                                         <li
                                             key={idx}
-                                            className="flex justify-between items-center gap-3"
+                                            className="flex  border-b pb-1 justify-between items-center gap-3"
                                         >
                                             <div className="flex items-center gap-2">
                                                 {icon}

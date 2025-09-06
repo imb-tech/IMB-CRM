@@ -19,20 +19,18 @@ import { useStore } from "@/hooks/use-store"
 type Props = {
     allowed_statuses: number[]
     status: number
-    group: number
     student: Student
 }
 
 export function StatusPopoverStudent({
     status,
     allowed_statuses = [],
-    group,
-    student
+    student,
 }: Props) {
     const qC = useQueryClient()
     const { mutate } = usePost()
-    const { openModal } = useModal('activate')
-    const { setStore } = useStore('student-data')
+    const { openModal } = useModal("activate")
+    const { setStore } = useStore("student-data")
 
     async function handleChange(d: number) {
         if (d === 1) {
@@ -45,7 +43,7 @@ export function StatusPopoverStudent({
             "platform/group-students/change-status",
             {
                 status: d,
-                group_student: student,
+                group_student: student?.id,
             },
             {
                 onSuccess() {
@@ -55,7 +53,7 @@ export function StatusPopoverStudent({
         )
     }
 
-    return (
+    return Number(status) !== 3 ? (
         <Popover>
             <PopoverTrigger asChild>
                 <Button className="p-0 !h-auto border-none !hover:bg-transparent !bg-transparent">
@@ -65,10 +63,10 @@ export function StatusPopoverStudent({
                             status == 3
                                 ? "bg-red-500/10 text-red-500"
                                 : status == 0
-                                    ? "bg-yellow-500/10 text-yellow-500 "
-                                    : status == 2
-                                        ? "bg-sky-500/10  text-sky-500"
-                                        : "bg-green-500/10 text-green-500",
+                                ? "bg-yellow-500/10 text-yellow-500 "
+                                : status == 2
+                                ? "bg-sky-500/10  text-sky-500"
+                                : "bg-green-500/10 text-green-500",
                         )}
                     >
                         {studentStatusKeys[status.toString()]}
@@ -95,5 +93,16 @@ export function StatusPopoverStudent({
                 </div>
             </PopoverContent>
         </Popover>
+    ) : (
+        <Button className="p-0 !h-auto border-none !hover:bg-transparent !bg-transparent">
+            <span
+                className={cn(
+                    "p-1 px-2 text-xs cursor-default  rounded-sm  select-none",
+                    "bg-red-500/10 text-red-500",
+                )}
+            >
+                {studentStatusKeys[status.toString()]}
+            </span>
+        </Button>
     )
 }
