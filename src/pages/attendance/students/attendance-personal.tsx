@@ -1,7 +1,11 @@
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { DataTable } from "@/components/ui/datatable"
+import { ATTENDANCE_STATIS_STUDENTS } from "@/constants/api-endpoints"
 import { useStore } from "@/hooks/use-store"
+import { useGet } from "@/hooks/useGet"
 import { useModal } from "@/hooks/useModal"
+import { formatMoney } from "@/lib/format-money"
 import { cn } from "@/lib/utils"
 import {
     getStatusColor,
@@ -12,21 +16,33 @@ import { ColumnDef } from "@tanstack/react-table"
 import { PanelRightClose } from "lucide-react"
 import { useMemo } from "react"
 
-type Props = {
-    data: ListResp<AttendanceRecord> | undefined
-}
-
-export function SheetDemo({ data }: Props) {
-    const { start_date, end_date } = useSearch({ from: "/_main/reports" })
+export function SheetDemo() {
+    const search = useSearch({ from: "/_main/reports" })
+    const { group, status, tabs, start_date, end_date, ...res } = search
     const navigate = useNavigate()
     const { isOpen, closeModal } = useModal("attendance-modal")
     const { store } = useStore<AttendancGroupDetail>("attendance-personal")
+
+    const { data } = useGet<ListResp<AttendanceRecord>>(
+        ATTENDANCE_STATIS_STUDENTS,
+        {
+            params: {
+                ...res,
+                group_student: store?.id,
+                start_date,
+                end_date,
+            },
+            options: { enabled: !!store?.id },
+        },
+    )
+
+    console.log(res)
 
     return (
         <div>
             <div
                 className={cn(
-                    "w-[60%] h-screen overflow-y-auto no-scrollbar fixed !z-[9999] top-0 -right-[100%] bg-card p-10 pt-4 shadow-lg transition-all duration-500",
+                    "w-[60%] h-screen overflow-y-auto no-scrollbar fixed !z-[50] top-0 -right-[100%] bg-card p-4 pt-4 shadow-lg transition-all duration-500",
                     isOpen ? "right-0" : "",
                 )}
             >
@@ -45,10 +61,14 @@ export function SheetDemo({ data }: Props) {
                 >
                     <PanelRightClose />
                 </Button>
-                <h1>
-                    {store?.full_name}
-                    {start_date} - {end_date} oraliqdagi davomat statistikasi
-                </h1>
+                <div className="flex items-center gap-2">
+                    <h1>
+                        {store?.full_name}
+                        {start_date} - {end_date} oraliqdagi davomat
+                        statistikasi
+                    </h1>
+                    <Badge>{formatMoney(data?.count)}</Badge>
+                </div>
 
                 <DataTable
                     columns={columns()}

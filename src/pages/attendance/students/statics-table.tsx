@@ -38,8 +38,9 @@ const StaticsTable = () => {
                             navigate({
                                 to: "/reports",
                                 search: (prev) => ({
-                                    ...prev,
                                     tabs: "attendance",
+                                    ...prev,
+                                    status: undefined,
                                 }),
                             })
                         }}

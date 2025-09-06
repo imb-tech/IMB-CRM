@@ -13,7 +13,7 @@ export default function StudentAttendance({ cards }: Props) {
     const navigate = useNavigate()
     const { closeModal } = useModal("attendance-modal")
     const { toggleParam } = useQueryParams()
-    const { tabs, group, group_student, ...res } = search
+    const { tabs, group, group_student, page, page_size, ...res } = search
 
     const data = [
         {
