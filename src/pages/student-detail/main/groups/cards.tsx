@@ -62,7 +62,7 @@ export function ColorfulCourseCard({ item, onDelete }: Props) {
             value: activated_date,
         },
         {
-            icon: <CreditCard size={16} className="text-green-500" />,
+            icon: <CreditCard size={16} className="text-yellow-500" />,
             label: "Keyingi to'lov:",
             value: payment_date,
         },
