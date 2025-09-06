@@ -3,7 +3,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import StudentAttendance from "./stats"
 import { SheetDemo } from "./attendance-personal"
 import { useModal } from "@/hooks/useModal"
-import { useStore } from "@/hooks/use-store"
 import { useGet } from "@/hooks/useGet"
 import {
     ATTENDANCE_STATIS,
@@ -21,19 +20,24 @@ import StudentGroupHeaderName from "./group-header"
 import { DataTable } from "@/components/ui/datatable"
 import { useCols } from "./cols"
 import useQueryParams from "@/hooks/use-query-params"
+import { useStore } from "@/hooks/use-store"
+import AccordionSkeleton from "@/components/custom/accordion-skeletion"
+import EmptyBox from "@/components/custom/empty-box"
 
 export default function StudentsAttendanceMain() {
     const navigate = useNavigate()
     const search = useSearch({ from: "/_main/reports" })
-    const { openModal } = useModal()
+    const { openModal, closeModal } = useModal("attendance-modal")
     const { toggleParam } = useQueryParams()
+    const { setStore } = useStore<AttendancGroupDetail>("attendance-personal")
 
-    const { group, group_student, ...res } = search
+    const { group, group_student, status, ...res } = search
 
-    const { data: attendanceData, isLoading } = useGet<AttendanceData>(
-        ATTENDANCE_STATIS,
-        { params: res },
-    )
+    const {
+        data: attendanceData,
+        isLoading,
+        isSuccess,
+    } = useGet<AttendanceData>(ATTENDANCE_STATIS, { params: res })
 
     const { data: attendanceDataDetails } = useGet<
         ListResp<AttendancGroupDetail>
@@ -45,7 +49,7 @@ export default function StudentsAttendanceMain() {
     const { data: attendanceGroupStudents } = useGet<
         ListResp<AttendanceRecord>
     >(ATTENDANCE_STATIS_STUDENTS, {
-        params: search,
+        params: { ...search },
         options: { enabled: !!group_student },
     })
 
@@ -56,8 +60,10 @@ export default function StudentsAttendanceMain() {
                 search: (prev) => ({
                     ...prev,
                     group: prev.group_student === value ? undefined : value,
+                    group_student: undefined,
                 }),
             })
+            closeModal()
         },
         [navigate],
     )
@@ -67,14 +73,19 @@ export default function StudentsAttendanceMain() {
     return (
         <div className="w-full flex flex-col gap-3">
             {/* Main Cards */}
-            {/* <div className="bg-background p-3 rounded-md dark:bg-card">
+            <div className="bg-background p-3 rounded-md dark:bg-card">
                 <StudentAttendance cards={attendanceData?.main_cards} />
-            </div> */}
+            </div>
 
             {/* Group Accordion */}
             <Card>
                 <CardContent>
                     <StudentGroupHeaderName />
+                    {isLoading && (
+                        <div className="mt-3">
+                            <AccordionSkeleton columnCount={8} rowCount={6} />
+                        </div>
+                    )}
                     {attendanceData?.groups && (
                         <Accordion
                             type="single"
@@ -88,7 +99,7 @@ export default function StudentsAttendanceMain() {
                                     key={item.group_student__group__id}
                                     value={item.group_student__group__id.toString()}
                                 >
-                                    <AccordionTrigger className="px-2">
+                                    <AccordionTrigger className="p-2">
                                         <StudentAttendanceGroupHeader
                                             data={item}
                                         />
@@ -109,6 +120,7 @@ export default function StudentsAttendanceMain() {
                                                             "group_student",
                                                             item.id,
                                                         )
+                                                        setStore(item)
                                                         openModal()
                                                     }
                                                 }}
@@ -116,12 +128,19 @@ export default function StudentsAttendanceMain() {
                                                     totalPages:
                                                         attendanceDataDetails?.total_pages,
                                                 }}
+                                                minRows={6}
                                             />
                                         </div>
                                     </AccordionContent>
                                 </AccordionItem>
                             ))}
                         </Accordion>
+                    )}
+
+                    {isSuccess && attendanceData?.groups?.length === 0 && (
+                        <div className="rounded-md bg-card mt-3">
+                            <EmptyBox />
+                        </div>
                     )}
                 </CardContent>
             </Card>

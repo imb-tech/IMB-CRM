@@ -1,4 +1,5 @@
 import { linkOptions } from "@tanstack/react-router"
+import { format, subDays } from "date-fns"
 import {
     ArchiveRestore,
     Award,
@@ -25,6 +26,9 @@ export interface MenuItem {
     icon?: ReactNode
     path: string
 }
+
+const today = format(new Date(), "yyyy-MM-dd")
+const yesterday = format(subDays(new Date(), 1), "yyyy-MM-dd")
 
 export const menuItems = [
     linkOptions({
@@ -177,6 +181,8 @@ export const menuItems = [
                 to: "/reports",
                 search: {
                     tabs: "attendance",
+                    start_date:yesterday,
+                    end_date:today,
                 },
             }),
             linkOptions({

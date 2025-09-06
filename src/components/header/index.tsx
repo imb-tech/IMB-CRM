@@ -5,7 +5,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
-import { Link, useLocation, useNavigate } from "@tanstack/react-router"
+import { Link, useLocation } from "@tanstack/react-router"
 import { LogOut, User } from "lucide-react"
 import { ThemeColorToggle } from "./color-toggle"
 import { SidebarTrigger } from "../ui/sidebar"
@@ -25,16 +25,15 @@ type Props = {
     navOnHeader?: boolean
 }
 const Header = ({ rigthChildren, leftChildren, navOnHeader }: Props) => {
-    const navigate = useNavigate()
     const { data } = useMe()
     const activeBranch = getActiveBranch()
     const [branch, setBranch] = useState(activeBranch)
     const { pathname } = useLocation()
 
     const handleLogOut = () => {
-        navigate({ to: "/login" })
         localStorage.removeItem("token")
-        localStorage.removeItem("refresh")
+        localStorage.removeItem("user_refresh")
+        window.location.replace("/login")
     }
 
     function changeBranch(v: string) {

@@ -1,264 +1,237 @@
 import { Card, CardContent } from "@/components/ui/card"
-import { useEffect, useState } from "react"
-import { cn } from "@/lib/utils"
+import { useEffect, useMemo, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import generateTimeSlots from "@/lib/generate-time-slots"
-import { Calendar, ChevronLeft } from "lucide-react"
-import { dailyData, data } from "../attendance/employees"
+import { dailyData } from "../attendance/employees"
 import Modal from "@/components/custom/modal"
 import { Input } from "@/components/ui/input"
 import { useModal } from "@/hooks/useModal"
+import { useGet } from "@/hooks/useGet"
+import { formatDate } from "date-fns"
+import { usePost } from "@/hooks/usePost"
+import { useForm } from "react-hook-form"
+import FormTimeInput from "@/components/form/time-input"
+import { cn } from "@/lib/utils"
+import useMe from "@/hooks/useMe"
+
+type EWorkDuration = {
+    id: number
+    user: number
+    check_in: string
+    check_out: string
+}
+
+type EWorked = {
+    id: number
+    full_name: string
+    phone: string
+    role: string
+    work_durations: EWorkDuration[]
+    check_in: boolean
+}
+
+type AttendFields = {
+    user: number
+    time: string
+}
 
 export default function AnimatedCalendar() {
-    const [timeSlots, setTimeSlots] = useState<string[]>([])
-    const [skipCells, setSkipCells] = useState<Record<string, boolean>>({})
-    const { openModal } = useModal()
+    const [interval, setInterval] = useState<number>(30) // default 30 min
+    const { openModal, closeModal } = useModal()
+    const { branch_data } = useMe()
 
-    const variants = {
-        enter: (dir: "forward" | "backward") => ({
-            opacity: 0,
-            scale: dir === "forward" ? 0.8 : 1.2,
-        }),
-        center: { opacity: 1, scale: 1 },
-        exit: (dir: "forward" | "backward") => ({
-            opacity: 0,
-            scale: dir === "forward" ? 1.2 : 0.8,
-        }),
+    const { data: users, refetch } = useGet<EWorked[]>('employees/worked-times')
+
+    const timeSlots = useMemo(() => {
+        if (branch_data) {
+            return generateTimeSlots(branch_data?.start_time, branch_data?.end_time, interval)
+        } else return []
+    }, [branch_data, interval])
+
+    const toMinutes = (hm: string) => {
+        const [h, m] = hm.split(":").map(Number)
+        return h * 60 + m
     }
 
-    const calculateColSpan = (startTime: string, endTime: string): number => {
-        const startIndex = timeSlots.findIndex((slot) => slot === startTime)
-        if (startIndex === -1) return 1
+    const startMinutes = useMemo(() => branch_data ? toMinutes(branch_data?.start_time) : 0, [branch_data, interval])
+    const endMinutes = useMemo(() => branch_data ? toMinutes(branch_data?.end_time) : 0, [branch_data, interval])
+    const totalMinutes = endMinutes - startMinutes
 
-        let endIndex = timeSlots.findIndex((slot) => slot >= endTime)
-        if (endIndex === -1) endIndex = timeSlots.length
 
-        return Math.max(1, endIndex - startIndex)
-    }
+    const slotWidth = 80
+    const totalWidth = (totalMinutes / interval) * slotWidth
+    const rowHeight = 70
 
-    const getBookingForSlot = (
-        roomId: number,
-        timeSlot: string,
-    ): WorkTime | undefined => {
-        return dailyData.work_time.find(
-            (booking) =>
-                booking.roomId === roomId &&
-                timeSlot >= booking.startTime &&
-                timeSlot < booking.endTime,
-        )
-    }
+    const { mutate, isPending } = usePost()
 
-    useEffect(() => {
-        const newTimeSlots = generateTimeSlots(
-            dailyData.work_start_date,
-            dailyData.work_end_date,
-            Number.parseInt("30"),
-        )
-        setTimeSlots(newTimeSlots)
+    const form = useForm<AttendFields>()
 
-        setSkipCells({})
-    }, [])
-
-    const prepareTableData = () => {
-        const newSkipCells: Record<string, boolean> = {}
-
-        dailyData.room_list.forEach((room) => {
-            let lastBookingId: string | null = null
-
-            timeSlots.forEach((slot) => {
-                const booking = getBookingForSlot(room.id, slot)
-                const cellKey = `${room.id}-${slot}`
-
-                if (booking) {
-                    if (lastBookingId === booking.id) {
-                        newSkipCells[cellKey] = true
-                    } else {
-                        lastBookingId = booking.id
-                    }
-                } else {
-                    lastBookingId = null
-                }
-            })
+    function handleAttend(vals: AttendFields) {
+        mutate('employees/attend', vals, {
+            onSuccess() {
+                form.reset()
+                closeModal()
+                refetch()
+            },
         })
-
-        setSkipCells(newSkipCells)
     }
 
-    useEffect(() => {
-        if (timeSlots.length > 0) {
-            prepareTableData()
-        }
-    }, [timeSlots])
+    function toggleAttend(usr: number) {
+        const tm = formatDate(new Date(), 'HH:mm')
+        form.setValue('user', usr)
+        form.setValue("time", tm)
+        openModal()
+    }
+
 
     return (
         <Card>
             <CardContent className="space-y-2 rounded-md p-3">
                 <div className="flex">
+                    {/* Chap tomonda xodimlar */}
                     <aside className="min-w-[200px] max-w-[200px]">
-                        {
-                            <div className="w-full">
-                                <div className="!h-[37px]">
-                                    <p className="text-muted-foreground text-xl">
-                                        Xodimlar
-                                    </p>
-                                </div>
-                                {data.result.map((employe) => (
-                                    <div key={employe.id}>
-                                        <div className="border-b sticky left-0 z-20 border-secondary min-h-[70px]">
-                                            <div className="flex flex-col py-2">
-                                                <span className="whitespace-nowrap mb-[2px]">
-                                                    {employe.first_name}
-                                                </span>
-                                                <span className="whitespace-nowrap text-muted-foreground">
-                                                    {"Software Engineer"}
-                                                </span>
-                                            </div>
+                        <div className="w-full">
+                            <div className="!h-[37px]">
+                                <p className="text-muted-foreground text-xl">Xodimlar</p>
+                            </div>
+                            {users?.map((employe) => (
+                                <div key={employe.id}>
+                                    <div className="border-b sticky left-0 z-20 border-secondary min-h-[70px]">
+                                        <div className="flex flex-col py-2">
+                                            <span className="whitespace-nowrap mb-[2px]">
+                                                {employe.full_name}
+                                            </span>
+                                            <span className="whitespace-nowrap text-muted-foreground capitalize">
+                                                {employe.role}
+                                            </span>
                                         </div>
                                     </div>
-                                ))}
-                            </div>
-                        }
+                                </div>
+                            ))}
+                        </div>
                     </aside>
+
                     <div className="overflow-hidden">
                         <AnimatePresence mode="wait" custom={"forward"}>
                             <motion.div
                                 key="day"
                                 custom={"forward"}
-                                variants={variants}
-                                initial="enter"
-                                animate="center"
-                                exit="exit"
-                                transition={{
-                                    duration: 0.15,
-                                    ease: "easeInOut",
-                                }}
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 1.05 }}
+                                transition={{ duration: 0.15, ease: "easeInOut" }}
                                 className="w-full h-full"
                             >
-                                <section className="w-full max-w-[full] overflow-x-auto">
-                                    <div className="flex items-center">
+                                <section className="w-full overflow-x-auto">
+                                    <div className="flex items-center" style={{ width: totalWidth }}>
                                         {timeSlots.map((slot, index) => (
                                             <div
                                                 key={index}
-                                                className="text-start flex items-center min-w-[80px] last:rounded-tr-md border-r pl-2 pb-2 pt-1"
+                                                className="text-start flex items-center min-w-[80px] border-r pl-2 pb-2 pt-1"
+                                                style={{ width: `${slotWidth}px` }}
                                             >
                                                 <span>{slot}</span>
                                             </div>
                                         ))}
                                     </div>
+
                                     <div className="w-full">
-                                        {dailyData.room_list.map((room) => (
-                                            <div
-                                                key={room.id}
-                                                className=" flex border-secondary/40"
-                                            >
-                                                {timeSlots.map((timeSlot) => {
-                                                    const cellKey = `${room.id}-${timeSlot}`
+                                        {users?.map((room) => {
+                                            const lsns = room.work_durations
 
-                                                    if (skipCells[cellKey]) {
-                                                        return null
-                                                    }
+                                            return (
+                                                <div
+                                                    key={room.id}
+                                                    className="relative border-b border-secondary w-full"
+                                                    style={{
+                                                        height: rowHeight,
+                                                        width: totalWidth,
+                                                    }}
+                                                >
+                                                    {/* Vertical grid lines */}
+                                                    {timeSlots.map((t, idx) => (
+                                                        <div
+                                                            key={t}
+                                                            className="absolute top-0 bottom-0 border-l border-gray-300/30 pointer-events-none z-0"
+                                                            style={{
+                                                                left: `${idx * slotWidth - 1}px`,
+                                                                width: `${slotWidth}px`,
+                                                            }}
+                                                        />
+                                                    ))}
 
-                                                    const booking =
-                                                        getBookingForSlot(
-                                                            room.id,
-                                                            timeSlot,
-                                                        )
+                                                    {/* bookings */}
+                                                    {lsns.map((booking, i) => {
+                                                        const startTime = booking.check_in?.slice(0, 5)
+                                                        const endTime = (booking.check_out ?? branch_data?.end_time)?.slice(0, 5)
+                                                        const start = toMinutes(startTime) - startMinutes
+                                                        const end = toMinutes(endTime) - startMinutes
 
-                                                    if (!booking) {
+                                                        const left = (start / totalMinutes) * totalWidth
+                                                        const width =
+                                                            ((end - start) / totalMinutes) * totalWidth
+
                                                         return (
                                                             <div
-                                                                key={cellKey}
-                                                                className="text-center p-1 border border-secondary/50 min-w-[80px]"
-                                                            ></div>
-                                                        )
-                                                    }
-
-                                                    const colSpan =
-                                                        calculateColSpan(
-                                                            timeSlot,
-                                                            booking.endTime,
-                                                        )
-
-                                                    return (
-                                                        <div
-                                                            key={cellKey}
-                                                            className={cn(
-                                                                "text-center p-0 border border-secondary/50 min-h-[70px] flex items-center px-[2px]",
-                                                            )}
-                                                            style={{
-                                                                minWidth: `${String(80 * colSpan)}px`,
-                                                            }}
-                                                        >
-                                                            <div
-                                                                className={`text-xs min-h-[30px] p-1  flex items-center justify-center font-extralight bg-primary/20 w-full rounded`}
+                                                                key={booking.id}
+                                                                className="absolute text-xs p-1 z-10 flex items-center"
+                                                                style={{
+                                                                    left: `${left}px`,
+                                                                    width: `${width}px`,
+                                                                    height: `${rowHeight}px`,
+                                                                }}
                                                             >
-                                                                <div className="flex items-start flex-col text-[14px] whitespace-nowrap">
-                                                                    <span className="ml-1">
-                                                                        {
-                                                                            "2s 35m"
-                                                                        }
-                                                                        {
-                                                                            // booking.startTime
-                                                                        }
-                                                                    </span>
-                                                                    <span className="ml-1 hidden">
-                                                                        /
-                                                                    </span>
-                                                                    <span className="ml-1 hidden">
-                                                                        {
-                                                                            booking.endTime
-                                                                        }
-                                                                    </span>
+                                                                <div className="w-full bg-background">
+                                                                    <div
+                                                                        className={cn("text-xs min-h-[30px] p-1 flex items-center justify-center font-extralight bg-primary/20 w-full rounded", !booking.check_out && "bg-orange-400/10")}
+                                                                    >
+                                                                        {width > 10 && <div className="flex items-start justify-between text-[14px] whitespace-nowrap w-full px-2 gap-1">
+                                                                            <span>
+                                                                                {startTime}
+                                                                            </span>
+                                                                            {booking.check_out && <span>
+                                                                                {endTime}
+                                                                            </span>}
+                                                                        </div>}
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    )
-                                                })}
-                                            </div>
-                                        ))}
+                                                        )
+                                                    })}
+                                                </div>
+                                            )
+                                        })}
                                     </div>
                                 </section>
                             </motion.div>
                         </AnimatePresence>
                     </div>
+
+                    {/* O‘ng tomonda tugmalar */}
                     <aside className="min-w-[80px] max-w-[80px] bg-transparent border-l">
-                        {
-                            <div className="w-full flex flex-col items-center">
-                                <div className="!h-[37px]"></div>
-                                {data.result.map((employe) => (
-                                    <div key={employe.id} className="bg-card">
-                                        <div className="sticky left-0 z-20 border-secondary">
-                                            <div className="min-h-[70px] flex items-center">
-                                                {employe.id % 3 == 0 ?
-                                                    <Button
-                                                        variant="destructive"
-                                                        onClick={openModal}
-                                                    >
-                                                        Ketdi
-                                                    </Button>
-                                                :   <Button variant="secondary">
-                                                        Keldi
-                                                    </Button>
-                                                }
-                                            </div>
+                        <div className="w-full flex flex-col items-center">
+                            <div className="!h-[37px]"></div>
+                            {users?.map((employe) => (
+                                <div key={employe.id} className="bg-card">
+                                    <div className="sticky left-0 z-20 border-secondary">
+                                        <div className="min-h-[70px] flex items-center justify-start">
+                                            <Button size="sm" className={cn(!employe.check_in ? "bg-red-500/20 text-red-500 hover:bg-red-500/30" : "", "w-full")} onClick={() => toggleAttend(employe.id)}>
+                                                {employe.check_in ? "Kirish" : "Chiqish"}
+                                            </Button>
                                         </div>
                                     </div>
-                                ))}
-                            </div>
-                        }
+                                </div>
+                            ))}
+                        </div>
                     </aside>
                 </div>
             </CardContent>
 
             <Modal size="max-w-md" title="Ketuvni tasdiqlash">
-                <form className="pt-3">
-                    <Input
-                        defaultValue={"15:45"}
-                        className="text-center"
-                        fullWidth
-                    />
-                    <Button className="w-full mt-4">Tasdiqlash</Button>
+                <form className="pt-3" onSubmit={form.handleSubmit(handleAttend)}>
+                    <FormTimeInput methods={form} name="time" className="text-center" />
+                    <Button className="w-full mt-4" loading={isPending}>Tasdiqlash</Button>
                 </form>
             </Modal>
         </Card>

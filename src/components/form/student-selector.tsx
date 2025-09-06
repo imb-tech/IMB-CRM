@@ -64,7 +64,7 @@ export default function StudentSelector<T extends Record<string, any>>({
                                     "text-start bg-card px-3 py-2 rounded-sm text-sm font-light hover:pl-4 transition-all duration-200 flex group",
                                     selectedValues.includes(opt[valueKey]) ?
                                         "text-primary"
-                                    :   "",
+                                        : "",
                                 )}
                             >
                                 <span className="flex min-w-[30%]">

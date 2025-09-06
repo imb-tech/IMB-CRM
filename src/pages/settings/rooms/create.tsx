@@ -68,7 +68,7 @@ const RoomCreate = () => {
 
             <FormNumberInput
                 control={form.control}
-                name="user_limit"
+                name="limit"
                 label="O'quvchi sig'imi"
                 placeholder="Ixtiyoriy"
             />

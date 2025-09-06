@@ -8,6 +8,7 @@ import Spinner from "@/components/ui/spinner"
 import { encryptMessage } from "@/lib/data-encrypt"
 import { useNavigate, useSearch } from "@tanstack/react-router"
 import { handleFormError } from "@/lib/show-form-errors"
+import axiosInstance from "@/services/axios-instance"
 
 type Form = {
     username: string
@@ -19,14 +20,23 @@ export default function LoginForm() {
     const search = useSearch({ strict: false })
 
     const { mutate, isPending } = usePost({
-        onSuccess: (data: LoginResp) => {
+        onSuccess: async (data: LoginResp) => {
             const access = data?.token?.access_token
             const refresh = data?.token?.refresh_token
+
+            const profile = await axiosInstance.get<Profile>('auth/profile/', {
+                headers: {
+                    Authorization: `Bearer ${access}`
+                }
+            })
+
+            localStorage.setItem('branch', profile.data.branches[0].id.toString())
 
             if (access) {
                 setAccessToken(access)
                 toast.success("Muvaffaqiyatli tizimga kirdingiz!")
             }
+
             if (refresh) {
                 setRefreshToken(refresh)
             }

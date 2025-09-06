@@ -8,6 +8,7 @@ import {
     GROUP_STUDENTS_PAYMENT,
     OPTION_GROUPS_STUDENTS,
     PAYMENT_TYPES_OPTION,
+    STUDENT,
     STUDENT_GROUP,
 } from "@/constants/api-endpoints"
 import { useGet } from "@/hooks/useGet"
@@ -70,6 +71,7 @@ function PaymentUpdate({ student_id, onSuccessPayment, current }: Props) {
         queryClient.invalidateQueries({
             queryKey: [STUDENT_GROUP],
         })
+        queryClient.removeQueries({ queryKey: [`${STUDENT}/${id}`] })
     }, [closeModal, form, queryClient])
 
     const { mutate: mutatePatch, isPending: isPendingPatch } = usePatch({
@@ -86,9 +88,8 @@ function PaymentUpdate({ student_id, onSuccessPayment, current }: Props) {
         () =>
             groupOptions.map((item) => ({
                 id: item.id,
-                name: `${item.name} - ${item.teacher_name} - ${
-                    item.is_active ? "Aktiv" : "O'chirilgan"
-                }`,
+                name: `${item.name} - ${item.teacher_name} - ${item.is_active ? "Aktiv" : "O'chirilgan"
+                    }`,
             })),
         [groupOptions],
     )

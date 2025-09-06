@@ -1,54 +1,61 @@
-import { Button } from "@/components/ui/button"
+import { useNavigate, useSearch } from "@tanstack/react-router"
 import { DataTable } from "@/components/ui/datatable"
-import { useStore } from "@/hooks/use-store"
-import { useModal } from "@/hooks/useModal"
+import { Card, CardContent } from "@/components/ui/card"
+import { useGet } from "@/hooks/useGet"
+import { ATTENDANCE_STATIS_STUDENTS } from "@/constants/api-endpoints"
+import { Badge } from "@/components/ui/badge"
+import { formatMoney } from "@/lib/format-money"
+import { Button } from "@/components/ui/button"
+import { ArrowLeft } from "lucide-react"
+import { useMemo } from "react"
+import { ColumnDef } from "@tanstack/react-table"
 import { cn } from "@/lib/utils"
 import {
     getStatusColor,
     getStatusIcon,
 } from "@/pages/group-detail/attendance-select"
-import { useNavigate, useSearch } from "@tanstack/react-router"
-import { ColumnDef } from "@tanstack/react-table"
-import { PanelRightClose } from "lucide-react"
-import { useMemo } from "react"
 
-type Props = {
-    data: ListResp<AttendanceRecord> | undefined
-}
+const StaticsTable = () => {
+    const search = useSearch({ from: "/_main/attendance/_main/statics" })
+    const { start_date, end_date, status } = search
 
-export function SheetDemo({ data }: Props) {
-    const { start_date, end_date } = useSearch({ from: "/_main/reports" })
+    const { data } = useGet<ListResp<AttendanceRecord>>(
+        ATTENDANCE_STATIS_STUDENTS,
+        {
+            params: { ...search },
+            options: { enabled: !!status },
+        },
+    )
     const navigate = useNavigate()
-    const { isOpen, closeModal } = useModal("attendance-modal")
-    const { store } = useStore<AttendancGroupDetail>("attendance-personal")
 
     return (
-        <div>
-            <div
-                className={cn(
-                    "w-[60%] h-screen overflow-y-auto no-scrollbar fixed !z-[9999] top-0 -right-[100%] bg-card p-10 pt-4 shadow-lg transition-all duration-500",
-                    isOpen ? "right-0" : "",
-                )}
-            >
-                <Button
-                    className="mb-4"
-                    onClick={() => {
-                        closeModal()
-                        navigate({
-                            to: "/reports",
-                            search: (prev) => ({
-                                ...prev,
-                                group_student: undefined,
-                            }),
-                        })
-                    }}
-                >
-                    <PanelRightClose />
-                </Button>
-                <h1>
-                    {store?.full_name}
-                    {start_date} - {end_date} oraliqdagi davomat statistikasi
-                </h1>
+        <Card>
+            <CardContent className="space-y-3">
+                <div className="flex items-center gap-2">
+                    <Button
+                        size={"sm"}
+                        onClick={() => {
+                            navigate({
+                                to: "/reports",
+                                search: (prev) => ({
+                                    ...prev,
+                                    tabs: "attendance",
+                                }),
+                            })
+                        }}
+                    >
+                        <ArrowLeft size={18} />
+                    </Button>
+
+                    <h1>
+                        {data?.results?.[0]?.student
+                            ? `${data?.results?.[0]?.student}ning`
+                            : ""}{" "}
+                        {start_date} - {end_date} oraliqdagi davomat
+                        statistikasi
+                    </h1>
+                    <Badge>{formatMoney(data?.count)}</Badge>
+                </div>
 
                 <DataTable
                     columns={columns()}
@@ -60,10 +67,12 @@ export function SheetDemo({ data }: Props) {
                         totalPages: data?.total_pages,
                     }}
                 />
-            </div>
-        </div>
+            </CardContent>
+        </Card>
     )
 }
+
+export default StaticsTable
 
 const columns = () => {
     const statusKey: { [key: string]: string } = {
@@ -75,6 +84,10 @@ const columns = () => {
 
     return useMemo<ColumnDef<AttendanceRecord>[]>(
         () => [
+            {
+                header: "Guruh",
+                accessorKey: "group_name",
+            },
             {
                 header: "Sana",
                 accessorKey: "date",

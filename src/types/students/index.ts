@@ -13,6 +13,7 @@ type Student = {
     payment_date?: string
     username: string
     photo: string
+    activated_date: string
     allowed_statuses: number[]
     password: string
     birth_date: string
@@ -24,6 +25,7 @@ type Student = {
     avg_exam_score: number
     avg_score: number
     start_date: string
+    activated_date: string
     branches: number[]
     branches_data: Branch[]
     groups: StudentGroup[]
@@ -221,7 +223,7 @@ type StudentDiscount = {
     id: number
     group_student: number
     date: string
-    count: number
+    count?: number
     reason: string
     author_name: string
     created_at: string

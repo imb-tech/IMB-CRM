@@ -1,5 +1,6 @@
 import { ParamCombobox } from "@/components/as-params/combobox"
 import ParamInput from "@/components/as-params/input"
+import ParamSwtich from "@/components/as-params/switch"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { EMPLOYEE, OPTION_ROLES } from "@/constants/api-endpoints"
@@ -39,6 +40,7 @@ export default function EmployeesHeader({
                 </Badge>
             </div>
             <div className="flex items-center gap-2 justify-end md:w-1/2 w-full">
+                <ParamSwtich paramName="is_active" reverse label="Arxiv" />
                 <ParamInput
                     className="h-10  shadow-none border-none px-3"
                     fullWidth
