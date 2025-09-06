@@ -6,6 +6,7 @@ import FieldLabel from "./form-label"
 import { getNestedValue } from "./input"
 import { ClassNameValue } from "tailwind-merge"
 import { cn } from "@/lib/utils"
+import { ButtonProps } from "../ui/button"
 
 export function FormDatePicker<TForm extends FieldValues>({
     name,
@@ -18,6 +19,7 @@ export function FormDatePicker<TForm extends FieldValues>({
     placeholder,
     fullWidth,
     className,
+    addButtonProps,
 }: thisProps<TForm>) {
     const error = getNestedValue(control._formState.errors, name)
     return (
@@ -43,10 +45,9 @@ export function FormDatePicker<TForm extends FieldValues>({
                         <DatePicker
                             calendarProps={{
                                 ...calendarProps,
-                                defaultMonth:
-                                    field.value ?
-                                        new Date(field.value)
-                                    :   undefined,
+                                defaultMonth: field.value
+                                    ? new Date(field.value)
+                                    : undefined,
                             }}
                             date={
                                 field.value ? new Date(field.value) : undefined
@@ -57,6 +58,7 @@ export function FormDatePicker<TForm extends FieldValues>({
                             fullWidth={fullWidth}
                             className={cn(className, "dark:text-white")}
                             isError={!!fieldState.error}
+                            addButtonProps={addButtonProps}
                         />
                         {!hideError && fieldState.error && (
                             <FieldError className="text-xs">
@@ -81,4 +83,5 @@ interface thisProps<TForm extends FieldValues> {
     placeholder?: string
     fullWidth?: boolean
     className?: ClassNameValue
+    addButtonProps?: ButtonProps
 }

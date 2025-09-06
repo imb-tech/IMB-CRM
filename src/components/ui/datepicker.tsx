@@ -44,7 +44,6 @@ export function DatePicker({
                     variant={"secondary"}
                     className={cn(
                         "w-12 md:w-[280px] justify-start text-left font-normal",
-                        !date && "text-muted-foreground",
                         fullWidth && "w-full",
                         isError && "border border-red-600 text-red-500",
                         className,
@@ -52,8 +51,22 @@ export function DatePicker({
                     disabled={disabled}
                     {...addButtonProps}
                 >
-                    <CalendarIcon className="mr-1 text-gray-400 h-4 w-4" />
-                    <span className="hidden md:block">
+                    <CalendarIcon
+                        className={cn(
+                            "mr-1  h-4 w-4",
+                            date
+                                ? "dark:text-white text-black"
+                                : "text-muted-foreground",
+                        )}
+                    />
+                    <span
+                        className={cn(
+                            "hidden md:block ",
+                            date
+                                ? "dark:text-white text-black"
+                                : "text-muted-foreground",
+                        )}
+                    >
                         {date ? (
                             format(date, "yyyy-MM-dd")
                         ) : (

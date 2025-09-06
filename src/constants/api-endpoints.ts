@@ -72,3 +72,4 @@ export const FILTER_TASKLY_USERS = 'task-users'
 export const ATTENDANCE_STATIS = "reports/attendance"
 export const ATTENDANCE_STATIS_STUDENTS = "reports/attendance/students"
 export const REPORTS_STATIS_PAYMENTS = "reports/payments/main-card"
+export const FINANCE_ADVANCE = "finance/advances"

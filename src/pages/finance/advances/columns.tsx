@@ -1,36 +1,32 @@
 import { formatMoney } from "@/lib/format-money"
-import { cn } from "@/lib/utils"
 import { ColumnDef } from "@tanstack/react-table"
 import { format } from "date-fns"
 import { useMemo } from "react"
 
 export const useAdvancesCols = () => {
-    return useMemo<ColumnDef<Cost>[]>(
+    return useMemo<ColumnDef<Advance>[]>(
         () => [
             {
                 header: "Xodim",
-                accessorKey: "name",
+                accessorKey: "advance_owner_name",
                 enableSorting: true,
             },
             {
                 header: "Summa",
-                accessorKey: "price",
+                accessorKey: "amount",
                 enableSorting: true,
                 cell: ({ row }) => (
-                    <span className={cn("text-green-600")}>
-                        {formatMoney(row.original.price)}
-                    </span>
+                    <span>{formatMoney(row.original.amount)} so'm</span>
                 ),
             },
             {
                 header: "Sana",
-                accessorKey: "created_at",
-                cell: ({ row }) =>
-                    format(row.original.created_at, "yyyy-HH-mm HH:mm"),
+                accessorKey: "date",
+                cell: ({ row }) => format(row.original.date, "yyyy-HH-mm"),
             },
             {
                 header: "Izoh",
-                accessorKey: "reason",
+                accessorKey: "body",
                 enableSorting: true,
             },
         ],
