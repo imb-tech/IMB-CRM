@@ -15,7 +15,7 @@ const ReportsMain = () => {
     return (
         <div>
             <ParamTabProvider defaultValue="student_payments">
-                <div className="flex  justify-end">
+                <div className="flex  sm:justify-end overflow-x-auto no-scrollbar">
                     <ReportsFilter />
                 </div>
                 <div className="mt-2">
