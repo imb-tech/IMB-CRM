@@ -7,6 +7,7 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { TASKLY_PROJECT } from "@/constants/api-endpoints"
+import useQueryParams from "@/hooks/use-query-params"
 import { useGet } from "@/hooks/useGet"
 import { useModal } from "@/hooks/useModal"
 import PageLayout from "@/layouts/page-layout"
@@ -23,6 +24,7 @@ export const Route = createFileRoute("/_main/project/$id")({
 function RouteComponent() {
     const { openModal } = useModal("project-create")
     const params = useParams({ from: "/_main/project/$id" })
+    const { query, updateParams, removeParam } = useQueryParams()
     const { data } = useGet<FormValues>(`${TASKLY_PROJECT}/${params?.id}`, {
         enabled: !!params?.id,
     })
@@ -46,8 +48,13 @@ function RouteComponent() {
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <Avatar
-                                        className="h-10 w-10 hover:scale-110 hover:border hover:green-blue-500 cursor-pointer"
+                                        className={cn("h-10 w-10 hover:scale-110 hover:border hover:green-blue-500 cursor-pointer", (Number(query.user_id) === item.id) && "border-2 border-green-400 scale-110")}
                                         key={index}
+                                        onClick={() => {
+                                            if (Number(query.user_id) === item.id) {
+                                                removeParam("user_id")
+                                            } else updateParams({ user_id: item.id.toString() })
+                                        }}
                                     >
                                         <AvatarImage
                                             src={
@@ -56,9 +63,7 @@ function RouteComponent() {
                                             alt={item.full_name}
                                         />
                                         <AvatarFallback
-                                            className={
-                                                "uppercase !bg-secondary !text-primary"
-                                            }
+                                            className="uppercase !bg-secondary !text-primary"
                                         >
                                             {item.full_name?.slice(0, 2)}
                                         </AvatarFallback>

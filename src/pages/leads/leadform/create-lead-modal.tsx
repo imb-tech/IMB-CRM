@@ -12,6 +12,8 @@ import GetSourceIcon from "../sources/get-source-icon"
 import { usePatch } from "@/hooks/usePatch"
 import { useParams, useSearch } from "@tanstack/react-router"
 import FormInput from "@/components/form/input"
+import Modal from "@/components/custom/modal"
+import CreateSource from "../sources/create-source"
 
 export default function CreateLeadModal() {
     const search = useSearch({ strict: false })
@@ -19,9 +21,12 @@ export default function CreateLeadModal() {
     const { store } = useStore<Lead>("lead-data")
     const { id } = useParams({ strict: false })
 
+    const { openModal } = useModal('create-source')
+    const { setStore } = useStore<Source>("source")
+
     const queryClient = useQueryClient()
 
-    const queryKeyUsers = ["leads/crud", ...Object.values({...search, pipeline: id })]
+    const queryKeyUsers = ["leads/crud", ...Object.values({ ...search, pipeline: id })]
 
     const queryKeyStatus = [
         "leads/pipeline/status",
@@ -36,14 +41,14 @@ export default function CreateLeadModal() {
         defaultValues: store?.id
             ? store
             : {
-                  contacts_list: [
-                      {
-                          phone: "",
-                          full_name: "Asosiy raqam",
-                          is_main: true,
-                      },
-                  ],
-              },
+                contacts_list: [
+                    {
+                        phone: "",
+                        full_name: "Asosiy raqam",
+                        is_main: true,
+                    },
+                ],
+            },
     })
 
     function onSuccess() {
@@ -106,11 +111,24 @@ export default function CreateLeadModal() {
                 <FormSelect
                     required
                     label={"Manba"}
-                    options={sources ?? []}
+                    options={sources ? [...sources, { id: "other", name: "Yangi", icon: "add" }] : []}
                     valueKey="id"
                     labelKey="name"
                     control={form.control}
                     name="source"
+                    setValue={(v) => {
+                        if (v === 'other') {
+                            setStore({
+                                id: 0,
+                                name: "",
+                                is_active: true,
+                                icon: "website"
+                            })
+                            openModal()
+                        } else {
+                            form.setValue('source', Number(v))
+                        }
+                    }}
                     renderOption={(op) => (
                         <div
                             className={cn(
@@ -145,6 +163,14 @@ export default function CreateLeadModal() {
                     {"Saqlash"}
                 </Button>
             </form>
+
+            <Modal
+                title={`Yangi manba ${!store?.id ? "qo'shish" : "tahrirlash"
+                    }`}
+                modalKey="create-source"
+            >
+                <CreateSource modalKey="create-source" onSuccess={v => form.setValue("source", v.id)} />
+            </Modal>
         </FormProvider>
     )
 }

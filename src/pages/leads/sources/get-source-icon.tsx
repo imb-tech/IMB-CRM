@@ -17,6 +17,7 @@ import {
     MoreHorizontal,
     ArrowBigRightDash,
     ExternalLink,
+    Plus,
 } from "lucide-react"
 import { ClassNameValue } from "tailwind-merge"
 
@@ -35,11 +36,11 @@ export default function GetSourceIcon({
         <div className={cn("bg-background rounded-md", className)}>
             {Item?.icon ?
                 <Item.icon style={{ color: Item.color }} size={size} />
-            :   <ArrowBigRightDash style={{ color: "#9CA3AF" }} size={size} />}
+                : <ArrowBigRightDash style={{ color: "#9CA3AF" }} size={size} />}
         </div>
     )
 }
- 
+
 export const leadSources = [
     { key: "website", label: "Website", icon: Globe, color: "#3B82F6" }, // ko'k
     {
@@ -72,4 +73,5 @@ export const leadSources = [
     { key: "partner", label: "Partner", icon: Handshake, color: "#14B8A6" }, // och yashil
     { key: "other", label: "Other", icon: MoreHorizontal, color: "#9CA3AF" }, // kulrang
     { key: "link", label: "Link", icon: ExternalLink, color: "#9CA3AF" }, // kulrang
+    { key: "add", label: "Add", icon: Plus, color: "#9CA3AF" }, // kulrang
 ]

@@ -25,6 +25,7 @@ type SearchParams = {
     tabs?: string
     date?: string
     back?: string
+    user_id?: string
 }
 
 
