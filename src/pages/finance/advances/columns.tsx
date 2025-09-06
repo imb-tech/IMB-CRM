@@ -20,7 +20,7 @@ export const useAdvancesCols = () => {
                 ),
             },
             {
-                header: "Sana",
+                header: "Berilgan sana",
                 accessorKey: "date",
                 cell: ({ row }) => format(row.original.date, "yyyy-HH-mm"),
             },
@@ -28,6 +28,16 @@ export const useAdvancesCols = () => {
                 header: "Izoh",
                 accessorKey: "body",
                 enableSorting: true,
+            },
+            {
+                header: "Ma'sul shaxs",
+                accessorKey: "author_name",
+            },
+            {
+                header: "Yaratilgan sana",
+                accessorKey: "created_at",
+                cell: ({ row }) =>
+                    format(row.original.created_at, "yyyy-HH-mm HH:mm"),
             },
         ],
         [],
