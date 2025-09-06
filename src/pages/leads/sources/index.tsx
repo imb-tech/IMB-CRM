@@ -1,52 +1,26 @@
 import Modal from "@/components/custom/modal"
-import FormInput from "@/components/form/input"
 import { Button } from "@/components/ui/button"
 import { useGet } from "@/hooks/useGet"
 import { useModal } from "@/hooks/useModal"
 import { Pencil, Plus, Trash } from "lucide-react"
-import { useForm } from "react-hook-form"
-import GetSourceIcon, { leadSources } from "./get-source-icon"
-import { cn } from "@/lib/utils"
-import { usePost } from "@/hooks/usePost"
+import GetSourceIcon from "./get-source-icon"
 import DeleteModal from "@/components/custom/delete-modal"
-import { useState } from "react"
-import { usePatch } from "@/hooks/usePatch"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { formatMoney } from "@/lib/format-money"
+import CreateSource from "./create-source"
+import { useStore } from "@/hooks/use-store"
 
 const url = "leads/common/sources"
 
 export default function Sources() {
-    const form = useForm<Source>({
-        defaultValues: {
-            icon: "website",
-        },
-    })
-
-    const { openModal, closeModal } = useModal()
+    const { openModal } = useModal()
     const { openModal: openDelete } = useModal("delete")
-    const [item, setItem] = useState<Source | null>(null)
+    const { store, setStore } = useStore<Source>("source")
 
-    const watchIcon = form.watch("icon")
-
-    const { data, refetch } = useGet<Source[]>(url, {
+    const { data } = useGet<Source[]>(url, {
         params: { is_active: true },
     })
-
-    function onSuccess() {
-        closeModal()
-        refetch()
-    }
-
-    const { mutate, isPending } = usePost({ onSuccess })
-    const { mutate: patch, isPending: isPatching } = usePatch({ onSuccess })
-
-    function handleSubmit(vals: Source) {
-        if (vals.id) {
-            patch(`${url}/${vals.id}`, vals)
-        } else mutate(url, vals)
-    }
 
     return (
         <Card>
@@ -61,9 +35,12 @@ export default function Sources() {
 
                     <Button
                         onClick={() => {
-                            form.setValue("id", 0)
-                            form.setValue("name", "")
-                            form.setValue("icon", "website")
+                            setStore({
+                                id: 0,
+                                name: "",
+                                icon: "website",
+                                is_active: true
+                            })
                             openModal()
                         }}
                         className="sm:w-max w-full"
@@ -92,13 +69,13 @@ export default function Sources() {
                                         size={16}
                                         className="text-primary cursor-pointer"
                                         onClick={() => {
-                                            form.reset(src)
+                                            setStore(src)
                                             openModal()
                                         }}
                                     />
                                     <Trash
                                         onClick={() => {
-                                            setItem(src)
+                                            setStore(src)
                                             openDelete()
                                         }}
                                         size={16}
@@ -117,54 +94,13 @@ export default function Sources() {
                 </div>
 
                 <Modal
-                    title={`Yangi manba ${
-                        !item?.id ? "qo'shish" : "tahrirlash"
-                    }`}
+                    title={`Yangi manba ${!store?.id ? "qo'shish" : "tahrirlash"
+                        }`}
                 >
-                    <form
-                        onSubmit={form.handleSubmit(handleSubmit)}
-                        className="pt-2"
-                    >
-                        <FormInput
-                            methods={form}
-                            name="name"
-                            required
-                            label={"Nomi"}
-                        />
-
-                        <p className="mt-5">{"Belgi tanlang"}</p>
-                        <div className="flex gap-3 flex-wrap pb-3 pt-1">
-                            {leadSources?.map((Ic, index) => {
-                                return (
-                                    <button
-                                        key={index}
-                                        className={cn(
-                                            "bg-secondary cursor-pointer rounded-sm p-2 border border-secondary",
-                                            watchIcon === Ic.key
-                                                ? "border-primary"
-                                                : "",
-                                        )}
-                                        type="button"
-                                        onClick={() =>
-                                            form.setValue("icon", Ic.key)
-                                        }
-                                    >
-                                        <Ic.icon style={{ color: Ic.color }} />
-                                    </button>
-                                )
-                            })}
-                        </div>
-
-                        <Button
-                            className="mt-4 w-full"
-                            loading={isPending || isPatching}
-                        >
-                            {"Saqlash"}
-                        </Button>
-                    </form>
+                    <CreateSource />
                 </Modal>
 
-                <DeleteModal id={item?.id} name={item?.name} path={url} />
+                <DeleteModal id={store?.id} name={store?.name} path={url} />
             </CardContent>
         </Card>
     )

@@ -22,7 +22,7 @@ const TaskColumn = ({ column, index, handleAdd }: Props) => {
                 >
                     <div
                         {...provided.dragHandleProps}
-                        className="dark:bg-[#0c0d03] bg-zinc-200 p-2 rounded-lg min-w-64 max-w-64"
+                        className="dark:bg-[#0c0d03] bg-zinc-100 p-2 rounded-lg min-w-64 max-w-64 "
                     >
                         <TaskColumnHeader column={column} />
 
@@ -40,7 +40,7 @@ const TaskColumn = ({ column, index, handleAdd }: Props) => {
                                         tasks={column.tasks}
                                     />
                                     {dropProvided.placeholder}
-                                    <div className="sticky bottom-0 bg-zinc-200 dark:bg-[#0c0d03]">
+                                    <div className="sticky bottom-0 rounded-md bg-zinc-200 dark:bg-[#0c0d03]">
                                         <AddTaskButton
                                             onClick={() => {
                                                 handleAdd()

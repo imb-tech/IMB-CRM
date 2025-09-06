@@ -1,35 +1,15 @@
-import ParamTabList, { ParamTabProvider } from "@/components/as-params/tab"
+import { ParamTabProvider } from "@/components/as-params/tab"
 import { TabsContent } from "@/components/ui/tabs"
-import { lazy } from "react"
+import { lazy, Suspense } from "react"
 
 const Groups = lazy(() => import("./index"))
 const RoomsMain = lazy(() => import("@/pages/settings/rooms"))
 const CoursesMain = lazy(() => import("@/pages/settings/courses"))
 
-const options = [
-    {
-        id: "groups",
-        name: "Guruhlar",
-    },
-    {
-        id: "rooms",
-        name: "Xonalar",
-    },
-    {
-        id: "courses",
-        name: "Kurslar",
-    },
-]
-
 const GroupsMain = () => {
     return (
-        <div>
-            {/* <ParamTabs options={options} /> */}
+        <Suspense fallback={""}>
             <ParamTabProvider defaultValue="groups">
-                {/* <ParamTabList
-                    options={options}
-                    listClassName="dark:bg-secondary"
-                /> */}
                 <div className="mt-2">
                     <TabsContent value="groups" className="mt-0">
                         <Groups />
@@ -42,7 +22,7 @@ const GroupsMain = () => {
                     </TabsContent>
                 </div>
             </ParamTabProvider>
-        </div>
+        </Suspense>
     )
 }
 

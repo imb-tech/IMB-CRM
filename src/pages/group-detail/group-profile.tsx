@@ -1,22 +1,19 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import {
     Users,
-    MapPin,
     Calendar,
     Edit,
     Trash2,
     MessageSquare,
     UserPlus,
     Eye,
-    MoreHorizontal,
     Banknote,
     ChevronUp,
     ArrowLeft,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useState } from "react"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useParams } from "@tanstack/react-router"
 import { useGet } from "@/hooks/useGet"
@@ -55,24 +52,6 @@ export default function GroupProfile() {
     const { data } = useGet<Group>(GROUP + "/" + id)
     const { openModal } = useModal(`${GROUP}-add`)
     const { back } = useHistoryNavigate()
-
-    const cards = useMemo(
-        () => [
-            {
-                label: "O'quvchi soni",
-                value: 15,
-                icon: Users,
-                color: "blue",
-            },
-            {
-                label: "Xona",
-                value: "3-xona",
-                icon: MapPin,
-                color: "purple",
-            },
-        ],
-        [],
-    )
 
     const isMobile = useIsMobile()
     const [open, setOpen] = useState<boolean>(false)
@@ -113,7 +92,7 @@ export default function GroupProfile() {
                     <div className="flex items-center gap-2">
                         <div className="flex items-center gap-4">
                             <div
-                                className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center"
+                                className="w-8 h-8 bg-background/70 rounded-lg flex items-center justify-center hover:bg-background cursor-pointer"
                                 onClick={() => back({ from: `/groups/${id}`, fallBack: '/groups' })}
                             >
                                 <ArrowLeft className="w-4 h-4" />
@@ -122,9 +101,6 @@ export default function GroupProfile() {
                                 <h3 className="text-lg">{data?.name}</h3>
                             </div>
                         </div>
-                        <Badge className="bg-white/20 text-indigo-500 dark:text-white border-0 text-xs ml-auto md:ml-2">
-                            Faol
-                        </Badge>
                         <div className="ml-auto hidden md:block">
                             <div className="hidden md:flex items-center gap-3 py-2 text-sm">
                                 <div className="bg-card/40 rounded-sm px-3 py-1">

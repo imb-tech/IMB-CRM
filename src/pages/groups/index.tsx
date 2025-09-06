@@ -44,6 +44,7 @@ const GroupsMain = () => {
     }
 
     const columns = useGroupCols()
+
     return (
         <div className="w-full">
             <Card className="mb-5 rounded-lg ">
@@ -63,7 +64,7 @@ const GroupsMain = () => {
                         onEdit={(row) => handleItemEdit(row.original)}
                         onDelete={(row) => handleItemDelete(row.original)}
                         columns={columns}
-                        data={data?.results}
+                        data={data?.results ?? []}
                         onRowClick={({ id }) => push(`/groups/${id}/students`)}
                         loading={isLoading}
                         viewAll

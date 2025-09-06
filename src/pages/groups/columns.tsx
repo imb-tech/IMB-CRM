@@ -23,8 +23,8 @@ export const useGroupCols = () =>
                 cell({ row: { original } }) {
                     return (
                         <div>
-                            {original.shifts_data
-                                ?.map((d) => daysMap[d.day_of_week])
+                            {original?.shifts_data
+                                ?.map((d) => daysMap?.[d?.day_of_week])
                                 ?.join(", ")}
                         </div>
                     )
