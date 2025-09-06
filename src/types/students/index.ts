@@ -155,6 +155,7 @@ type Appropriation = {
         title: string
         description: string
         controller: string
+        date:string
     }
     group_data: {
         id: number

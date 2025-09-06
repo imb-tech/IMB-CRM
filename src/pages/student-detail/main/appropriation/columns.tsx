@@ -16,7 +16,9 @@ export const useColumns = () => {
                         onClick={() =>
                             navigate({
                                 to: "/groups/$id",
-                                params: { id: String(row.original.group_data.id) },
+                                params: {
+                                    id: String(row.original.group_data.id),
+                                },
                             })
                         }
                         className="hover:text-primary cursor-pointer hover:underline"
@@ -45,10 +47,26 @@ export const useColumns = () => {
                 ),
             },
             {
-                header: "Nomi",
+                header: "Vazifa nomi",
                 accessorKey: "module_data",
                 cell: ({ row }) => (
-                    <span>{row.original.module_data.title}</span>
+                    <span
+                        onClick={() =>
+                            navigate({
+                                to: "/groups/$id/tasks",
+                                params: {
+                                    id: String(row.original.group_data.id),
+                                },
+                                search: {
+                                    date: row?.original?.module_data?.date,
+                                    id: String(row?.original?.module_data?.id),
+                                },
+                            })
+                        }
+                        className="hover:text-primary cursor-pointer hover:underline"
+                    >
+                        {row.original.module_data.title}
+                    </span>
                 ),
             },
             {
