@@ -1,221 +1,279 @@
 import { Badge } from "@/components/ui/badge"
-import { Card, CardContent } from "@/components/ui/card"
 import { DataTable } from "@/components/ui/datatable"
-import { useIncomeCols } from "./columns"
 import ParamDateRange from "@/components/as-params/date-picker-range"
+import { useIncomeCols } from "./columns"
+import { useModal } from "@/hooks/useModal"
+import Modal from "@/components/custom/modal"
+import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft } from "lucide-react"
-import { useNavigate } from "@tanstack/react-router"
+import ParamTabList, { ParamTabProvider } from "@/components/as-params/tab"
+import { Card, CardContent } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
+import { formatMoney } from "@/lib/format-money"
+import { Plus } from "lucide-react"
 
-function IncomeMain() {
-    const navigate = useNavigate()
+const tabsData = [
+    {
+        id: "income",
+        name: "Kirim",
+    },
+]
+
+function IncomeFinanceMain() {
+    const { openModal } = useModal("create-category")
+    const onAddTabs = () => {
+        console.log("text-primary")
+    }
+
     const columns = useIncomeCols()
     return (
-        <div className="w-full">
-            <Card className="mb-5 rounded-lg ">
-                <CardContent className="space-y-4">
-                    <div className="flex  justify-between items-center gap-3 ">
-                        <div className="flex items-center gap-3">
-                            <Button
-                                onClick={() =>
-                                    navigate({
-                                        to: "/reports",
-                                        search: { tabs: "finances_reports" },
-                                    })
-                                }
-                                size={"sm"}
-                                icon={<ArrowLeft size={20} />}
+        <>
+            <ParamTabProvider paramName="tabs">
+                <Card>
+                    <CardContent className="space-y-4">
+                        <div className="flex items-center">
+                            <ParamTabList
+                                options={tabsData}
+                                paramName="tabs"
+                                wrapperClassName="w-auto"
+                                listClassName="h-auto gap-1 bg-transparent"
+                                renderOption={(item, actv) => (
+                                    <div
+                                        className={cn(
+                                            "px-2 py-2 min-w-32 border rounded-md",
+                                            actv ? "text-primary" : "",
+                                        )}
+                                    >
+                                        <p>{item.name}</p>
+                                        <p
+                                            className={cn(
+                                                "text-muted-foreground",
+                                            )}
+                                        >
+                                            {formatMoney(40050000)}
+                                        </p>
+                                    </div>
+                                )}
                             />
-                            <h1 className="text-xl">Daromad tarixi </h1>
-                            <Badge variant={"outline"} className="text-sm">
-                                {data.length}
-                            </Badge>
+                            <div
+                                className={cn(
+                                    "px-2 py-[16px] min-w-20 border rounded-md text-sm flex items-center justify-center cursor-pointer hover:bg-secondary",
+                                )}
+                                onClick={openModal}
+                            >
+                                <Plus className="text-primary" />
+                            </div>
                         </div>
-                        <ParamDateRange />
-                    </div>
-                    <DataTable columns={columns} data={data} numeration />
-                </CardContent>
-            </Card>
-        </div>
+                        <DataTable
+                            columns={columns}
+                            data={data}
+                            numeration
+                            head={
+                                <div className="flex mb-3  justify-between items-center gap-3 ">
+                                    <div className="flex items-center gap-3">
+                                        <h1 className="text-xl">{`Qo'shimcha Daromad tarixi`}</h1>
+                                        <Badge className="text-sm">
+                                            {data.length}
+                                        </Badge>
+                                    </div>
+                                    <ParamDateRange />
+                                </div>
+                            }
+                        />
+                    </CardContent>
+                </Card>
+            </ParamTabProvider>
+
+            <Modal
+                modalKey="create-category"
+                title="Kategoriya yaratish"
+                size="max-w-md"
+            >
+                <form className="flex flex-col gap-2">
+                    <Input placeholder={"Misol: Boshqa xarajatlar"} fullWidth />
+                    <Button className="w-full">Yaratish</Button>
+                </form>
+            </Modal>
+        </>
     )
 }
 
-export default IncomeMain
+export default IncomeFinanceMain
 
-const data: Income[] = [
+const data: Cost[] = [
     {
         id: 1,
-        name: "Mahsulot sotuvi",
-        price: 150000,
+        name: "Ijaraga to‘lov",
+        price: 800000,
         created_at: "2025-05-01 08:30:00",
-        reason: "Do‘kon orqali sotildi",
+        reason: "Ofis uchun ijara",
     },
     {
         id: 2,
-        name: "Xizmat ko‘rsatish",
-        price: 200000,
+        name: "Elektr energiyasi",
+        price: 150000,
         created_at: "2025-05-02 08:40:00",
-        reason: "Kompyuter ta’miri",
+        reason: "Oylik hisob",
     },
     {
         id: 3,
-        name: "Freelance",
-        price: 300000,
+        name: "Internet xarajatlari",
+        price: 100000,
         created_at: "2025-05-03 08:50:00",
-        reason: "Veb sayt ishlab chiqish",
+        reason: "Provider to‘lovi",
     },
     {
         id: 4,
-        name: "Online savdo",
-        price: 120000,
+        name: "Transport",
+        price: 50000,
         created_at: "2025-05-04 09:00:00",
-        reason: "Telegram orqali buyurtma",
+        reason: "Shaxsiy xizmat safari",
     },
     {
         id: 5,
-        name: "O‘quv kursi",
-        price: 500000,
+        name: "Qurilmalar xaridi",
+        price: 1200000,
         created_at: "2025-05-05 09:10:00",
-        reason: "Frontend kursdan daromad",
+        reason: "Yangi kompyuter",
     },
     {
         id: 6,
-        name: "Shaxsiy dars",
-        price: 80000,
+        name: "Ish haqi",
+        price: 3000000,
         created_at: "2025-05-06 09:20:00",
-        reason: "Individual dars",
+        reason: "Xodimlarga oylik",
     },
     {
         id: 7,
-        name: "Mahsulot eksporti",
-        price: 1000000,
+        name: "Reklama",
+        price: 250000,
         created_at: "2025-05-07 09:30:00",
-        reason: "Rossiyaga yuborildi",
+        reason: "Facebook reklama",
     },
     {
         id: 8,
-        name: "Grant mablag‘i",
-        price: 700000,
+        name: "Kurs xarajatlari",
+        price: 60000,
         created_at: "2025-05-08 09:40:00",
-        reason: "Startap uchun grant",
+        reason: "Online platforma to‘lovi",
     },
     {
         id: 9,
-        name: "Affiliate daromad",
-        price: 90000,
+        name: "Dizayn xizmatlari",
+        price: 140000,
         created_at: "2025-05-09 09:50:00",
-        reason: "Reklamadan daromad",
+        reason: "Grafik dizayn",
     },
     {
         id: 10,
-        name: "Reklama joylash",
-        price: 110000,
+        name: "Ruxsatnoma to‘lovi",
+        price: 80000,
         created_at: "2025-05-10 10:00:00",
-        reason: "Saytda banner joylash",
+        reason: "Litsenziya olish",
     },
     {
         id: 11,
-        name: "Investitsiya",
-        price: 1500000,
+        name: "Uskuna ta'miri",
+        price: 90000,
         created_at: "2025-05-11 10:10:00",
-        reason: "Investor sarmoyasi",
+        reason: "Printer ta’miri",
     },
     {
         id: 12,
-        name: "Konsultatsiya",
-        price: 95000,
+        name: "Sayt hostingi",
+        price: 40000,
         created_at: "2025-05-12 10:20:00",
-        reason: "Texnik maslahat",
+        reason: "Yillik to‘lov",
     },
     {
         id: 13,
-        name: "Savdo sherigi",
-        price: 130000,
+        name: "Xodim ovqatlanishi",
+        price: 110000,
         created_at: "2025-05-13 10:30:00",
-        reason: "Hamkorlikdan foyda",
+        reason: "Kafe uchun",
     },
     {
         id: 14,
-        name: "To‘lov",
-        price: 210000,
+        name: "Soliq to‘lovi",
+        price: 500000,
         created_at: "2025-05-14 10:40:00",
-        reason: "Oldindan to‘lov",
+        reason: "Kvartal uchun soliq",
     },
     {
         id: 15,
-        name: "Savdo daromadi",
-        price: 320000,
+        name: "Ofis materiallari",
+        price: 60000,
         created_at: "2025-05-15 10:50:00",
-        reason: "Aksiya orqali sotuv",
+        reason: "Qog‘oz, ruchka va boshqalar",
     },
     {
         id: 16,
-        name: "E'lon daromadi",
-        price: 40000,
+        name: "Mobil aloqa",
+        price: 30000,
         created_at: "2025-05-16 11:00:00",
-        reason: "Instagram e'loni",
+        reason: "Korxona telefoni",
     },
     {
         id: 17,
-        name: "Video kurs",
-        price: 270000,
+        name: "Kurs uchun litsenziya",
+        price: 125000,
         created_at: "2025-05-17 11:10:00",
-        reason: "YouTube darsdan foyda",
+        reason: "Udemy to‘lovi",
     },
     {
         id: 18,
-        name: "Servis to‘lovi",
-        price: 50000,
+        name: "Suv ta’minoti",
+        price: 20000,
         created_at: "2025-05-18 11:20:00",
-        reason: "Dasturga obuna",
+        reason: "Ofis uchun suv",
     },
     {
         id: 19,
-        name: "Sotuv bo‘yicha bonus",
-        price: 60000,
+        name: "Kuryer xizmatlari",
+        price: 75000,
         created_at: "2025-05-19 11:30:00",
-        reason: "Muvaffaqiyatli oy",
+        reason: "Mahsulot yuborish",
     },
     {
         id: 20,
-        name: "Tashqi xizmat",
-        price: 180000,
+        name: "Ofis bezagi",
+        price: 95000,
         created_at: "2025-05-20 11:40:00",
-        reason: "Qurilish nazorati",
+        reason: "Yangi interyer",
     },
     {
         id: 21,
-        name: "Chegirma bilan sotuv",
-        price: 220000,
+        name: "Domen narxi",
+        price: 30000,
         created_at: "2025-05-21 11:50:00",
-        reason: "Promokod orqali",
+        reason: "Web domen sotib olish",
     },
     {
         id: 22,
-        name: "Xomashyo sotish",
-        price: 130000,
+        name: "Cloud xizmatlari",
+        price: 87000,
         created_at: "2025-05-22 12:00:00",
-        reason: "Ortiqcha xomashyodan",
+        reason: "AWS, Firebase",
     },
     {
         id: 23,
-        name: "Talaba to‘lovi",
-        price: 95000,
+        name: "Telegram reklama",
+        price: 200000,
         created_at: "2025-05-23 12:10:00",
-        reason: "Yangi dars uchun",
+        reason: "Reklama joylash",
     },
     {
         id: 24,
-        name: "Mobil ilova daromadi",
-        price: 175000,
+        name: "Bozor xarid",
+        price: 100000,
         created_at: "2025-05-24 12:20:00",
-        reason: "App Store daromad",
+        reason: "Ofis uchun oziq-ovqat",
     },
     {
         id: 25,
-        name: "Reklama shartnomasi",
-        price: 240000,
+        name: "Freelancer to‘lovi",
+        price: 180000,
         created_at: "2025-05-25 12:30:00",
-        reason: "Shartnoma orqali",
+        reason: "Masofaviy ishchi",
     },
 ]

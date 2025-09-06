@@ -1,41 +1,104 @@
 import { Badge } from "@/components/ui/badge"
-import { Card, CardContent } from "@/components/ui/card"
 import { DataTable } from "@/components/ui/datatable"
-import { useCostCols } from "./columns"
 import ParamDateRange from "@/components/as-params/date-picker-range"
+import { useCostCols } from "./columns"
+import { useModal } from "@/hooks/useModal"
+import Modal from "@/components/custom/modal"
+import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft } from "lucide-react"
-import { useNavigate } from "@tanstack/react-router"
+import ParamTabList, { ParamTabProvider } from "@/components/as-params/tab"
+import { Card, CardContent } from "@/components/ui/card"
+import { cn } from "@/lib/utils"
+import { formatMoney } from "@/lib/format-money"
+import { Plus } from "lucide-react"
 
-function CostMain() {
-    const navigate = useNavigate()
+const tabsData = [
+    {
+        id: "cost",
+        name: "Chiqim",
+    },
+]
+
+function CostFinanceMain() {
+    const { openModal } = useModal("create-category")
+    const onAddTabs = () => {
+        console.log("text-primary")
+    }
+
     const columns = useCostCols()
     return (
-        <div className="w-full">
-            <Card className="mb-5 rounded-lg ">
-                <CardContent className="space-y-4">
-                    <div className="flex  justify-between items-center gap-3 ">
-                        <div className="flex items-center gap-3">
-                            <Button
-                                onClick={() => navigate({ to: "/reports",search:{tabs:"finances_reports"} })}
-                                size={"sm"}
-                                icon={<ArrowLeft size={20} />}
+        <>
+            <ParamTabProvider paramName="tabs">
+                <Card>
+                    <CardContent className="space-y-4">
+                        <div className="flex items-center">
+                            <ParamTabList
+                                options={tabsData}
+                                paramName="tabs"
+                                wrapperClassName="w-auto"
+                                listClassName="h-auto gap-1 bg-transparent"
+                                renderOption={(item, actv) => (
+                                    <div
+                                        className={cn(
+                                            "px-2 py-2 min-w-32 border rounded-md",
+                                            actv ? "text-primary" : "",
+                                        )}
+                                    >
+                                        <p>{item.name}</p>
+                                        <p
+                                            className={cn(
+                                                "text-muted-foreground",
+                                            )}
+                                        >
+                                            {formatMoney(40050000)}
+                                        </p>
+                                    </div>
+                                )}
                             />
-                            <h1 className="text-xl">Xarajatlar tarixi</h1>
-                            <Badge  className="text-sm">
-                                {data.length}
-                            </Badge>
+                            <div
+                                className={cn(
+                                    "px-2 py-[16px] min-w-20 border rounded-md text-sm flex items-center justify-center cursor-pointer hover:bg-secondary",
+                                )}
+                                onClick={openModal}
+                            >
+                                <Plus className="text-primary" />
+                            </div>
                         </div>
-                        <ParamDateRange />
-                    </div>
-                    <DataTable columns={columns} data={data} numeration />
-                </CardContent>
-            </Card>
-        </div>
+                        <DataTable
+                            columns={columns}
+                            data={data}
+                            numeration
+                            head={
+                                <div className="flex mb-3  justify-between items-center gap-3 ">
+                                    <div className="flex items-center gap-3">
+                                        <h1 className="text-xl">{`Xarajatlar tarixi`}</h1>
+                                        <Badge className="text-sm">
+                                            {data.length}
+                                        </Badge>
+                                    </div>
+                                    <ParamDateRange />
+                                </div>
+                            }
+                        />
+                    </CardContent>
+                </Card>
+            </ParamTabProvider>
+
+            <Modal
+                modalKey="create-category"
+                title="Kategoriya yaratish"
+                size="max-w-md"
+            >
+                <form className="flex flex-col gap-2">
+                    <Input placeholder={"Misol: Boshqa xarajatlar"} fullWidth />
+                    <Button className="w-full">Yaratish</Button>
+                </form>
+            </Modal>
+        </>
     )
 }
 
-export default CostMain
+export default CostFinanceMain
 
 const data: Cost[] = [
     {

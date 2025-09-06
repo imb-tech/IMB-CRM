@@ -1,13 +1,10 @@
 import { formatMoney } from "@/lib/format-money"
-import { cn } from "@/lib/utils"
-import { useSearch } from "@tanstack/react-router"
 import { ColumnDef } from "@tanstack/react-table"
 import { format } from "date-fns"
 import { useMemo } from "react"
 
-export const useCostAndIncomeCols = () => {
-    const search = useSearch({ from: "/_main/finance/" })
-    return useMemo<ColumnDef<Cost>[]>(
+export const useIncomeCols = () =>
+    useMemo<ColumnDef<Income>[]>(
         () => [
             {
                 header: "Nomi",
@@ -19,13 +16,7 @@ export const useCostAndIncomeCols = () => {
                 accessorKey: "price",
                 enableSorting: true,
                 cell: ({ row }) => (
-                    <span
-                        className={cn(
-                            "text-red-600 font-medium",
-                            search.tabs === "income" && "text-green-600",
-                        )}
-                    >
-                        {search.tabs === "income" ? "" : "-"}
+                    <span className="text-green-600 font-medium">
                         {formatMoney(row.original.price)}
                     </span>
                 ),
@@ -42,6 +33,5 @@ export const useCostAndIncomeCols = () => {
                     format(row.original.created_at, "yyyy-HH-mm HH:mm"),
             },
         ],
-        [search],
+        [],
     )
-}

@@ -1,8 +1,8 @@
 import { TrendingUp, TrendingDown, DollarSign, CreditCard } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
-import FinanceCard from "../finance/finance-card"
-import FinanceInExChart from "../finance/finance-inex-chart"
-import FinanceBenefitChart from "../finance/finance-benefit-chart"
+import FinanceCard from "./finance-card"
+import FinanceInExChart from "./finance-inex-chart"
+import FinanceBenefitChart from "./finance-benefit-chart"
 
 export const cardData = [
     {

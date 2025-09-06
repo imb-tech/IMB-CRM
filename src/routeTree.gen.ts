@@ -30,11 +30,15 @@ import { Route as MainProjectIdImport } from './routes/_main/project/$id'
 import { Route as MainLeadsSourcesImport } from './routes/_main/leads/sources'
 import { Route as MainLeadsLessonTestStudentsImport } from './routes/_main/leads/lesson-test-students'
 import { Route as MainLeadsArchiveImport } from './routes/_main/leads/archive'
+import { Route as MainFinanceRevenuesImport } from './routes/_main/finance/revenues'
+import { Route as MainFinanceExpensesImport } from './routes/_main/finance/expenses'
+import { Route as MainFinanceAdvancesImport } from './routes/_main/finance/advances'
 import { Route as MainEmployeesMainImport } from './routes/_main/employees/_main'
 import { Route as MainAttendanceMainImport } from './routes/_main/attendance/_main'
 import { Route as MainSettingsMainIndexImport } from './routes/_main/settings/_main/index'
 import { Route as MainLeadsVaronkaIndexImport } from './routes/_main/leads/varonka/index'
 import { Route as MainLeadsFormsIndexImport } from './routes/_main/leads/forms/index'
+import { Route as MainFinanceMonthlyIndexImport } from './routes/_main/finance/monthly/index'
 import { Route as MainEmployeesMainIndexImport } from './routes/_main/employees/_main/index'
 import { Route as MainAttendanceMainIndexImport } from './routes/_main/attendance/_main/index'
 import { Route as MainStudentsIdMainImport } from './routes/_main/students/$id/_main'
@@ -221,6 +225,24 @@ const MainLeadsArchiveRoute = MainLeadsArchiveImport.update({
   getParentRoute: () => MainRoute,
 } as any)
 
+const MainFinanceRevenuesRoute = MainFinanceRevenuesImport.update({
+  id: '/finance/revenues',
+  path: '/finance/revenues',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainFinanceExpensesRoute = MainFinanceExpensesImport.update({
+  id: '/finance/expenses',
+  path: '/finance/expenses',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainFinanceAdvancesRoute = MainFinanceAdvancesImport.update({
+  id: '/finance/advances',
+  path: '/finance/advances',
+  getParentRoute: () => MainRoute,
+} as any)
+
 const MainEmployeesMainRoute = MainEmployeesMainImport.update({
   id: '/_main',
   getParentRoute: () => MainEmployeesRoute,
@@ -246,6 +268,12 @@ const MainLeadsVaronkaIndexRoute = MainLeadsVaronkaIndexImport.update({
 const MainLeadsFormsIndexRoute = MainLeadsFormsIndexImport.update({
   id: '/leads/forms/',
   path: '/leads/forms/',
+  getParentRoute: () => MainRoute,
+} as any)
+
+const MainFinanceMonthlyIndexRoute = MainFinanceMonthlyIndexImport.update({
+  id: '/finance/monthly/',
+  path: '/finance/monthly/',
   getParentRoute: () => MainRoute,
 } as any)
 
@@ -551,6 +579,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainEmployeesMainImport
       parentRoute: typeof MainEmployeesRoute
     }
+    '/_main/finance/advances': {
+      id: '/_main/finance/advances'
+      path: '/finance/advances'
+      fullPath: '/finance/advances'
+      preLoaderRoute: typeof MainFinanceAdvancesImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/finance/expenses': {
+      id: '/_main/finance/expenses'
+      path: '/finance/expenses'
+      fullPath: '/finance/expenses'
+      preLoaderRoute: typeof MainFinanceExpensesImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/finance/revenues': {
+      id: '/_main/finance/revenues'
+      path: '/finance/revenues'
+      fullPath: '/finance/revenues'
+      preLoaderRoute: typeof MainFinanceRevenuesImport
+      parentRoute: typeof MainImport
+    }
     '/_main/leads/archive': {
       id: '/_main/leads/archive'
       path: '/leads/archive'
@@ -788,6 +837,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/employees/'
       preLoaderRoute: typeof MainEmployeesMainIndexImport
       parentRoute: typeof MainEmployeesMainImport
+    }
+    '/_main/finance/monthly/': {
+      id: '/_main/finance/monthly/'
+      path: '/finance/monthly'
+      fullPath: '/finance/monthly'
+      preLoaderRoute: typeof MainFinanceMonthlyIndexImport
+      parentRoute: typeof MainImport
     }
     '/_main/leads/forms/': {
       id: '/_main/leads/forms/'
@@ -1120,6 +1176,9 @@ interface MainRouteChildren {
   MainIndexRoute: typeof MainIndexRoute
   MainAttendanceRoute: typeof MainAttendanceRouteWithChildren
   MainEmployeesRoute: typeof MainEmployeesRouteWithChildren
+  MainFinanceAdvancesRoute: typeof MainFinanceAdvancesRoute
+  MainFinanceExpensesRoute: typeof MainFinanceExpensesRoute
+  MainFinanceRevenuesRoute: typeof MainFinanceRevenuesRoute
   MainLeadsArchiveRoute: typeof MainLeadsArchiveRoute
   MainLeadsLessonTestStudentsRoute: typeof MainLeadsLessonTestStudentsRoute
   MainLeadsSourcesRoute: typeof MainLeadsSourcesRoute
@@ -1137,6 +1196,7 @@ interface MainRouteChildren {
   MainLeadsFormsIdRoute: typeof MainLeadsFormsIdRoute
   MainLeadsFormsCreateRoute: typeof MainLeadsFormsCreateRoute
   MainStudentsIdRoute: typeof MainStudentsIdRouteWithChildren
+  MainFinanceMonthlyIndexRoute: typeof MainFinanceMonthlyIndexRoute
   MainLeadsFormsIndexRoute: typeof MainLeadsFormsIndexRoute
   MainLeadsVaronkaIndexRoute: typeof MainLeadsVaronkaIndexRoute
   MainLeadsFormsEditIdRoute: typeof MainLeadsFormsEditIdRoute
@@ -1148,6 +1208,9 @@ const MainRouteChildren: MainRouteChildren = {
   MainIndexRoute: MainIndexRoute,
   MainAttendanceRoute: MainAttendanceRouteWithChildren,
   MainEmployeesRoute: MainEmployeesRouteWithChildren,
+  MainFinanceAdvancesRoute: MainFinanceAdvancesRoute,
+  MainFinanceExpensesRoute: MainFinanceExpensesRoute,
+  MainFinanceRevenuesRoute: MainFinanceRevenuesRoute,
   MainLeadsArchiveRoute: MainLeadsArchiveRoute,
   MainLeadsLessonTestStudentsRoute: MainLeadsLessonTestStudentsRoute,
   MainLeadsSourcesRoute: MainLeadsSourcesRoute,
@@ -1165,6 +1228,7 @@ const MainRouteChildren: MainRouteChildren = {
   MainLeadsFormsIdRoute: MainLeadsFormsIdRoute,
   MainLeadsFormsCreateRoute: MainLeadsFormsCreateRoute,
   MainStudentsIdRoute: MainStudentsIdRouteWithChildren,
+  MainFinanceMonthlyIndexRoute: MainFinanceMonthlyIndexRoute,
   MainLeadsFormsIndexRoute: MainLeadsFormsIndexRoute,
   MainLeadsVaronkaIndexRoute: MainLeadsVaronkaIndexRoute,
   MainLeadsFormsEditIdRoute: MainLeadsFormsEditIdRoute,
@@ -1181,6 +1245,9 @@ export interface FileRoutesByFullPath {
   '/': typeof MainIndexRoute
   '/attendance': typeof MainAttendanceMainRouteWithChildren
   '/employees': typeof MainEmployeesMainRouteWithChildren
+  '/finance/advances': typeof MainFinanceAdvancesRoute
+  '/finance/expenses': typeof MainFinanceExpensesRoute
+  '/finance/revenues': typeof MainFinanceRevenuesRoute
   '/leads/archive': typeof MainLeadsArchiveRoute
   '/leads/lesson-test-students': typeof MainLeadsLessonTestStudentsRoute
   '/leads/sources': typeof MainLeadsSourcesRoute
@@ -1212,6 +1279,7 @@ export interface FileRoutesByFullPath {
   '/employees/attendance': typeof MainEmployeesMainAttendanceLazyRoute
   '/attendance/': typeof MainAttendanceMainIndexRoute
   '/employees/': typeof MainEmployeesMainIndexRoute
+  '/finance/monthly': typeof MainFinanceMonthlyIndexRoute
   '/leads/forms': typeof MainLeadsFormsIndexRoute
   '/leads/varonka': typeof MainLeadsVaronkaIndexRoute
   '/settings/': typeof MainSettingsMainIndexRoute
@@ -1242,6 +1310,9 @@ export interface FileRoutesByTo {
   '/': typeof MainIndexRoute
   '/attendance': typeof MainAttendanceMainIndexRoute
   '/employees': typeof MainEmployeesMainIndexRoute
+  '/finance/advances': typeof MainFinanceAdvancesRoute
+  '/finance/expenses': typeof MainFinanceExpensesRoute
+  '/finance/revenues': typeof MainFinanceRevenuesRoute
   '/leads/archive': typeof MainLeadsArchiveRoute
   '/leads/lesson-test-students': typeof MainLeadsLessonTestStudentsRoute
   '/leads/sources': typeof MainLeadsSourcesRoute
@@ -1271,6 +1342,7 @@ export interface FileRoutesByTo {
   '/settings/rooms': typeof MainSettingsMainRoomsRoute
   '/students/$id': typeof MainStudentsIdMainRouteWithChildren
   '/employees/attendance': typeof MainEmployeesMainAttendanceLazyRoute
+  '/finance/monthly': typeof MainFinanceMonthlyIndexRoute
   '/leads/forms': typeof MainLeadsFormsIndexRoute
   '/leads/varonka': typeof MainLeadsVaronkaIndexRoute
   '/groups/$id/attendance': typeof MainGroupsIdMainAttendanceRoute
@@ -1303,6 +1375,9 @@ export interface FileRoutesById {
   '/_main/attendance/_main': typeof MainAttendanceMainRouteWithChildren
   '/_main/employees': typeof MainEmployeesRouteWithChildren
   '/_main/employees/_main': typeof MainEmployeesMainRouteWithChildren
+  '/_main/finance/advances': typeof MainFinanceAdvancesRoute
+  '/_main/finance/expenses': typeof MainFinanceExpensesRoute
+  '/_main/finance/revenues': typeof MainFinanceRevenuesRoute
   '/_main/leads/archive': typeof MainLeadsArchiveRoute
   '/_main/leads/lesson-test-students': typeof MainLeadsLessonTestStudentsRoute
   '/_main/leads/sources': typeof MainLeadsSourcesRoute
@@ -1337,6 +1412,7 @@ export interface FileRoutesById {
   '/_main/employees/_main/attendance': typeof MainEmployeesMainAttendanceLazyRoute
   '/_main/attendance/_main/': typeof MainAttendanceMainIndexRoute
   '/_main/employees/_main/': typeof MainEmployeesMainIndexRoute
+  '/_main/finance/monthly/': typeof MainFinanceMonthlyIndexRoute
   '/_main/leads/forms/': typeof MainLeadsFormsIndexRoute
   '/_main/leads/varonka/': typeof MainLeadsVaronkaIndexRoute
   '/_main/settings/_main/': typeof MainSettingsMainIndexRoute
@@ -1369,6 +1445,9 @@ export interface FileRouteTypes {
     | '/'
     | '/attendance'
     | '/employees'
+    | '/finance/advances'
+    | '/finance/expenses'
+    | '/finance/revenues'
     | '/leads/archive'
     | '/leads/lesson-test-students'
     | '/leads/sources'
@@ -1400,6 +1479,7 @@ export interface FileRouteTypes {
     | '/employees/attendance'
     | '/attendance/'
     | '/employees/'
+    | '/finance/monthly'
     | '/leads/forms'
     | '/leads/varonka'
     | '/settings/'
@@ -1429,6 +1509,9 @@ export interface FileRouteTypes {
     | '/'
     | '/attendance'
     | '/employees'
+    | '/finance/advances'
+    | '/finance/expenses'
+    | '/finance/revenues'
     | '/leads/archive'
     | '/leads/lesson-test-students'
     | '/leads/sources'
@@ -1458,6 +1541,7 @@ export interface FileRouteTypes {
     | '/settings/rooms'
     | '/students/$id'
     | '/employees/attendance'
+    | '/finance/monthly'
     | '/leads/forms'
     | '/leads/varonka'
     | '/groups/$id/attendance'
@@ -1488,6 +1572,9 @@ export interface FileRouteTypes {
     | '/_main/attendance/_main'
     | '/_main/employees'
     | '/_main/employees/_main'
+    | '/_main/finance/advances'
+    | '/_main/finance/expenses'
+    | '/_main/finance/revenues'
     | '/_main/leads/archive'
     | '/_main/leads/lesson-test-students'
     | '/_main/leads/sources'
@@ -1522,6 +1609,7 @@ export interface FileRouteTypes {
     | '/_main/employees/_main/attendance'
     | '/_main/attendance/_main/'
     | '/_main/employees/_main/'
+    | '/_main/finance/monthly/'
     | '/_main/leads/forms/'
     | '/_main/leads/varonka/'
     | '/_main/settings/_main/'
@@ -1587,6 +1675,9 @@ export const routeTree = rootRoute
         "/_main/",
         "/_main/attendance",
         "/_main/employees",
+        "/_main/finance/advances",
+        "/_main/finance/expenses",
+        "/_main/finance/revenues",
         "/_main/leads/archive",
         "/_main/leads/lesson-test-students",
         "/_main/leads/sources",
@@ -1604,6 +1695,7 @@ export const routeTree = rootRoute
         "/_main/leads/forms/$id",
         "/_main/leads/forms/create",
         "/_main/students/$id",
+        "/_main/finance/monthly/",
         "/_main/leads/forms/",
         "/_main/leads/varonka/",
         "/_main/leads/forms/edit/$id",
@@ -1655,6 +1747,18 @@ export const routeTree = rootRoute
         "/_main/employees/_main/attendance",
         "/_main/employees/_main/"
       ]
+    },
+    "/_main/finance/advances": {
+      "filePath": "_main/finance/advances.tsx",
+      "parent": "/_main"
+    },
+    "/_main/finance/expenses": {
+      "filePath": "_main/finance/expenses.tsx",
+      "parent": "/_main"
+    },
+    "/_main/finance/revenues": {
+      "filePath": "_main/finance/revenues.tsx",
+      "parent": "/_main"
     },
     "/_main/leads/archive": {
       "filePath": "_main/leads/archive.tsx",
@@ -1828,6 +1932,10 @@ export const routeTree = rootRoute
     "/_main/employees/_main/": {
       "filePath": "_main/employees/_main/index.tsx",
       "parent": "/_main/employees/_main"
+    },
+    "/_main/finance/monthly/": {
+      "filePath": "_main/finance/monthly/index.tsx",
+      "parent": "/_main"
     },
     "/_main/leads/forms/": {
       "filePath": "_main/leads/forms/index.tsx",

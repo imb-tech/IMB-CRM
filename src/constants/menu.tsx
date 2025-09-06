@@ -161,7 +161,24 @@ export const menuItems = [
         icon: <ChartNoAxesCombined width={20} />,
         to: "/finance",
         enabled: true,
-        items: [],
+        items: [
+            linkOptions({
+                title: "Oyliklar",
+                to: "/finance/monthly",
+            }),
+            linkOptions({
+                title: "Avanslar",
+                to: "/finance/advances",
+            }),
+            linkOptions({
+                title: "Xarajatlar",
+                to: "/finance/expenses",
+            }),
+            linkOptions({
+                title: "Qo'shimcha Kirim",
+                to: "/finance/revenues",
+            }),
+        ],
     }),
     linkOptions({
         title: "Hisobotlar",
@@ -170,7 +187,7 @@ export const menuItems = [
         enabled: true,
         items: [
             linkOptions({
-                title: "Moliya hisoboti",
+                title: "Moliya Hisoboti",
                 to: "/reports",
                 search: {
                     tabs: "finances_reports",

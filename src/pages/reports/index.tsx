@@ -5,7 +5,7 @@ import EmployeesAttendanceMain from "../attendance/employees"
 import LeadsDashboard from "../leads/stats/leads-stats"
 import ReportsFilter from "./student-payment/students-filter"
 import StudentPayment from "./student-payment"
-import FinanceStatisticMain from "./finance-main"
+import FinanceStatisticMain from "./finance/finance-main"
 
 
 const ReportsMain = () => {
