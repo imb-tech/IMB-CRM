@@ -63,7 +63,7 @@ const Header = ({ rigthChildren, leftChildren, navOnHeader }: Props) => {
             </div>
             <hgroup className="flex items-center gap-4">
                 {rigthChildren ? rigthChildren : null}
-                {pathname.includes("/leads/") && <LeadDealSelector />}
+                {pathname.includes("/leads/") && <div className="hidden md:flex"><LeadDealSelector /></div>}
                 {pathname !== "/reports" && pathname !== "/finance" && (
                     <Select
                         value={branch}
