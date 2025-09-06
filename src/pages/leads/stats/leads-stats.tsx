@@ -42,11 +42,17 @@ export default function LeadsDashboard() {
                     </CardContent>
                 </Card>
 
-                <div className="overflow-x-auto sm:flex hidden   bg-card rounded-lg p-2  gap-2 no-scrollbar-x">
-                    {dataStatus?.statuses?.map((stage) => (
-                        <StageColumn key={stage.id} stage={stage} />
-                    ))}
-                </div>
+                {!!dataStatus?.statuses?.length ? (
+                    <div className="overflow-x-auto sm:flex hidden   bg-card rounded-lg p-2  gap-2 no-scrollbar-x">
+                        {dataStatus?.statuses?.map((stage) => (
+                            <StageColumn key={stage.id} stage={stage} />
+                        ))}
+                    </div>
+                ) : (
+                    <div className="sm:flex justify-center text-muted-foreground items-center hidden w-full  bg-card rounded-lg p-2">
+                        Ma'lumot topilmadi
+                    </div>
+                )}
 
                 <Card className="hover:shadow-md border-none flex flex-col justify-between relative md:min-w-56  md:w-max w-full">
                     <CardContent className="flex flex-col justify-between ">
@@ -83,11 +89,13 @@ export default function LeadsDashboard() {
                     </CardContent>
                 </Card>
             </div>
-            <div className="overflow-x-auto flex sm:hidden   bg-card rounded-lg p-2  gap-2 no-scrollbar-x">
-                {dataStatus?.statuses?.map((stage) => (
-                    <StageColumn key={stage.id} stage={stage} />
-                ))}
-            </div>
+            {!!dataStatus?.statuses?.length ? (
+                <div className="overflow-x-auto flex sm:hidden   bg-card rounded-lg p-2  gap-2 no-scrollbar-x">
+                    {dataStatus?.statuses?.map((stage) => (
+                        <StageColumn key={stage.id} stage={stage} />
+                    ))}
+                </div>
+            ) : null}
 
             <section className="grid mt-4 grid-cols-1 lg:grid-cols-12 gap-4 items-start">
                 <StatsBySources data={data?.source} isFetching={isFetching} />

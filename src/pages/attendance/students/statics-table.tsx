@@ -48,9 +48,6 @@ const StaticsTable = () => {
                     </Button>
 
                     <h1>
-                        {data?.results?.[0]?.student
-                            ? `${data?.results?.[0]?.student}ning`
-                            : ""}{" "}
                         {start_date} - {end_date} oraliqdagi davomat
                         statistikasi
                     </h1>
