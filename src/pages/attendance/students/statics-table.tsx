@@ -90,6 +90,10 @@ const columns = () => {
                 accessorKey: "date",
             },
             {
+                header: "O'quvchi",
+                accessorKey: "student",
+            },
+            {
                 header: "Holat",
                 accessorKey: "status",
                 cell({ row }) {
