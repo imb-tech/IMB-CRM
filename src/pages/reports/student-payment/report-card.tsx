@@ -1,14 +1,14 @@
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { formatMoney } from "@/lib/format-money"
 import { Link } from "@tanstack/react-router"
 import clsx from "clsx"
 import { DollarSign, Users } from "lucide-react"
+import { ReactNode } from "react"
 
 type Props = {
     data: {
         title: string
-        value: string | number
+        value: ReactNode
         badgeBg: string
         textColor: string
         url: string
@@ -33,25 +33,18 @@ const ReportCard = ({ data }: Props) => {
                             <Users className={textColor} size={18} />
                             <div className={`text-lg font-light`}>{value}</div>
                         </div>
-                        {/* <div className={`rounded-full ${badgeBg} p-2`}>
-                            {icon}
-                        </div> */}
                     </div>
                 </CardHeader>
                 <CardContent className="flex flex-col-reverse gap-3 pt-4 px-0 items-start">
-                    {/* <span className="text-muted-foreground">/</span> */}
                     <Badge
                         className={`${badgeBg} ${textColor}  border-0 text-2xl font-light hover:${badgeBg}`}
                     >
                         <div className="flex items-center gap-1">
                             <DollarSign className={textColor} />
-                            {formatMoney(56_000_000, undefined, " so'm")}
+                            {data?.value} so'm
                         </div>
                     </Badge>
                 </CardContent>
-                <div className="absolute right-4 bottom-2 opacity-20">
-                    {/* {iconLarge} */}
-                </div>
             </Card>
         </Link>
     )

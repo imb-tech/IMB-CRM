@@ -1,11 +1,11 @@
 import PageLayout from "@/layouts/page-layout"
-import ReportsMain from "@/pages/reports"
+import IncomeFinanceMain from "@/pages/finance/income"
 import { createFileRoute } from "@tanstack/react-router"
 
-export const Route = createFileRoute("/_main/reports")({
+export const Route = createFileRoute("/_main/finance/monthly/")({
     component: () => (
         <PageLayout navOnHeader>
-            <ReportsMain />
+            <IncomeFinanceMain/>
         </PageLayout>
     ),
 })

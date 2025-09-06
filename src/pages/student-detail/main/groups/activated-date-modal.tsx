@@ -61,7 +61,7 @@ export const ActivatedDateModal = () => {
                     fromDate: new Date(store.start_date)
                 }}
             />}
-            <div className="!flex !flex-row items-center gap-4 mt-3">
+            <div className="!flex !flex-row items-center justify-end gap-4 mt-3">
                 <Button type="button" onClick={handleCancel} variant="destructive">
                     Bekor qilish
                 </Button>

@@ -14,6 +14,7 @@ type Student = {
     username: string
     photo: string
     activated_date: string
+    assessments_count:string
     allowed_statuses: number[]
     password: string
     birth_date: string
@@ -25,7 +26,6 @@ type Student = {
     avg_exam_score: number
     avg_score: number
     start_date: string
-    activated_date: string
     branches: number[]
     branches_data: Branch[]
     groups: StudentGroup[]
@@ -155,6 +155,7 @@ type Appropriation = {
         title: string
         description: string
         controller: string
+        date:string
     }
     group_data: {
         id: number

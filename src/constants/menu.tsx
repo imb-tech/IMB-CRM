@@ -161,7 +161,24 @@ export const menuItems = [
         icon: <ChartNoAxesCombined width={20} />,
         to: "/finance",
         enabled: true,
-        items: [],
+        items: [
+            linkOptions({
+                title: "Oyliklar",
+                to: "/finance/monthly",
+            }),
+            linkOptions({
+                title: "Avanslar",
+                to: "/finance/advances",
+            }),
+            linkOptions({
+                title: "Xarajatlar",
+                to: "/finance/expenses",
+            }),
+            linkOptions({
+                title: "Qo'shimcha Kirim",
+                to: "/finance/revenues",
+            }),
+        ],
     }),
     linkOptions({
         title: "Hisobotlar",
@@ -169,6 +186,20 @@ export const menuItems = [
         to: "/reports",
         enabled: true,
         items: [
+            linkOptions({
+                title: "Moliya Hisoboti",
+                to: "/reports",
+                search: {
+                    tabs: "finances_reports",
+                },
+            }),
+            linkOptions({
+                title: "CRM Hisoboti",
+                to: "/reports",
+                search: {
+                    tabs: "leads_statistic",
+                },
+            }),
             linkOptions({
                 title: "O'quvchilar To'lovi",
                 to: "/reports",
@@ -181,8 +212,8 @@ export const menuItems = [
                 to: "/reports",
                 search: {
                     tabs: "attendance",
-                    start_date:yesterday,
-                    end_date:today,
+                    start_date: yesterday,
+                    end_date: today,
                 },
             }),
             linkOptions({
@@ -190,13 +221,6 @@ export const menuItems = [
                 to: "/reports",
                 search: {
                     tabs: "attendance_emp",
-                },
-            }),
-            linkOptions({
-                title: "CRM Hisoboti",
-                to: "/reports",
-                search: {
-                    tabs: "leads_statistic",
                 },
             }),
         ],

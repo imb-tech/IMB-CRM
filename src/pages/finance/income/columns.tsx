@@ -1,10 +1,11 @@
 import { formatMoney } from "@/lib/format-money"
+import { cn } from "@/lib/utils"
 import { ColumnDef } from "@tanstack/react-table"
 import { format } from "date-fns"
 import { useMemo } from "react"
 
-export const useIncomeCols = () =>
-    useMemo<ColumnDef<Income>[]>(
+export const useIncomeCols = () => {
+    return useMemo<ColumnDef<Cost>[]>(
         () => [
             {
                 header: "Nomi",
@@ -16,7 +17,7 @@ export const useIncomeCols = () =>
                 accessorKey: "price",
                 enableSorting: true,
                 cell: ({ row }) => (
-                    <span className="text-green-600 font-medium">
+                    <span className={cn("text-green-600")}>
                         {formatMoney(row.original.price)}
                     </span>
                 ),
@@ -35,3 +36,4 @@ export const useIncomeCols = () =>
         ],
         [],
     )
+}

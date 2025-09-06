@@ -26,31 +26,27 @@ import EmptyBox from "@/components/custom/empty-box"
 
 export default function StudentsAttendanceMain() {
     const navigate = useNavigate()
-    const search = useSearch({ from: "/_main/reports" })
-    const { openModal, closeModal } = useModal("attendance-modal")
-    const { toggleParam } = useQueryParams()
+    const search = useSearch({ from: "/_main/reports/" })
+    const { openModal, closeModal, isOpen } = useModal("attendance-modal")
+    const { updateParams } = useQueryParams()
     const { setStore } = useStore<AttendancGroupDetail>("attendance-personal")
 
-    const { group, group_student, status, ...res } = search
+    const { group, status, tabs, page, page_size, ...res } = search
 
     const {
         data: attendanceData,
         isLoading,
         isSuccess,
     } = useGet<AttendanceData>(ATTENDANCE_STATIS, { params: res })
+    const paramPage = !isOpen
+        ? { page, page_size }
+        : { page: undefined, page_size: undefined }
 
     const { data: attendanceDataDetails } = useGet<
         ListResp<AttendancGroupDetail>
     >(`${ATTENDANCE_STATIS}/${group}`, {
-        params: res,
-        options: { enabled: !!group },
-    })
-
-    const { data: attendanceGroupStudents } = useGet<
-        ListResp<AttendanceRecord>
-    >(ATTENDANCE_STATIS_STUDENTS, {
-        params: { ...search },
-        options: { enabled: !!group_student },
+        params: { ...res, ...paramPage },
+        options: { enabled: !!group && !isOpen },
     })
 
     const handleAccordionChange = React.useCallback(
@@ -59,8 +55,9 @@ export default function StudentsAttendanceMain() {
                 to: "/reports",
                 search: (prev) => ({
                     ...prev,
-                    group: prev.group_student === value ? undefined : value,
-                    group_student: undefined,
+                    group: prev.group === value ? undefined : value,
+                    page: undefined,
+                    page_size: undefined,
                 }),
             })
             closeModal()
@@ -115,11 +112,11 @@ export default function StudentsAttendanceMain() {
                                                 }
                                                 loading={isLoading}
                                                 onRowClick={(item) => {
-                                                    if (item.id) {
-                                                        toggleParam(
-                                                            "group_student",
-                                                            item.id,
-                                                        )
+                                                    updateParams({
+                                                        page: undefined,
+                                                        page_size: undefined,
+                                                    })
+                                                    if (item?.id) {
                                                         setStore(item)
                                                         openModal()
                                                     }
@@ -147,7 +144,7 @@ export default function StudentsAttendanceMain() {
 
             {/* Personal Sheet */}
             <div>
-                <SheetDemo data={attendanceGroupStudents} />
+                <SheetDemo />
             </div>
         </div>
     )

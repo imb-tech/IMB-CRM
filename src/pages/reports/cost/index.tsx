@@ -1,35 +1,41 @@
 import { Badge } from "@/components/ui/badge"
+import { Card, CardContent } from "@/components/ui/card"
 import { DataTable } from "@/components/ui/datatable"
-import { useCostAndIncomeCols } from "./columns"
+import { useCostCols } from "./columns"
 import ParamDateRange from "@/components/as-params/date-picker-range"
-import {  useSearch } from "@tanstack/react-router"
+import { Button } from "@/components/ui/button"
+import { ArrowLeft } from "lucide-react"
+import { useNavigate } from "@tanstack/react-router"
 
-function CostAndIncomeMain() {
-    const search = useSearch({ from: "/_main/finance/" })
-    const columns = useCostAndIncomeCols()
+function CostMain() {
+    const navigate = useNavigate()
+    const columns = useCostCols()
     return (
-        <DataTable
-            columns={columns}
-            data={data}
-            numeration
-            head={
-                <div className="flex mb-3  justify-between items-center gap-3 ">
-                    <div className="flex items-center gap-3">
-                        <h1 className="text-xl">{`${
-                            search?.tabs === "cost"
-                                ? "Xarajatlar"
-                                : "Daromadlar"
-                        } tarixi`}</h1>
-                        <Badge className="text-sm">{data.length}</Badge>
+        <div className="w-full">
+            <Card className="mb-5 rounded-lg ">
+                <CardContent className="space-y-4">
+                    <div className="flex  justify-between items-center gap-3 ">
+                        <div className="flex items-center gap-3">
+                            <Button
+                                onClick={() => navigate({ to: "/reports",search:{tabs:"finances_reports"} })}
+                                size={"sm"}
+                                icon={<ArrowLeft size={20} />}
+                            />
+                            <h1 className="text-xl">Xarajatlar tarixi</h1>
+                            <Badge  className="text-sm">
+                                {data.length}
+                            </Badge>
+                        </div>
+                        <ParamDateRange />
                     </div>
-                    <ParamDateRange />
-                </div>
-            }
-        />
+                    <DataTable columns={columns} data={data} numeration />
+                </CardContent>
+            </Card>
+        </div>
     )
 }
 
-export default CostAndIncomeMain
+export default CostMain
 
 const data: Cost[] = [
     {
