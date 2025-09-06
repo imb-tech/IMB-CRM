@@ -15,6 +15,13 @@ import {
     getStatusIcon,
 } from "@/pages/group-detail/attendance-select"
 
+const statusKey: { [key: string]: string } = {
+    "1": "Darsga qatnashishlar",
+    "-1": "Dars qoldirishlar",
+    "2": "Kechikishlar",
+    "0": "Qilinmagan davomatlar",
+}
+
 const StaticsTable = () => {
     const search = useSearch({ from: "/_main/attendance/_main/statics" })
     const { start_date, end_date, status } = search
@@ -49,7 +56,8 @@ const StaticsTable = () => {
                     </Button>
 
                     <h1>
-                        {start_date} - {end_date} oraliqdagi davomat
+                        {start_date} - {end_date} oraliqdagi{" "}
+                        {statusKey[String(status)] || "davomat"} {" "}
                         statistikasi
                     </h1>
                     <Badge>{formatMoney(data?.count)}</Badge>

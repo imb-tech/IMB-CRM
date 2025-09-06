@@ -36,7 +36,6 @@ export function SheetDemo() {
         },
     )
 
-    console.log(res)
 
     return (
         <div>
