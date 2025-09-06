@@ -26,7 +26,7 @@ import EmptyBox from "@/components/custom/empty-box"
 
 export default function StudentsAttendanceMain() {
     const navigate = useNavigate()
-    const search = useSearch({ from: "/_main/reports" })
+    const search = useSearch({ from: "/_main/reports/" })
     const { openModal, closeModal, isOpen } = useModal("attendance-modal")
     const { updateParams } = useQueryParams()
     const { setStore } = useStore<AttendancGroupDetail>("attendance-personal")

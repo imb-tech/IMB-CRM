@@ -17,7 +17,7 @@ function CostMain() {
                     <div className="flex  justify-between items-center gap-3 ">
                         <div className="flex items-center gap-3">
                             <Button
-                                onClick={() => navigate({ to: "/finance" })}
+                                onClick={() => navigate({ to: "/reports",search:{tabs:"finances_reports"} })}
                                 size={"sm"}
                                 icon={<ArrowLeft size={20} />}
                             />

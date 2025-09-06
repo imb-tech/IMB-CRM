@@ -17,7 +17,7 @@ import { PanelRightClose } from "lucide-react"
 import { useMemo } from "react"
 
 export function SheetDemo() {
-    const search = useSearch({ from: "/_main/reports" })
+    const search = useSearch({ from: "/_main/reports/" })
     const { group, status, tabs, start_date, end_date, ...res } = search
     const navigate = useNavigate()
     const { isOpen, closeModal } = useModal("attendance-modal")

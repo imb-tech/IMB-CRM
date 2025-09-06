@@ -9,7 +9,7 @@ type Props = {
     cards: MainCards | undefined
 }
 export default function StudentAttendance({ cards }: Props) {
-    const search = useSearch({ from: "/_main/reports" })
+    const search = useSearch({ from: "/_main/reports/" })
     const navigate = useNavigate()
     const { closeModal } = useModal("attendance-modal")
     const { toggleParam } = useQueryParams()

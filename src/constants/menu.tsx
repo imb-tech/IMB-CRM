@@ -170,6 +170,20 @@ export const menuItems = [
         enabled: true,
         items: [
             linkOptions({
+                title: "Moliya hisoboti",
+                to: "/reports",
+                search: {
+                    tabs: "finances_reports",
+                },
+            }),
+            linkOptions({
+                title: "CRM Hisoboti",
+                to: "/reports",
+                search: {
+                    tabs: "leads_statistic",
+                },
+            }),
+            linkOptions({
                 title: "O'quvchilar To'lovi",
                 to: "/reports",
                 search: {
@@ -181,8 +195,8 @@ export const menuItems = [
                 to: "/reports",
                 search: {
                     tabs: "attendance",
-                    start_date:yesterday,
-                    end_date:today,
+                    start_date: yesterday,
+                    end_date: today,
                 },
             }),
             linkOptions({
@@ -190,13 +204,6 @@ export const menuItems = [
                 to: "/reports",
                 search: {
                     tabs: "attendance_emp",
-                },
-            }),
-            linkOptions({
-                title: "CRM Hisoboti",
-                to: "/reports",
-                search: {
-                    tabs: "leads_statistic",
                 },
             }),
         ],

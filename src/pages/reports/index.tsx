@@ -1,24 +1,25 @@
 import { ParamTabProvider } from "@/components/as-params/tab"
 import { TabsContent } from "@/components/ui/tabs"
-import { lazy } from "react"
 import StudentsAttendanceMain from "../attendance/students"
 import EmployeesAttendanceMain from "../attendance/employees"
 import LeadsDashboard from "../leads/stats/leads-stats"
 import ReportsFilter from "./student-payment/students-filter"
+import StudentPayment from "./student-payment"
+import FinanceStatisticMain from "./finance-main"
 
-
-const StudentPayment = lazy(() => import("./student-payment"))
 
 const ReportsMain = () => {
-
-
     return (
         <div>
-            <ParamTabProvider defaultValue="student_payments">
+            <ParamTabProvider defaultValue="finances_reports">
                 <div className="flex  sm:justify-end overflow-x-auto no-scrollbar">
                     <ReportsFilter />
                 </div>
                 <div className="mt-2">
+                    <TabsContent value="finances_reports" className="mt-0">
+                        <FinanceStatisticMain/>
+                    </TabsContent>
+
                     <TabsContent value="student_payments" className="mt-0">
                         <StudentPayment />
                     </TabsContent>
