@@ -84,8 +84,9 @@ const StudentAppropriationMain = () => {
 
             {isAll ? (
                 <div>
-                    <div className="grid grid-cols-3 px-3  border-b py-3 mb-2 bg-muted rounded-md  text-muted-foreground text-sm">
+                    <div className="grid grid-cols-4 px-3  border-b py-3 mb-2 bg-muted rounded-md  text-muted-foreground text-sm">
                         <p>Guruh nomi</p>
+                        <p>Vazifalar soni</p>
                         <p>O'rtacha imtihon balli</p>
                         <p>Topshiriqlar balli</p>
                     </div>
