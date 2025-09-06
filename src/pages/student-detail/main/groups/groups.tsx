@@ -1,4 +1,3 @@
-import { DataTable } from "@/components/ui/datatable"
 import { useGet } from "@/hooks/useGet"
 import { GROUP_STUDENTS, STUDENT_GROUP } from "@/constants/api-endpoints"
 import { Badge } from "@/components/ui/badge"
