@@ -72,6 +72,8 @@ import { Route as MainGroupsIdMainScoreImport } from './routes/_main/groups/$id/
 import { Route as MainGroupsIdMainSaleImport } from './routes/_main/groups/$id/_main/sale'
 import { Route as MainGroupsIdMainNotesImport } from './routes/_main/groups/$id/_main/notes'
 import { Route as MainGroupsIdMainAttendanceImport } from './routes/_main/groups/$id/_main/attendance'
+import { Route as MainFinanceMonthlyPaidSalaryReportIdImport } from './routes/_main/finance/monthly/paid-salary-report/$id'
+import { Route as MainFinanceMonthlyPaidSalaryReportUserIdImport } from './routes/_main/finance/monthly/paid-salary-report-user/$id'
 import { Route as MainGroupsIdMainTasksIndexImport } from './routes/_main/groups/$id/_main/tasks/index'
 import { Route as MainLeadsVaronkaIdUserUserImport } from './routes/_main/leads/varonka/$id/user/$user'
 
@@ -496,6 +498,20 @@ const MainGroupsIdMainAttendanceRoute = MainGroupsIdMainAttendanceImport.update(
   } as any,
 )
 
+const MainFinanceMonthlyPaidSalaryReportIdRoute =
+  MainFinanceMonthlyPaidSalaryReportIdImport.update({
+    id: '/finance/monthly/paid-salary-report/$id',
+    path: '/finance/monthly/paid-salary-report/$id',
+    getParentRoute: () => MainRoute,
+  } as any)
+
+const MainFinanceMonthlyPaidSalaryReportUserIdRoute =
+  MainFinanceMonthlyPaidSalaryReportUserIdImport.update({
+    id: '/finance/monthly/paid-salary-report-user/$id',
+    path: '/finance/monthly/paid-salary-report-user/$id',
+    getParentRoute: () => MainRoute,
+  } as any)
+
 const MainGroupsIdMainTasksIndexRoute = MainGroupsIdMainTasksIndexImport.update(
   {
     id: '/tasks/',
@@ -866,6 +882,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainSettingsMainIndexImport
       parentRoute: typeof MainSettingsMainImport
     }
+    '/_main/finance/monthly/paid-salary-report-user/$id': {
+      id: '/_main/finance/monthly/paid-salary-report-user/$id'
+      path: '/finance/monthly/paid-salary-report-user/$id'
+      fullPath: '/finance/monthly/paid-salary-report-user/$id'
+      preLoaderRoute: typeof MainFinanceMonthlyPaidSalaryReportUserIdImport
+      parentRoute: typeof MainImport
+    }
+    '/_main/finance/monthly/paid-salary-report/$id': {
+      id: '/_main/finance/monthly/paid-salary-report/$id'
+      path: '/finance/monthly/paid-salary-report/$id'
+      fullPath: '/finance/monthly/paid-salary-report/$id'
+      preLoaderRoute: typeof MainFinanceMonthlyPaidSalaryReportIdImport
+      parentRoute: typeof MainImport
+    }
     '/_main/groups/$id/_main/attendance': {
       id: '/_main/groups/$id/_main/attendance'
       path: '/attendance'
@@ -1199,6 +1229,8 @@ interface MainRouteChildren {
   MainFinanceMonthlyIndexRoute: typeof MainFinanceMonthlyIndexRoute
   MainLeadsFormsIndexRoute: typeof MainLeadsFormsIndexRoute
   MainLeadsVaronkaIndexRoute: typeof MainLeadsVaronkaIndexRoute
+  MainFinanceMonthlyPaidSalaryReportUserIdRoute: typeof MainFinanceMonthlyPaidSalaryReportUserIdRoute
+  MainFinanceMonthlyPaidSalaryReportIdRoute: typeof MainFinanceMonthlyPaidSalaryReportIdRoute
   MainLeadsFormsEditIdRoute: typeof MainLeadsFormsEditIdRoute
   MainLeadsVaronkaIdIndexRoute: typeof MainLeadsVaronkaIdIndexRoute
   MainLeadsVaronkaIdUserUserRoute: typeof MainLeadsVaronkaIdUserUserRoute
@@ -1231,6 +1263,10 @@ const MainRouteChildren: MainRouteChildren = {
   MainFinanceMonthlyIndexRoute: MainFinanceMonthlyIndexRoute,
   MainLeadsFormsIndexRoute: MainLeadsFormsIndexRoute,
   MainLeadsVaronkaIndexRoute: MainLeadsVaronkaIndexRoute,
+  MainFinanceMonthlyPaidSalaryReportUserIdRoute:
+    MainFinanceMonthlyPaidSalaryReportUserIdRoute,
+  MainFinanceMonthlyPaidSalaryReportIdRoute:
+    MainFinanceMonthlyPaidSalaryReportIdRoute,
   MainLeadsFormsEditIdRoute: MainLeadsFormsEditIdRoute,
   MainLeadsVaronkaIdIndexRoute: MainLeadsVaronkaIdIndexRoute,
   MainLeadsVaronkaIdUserUserRoute: MainLeadsVaronkaIdUserUserRoute,
@@ -1283,6 +1319,8 @@ export interface FileRoutesByFullPath {
   '/leads/forms': typeof MainLeadsFormsIndexRoute
   '/leads/varonka': typeof MainLeadsVaronkaIndexRoute
   '/settings/': typeof MainSettingsMainIndexRoute
+  '/finance/monthly/paid-salary-report-user/$id': typeof MainFinanceMonthlyPaidSalaryReportUserIdRoute
+  '/finance/monthly/paid-salary-report/$id': typeof MainFinanceMonthlyPaidSalaryReportIdRoute
   '/groups/$id/attendance': typeof MainGroupsIdMainAttendanceRoute
   '/groups/$id/notes': typeof MainGroupsIdMainNotesRoute
   '/groups/$id/sale': typeof MainGroupsIdMainSaleRoute
@@ -1345,6 +1383,8 @@ export interface FileRoutesByTo {
   '/finance/monthly': typeof MainFinanceMonthlyIndexRoute
   '/leads/forms': typeof MainLeadsFormsIndexRoute
   '/leads/varonka': typeof MainLeadsVaronkaIndexRoute
+  '/finance/monthly/paid-salary-report-user/$id': typeof MainFinanceMonthlyPaidSalaryReportUserIdRoute
+  '/finance/monthly/paid-salary-report/$id': typeof MainFinanceMonthlyPaidSalaryReportIdRoute
   '/groups/$id/attendance': typeof MainGroupsIdMainAttendanceRoute
   '/groups/$id/notes': typeof MainGroupsIdMainNotesRoute
   '/groups/$id/sale': typeof MainGroupsIdMainSaleRoute
@@ -1416,6 +1456,8 @@ export interface FileRoutesById {
   '/_main/leads/forms/': typeof MainLeadsFormsIndexRoute
   '/_main/leads/varonka/': typeof MainLeadsVaronkaIndexRoute
   '/_main/settings/_main/': typeof MainSettingsMainIndexRoute
+  '/_main/finance/monthly/paid-salary-report-user/$id': typeof MainFinanceMonthlyPaidSalaryReportUserIdRoute
+  '/_main/finance/monthly/paid-salary-report/$id': typeof MainFinanceMonthlyPaidSalaryReportIdRoute
   '/_main/groups/$id/_main/attendance': typeof MainGroupsIdMainAttendanceRoute
   '/_main/groups/$id/_main/notes': typeof MainGroupsIdMainNotesRoute
   '/_main/groups/$id/_main/sale': typeof MainGroupsIdMainSaleRoute
@@ -1483,6 +1525,8 @@ export interface FileRouteTypes {
     | '/leads/forms'
     | '/leads/varonka'
     | '/settings/'
+    | '/finance/monthly/paid-salary-report-user/$id'
+    | '/finance/monthly/paid-salary-report/$id'
     | '/groups/$id/attendance'
     | '/groups/$id/notes'
     | '/groups/$id/sale'
@@ -1544,6 +1588,8 @@ export interface FileRouteTypes {
     | '/finance/monthly'
     | '/leads/forms'
     | '/leads/varonka'
+    | '/finance/monthly/paid-salary-report-user/$id'
+    | '/finance/monthly/paid-salary-report/$id'
     | '/groups/$id/attendance'
     | '/groups/$id/notes'
     | '/groups/$id/sale'
@@ -1613,6 +1659,8 @@ export interface FileRouteTypes {
     | '/_main/leads/forms/'
     | '/_main/leads/varonka/'
     | '/_main/settings/_main/'
+    | '/_main/finance/monthly/paid-salary-report-user/$id'
+    | '/_main/finance/monthly/paid-salary-report/$id'
     | '/_main/groups/$id/_main/attendance'
     | '/_main/groups/$id/_main/notes'
     | '/_main/groups/$id/_main/sale'
@@ -1698,6 +1746,8 @@ export const routeTree = rootRoute
         "/_main/finance/monthly/",
         "/_main/leads/forms/",
         "/_main/leads/varonka/",
+        "/_main/finance/monthly/paid-salary-report-user/$id",
+        "/_main/finance/monthly/paid-salary-report/$id",
         "/_main/leads/forms/edit/$id",
         "/_main/leads/varonka/$id/",
         "/_main/leads/varonka/$id/user/$user"
@@ -1948,6 +1998,14 @@ export const routeTree = rootRoute
     "/_main/settings/_main/": {
       "filePath": "_main/settings/_main/index.tsx",
       "parent": "/_main/settings/_main"
+    },
+    "/_main/finance/monthly/paid-salary-report-user/$id": {
+      "filePath": "_main/finance/monthly/paid-salary-report-user/$id.tsx",
+      "parent": "/_main"
+    },
+    "/_main/finance/monthly/paid-salary-report/$id": {
+      "filePath": "_main/finance/monthly/paid-salary-report/$id.tsx",
+      "parent": "/_main"
     },
     "/_main/groups/$id/_main/attendance": {
       "filePath": "_main/groups/$id/_main/attendance.tsx",
