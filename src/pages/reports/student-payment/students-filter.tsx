@@ -10,6 +10,17 @@ export default function ReportsFilter() {
     const { tabs } = useSearch({ from: "__root__" })
     const { data, active_branch } = useMe()
 
+    const branch = data?.branches?.find((b) => b.id === active_branch)
+
+    const defaultOpt = branch
+        ? {
+              id: branch.id,
+              name: branch.name,
+              start_time: branch.start_time,
+              end_time: branch.end_time,
+          }
+        : undefined
+
     return (
         <aside className="flex items-center gap-2 rounded-md ">
             {tabs !== "attendance" && (
@@ -54,11 +65,7 @@ export default function ReportsFilter() {
 
             <ParamCombobox
                 dontAllowClear
-                defaultOpt={{
-                    id: active_branch,
-                    name: data?.branches?.find((b) => b.id == active_branch)
-                        ?.name,
-                }}
+                defaultOpt={defaultOpt}
                 paramName="branch"
                 options={data?.branches ?? []}
                 labelKey="name"
