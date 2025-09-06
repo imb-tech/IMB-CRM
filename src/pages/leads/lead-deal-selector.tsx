@@ -86,7 +86,7 @@ export default function LeadDealSelector() {
             <div
                 className={cn(
                     "fixed top-0 right-0 bottom-0 z-10 opacity-0 transition-opacity duration-200",
-                    open ? "right-0 opacity-100" : "",
+                    open ? "md:right-0 opacity-100" : "",
                 )}
                 onClick={handleOpen}
             ></div>
@@ -94,7 +94,7 @@ export default function LeadDealSelector() {
             <div
                 className={cn(
                     "absolute bg-card w-0 right-0 py-[14px] p-0 top-11 opacity-0 z-20 rounded-xl shadow-sm  transition-opacity duration-200 overflow-hidden px-0 flex flex-col",
-                    open ? "w-72 opacity-100 min-h-[300px]" : "",
+                    open ? "w-72 opacity-100 left-0 md:left-auto min-h-[300px]" : "",
                 )}
             >
                 <div className="flex flex-col mb-3  flex-1 gap-1 p-2">
